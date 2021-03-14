@@ -39,9 +39,23 @@ public class ItemGroups {
     };
 
     public static final ItemGroup ELECTRONA_ITEMS = new ItemGroup("tabelectronaitem") {
+        @OnlyIn(Dist.CLIENT)
         @Override
         public ItemStack makeIcon() {
             return new ItemStack(RegistryHandler.PORTABLE_BATTERY.get());
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        public boolean hasSearchBar() {
+            return false;
+        }
+    };
+
+    public static final ItemGroup ELECTRONA_TOOLS = new ItemGroup("tabelectrona_tools") {
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public ItemStack makeIcon() {
+            return new ItemStack(RegistryHandler.HAMMER.get());
         }
 
         @OnlyIn(Dist.CLIENT)

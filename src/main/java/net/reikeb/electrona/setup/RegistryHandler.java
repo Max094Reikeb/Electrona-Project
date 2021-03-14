@@ -15,6 +15,7 @@ import net.reikeb.electrona.blocks.SolarPanelT1;
 import net.reikeb.electrona.blocks.SolarPanelT2;
 import net.reikeb.electrona.blocks.TinBlock;
 import net.reikeb.electrona.blocks.TinOre;
+import net.reikeb.electrona.items.Hammer;
 import net.reikeb.electrona.items.PortableBattery;
 import net.reikeb.electrona.items.TinIngot;
 import net.reikeb.electrona.tileentities.TileSolarPanelT1;
@@ -63,4 +64,5 @@ public class RegistryHandler {
     public static final RegistryObject<Item> TIN_INGOT = ITEMS.register("tin_ingot", TinIngot::new);
 
     // Register tools
+    public static final RegistryObject<Item> HAMMER = ITEMS.register("hammer", Hammer::new);
 }
