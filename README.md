@@ -34,6 +34,6 @@ None.
 ## Other links
 **The Trello of Electrona : https://trello.com/b/iDpxVYxZ/electrona**
 
-**My Discord Dev Server : http://discord.gg/wYs7FSq**
+**My Discord Dev Server : http://discord.gg/8As6xhKXd5**
 
 **The Electrona page on Curseforge : https://www.curseforge.com/minecraft/mc-mods/electrona**
