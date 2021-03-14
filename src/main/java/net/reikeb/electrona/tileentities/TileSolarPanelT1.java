@@ -2,7 +2,6 @@ package net.reikeb.electrona.tileentities;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -10,12 +9,10 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.Arrays;
 import java.util.Locale;
 
 import static net.reikeb.electrona.setup.RegistryHandler.TILE_SOLAR_PANEL_T_1;
@@ -43,6 +40,7 @@ public class TileSolarPanelT1 extends TileEntity implements ITickableTileEntity 
         double electronicPower = this.getTileData().getDouble("ElectronicPower");
 
         // We generate the energy (this part is uncommon for all generators)
+        assert world != null;
         if ((world.canSeeSkyFromBelowWater(new BlockPos(x, y + 1, z)))
                 && (world.isDay())) {
             if (electronicPower < 996) {
@@ -66,14 +64,19 @@ public class TileSolarPanelT1 extends TileEntity implements ITickableTileEntity 
         for (Direction dir : Direction.values()) {
             TileEntity tileEntity = world.getBlockEntity(blockPos.relative(dir));
             Block offsetBlock = world.getBlockState(blockPos.relative(dir)).getBlock();
+            assert tileEntity != null;
             double offsetElectronicPower = tileEntity.getTileData().getDouble("ElectronicPower");
+            double offsetMaxStorage = tileEntity.getTileData().getDouble("MaxStorage");
             if ((BlockTags.getAllTags().getTagOrEmpty(new ResourceLocation(("forge:electrona/machines_all").toLowerCase(Locale.ENGLISH)))
                     .contains(offsetBlock)) || ((BlockTags.getAllTags().getTagOrEmpty(new ResourceLocation(("forge:electrona/cable")
                     .toLowerCase(Locale.ENGLISH))).contains(offsetBlock)))) {
-                if ((tileEntity.getTileData().getDouble("ElectronicPower") < (tileEntity.getTileData()
-                .getDouble("ElectronicPower") - 4)) && (electronicPower > 4)) {
-                    this.getTileData().putDouble("ElectronicPower", (electronicPower - 4));
-                    tileEntity.getTileData().putDouble("ElectronicPower", (offsetElectronicPower + 4));
+                if ((offsetElectronicPower < (offsetMaxStorage - 4)) && (electronicPower > 4)) {
+                    this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.2));
+                    tileEntity.getTileData().putDouble("ElectronicPower", (offsetElectronicPower + 0.2));
+                } else if ((((offsetElectronicPower >= (offsetMaxStorage - 4)) && (offsetElectronicPower < offsetMaxStorage))
+                        || ((offsetElectronicPower < (offsetMaxStorage - 4)) && ((electronicPower <= 4) && (electronicPower > 0))))) {
+                    this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.05));
+                    tileEntity.getTileData().putDouble("ElectronicPower", (offsetElectronicPower + 0.05));
                 }
             }
         }
