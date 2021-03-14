@@ -36,20 +36,20 @@ public class TileSolarPanelT2 extends TileEntity implements ITickableTileEntity 
         BlockPos blockPos = this.getBlockPos();
 
         // We get the NBT Tags
-        this.getTileData().putDouble("MaxStorage", 1000);
+        this.getTileData().putDouble("MaxStorage", 2000);
         double electronicPower = this.getTileData().getDouble("ElectronicPower");
 
         // We generate the energy (this part is uncommon for all generators)
         assert world != null;
         if ((world.canSeeSkyFromBelowWater(new BlockPos(x, y + 1, z)))
                 && (world.isDay())) {
-            if (electronicPower < 996) {
+            if (electronicPower < 1996) {
                 if ((world.getLevelData().isRaining() || world.getLevelData().isThundering())) {
-                    this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.1));
-                } else {
                     this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.2));
+                } else {
+                    this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.3));
                 }
-            } else if (electronicPower >= 996 && electronicPower < 1000) {
+            } else if (electronicPower >= 1996 && electronicPower < 2000) {
                 this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.05));
             }
         } else {
@@ -70,11 +70,11 @@ public class TileSolarPanelT2 extends TileEntity implements ITickableTileEntity 
             if ((BlockTags.getAllTags().getTagOrEmpty(new ResourceLocation(("forge:electrona/machines_all").toLowerCase(Locale.ENGLISH)))
                     .contains(offsetBlock)) || ((BlockTags.getAllTags().getTagOrEmpty(new ResourceLocation(("forge:electrona/cable")
                     .toLowerCase(Locale.ENGLISH))).contains(offsetBlock)))) {
-                if ((offsetElectronicPower < (offsetMaxStorage - 4)) && (electronicPower > 4)) {
-                    this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.2));
-                    tileEntity.getTileData().putDouble("ElectronicPower", (offsetElectronicPower + 0.2));
-                } else if ((((offsetElectronicPower >= (offsetMaxStorage - 4)) && (offsetElectronicPower < offsetMaxStorage))
-                        || ((offsetElectronicPower < (offsetMaxStorage - 4)) && ((electronicPower <= 4) && (electronicPower > 0))))) {
+                if ((offsetElectronicPower < (offsetMaxStorage - 6)) && (electronicPower > 6)) {
+                    this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.3));
+                    tileEntity.getTileData().putDouble("ElectronicPower", (offsetElectronicPower + 0.3));
+                } else if ((((offsetElectronicPower >= (offsetMaxStorage - 6)) && (offsetElectronicPower < offsetMaxStorage))
+                        || ((offsetElectronicPower < (offsetMaxStorage - 6)) && ((electronicPower <= 6) && (electronicPower > 0))))) {
                     this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.05));
                     tileEntity.getTileData().putDouble("ElectronicPower", (offsetElectronicPower + 0.05));
                 }

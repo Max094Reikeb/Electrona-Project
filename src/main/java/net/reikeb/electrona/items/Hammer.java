@@ -27,6 +27,21 @@ public class Hammer extends Item {
     }
 
     @Override
+    public boolean hasCraftingRemainingItem() {
+        return true;
+    }
+
+    @Override
+    public ItemStack getContainerItem(ItemStack itemstack) {
+        ItemStack retval = new ItemStack(this);
+        retval.setDamageValue(itemstack.getDamageValue() + 1);
+        if (retval.getDamageValue() >= retval.getMaxDamage()) {
+            return ItemStack.EMPTY;
+        }
+        return retval;
+    }
+
+    @Override
     public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlotType equipmentSlot) {
         if (equipmentSlot == EquipmentSlotType.MAINHAND) {
             ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
