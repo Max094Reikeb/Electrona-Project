@@ -39,44 +39,47 @@ public class TileSolarPanelT2 extends TileEntity implements ITickableTileEntity 
         this.getTileData().putDouble("MaxStorage", 2000);
         double electronicPower = this.getTileData().getDouble("ElectronicPower");
 
-        // We generate the energy (this part is uncommon for all generators)
-        assert world != null;
-        if ((world.canSeeSkyFromBelowWater(new BlockPos(x, y + 1, z)))
-                && (world.isDay())) {
-            if (electronicPower < 1996) {
-                if ((world.getLevelData().isRaining() || world.getLevelData().isThundering())) {
-                    this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.2));
-                } else {
-                    this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.3));
-                }
-            } else if (electronicPower >= 1996 && electronicPower < 2000) {
-                this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.05));
-            }
-        } else {
-            if (electronicPower > 4) {
-                this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.2));
-            } else if (electronicPower > 0 && electronicPower <= 4) {
-                this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.05));
-            }
-        }
+        if (world != null) { // Avoid NullPointerExceptions
 
-        // We pass energy to blocks around (this part is common to all generators)
-        for (Direction dir : Direction.values()) {
-            TileEntity tileEntity = world.getBlockEntity(blockPos.relative(dir));
-            Block offsetBlock = world.getBlockState(blockPos.relative(dir)).getBlock();
-            assert tileEntity != null;
-            double offsetElectronicPower = tileEntity.getTileData().getDouble("ElectronicPower");
-            double offsetMaxStorage = tileEntity.getTileData().getDouble("MaxStorage");
-            if ((BlockTags.getAllTags().getTagOrEmpty(new ResourceLocation(("forge:electrona/machines_all").toLowerCase(Locale.ENGLISH)))
-                    .contains(offsetBlock)) || ((BlockTags.getAllTags().getTagOrEmpty(new ResourceLocation(("forge:electrona/cable")
-                    .toLowerCase(Locale.ENGLISH))).contains(offsetBlock)))) {
-                if ((offsetElectronicPower < (offsetMaxStorage - 6)) && (electronicPower > 6)) {
-                    this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.3));
-                    tileEntity.getTileData().putDouble("ElectronicPower", (offsetElectronicPower + 0.3));
-                } else if ((((offsetElectronicPower >= (offsetMaxStorage - 6)) && (offsetElectronicPower < offsetMaxStorage))
-                        || ((offsetElectronicPower < (offsetMaxStorage - 6)) && ((electronicPower <= 6) && (electronicPower > 0))))) {
+            // We generate the energy (this part is uncommon for all generators)
+            if ((world.canSeeSkyFromBelowWater(new BlockPos(x, y + 1, z)))
+                    && (world.isDay())) {
+                if (electronicPower < 1996) {
+                    if ((world.getLevelData().isRaining() || world.getLevelData().isThundering())) {
+                        this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.2));
+                    } else {
+                        this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.3));
+                    }
+                } else if (electronicPower >= 1996 && electronicPower < 2000) {
+                    this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.05));
+                }
+            } else {
+                if (electronicPower > 4) {
+                    this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.2));
+                } else if (electronicPower > 0 && electronicPower <= 4) {
                     this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.05));
-                    tileEntity.getTileData().putDouble("ElectronicPower", (offsetElectronicPower + 0.05));
+                }
+            }
+
+            // We pass energy to blocks around (this part is common to all generators)
+            for (Direction dir : Direction.values()) {
+                TileEntity tileEntity = world.getBlockEntity(blockPos.relative(dir));
+                if (tileEntity != null) { // Avoid NullPointerExceptions
+                    Block offsetBlock = world.getBlockState(blockPos.relative(dir)).getBlock();
+                    double offsetElectronicPower = tileEntity.getTileData().getDouble("ElectronicPower");
+                    double offsetMaxStorage = tileEntity.getTileData().getDouble("MaxStorage");
+                    if ((BlockTags.getAllTags().getTagOrEmpty(new ResourceLocation(("forge:electrona/machines_all").toLowerCase(Locale.ENGLISH)))
+                            .contains(offsetBlock)) || ((BlockTags.getAllTags().getTagOrEmpty(new ResourceLocation(("forge:electrona/cable")
+                            .toLowerCase(Locale.ENGLISH))).contains(offsetBlock)))) {
+                        if ((offsetElectronicPower < (offsetMaxStorage - 6)) && (electronicPower > 6)) {
+                            this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.3));
+                            tileEntity.getTileData().putDouble("ElectronicPower", (offsetElectronicPower + 0.3));
+                        } else if ((((offsetElectronicPower >= (offsetMaxStorage - 6)) && (offsetElectronicPower < offsetMaxStorage))
+                                || ((offsetElectronicPower < (offsetMaxStorage - 6)) && ((electronicPower <= 6) && (electronicPower > 0))))) {
+                            this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.05));
+                            tileEntity.getTileData().putDouble("ElectronicPower", (offsetElectronicPower + 0.05));
+                        }
+                    }
                 }
             }
         }
