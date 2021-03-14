@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "electrona:block/water_turbine"
+    },
+    "facing=east": {
+      "model": "electrona:block/water_turbine",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "electrona:block/water_turbine",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "electrona:block/water_turbine",
+      "y": 270
+    }
+  }
+}

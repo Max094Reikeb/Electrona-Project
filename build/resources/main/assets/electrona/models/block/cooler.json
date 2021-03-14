@@ -1,0 +1,9 @@
+{
+  "parent": "electrona:custom/cooler",
+  "textures": {
+    "all": "electrona:blocks/cooler",
+    "particle": "electrona:blocks/cooler",
+    "0": "electrona:blocks/cooler",
+    "missing": "electrona:blocks/cooler"
+  }
+}

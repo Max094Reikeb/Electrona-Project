@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "electrona:blocks/el_converter_top_bottom",
+    "up": "electrona:blocks/el_converter_top_bottom",
+    "north": "electrona:blocks/el_converter_sides",
+    "east": "electrona:blocks/el_converter_sides",
+    "south": "electrona:blocks/el_converter_sides",
+    "west": "electrona:blocks/el_converter_sides",
+    "particle": "electrona:blocks/el_converter_top_bottom"
+  }
+}

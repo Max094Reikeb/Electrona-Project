@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "electrona:blocks/mining_machine_top_bottom",
+    "up": "electrona:blocks/mining_machine_top_bottom",
+    "north": "electrona:blocks/mining_machine_side",
+    "east": "electrona:blocks/mining_machine_side",
+    "south": "electrona:blocks/mining_machine_side",
+    "west": "electrona:blocks/mining_machine_side",
+    "particle": "electrona:blocks/mining_machine_top_bottom"
+  }
+}

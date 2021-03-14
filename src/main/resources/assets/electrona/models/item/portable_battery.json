@@ -1,0 +1,6 @@
+{
+  "parent": "electrona:custom/portable_battery",
+  "textures": {
+    "0": "electrona:blocks/portable_battery"
+  }
+}

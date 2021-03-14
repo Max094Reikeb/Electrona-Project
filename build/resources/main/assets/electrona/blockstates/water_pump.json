@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "electrona:block/water_pump"
+    },
+    "lit=true": {
+      "model": "electrona:block/water_pump_activated"
+    }
+  }
+}

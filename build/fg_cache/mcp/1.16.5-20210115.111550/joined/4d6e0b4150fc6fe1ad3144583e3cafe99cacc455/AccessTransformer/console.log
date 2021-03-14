@@ -1,0 +1,5 @@
+JVM Args:    
+Run Args:    "--inJar", "/Users/maxencebekier/Documents/Programmation/Minecraft/electrona/build/fg_cache/mcp/1.16.5-20210115.111550/joined/4d6e0b4150fc6fe1ad3144583e3cafe99cacc455/mcinject/output.jar", "--outJar", "/Users/maxencebekier/Documents/Programmation/Minecraft/electrona/build/fg_cache/mcp/1.16.5-20210115.111550/joined/4d6e0b4150fc6fe1ad3144583e3cafe99cacc455/AccessTransformer/output.jar", "--atFile", "/Users/maxencebekier/Documents/Programmation/Minecraft/electrona/src/main/resources/META-INF/accesstransformer.cfg", "--atFile", "/var/folders/38/8c7s2vys0yj2_wj0k90yq7040000gn/T/FG_ats_7449554778963709067.cfg"
+Classpath:   /Users/maxencebekier/.gradle/caches/forge_gradle/maven_downloader/net/minecraftforge/accesstransformers/1.0.5/accesstransformers-1.0.5-fatjar.jar
+Working Dir: /Users/maxencebekier/Documents/Programmation/Minecraft/electrona/build/fg_cache/mcp/1.16.5-20210115.111550/joined/4d6e0b4150fc6fe1ad3144583e3cafe99cacc455/AccessTransformer
+Main Class:  net.minecraftforge.accesstransformer.TransformerProcessor

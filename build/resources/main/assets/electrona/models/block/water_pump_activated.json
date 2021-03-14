@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "electrona:blocks/water_pump_bottom_on",
+    "up": "electrona:blocks/water_pump_top",
+    "north": "electrona:blocks/water_pump_sides_on",
+    "east": "electrona:blocks/water_pump_sides_on",
+    "south": "electrona:blocks/water_pump_sides_on",
+    "west": "electrona:blocks/water_pump_sides_on",
+    "particle": "electrona:blocks/water_pump_bottom_on"
+  }
+}

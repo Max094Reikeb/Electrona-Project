@@ -1,0 +1,8 @@
+JVM Args:    
+Run Args:    "--in-jar", "/Users/maxencebekier/Documents/Programmation/Minecraft/electrona/build/fg_cache/mcp/1.16.5-20210115.111550/joined/4d6e0b4150fc6fe1ad3144583e3cafe99cacc455/merge/output.jar", "--out-jar", "/Users/maxencebekier/Documents/Programmation/Minecraft/electrona/build/fg_cache/mcp/1.16.5-20210115.111550/joined/4d6e0b4150fc6fe1ad3144583e3cafe99cacc455/rename/output.jar", "--srg-in", "config/joined.tsrg"
+Classpath:   /Users/maxencebekier/.gradle/caches/forge_gradle/maven_downloader/net/md-5/SpecialSource/1.8.3/SpecialSource-1.8.3-shaded.jar
+Working Dir: /Users/maxencebekier/Documents/Programmation/Minecraft/electrona/build/fg_cache/mcp/1.16.5-20210115.111550/joined/4d6e0b4150fc6fe1ad3144583e3cafe99cacc455/rename
+Main Class:  net.md_5.specialsource.SpecialSource
+Loading mappings
+0 packages, 5447 classes, 21481 fields, 38359 methods
+Remapping final jar

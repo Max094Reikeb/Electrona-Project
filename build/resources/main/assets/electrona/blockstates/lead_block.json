@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "electrona:block/lead_block"
+    }
+  }
+}

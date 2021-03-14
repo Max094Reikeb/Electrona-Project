@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "electrona:blocks/biomass_generator_bottom",
+    "up": "electrona:blocks/biomass_generator_top",
+    "north": "electrona:blocks/biomass_generator_sides",
+    "east": "electrona:blocks/biomass_generator_sides",
+    "south": "electrona:blocks/biomass_generator_sides",
+    "west": "electrona:blocks/biomass_generator_sides",
+    "particle": "electrona:blocks/biomass_generator_bottom"
+  }
+}

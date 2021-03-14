@@ -1,0 +1,9 @@
+{
+  "parent": "electrona:custom/purificator",
+  "textures": {
+    "all": "electrona:blocks/purificator",
+    "particle": "electrona:blocks/purificator",
+    "0": "electrona:blocks/purificator",
+    "missing": "electrona:blocks/"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "block/template_wall_side",
+  "textures": {
+    "wall": "electrona:blocks/blue_cable",
+    "particle": "electrona:blocks/blue_cable"
+  }
+}

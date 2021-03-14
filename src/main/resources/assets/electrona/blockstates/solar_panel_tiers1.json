@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "electrona:block/solar_panel_tiers1"
+    },
+    "facing=east": {
+      "model": "electrona:block/solar_panel_tiers1",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "electrona:block/solar_panel_tiers1",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "electrona:block/solar_panel_tiers1",
+      "y": 270
+    }
+  }
+}

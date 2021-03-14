@@ -1,0 +1,12 @@
+{
+  "parent": "electrona:custom/conveyor_on",
+  "textures": {
+    "all": "electrona:blocks/conveyor_top_on",
+    "particle": "electrona:blocks/conveyor_top_on",
+    "0": "electrona:blocks/casing_bottom",
+    "1": "electrona:blocks/casing_sides",
+    "3": "electrona:blocks/casing_walls",
+    "4": "electrona:blocks/conveyor_top_on",
+    "missing": "electrona:blocks/conveyor_top_on"
+  }
+}

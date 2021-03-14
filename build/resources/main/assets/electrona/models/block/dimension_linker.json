@@ -1,0 +1,8 @@
+{
+  "parent": "electrona:custom/dimension_linker",
+  "textures": {
+    "all": "electrona:blocks/dimension_linker",
+    "particle": "electrona:blocks/dimension_linker_particle",
+    "0": "electrona:blocks/dimension_linker"
+  }
+}

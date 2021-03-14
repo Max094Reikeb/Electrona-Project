@@ -1,0 +1,15 @@
+{
+  "parent": "electrona:custom/nuclear_generator_controller_on",
+  "textures": {
+    "all": "electrona:blocks/ncg_tex8",
+    "particle": "electrona:blocks/ncg_tex8",
+    "1": "electrona:blocks/ncg_tex1",
+    "2": "electrona:blocks/ncg_tex2",
+    "3": "electrona:blocks/ncg_tex3",
+    "4": "electrona:blocks/ncg_tex4",
+    "5": "electrona:blocks/ncg_tex5",
+    "6": "electrona:blocks/ncg_tex6",
+    "7": "electrona:blocks/ncg_tex7",
+    "8": "electrona:blocks/ncg_tex8"
+  }
+}

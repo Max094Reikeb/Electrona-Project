@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "electrona:blocks/machine_casing",
+    "up": "electrona:blocks/machine_casing",
+    "north": "electrona:blocks/machine_casing",
+    "east": "electrona:blocks/machine_casing",
+    "south": "electrona:blocks/machine_casing",
+    "west": "electrona:blocks/machine_casing",
+    "particle": "electrona:blocks/machine_casing"
+  }
+}

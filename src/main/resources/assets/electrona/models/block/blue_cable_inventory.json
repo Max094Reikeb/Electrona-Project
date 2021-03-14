@@ -1,0 +1,7 @@
+{
+  "parent": "block/wall_inventory",
+  "textures": {
+    "wall": "electrona:blocks/blue_cable",
+    "particle": "electrona:blocks/blue_cable"
+  }
+}

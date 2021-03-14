@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "electrona:blocks/daylight_detector_side",
+    "up": "electrona:blocks/daylight_detector_top",
+    "north": "electrona:blocks/daylight_detector_side",
+    "east": "electrona:blocks/daylight_detector_side",
+    "south": "electrona:blocks/daylight_detector_side",
+    "west": "electrona:blocks/daylight_detector_side",
+    "particle": "electrona:blocks/daylight_detector_side"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "electrona:block/purificator"
+    },
+    "facing=east": {
+      "model": "electrona:block/purificator",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "electrona:block/purificator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "electrona:block/purificator",
+      "y": 270
+    }
+  }
+}
