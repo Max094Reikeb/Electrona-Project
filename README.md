@@ -1,5 +1,5 @@
 ## About
-Electrona is my first Tech mod. I wanted to go further than MCreator allow us to go, and started to code. (especially for generators and machines that have multiple textures)
+Electrona is my first Tech mod. I really wanted to code by myself for the first time.
 I also wanted to make cleaner GUIs that are more representative of what Electrona is about.
 
 ## Special Thanks
