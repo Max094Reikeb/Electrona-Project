@@ -1,17 +1,14 @@
 package net.reikeb.electrona.tileentities;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -22,11 +19,11 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.reikeb.electrona.setup.RegistryHandler;
+import net.reikeb.electrona.utils.ElectronaUtils;
 import static net.reikeb.electrona.setup.RegistryHandler.TILE_BATTERY;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Locale;
 
 public class TileBattery extends TileEntity implements ITickableTileEntity {
 
@@ -103,26 +100,7 @@ public class TileBattery extends TileEntity implements ITickableTileEntity {
             }
 
             // We pass energy to blocks around (this part is common to all generators)
-            for (Direction dir : Direction.values()) {
-                TileEntity tileEntity = world.getBlockEntity(blockPos.relative(dir));
-                if (tileEntity != null) { // Avoid NullPointerExceptions
-                    Block offsetBlock = world.getBlockState(blockPos.relative(dir)).getBlock();
-                    double offsetElectronicPower = tileEntity.getTileData().getDouble("ElectronicPower");
-                    double offsetMaxStorage = tileEntity.getTileData().getDouble("MaxStorage");
-                    if ((BlockTags.getAllTags().getTagOrEmpty(new ResourceLocation(("forge:electrona/machines").toLowerCase(Locale.ENGLISH)))
-                            .contains(offsetBlock)) || ((BlockTags.getAllTags().getTagOrEmpty(new ResourceLocation(("forge:electrona/blue_cable")
-                            .toLowerCase(Locale.ENGLISH))).contains(offsetBlock)))) {
-                        if ((offsetElectronicPower < (offsetMaxStorage - 0.3)) && (electronicPower > 0.3)) {
-                            this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.3));
-                            tileEntity.getTileData().putDouble("ElectronicPower", (offsetElectronicPower + 0.3));
-                        } else if ((((offsetElectronicPower >= (offsetMaxStorage - 0.3)) && (offsetElectronicPower < offsetMaxStorage))
-                                || ((offsetElectronicPower < (offsetMaxStorage - 0.3)) && ((electronicPower <= 0.3) && (electronicPower > 0))))) {
-                            this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.05));
-                            tileEntity.getTileData().putDouble("ElectronicPower", (offsetElectronicPower + 0.05));
-                        }
-                    }
-                }
-            }
+            ElectronaUtils.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 6, electronicPower, false);
         }
     }
 

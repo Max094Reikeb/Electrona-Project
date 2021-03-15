@@ -1,20 +1,16 @@
 package net.reikeb.electrona.tileentities;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.Locale;
-
+import net.reikeb.electrona.utils.ElectronaUtils;
 import static net.reikeb.electrona.setup.RegistryHandler.TILE_SOLAR_PANEL_T_1;
 
 public class TileSolarPanelT1 extends TileEntity implements ITickableTileEntity {
@@ -61,26 +57,7 @@ public class TileSolarPanelT1 extends TileEntity implements ITickableTileEntity 
             }
 
             // We pass energy to blocks around (this part is common to all generators)
-            for (Direction dir : Direction.values()) {
-                TileEntity tileEntity = world.getBlockEntity(blockPos.relative(dir));
-                if (tileEntity != null) { // Avoid NullPointerExceptions
-                    Block offsetBlock = world.getBlockState(blockPos.relative(dir)).getBlock();
-                    double offsetElectronicPower = tileEntity.getTileData().getDouble("ElectronicPower");
-                    double offsetMaxStorage = tileEntity.getTileData().getDouble("MaxStorage");
-                    if ((BlockTags.getAllTags().getTagOrEmpty(new ResourceLocation(("forge:electrona/machines_all").toLowerCase(Locale.ENGLISH)))
-                            .contains(offsetBlock)) || ((BlockTags.getAllTags().getTagOrEmpty(new ResourceLocation(("forge:electrona/cable")
-                            .toLowerCase(Locale.ENGLISH))).contains(offsetBlock)))) {
-                        if ((offsetElectronicPower < (offsetMaxStorage - 0.2)) && (electronicPower > 0.2)) {
-                            this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.2));
-                            tileEntity.getTileData().putDouble("ElectronicPower", (offsetElectronicPower + 0.2));
-                        } else if ((((offsetElectronicPower >= (offsetMaxStorage - 0.2)) && (offsetElectronicPower < offsetMaxStorage))
-                                || ((offsetElectronicPower < (offsetMaxStorage - 0.2)) && ((electronicPower <= 0.2) && (electronicPower > 0))))) {
-                            this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.05));
-                            tileEntity.getTileData().putDouble("ElectronicPower", (offsetElectronicPower + 0.05));
-                        }
-                    }
-                }
-            }
+            ElectronaUtils.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 4, electronicPower, true);
         }
     }
 
