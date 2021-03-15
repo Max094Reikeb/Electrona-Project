@@ -67,7 +67,7 @@ public class MechanicWings extends Item {
 
     @Override
     public boolean canElytraFly(ItemStack stack, net.minecraft.entity.LivingEntity entity) {
-        return stack.getDamageValue() < stack.getMaxDamage() - 1;
+        return ((stack.getDamageValue() < stack.getMaxDamage() - 1) && (entity.isSprinting()));
     }
 
     @Override

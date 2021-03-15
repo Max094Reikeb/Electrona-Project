@@ -34,7 +34,7 @@ public class KeyPressedEvent {
             if ((itemstack.getItem() == RegistryHandler.MECHANIC_WINGS.get().asItem()) && (itemstack.getOrCreateTag().getDouble("ElectronicPower") >= 0.3)) {
                 entity.setDeltaMovement((entity.getDeltaMovement().x()), 0.3, (entity.getDeltaMovement().z()));
                 for (int i = 0; i < 9; i++) {
-                    world.addParticle(ParticleTypes.CLOUD, x, (y + 1), z, 0, -0.1, 0);
+                    world.addParticle(ParticleTypes.CLOUD, x, y, z, 0, -0.1, 0);
                 }
                 itemstack.getOrCreateTag().putDouble("ElectronicPower", (itemstack.getOrCreateTag().getDouble("ElectronicPower")) - 0.3);
             }
