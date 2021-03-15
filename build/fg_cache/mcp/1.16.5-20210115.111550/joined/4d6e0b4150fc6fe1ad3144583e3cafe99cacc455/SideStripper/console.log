@@ -1,8 +1,0 @@
-JVM Args:    
-Run Args:    "--strip", "--input", "/Users/maxencebekier/Documents/Programmation/Minecraft/electrona/build/fg_cache/mcp/1.16.5-20210115.111550/joined/4d6e0b4150fc6fe1ad3144583e3cafe99cacc455/AccessTransformer/output.jar", "--output", "/Users/maxencebekier/Documents/Programmation/Minecraft/electrona/build/fg_cache/mcp/1.16.5-20210115.111550/joined/4d6e0b4150fc6fe1ad3144583e3cafe99cacc455/SideStripper/output.jar", "--data", "/Users/maxencebekier/Documents/Programmation/Minecraft/electrona/build/fg_cache/mcp/1.16.5-20210115.111550/joined/4d6e0b4150fc6fe1ad3144583e3cafe99cacc455/SideStripper/string_data.sas"
-Classpath:   /Users/maxencebekier/.gradle/caches/forge_gradle/maven_downloader/net/minecraftforge/mergetool/1.0.7/mergetool-1.0.7-fatjar.jar
-Working Dir: /Users/maxencebekier/Documents/Programmation/Minecraft/electrona/build/fg_cache/mcp/1.16.5-20210115.111550/joined/4d6e0b4150fc6fe1ad3144583e3cafe99cacc455/SideStripper
-Main Class:  net.minecraftforge.mergetool.ConsoleMerger
-Input:  /Users/maxencebekier/Documents/Programmation/Minecraft/electrona/build/fg_cache/mcp/1.16.5-20210115.111550/joined/4d6e0b4150fc6fe1ad3144583e3cafe99cacc455/AccessTransformer/output.jar
-Output: /Users/maxencebekier/Documents/Programmation/Minecraft/electrona/build/fg_cache/mcp/1.16.5-20210115.111550/joined/4d6e0b4150fc6fe1ad3144583e3cafe99cacc455/SideStripper/output.jar
-Data:   /Users/maxencebekier/Documents/Programmation/Minecraft/electrona/build/fg_cache/mcp/1.16.5-20210115.111550/joined/4d6e0b4150fc6fe1ad3144583e3cafe99cacc455/SideStripper/string_data.sas

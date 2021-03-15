@@ -1,5 +1,0 @@
-Args: "--inJar", "/Users/maxencebekier/Documents/Programmation/Minecraft/electrona/build/fg_cache/net/minecraftforge/forge/1.16.5-36.0.58/forge-1.16.5-36.0.58-injected.jar", "--outJar", "/Users/maxencebekier/Documents/Programmation/Minecraft/electrona/build/fg_cache/net/minecraftforge/forge/1.16.5-36.0.58_mapped_official_1.16.5/forge-1.16.5-36.0.58_mapped_official_1.16.5.jar", "--logFile", "accesstransform.log", "--atFile", "/Users/maxencebekier/Documents/Programmation/Minecraft/electrona/src/main/resources/META-INF/accesstransformer.cfg", "--atFile", "/Users/maxencebekier/Documents/Programmation/Minecraft/electrona/build/_atJar_5/parent_at.cfg"
-Classpath: /Users/maxencebekier/.gradle/caches/forge_gradle/maven_downloader/net/minecraftforge/accesstransformers/1.0.5/accesstransformers-1.0.5-fatjar.jar
-WorkDir: /Users/maxencebekier/Documents/Programmation/Minecraft/electrona/build/_atJar_5
-Main: net.minecraftforge.accesstransformer.TransformerProcessor
-====================================
