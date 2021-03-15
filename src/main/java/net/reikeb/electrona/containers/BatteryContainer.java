@@ -16,8 +16,6 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 
 import net.reikeb.electrona.setup.RegistryHandler;
 
-import javax.annotation.Nonnull;
-
 public class BatteryContainer extends Container {
 
     private TileEntity tileEntity;
@@ -35,8 +33,24 @@ public class BatteryContainer extends Container {
 
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                addSlot(new SlotItemHandler(h, 0, 45, 33));
-                addSlot(new SlotItemHandler(h, 1, 117, 33));
+                addSlot(new SlotItemHandler(h, 0, 45, 33) {
+                    public boolean mayPlace(ItemStack itemStack) {
+                        return true;
+                    }
+
+                    public int getMaxStackSize() {
+                        return 1;
+                    }
+                });
+                addSlot(new SlotItemHandler(h, 1, 117, 33) {
+                    public boolean mayPlace(ItemStack itemStack) {
+                        return true;
+                    }
+
+                    public int getMaxStackSize() {
+                        return 1;
+                    }
+                });
             });
         }
         layoutPlayerInventorySlots();
@@ -44,13 +58,6 @@ public class BatteryContainer extends Container {
 
     public TileEntity getTileEntity() {
         return this.tileEntity;
-    }
-
-    public int getInventorySize() {
-        if (playerInv == null) {
-            return 0;
-        }
-        return playerInv.getContainerSize();
     }
 
     private void layoutPlayerInventorySlots() {
@@ -68,32 +75,40 @@ public class BatteryContainer extends Container {
         return true;
     }
 
-    @Nonnull
     @Override
-    public ItemStack quickMoveStack(@Nonnull PlayerEntity player, int index) {
-        Slot slot = slots.get(index);
-        if (slot == null || !slot.hasItem()) return ItemStack.EMPTY;
-
-        ItemStack existing = slot.getItem().copy();
-        ItemStack result = existing.copy();
-
-        if (index == 0) {
-            // Insert into player inventory
-            if (!moveItemStackTo(existing, 1, 37, true)) return ItemStack.EMPTY;
-        } else {
-            // Insert into battery inventory
-            if (!moveItemStackTo(existing, 0, 1, false)) return ItemStack.EMPTY;
+    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(index);
+        if (slot != null && slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
+            itemstack = itemstack1.copy();
+            if (index < 2) {
+                if (!this.moveItemStackTo(itemstack1, 2, this.slots.size(), true)) {
+                    return ItemStack.EMPTY;
+                }
+                slot.onQuickCraft(itemstack1, itemstack);
+            } else if (!this.moveItemStackTo(itemstack1, 0, 2, false)) {
+                if (index < 2 + 27) {
+                    if (!this.moveItemStackTo(itemstack1, 2 + 27, this.slots.size(), true)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else {
+                    if (!this.moveItemStackTo(itemstack1, 2, 2 + 27, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+                return ItemStack.EMPTY;
+            }
+            if (itemstack1.getCount() == 0) {
+                slot.set(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
+            }
+            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+            slot.onTake(playerIn, itemstack1);
         }
-
-        if (existing.isEmpty()) {
-            slot.set(ItemStack.EMPTY);
-        } else {
-            slot.setChanged();
-        }
-
-        if (existing.getCount() == result.getCount()) return ItemStack.EMPTY;
-
-        slot.onTake(player, existing);
-        return result;
+        return itemstack;
     }
 }

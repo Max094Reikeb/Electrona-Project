@@ -20,10 +20,11 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import net.reikeb.electrona.setup.RegistryHandler;
 import net.reikeb.electrona.utils.ElectronaUtils;
-import static net.reikeb.electrona.setup.RegistryHandler.TILE_BATTERY;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import static net.reikeb.electrona.setup.RegistryHandler.*;
 
 public class TileBattery extends TileEntity implements ITickableTileEntity {
 
@@ -60,44 +61,12 @@ public class TileBattery extends TileEntity implements ITickableTileEntity {
 
         if (world != null) { // Avoid NullPointerExceptions
 
-            // Slot handling
-            ItemStack stackInSlot0 = itemHandler.getStackInSlot(0);
-            ItemStack stackInSlot1 = itemHandler.getStackInSlot(1);
+            // Input slots - Handling slots
+            ElectronaUtils.transferEnergyWithItemSlot(this.getTileData(), PORTABLE_BATTERY.get().asItem(), itemHandler, true, electronicPower, 1, 4);
+            ElectronaUtils.transferEnergyWithItemSlot(this.getTileData(), MECHANIC_WINGS.get().asItem(), itemHandler, true, electronicPower, 1, 8);
 
-            double epStack0 = stackInSlot0.getOrCreateTag().getDouble("ElectronicPower");
-            double epStack1 = stackInSlot1.getOrCreateTag().getDouble("ElectronicPower");
-
-            if (stackInSlot1.getItem() == RegistryHandler.PORTABLE_BATTERY.get().asItem()) {
-                if (electronicPower > 0.2) {
-                    stackInSlot1.getOrCreateTag().putDouble("ElectronicPower", (epStack1 + 0.2));
-                    this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.2));
-                } else if ((electronicPower <= 0.2) && (electronicPower > 0)) {
-                    stackInSlot1.getOrCreateTag().putDouble("ElectronicPower", (epStack1 + 0.05));
-                    this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.05));
-                }
-            }
-            if (stackInSlot1.getItem() == RegistryHandler.MECHANIC_WINGS.get().asItem()) {
-                if (electronicPower > 0.4) {
-                    stackInSlot1.getOrCreateTag().putDouble("ElectronicPower", (epStack1 + 0.4));
-                    this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.4));
-                } else if ((electronicPower <= 0.4) && (electronicPower > 0)) {
-                    stackInSlot1.getOrCreateTag().putDouble("ElectronicPower", (epStack1 + 0.05));
-                    this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.05));
-                }
-            }
-            if (stackInSlot0.getItem() == RegistryHandler.PORTABLE_BATTERY.get().asItem()) {
-                if (epStack0 > 0.2) {
-                    stackInSlot0.getOrCreateTag().putDouble("ElectronicPower", (epStack0 - 0.2));
-                    if (!world.isClientSide()) {
-                        this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.2));
-                    }
-                } else if ((epStack0 <= 0.2) && (epStack0 > 0)) {
-                    stackInSlot0.getOrCreateTag().putDouble("ElectronicPower", (epStack0 - 0.05));
-                    if (!world.isClientSide()) {
-                        this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.05));
-                    }
-                }
-            }
+            // Output slot - Handling slots
+            ElectronaUtils.transferEnergyWithItemSlot(this.getTileData(), PORTABLE_BATTERY.get().asItem(), itemHandler, false, electronicPower, 0, 4);
 
             // We pass energy to blocks around (this part is common to all generators)
             ElectronaUtils.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 6, electronicPower, false);
