@@ -42,8 +42,7 @@ public class TileSolarPanelT2 extends TileEntity implements ITickableTileEntity 
         if (world != null) { // Avoid NullPointerExceptions
 
             // We generate the energy (this part is uncommon for all generators)
-            if ((world.canSeeSkyFromBelowWater(new BlockPos(x, y + 1, z)))
-                    && (world.isDay())) {
+            if ((world.canSeeSkyFromBelowWater(blockPos)) && (world.isDay())) {
                 if (electronicPower < 1996) {
                     if ((world.getLevelData().isRaining() || world.getLevelData().isThundering())) {
                         this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.2));
@@ -71,11 +70,11 @@ public class TileSolarPanelT2 extends TileEntity implements ITickableTileEntity 
                     if ((BlockTags.getAllTags().getTagOrEmpty(new ResourceLocation(("forge:electrona/machines_all").toLowerCase(Locale.ENGLISH)))
                             .contains(offsetBlock)) || ((BlockTags.getAllTags().getTagOrEmpty(new ResourceLocation(("forge:electrona/cable")
                             .toLowerCase(Locale.ENGLISH))).contains(offsetBlock)))) {
-                        if ((offsetElectronicPower < (offsetMaxStorage - 6)) && (electronicPower > 6)) {
+                        if ((offsetElectronicPower < (offsetMaxStorage - 0.3)) && (electronicPower > 0.3)) {
                             this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.3));
                             tileEntity.getTileData().putDouble("ElectronicPower", (offsetElectronicPower + 0.3));
-                        } else if ((((offsetElectronicPower >= (offsetMaxStorage - 6)) && (offsetElectronicPower < offsetMaxStorage))
-                                || ((offsetElectronicPower < (offsetMaxStorage - 6)) && ((electronicPower <= 6) && (electronicPower > 0))))) {
+                        } else if ((((offsetElectronicPower >= (offsetMaxStorage - 0.3)) && (offsetElectronicPower < offsetMaxStorage))
+                                || ((offsetElectronicPower < (offsetMaxStorage - 0.3)) && ((electronicPower <= 0.3) && (electronicPower > 0))))) {
                             this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.05));
                             tileEntity.getTileData().putDouble("ElectronicPower", (offsetElectronicPower + 0.05));
                         }
