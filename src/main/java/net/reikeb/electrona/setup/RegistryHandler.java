@@ -24,6 +24,7 @@ import net.reikeb.electrona.items.TinIngot;
 import net.reikeb.electrona.tileentities.TileBattery;
 import net.reikeb.electrona.tileentities.TileSolarPanelT1;
 import net.reikeb.electrona.tileentities.TileSolarPanelT2;
+import net.reikeb.electrona.tileentities.TileWaterTurbine;
 
 public class RegistryHandler {
     // create DeferredRegister object
@@ -52,6 +53,12 @@ public class RegistryHandler {
             new BlockItem(SOLAR_PANEL_T_2.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));
     public static final RegistryObject<TileEntityType<TileSolarPanelT2>> TILE_SOLAR_PANEL_T_2 = TILES.register("solar_panel_tiers2", () ->
             TileEntityType.Builder.of(TileSolarPanelT2::new, SOLAR_PANEL_T_2.get()).build(null));
+
+    public static final RegistryObject<WaterTurbine> WATER_TURBINE = BLOCKS.register("water_turbine", WaterTurbine::new);
+    public static final RegistryObject<Item> WATER_TURBINE_ITEM = ITEMS.register("water_turbine", () ->
+            new BlockItem(WATER_TURBINE.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));
+    public static final RegistryObject<TileEntityType<TileWaterTurbine>> TILE_WATER_TURBINE = TILES.register("water_turbine", () ->
+            TileEntityType.Builder.of(TileWaterTurbine::new, WATER_TURBINE.get()).build(null));
 
     // Register machines
     public static final RegistryObject<Battery> BATTERY = BLOCKS.register("battery", Battery::new);
