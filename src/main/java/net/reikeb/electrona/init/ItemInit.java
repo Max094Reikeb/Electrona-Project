@@ -17,8 +17,14 @@ public class ItemInit {
             Electrona.MODID);
 
     // Normal items
+
+    // Mechanic items
     public static final RegistryObject<Item> PORTABLE_BATTERY = ITEMS.register("portable_battery", PortableBattery::new);
+    public static final RegistryObject<Item> MOTOR = ITEMS.register("motor", Motor::new);
+
+    // Ore items
     public static final RegistryObject<Item> TIN_INGOT = ITEMS.register("tin_ingot", TinIngot::new);
+    public static final RegistryObject<Item> STEEL_INGOT = ITEMS.register("steel_ingot", SteelIngot::new);
 
     // Tools and armors
     public static final RegistryObject<Item> HAMMER = ITEMS.register("hammer", Hammer::new);
