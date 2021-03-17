@@ -17,11 +17,10 @@ public class ContainerInit {
     public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS,
             Electrona.MODID);
 
-    public static final RegistryObject<ContainerType<BatteryContainer>> BATTERY_CONTAINER = CONTAINERS.register("battery", () -> IForgeContainerType.create((windowId, inv, data) -> {
-        BlockPos pos = data.readBlockPos();
-        World world = inv.player.level;
-        return new BatteryContainer(windowId, world, pos, inv, inv.player);
-    }));
+    public static final RegistryObject<ContainerType<BatteryContainer>> BATTERY_CONTAINER = CONTAINERS.register("battery",
+            () -> IForgeContainerType.create((windowId, inv, data) -> {
+                return new BatteryContainer(windowId, inv);
+            }));
 
     public static final RegistryObject<ContainerType<CompressorContainer>> COMPRESSOR_CONTAINER = CONTAINERS.register("compressor",
             () -> IForgeContainerType.create((windowId, inv, data) -> {

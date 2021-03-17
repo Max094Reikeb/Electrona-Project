@@ -13,8 +13,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import net.minecraftforge.items.ItemStackHandler;
-
 public class ElectronaUtils {
 
     /**
@@ -67,9 +65,9 @@ public class ElectronaUtils {
      * @param slot              The Slot the Item must be in
      * @param transferPerSecond The amount of energy transfered each second
      */
-    public static void transferEnergyWithItemSlot(CompoundNBT generatorNBT, Item requiredItem, ItemStackHandler stackHandler, Boolean fromGenerator, double generatorPower, int slot, double transferPerSecond) {
+    public static void transferEnergyWithItemSlot(CompoundNBT generatorNBT, Item requiredItem, ItemHandler inventory, Boolean fromGenerator, double generatorPower, int slot, double transferPerSecond) {
         double transferPerTick = transferPerSecond * 0.05;
-        ItemStack stackInSlot = stackHandler.getStackInSlot(slot);
+        ItemStack stackInSlot = inventory.getStackInSlot(slot);
 
         if (fromGenerator && (generatorPower <= 0)) return; // we have no more power
         if (requiredItem != stackInSlot.getItem()) return; // the itemstack is not the one required

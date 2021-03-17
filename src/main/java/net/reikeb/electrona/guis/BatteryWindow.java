@@ -6,18 +6,18 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.BatteryContainer;
+import net.reikeb.electrona.tileentities.TileBattery;
 
 public class BatteryWindow extends ContainerScreen<BatteryContainer> {
 
-    private ResourceLocation GUI = new ResourceLocation(Electrona.MODID, "textures/guis/battery_gui.png");
-    private TileEntity tileEntity;
+    private static final ResourceLocation BATTERY_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/battery_gui.png");
+    public TileBattery tileEntity;
 
     public BatteryWindow(BatteryContainer container, PlayerInventory inv, ITextComponent title) {
         super(container, inv, title);
@@ -45,7 +45,7 @@ public class BatteryWindow extends ContainerScreen<BatteryContainer> {
     @Override
     protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bind(GUI);
+        this.minecraft.getTextureManager().bind(BATTERY_GUI);
         int relX = (this.width - this.imageWidth) / 2;
         int relY = (this.height - this.imageHeight) / 2;
         this.blit(matrixStack, relX, relY, 0, 0, this.imageWidth, this.imageHeight);

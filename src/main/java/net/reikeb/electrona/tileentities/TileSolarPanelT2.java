@@ -10,13 +10,16 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import net.minecraftforge.common.util.Constants;
+
 import net.reikeb.electrona.utils.ElectronaUtils;
+
 import static net.reikeb.electrona.init.TileEntityInit.*;
 
 public class TileSolarPanelT2 extends TileEntity implements ITickableTileEntity {
 
-    private int ElectronicPower;
-    private int MaxStorage;
+    private double electronicPower;
+    private int maxStorage;
 
     public TileSolarPanelT2() {
         super(TILE_SOLAR_PANEL_T_2.get());
@@ -26,13 +29,10 @@ public class TileSolarPanelT2 extends TileEntity implements ITickableTileEntity 
     public void tick() {
         // We get the variables
         World world = this.level;
-        int x = this.worldPosition.getX();
-        int y = this.worldPosition.getY();
-        int z = this.worldPosition.getZ();
         BlockPos blockPos = this.getBlockPos();
 
         // We get the NBT Tags
-        this.getTileData().putDouble("MaxStorage", 2000);
+        this.getTileData().putInt("MaxStorage", 2000);
         double electronicPower = this.getTileData().getDouble("ElectronicPower");
 
         if (world != null) { // Avoid NullPointerExceptions
@@ -58,21 +58,25 @@ public class TileSolarPanelT2 extends TileEntity implements ITickableTileEntity 
 
             // We pass energy to blocks around (this part is common to all generators)
             ElectronaUtils.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 6, electronicPower, true);
+
+            this.setChanged();
+            world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(),
+                    Constants.BlockFlags.BLOCK_UPDATE);
         }
     }
 
     @Override
     public void load(BlockState blockState, CompoundNBT compound) {
         super.load(blockState, compound);
-        ElectronicPower = compound.getInt("ElectronicPower");
-        MaxStorage = compound.getInt("MaxStorage");
+        this.electronicPower = compound.getDouble("ElectronicPower");
+        this.maxStorage = compound.getInt("MaxStorage");
     }
 
     @Override
     public CompoundNBT save(CompoundNBT compound) {
         compound = super.save(compound);
-        compound.putInt("ElectronicPower", ElectronicPower);
-        compound.putInt("MaxStorage", MaxStorage);
+        compound.putDouble("ElectronicPower", this.electronicPower);
+        compound.putInt("MaxStorage", this.maxStorage);
         return compound;
     }
 

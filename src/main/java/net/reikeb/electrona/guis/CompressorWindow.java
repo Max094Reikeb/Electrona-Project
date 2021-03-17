@@ -6,19 +6,18 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.CompressorContainer;
+import net.reikeb.electrona.tileentities.TileCompressor;
 
 public class CompressorWindow extends ContainerScreen<CompressorContainer> {
 
     private static final ResourceLocation COMPRESSOR_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/compressor_gui.png");
-    public TileEntity tileEntity;
+    public TileCompressor tileEntity;
 
     public CompressorWindow(CompressorContainer container, PlayerInventory inv, ITextComponent title) {
         super(container, inv, title);
@@ -49,7 +48,7 @@ public class CompressorWindow extends ContainerScreen<CompressorContainer> {
     protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
         this.font.draw(matrixStack, new TranslationTextComponent("electrona.compressor_gui.name"), 50, 6, -16777216);
         this.font.draw(matrixStack, new TranslationTextComponent("electrona.generic_gui.power"), 126, 6, -16777216);
-        this.font.draw(matrixStack, "" +  (int) this.tileEntity.getTileData().getDouble("ElectronicPower") + " ELs", 126, 16, -3407821);
+        this.font.draw(matrixStack, "" + ((int) this.tileEntity.getTileData().getDouble("ElectronicPower")) + " ELs", 126, 16, -3407821);
     }
 
     @Override

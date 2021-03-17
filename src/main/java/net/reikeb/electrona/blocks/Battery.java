@@ -7,11 +7,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
@@ -32,10 +28,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-import net.reikeb.electrona.containers.BatteryContainer;
 import net.reikeb.electrona.tileentities.TileBattery;
 
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
@@ -107,27 +101,13 @@ public class Battery extends Block {
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
-        if (!world.isClientSide) {
-            TileEntity tileEntity = world.getBlockEntity(pos);
-            if (tileEntity instanceof TileBattery) {
-                INamedContainerProvider containerProvider = new INamedContainerProvider() {
-                    @Override
-                    public ITextComponent getDisplayName() {
-                        return new TranslationTextComponent("electrona.battery_gui.name");
-                    }
-
-                    @Nullable
-                    @Override
-                    public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-                        return new BatteryContainer(i, world, pos, playerInventory, playerEntity);
-                    }
-                };
-                NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getBlockPos());
-            } else {
-                throw new IllegalStateException("Battery container provider is missing!");
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if (worldIn != null && !worldIn.isClientSide) {
+            TileEntity tile = worldIn.getBlockEntity(pos);
+            if (tile instanceof TileBattery) {
+                NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tile, pos);
+                return ActionResultType.SUCCESS;
             }
         }
         return ActionResultType.SUCCESS;

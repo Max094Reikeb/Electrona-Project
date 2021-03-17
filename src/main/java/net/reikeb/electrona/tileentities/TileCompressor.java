@@ -218,7 +218,7 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
 
     @Override
     public CompoundNBT save(CompoundNBT compound) {
-        super.save(compound);
+        compound = super.save(compound);
         compound.putDouble("ElectronicPower", this.electronicPower);
         compound.putInt("MaxStorage", this.maxStorage);
         compound.putInt("CompressingTime", this.compressingTime);
