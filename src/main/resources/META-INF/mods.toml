@@ -1,4 +1,4 @@
-modLoader="javafml" #mandatory
+modLoader="javafml"
 loaderVersion="[36,)"
 license="All rights reserved"
 
@@ -13,14 +13,14 @@ description='''
 Electrona is a tech mod
 '''
 
-[[dependencies.examplemod]] #optional
+[[dependencies.electrona]] #optional
     modId="forge"
     mandatory=true
     versionRange="[36,)"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.examplemod]]
+[[dependencies.electrona]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.16.5,1.17)"

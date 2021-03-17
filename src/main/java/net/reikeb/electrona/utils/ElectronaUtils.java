@@ -46,7 +46,7 @@ public class ElectronaUtils {
             if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
 
             double machinePower = tileEntity.getTileData().getDouble("ElectronicPower");
-            double machineMax = tileEntity.getTileData().getDouble("MaxStorage");
+            int machineMax = tileEntity.getTileData().getInt("MaxStorage");
             double headroom = machineMax - machinePower;
             double actualTransfer = Math.min(Math.min(transferPerTick, generatorPower), headroom);
 
