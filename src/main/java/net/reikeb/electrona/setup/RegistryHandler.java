@@ -16,15 +16,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.blocks.*;
-import net.reikeb.electrona.containers.BatteryContainer;
-import net.reikeb.electrona.items.Hammer;
-import net.reikeb.electrona.items.MechanicWings;
-import net.reikeb.electrona.items.PortableBattery;
-import net.reikeb.electrona.items.TinIngot;
-import net.reikeb.electrona.tileentities.TileBattery;
-import net.reikeb.electrona.tileentities.TileSolarPanelT1;
-import net.reikeb.electrona.tileentities.TileSolarPanelT2;
-import net.reikeb.electrona.tileentities.TileWaterTurbine;
+import net.reikeb.electrona.containers.*;
+import net.reikeb.electrona.items.*;
+import net.reikeb.electrona.tileentities.*;
 
 public class RegistryHandler {
     // create DeferredRegister object
@@ -72,6 +66,15 @@ public class RegistryHandler {
         return new BatteryContainer(windowId, world, pos, inv, inv.player);
     }));
 
+    public static final RegistryObject<Compressor> COMPRESSOR = BLOCKS.register("compressor", Compressor::new);
+    public static final RegistryObject<Item> COMPRESSOR_ITEM = ITEMS.register("compressor", () ->
+            new BlockItem(COMPRESSOR.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));
+    public static final RegistryObject<TileEntityType<TileCompressor>> TILE_COMPRESSOR = TILES.register("compressor", () ->
+            TileEntityType.Builder.of(TileCompressor::new, COMPRESSOR.get()).build(null));
+    public static final RegistryObject<ContainerType<CompressorContainer>> COMPRESSOR_CONTAINER = CONTAINERS.register("compressor",
+            () -> IForgeContainerType.create((windowId, inv, data) -> {
+                return new CompressorContainer(windowId, inv);
+            }));
 
     // Register blocks
     public static final RegistryObject<TinBlock> TIN_BLOCK = BLOCKS.register("tin_block", TinBlock::new);

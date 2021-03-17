@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "electrona:battery"
+    "electrona:battery",
+    "electrona:compressor"
   ]
 }
