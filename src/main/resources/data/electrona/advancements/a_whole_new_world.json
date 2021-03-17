@@ -1,0 +1,26 @@
+{
+  "display": {
+    "background": "electrona:textures/blocks/tin_block.png",
+    "icon": {
+      "item": "electrona:tin_ore"
+    },
+    "title": {
+      "translate": "advancements.a_whole_new_world.title"
+    },
+    "description": {
+      "translate": "advancements.a_whole_new_world.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "a_whole_new_world": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "experience": 1
+  }
+}
