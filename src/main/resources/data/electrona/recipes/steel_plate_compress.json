@@ -1,0 +1,14 @@
+{
+  "type": "electrona:compressing",
+  "input": {
+    "item": "electrona:steel_ingot"
+  },
+  "input2": {
+    "item": "electrona:steel_ingot"
+  },
+  "output": {
+    "item": "electrona:steel_plate"
+  },
+  "time": 30,
+  "energy": 480
+}

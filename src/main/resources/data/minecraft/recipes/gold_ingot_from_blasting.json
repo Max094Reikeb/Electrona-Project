@@ -1,0 +1,12 @@
+{
+  "group": "electrona",
+  "type": "minecraft:blasting",
+  "experience": 1,
+  "cookingtime": 100,
+  "ingredient": {
+    "tag": "minecraft:gold_ores"
+  },
+  "result": {
+    "item": "minecraft:air"
+  }
+}

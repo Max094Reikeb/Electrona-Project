@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "electrona:solar_panel_tiers1",
+    "electrona:solar_panel_tiers2",
+    "electrona:water_turbine"
+  ]
+}
