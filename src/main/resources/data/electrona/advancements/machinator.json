@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "electrona:compressor"
+    },
+    "title": {
+      "translate": "advancements.machinator.title"
+    },
+    "description": {
+      "translate": "advancements.machinator.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "machinator": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "experience": 1
+  },
+  "parent": "electrona:a_whole_new_world"
+}
