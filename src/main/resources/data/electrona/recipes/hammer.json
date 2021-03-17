@@ -1,0 +1,14 @@
+{
+  "type": "electrona:compressing",
+  "input": {
+    "item": "electrona:tin_ingot"
+  },
+  "input2": {
+    "item": "minecraft:stick"
+  },
+  "output": {
+    "item": "electrona:hammer"
+  },
+  "time": 20,
+  "energy": 4
+}
