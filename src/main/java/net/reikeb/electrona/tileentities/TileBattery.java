@@ -2,6 +2,7 @@ package net.reikeb.electrona.tileentities;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -18,13 +19,14 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.setup.RegistryHandler;
 import net.reikeb.electrona.utils.ElectronaUtils;
 
+import static net.reikeb.electrona.init.TileEntityInit.*;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import static net.reikeb.electrona.setup.RegistryHandler.*;
 
 public class TileBattery extends TileEntity implements ITickableTileEntity {
 
@@ -62,11 +64,11 @@ public class TileBattery extends TileEntity implements ITickableTileEntity {
         if (world != null) { // Avoid NullPointerExceptions
 
             // Input slots - Handling slots
-            ElectronaUtils.transferEnergyWithItemSlot(this.getTileData(), PORTABLE_BATTERY.get().asItem(), itemHandler, true, electronicPower, 1, 4);
-            ElectronaUtils.transferEnergyWithItemSlot(this.getTileData(), MECHANIC_WINGS.get().asItem(), itemHandler, true, electronicPower, 1, 8);
+            ElectronaUtils.transferEnergyWithItemSlot(this.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), itemHandler, true, electronicPower, 1, 4);
+            ElectronaUtils.transferEnergyWithItemSlot(this.getTileData(), ItemInit.MECHANIC_WINGS.get().asItem(), itemHandler, true, electronicPower, 1, 8);
 
             // Output slot - Handling slots
-            ElectronaUtils.transferEnergyWithItemSlot(this.getTileData(), PORTABLE_BATTERY.get().asItem(), itemHandler, false, electronicPower, 0, 4);
+            ElectronaUtils.transferEnergyWithItemSlot(this.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), itemHandler, false, electronicPower, 0, 4);
 
             // We pass energy to blocks around (this part is common to all generators)
             ElectronaUtils.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 6, electronicPower, false);

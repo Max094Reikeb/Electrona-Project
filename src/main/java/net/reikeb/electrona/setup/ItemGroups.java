@@ -8,6 +8,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.Mod;
 
 import net.reikeb.electrona.Electrona;
+import net.reikeb.electrona.init.BlockInit;
+import net.reikeb.electrona.init.ItemInit;
 
 @Mod.EventBusSubscriber(modid = Electrona.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ItemGroups {
@@ -16,7 +18,7 @@ public class ItemGroups {
         @OnlyIn(Dist.CLIENT)
         @Override
         public ItemStack makeIcon() {
-            return new ItemStack(RegistryHandler.SOLAR_PANEL_T_1.get());
+            return new ItemStack(BlockInit.SOLAR_PANEL_T_1.get());
         }
 
         @OnlyIn(Dist.CLIENT)
@@ -29,7 +31,7 @@ public class ItemGroups {
         @OnlyIn(Dist.CLIENT)
         @Override
         public ItemStack makeIcon() {
-            return new ItemStack(RegistryHandler.TIN_ORE.get());
+            return new ItemStack(BlockInit.TIN_ORE.get());
         }
 
         @OnlyIn(Dist.CLIENT)
@@ -42,7 +44,7 @@ public class ItemGroups {
         @OnlyIn(Dist.CLIENT)
         @Override
         public ItemStack makeIcon() {
-            return new ItemStack(RegistryHandler.PORTABLE_BATTERY.get());
+            return new ItemStack(ItemInit.PORTABLE_BATTERY.get());
         }
 
         @OnlyIn(Dist.CLIENT)
@@ -55,7 +57,7 @@ public class ItemGroups {
         @OnlyIn(Dist.CLIENT)
         @Override
         public ItemStack makeIcon() {
-            return new ItemStack(RegistryHandler.HAMMER.get());
+            return new ItemStack(ItemInit.HAMMER.get());
         }
 
         @OnlyIn(Dist.CLIENT)

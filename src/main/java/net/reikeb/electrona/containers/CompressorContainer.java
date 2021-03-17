@@ -6,16 +6,12 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
 
-import net.reikeb.electrona.setup.RegistryHandler;
 import net.reikeb.electrona.tileentities.TileCompressor;
+import static net.reikeb.electrona.init.ContainerInit.*;
 
 public class CompressorContainer extends Container {
 
@@ -26,7 +22,7 @@ public class CompressorContainer extends Container {
     }
 
     public CompressorContainer(int windowID, PlayerInventory playerInv, TileCompressor tile) {
-        super(RegistryHandler.COMPRESSOR_CONTAINER.get(), windowID);
+        super(COMPRESSOR_CONTAINER.get(), windowID);
         this.tileEntity = tile;
 
         if (tileEntity != null) {

@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import net.reikeb.electrona.utils.ElectronaUtils;
-import static net.reikeb.electrona.setup.RegistryHandler.TILE_SOLAR_PANEL_T_2;
+import static net.reikeb.electrona.init.TileEntityInit.*;
 
 public class TileSolarPanelT2 extends TileEntity implements ITickableTileEntity {
 

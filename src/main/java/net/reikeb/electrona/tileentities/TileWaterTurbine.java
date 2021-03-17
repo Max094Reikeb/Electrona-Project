@@ -15,7 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import net.reikeb.electrona.utils.ElectronaUtils;
-import static net.reikeb.electrona.setup.RegistryHandler.TILE_WATER_TURBINE;
+import static net.reikeb.electrona.init.TileEntityInit.*;
 
 public class TileWaterTurbine extends TileEntity implements ITickableTileEntity {
 

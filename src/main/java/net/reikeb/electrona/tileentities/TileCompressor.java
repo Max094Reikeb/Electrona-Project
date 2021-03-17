@@ -36,7 +36,7 @@ import net.reikeb.electrona.containers.CompressorContainer;
 import net.reikeb.electrona.recipes.CompressorRecipe;
 import net.reikeb.electrona.utils.ItemHandler;
 
-import static net.reikeb.electrona.setup.RegistryHandler.*;
+import static net.reikeb.electrona.init.TileEntityInit.*;
 
 import javax.annotation.Nullable;
 

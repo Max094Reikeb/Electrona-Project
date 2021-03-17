@@ -16,8 +16,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import net.reikeb.electrona.Electrona;
+import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.recipes.contexts.CompressingContext;
-import net.reikeb.electrona.setup.RegistryHandler;
 import net.reikeb.electrona.utils.SingletonInventory;
 
 import javax.annotation.Nullable;
@@ -111,7 +111,7 @@ public class CompressorRecipe implements IRecipe<IInventory> {
 
     @Override
     public ItemStack getToastSymbol() {
-        return new ItemStack(RegistryHandler.COMPRESSOR.get());
+        return new ItemStack(BlockInit.COMPRESSOR.get());
     }
 
     private static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<CompressorRecipe> {

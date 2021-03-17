@@ -14,7 +14,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-import net.reikeb.electrona.setup.RegistryHandler;
+import static net.reikeb.electrona.init.ContainerInit.*;
 
 public class BatteryContainer extends Container {
 
@@ -24,7 +24,7 @@ public class BatteryContainer extends Container {
     private PlayerInventory playerInv;
 
     public BatteryContainer(int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
-        super(RegistryHandler.BATTERY_CONTAINER.get(), windowId);
+        super(BATTERY_CONTAINER.get(), windowId);
         tileEntity = world.getBlockEntity(pos);
         this.playerEntity = player;
         this.playerInventory = new InvWrapper(playerInventory);

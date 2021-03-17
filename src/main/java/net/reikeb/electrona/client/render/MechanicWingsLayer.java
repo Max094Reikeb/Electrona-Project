@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 
-import net.reikeb.electrona.setup.RegistryHandler;
+import net.reikeb.electrona.init.ItemInit;
 
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -44,7 +44,7 @@ public class MechanicWingsLayer<T extends LivingEntity, M extends EntityModel<T>
 
     @Override
     public boolean shouldRender(ItemStack stack, T entity) {
-        return stack.getItem() == RegistryHandler.MECHANIC_WINGS.get().getItem();
+        return stack.getItem() == ItemInit.MECHANIC_WINGS.get().getItem();
     }
 
     @Override

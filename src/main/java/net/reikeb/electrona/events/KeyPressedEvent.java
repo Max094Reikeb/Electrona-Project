@@ -15,7 +15,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.setup.RegistryHandler;
+import net.reikeb.electrona.init.ItemInit;
 
 @Mod.EventBusSubscriber(modid = Electrona.MODID)
 public class KeyPressedEvent {
@@ -31,7 +31,7 @@ public class KeyPressedEvent {
             double z = entity.getZ();
             Direction direction = entity.getDirection();
             ItemStack itemstack = ((LivingEntity) entity).getItemBySlot(EquipmentSlotType.byTypeAndIndex(EquipmentSlotType.Group.ARMOR, 2));
-            if ((itemstack.getItem() == RegistryHandler.MECHANIC_WINGS.get().asItem()) && (itemstack.getOrCreateTag().getDouble("ElectronicPower") >= 0.3)) {
+            if ((itemstack.getItem() == ItemInit.MECHANIC_WINGS.get().asItem()) && (itemstack.getOrCreateTag().getDouble("ElectronicPower") >= 0.3)) {
                 entity.setDeltaMovement((entity.getDeltaMovement().x()), 0.3, (entity.getDeltaMovement().z()));
                 for (int i = 0; i < 9; i++) {
                     world.addParticle(ParticleTypes.CLOUD, x, y, z, 0, -0.1, 0);
