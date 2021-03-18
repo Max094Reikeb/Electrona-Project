@@ -15,7 +15,9 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.LockableLootTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IntArray;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -44,16 +46,16 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class TileCompressor extends LockableLootTileEntity implements ITickableTileEntity, INamedContainerProvider {
+public class TileCompressor extends TileEntity implements ITickableTileEntity {
 
     private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(3, ItemStack.EMPTY);
     private final ItemHandler inventory;
 
-    private double electronicPower;
+    public double electronicPower;
     private int maxStorage;
 
-    private int compressingTime;
-    private int currentCompressingTime;
+    public int compressingTime;
+    public int currentCompressingTime;
     private int energyRequired;
 
     private boolean canCompress;
@@ -62,36 +64,6 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
         super(TILE_COMPRESSOR.get());
 
         this.inventory = new ItemHandler(3);
-    }
-
-    @Override
-    public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("electrona.compressor_gui.name");
-    }
-
-    @Override
-    protected ITextComponent getDefaultName() {
-        return new StringTextComponent("compressor");
-    }
-
-    @Override
-    protected NonNullList<ItemStack> getItems() {
-        return this.stacks;
-    }
-
-    @Override
-    protected void setItems(NonNullList<ItemStack> stacks) {
-        this.stacks = stacks;
-    }
-
-    @Override
-    public Container createMenu(final int windowID, final PlayerInventory playerInv, final PlayerEntity playerIn) {
-        return new CompressorContainer(windowID, playerInv, this);
-    }
-
-    @Override
-    public Container createMenu(int id, PlayerInventory player) {
-        return new CompressorContainer(id, player);
     }
 
     @Override
@@ -203,28 +175,21 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
     @Override
     public void load(BlockState blockState, CompoundNBT compound) {
         super.load(blockState, compound);
-
         this.electronicPower = compound.getDouble("ElectronicPower");
         this.maxStorage = compound.getInt("MaxStorage");
         this.compressingTime = compound.getInt("CompressingTime");
         this.currentCompressingTime = compound.getInt("CurrentCompressingTime");
         this.energyRequired = compound.getInt("EnergyRequired");
-
-        if (!this.tryLoadLootTable(compound)) {
-            this.stacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        }
-        ItemStackHelper.loadAllItems(compound, this.stacks);
     }
 
     @Override
     public CompoundNBT save(CompoundNBT compound) {
-        compound = super.save(compound);
+        super.save(compound);
         compound.putDouble("ElectronicPower", this.electronicPower);
         compound.putInt("MaxStorage", this.maxStorage);
         compound.putInt("CompressingTime", this.compressingTime);
         compound.putInt("CurrentCompressingTime", this.currentCompressingTime);
         compound.putInt("EnergyRequired", this.energyRequired);
-        ItemStackHelper.saveAllItems(compound, this.stacks);
         return compound;
     }
 
@@ -253,10 +218,5 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         this.load(this.getBlockState(), pkt.getTag());
-    }
-
-    @Override
-    public int getContainerSize() {
-        return 3;
     }
 }

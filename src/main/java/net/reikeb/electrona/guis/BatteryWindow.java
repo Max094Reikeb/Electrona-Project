@@ -12,16 +12,15 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.BatteryContainer;
-import net.reikeb.electrona.tileentities.TileBattery;
 
 public class BatteryWindow extends ContainerScreen<BatteryContainer> {
 
     private static final ResourceLocation BATTERY_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/battery_gui.png");
-    public TileBattery tileEntity;
+    public int electronicPower;
 
     public BatteryWindow(BatteryContainer container, PlayerInventory inv, ITextComponent title) {
         super(container, inv, title);
-        this.tileEntity = container.getTileEntity();
+        this.electronicPower = container.getElectronicPower();
         this.imageWidth = 176;
         this.imageHeight = 166;
     }
@@ -37,7 +36,7 @@ public class BatteryWindow extends ContainerScreen<BatteryContainer> {
     protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
         this.font.draw(matrixStack, new TranslationTextComponent("electrona.battery_gui.name"), 72, 7, -16777216);
         this.font.draw(matrixStack, new TranslationTextComponent("electrona.generic_gui.storage"), 5, 7, -16777216);
-        this.font.draw(matrixStack, "" + ((int) this.tileEntity.getTileData().getDouble("ElectronicPower")) + "ELs", 5, 17, -3407821);
+        this.font.draw(matrixStack, "" + this.electronicPower + "ELs", 5, 17, -3407821);
         this.font.draw(matrixStack, new TranslationTextComponent("electrona.generic_gui.output"), 110, 51, -16777216);
         this.font.draw(matrixStack, new TranslationTextComponent("electrona.generic_gui.input"), 40, 51, -16777216);
     }
