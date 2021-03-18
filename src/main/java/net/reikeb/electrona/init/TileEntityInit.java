@@ -28,4 +28,7 @@ public class TileEntityInit {
 
     public static final RegistryObject<TileEntityType<TileCompressor>> TILE_COMPRESSOR = TILE_ENTITIES.register("compressor", () ->
             TileEntityType.Builder.of(TileCompressor::new, BlockInit.COMPRESSOR.get()).build(null));
+
+    public static final RegistryObject<TileEntityType<TileHeatGenerator>> TILE_HEAT_GENERATOR = TILE_ENTITIES.register("heat_generator", () ->
+            TileEntityType.Builder.of(TileHeatGenerator::new, BlockInit.HEAT_GENERATOR.get()).build(null));
 }
