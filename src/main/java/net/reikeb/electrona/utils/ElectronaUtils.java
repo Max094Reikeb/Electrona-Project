@@ -57,12 +57,12 @@ public class ElectronaUtils {
      * This methods setup an energy transfer between Machines that have slots
      * and items that can hold energy
      *
-     * @param generatorNBT      The NBT Tag of the Generator/Machines
-     * @param requiredItem      The item that is check to be in the slot
-     * @param stackHandler      The slothandler given by the TE of the Generator/Machines
-     * @param fromGenerator     Defines if the energy is given by the Generator/Machines or the Item
-     * @param generatorPower    THe power of the Generator/Machines
-     * @param slot              The Slot the Item must be in
+     * @param generatorNBT      The NBT Tag of the Generator/Machine
+     * @param requiredItem      The item that is checked to be in the slot
+     * @param inventory         The inventory of the Generator/Machine's TE
+     * @param fromGenerator     Defines if the energy is given by the Generator/Machine or the item
+     * @param generatorPower    The power of the Generator/Machine
+     * @param slot              The slot the item must be in
      * @param transferPerSecond The amount of energy transfered each second
      */
     public static void transferEnergyWithItemSlot(CompoundNBT generatorNBT, Item requiredItem, ItemHandler inventory, Boolean fromGenerator, double generatorPower, int slot, double transferPerSecond) {

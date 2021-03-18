@@ -58,10 +58,6 @@ public class TileSolarPanelT2 extends TileEntity implements ITickableTileEntity 
 
             // We pass energy to blocks around (this part is common to all generators)
             ElectronaUtils.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 6, electronicPower, true);
-
-            this.setChanged();
-            world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(),
-                    Constants.BlockFlags.BLOCK_UPDATE);
         }
     }
 
