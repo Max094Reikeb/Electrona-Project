@@ -20,6 +20,7 @@ public class ItemInit {
 
     // Mechanic items
     public static final RegistryObject<Item> PORTABLE_BATTERY = ITEMS.register("portable_battery", PortableBattery::new);
+    public static final RegistryObject<Item> ELECTRONIC_CIRCUIT = ITEMS.register("electronic_circuit", ElectronicCircuit::new);
     public static final RegistryObject<Item> MOTOR = ITEMS.register("motor", Motor::new);
     public static final RegistryObject<Item> PADDLE = ITEMS.register("paddle", Paddle::new);
 
