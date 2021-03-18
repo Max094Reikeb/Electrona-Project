@@ -51,6 +51,8 @@ public class ItemInit {
             new BlockItem(BlockInit.TIN_ORE.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
     public static final RegistryObject<Item> TiN_BLOCK_ITEM = ITEMS.register("tin_block", () ->
             new BlockItem(BlockInit.TIN_BLOCK.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
+    public static final RegistryObject<Item> STEEL_BLOCK_ITEM = ITEMS.register("steel_block", () ->
+            new BlockItem(BlockInit.STEEL_BLOCK.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
     public static final RegistryObject<Item> MACHINE_CASING_ITEM = ITEMS.register("machine_casing", () ->
             new BlockItem(BlockInit.MACHINE_CASING.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
     public static final RegistryObject<Item> COMPRESSED_OBSIDIAN_ITEM = ITEMS.register("compressed_obsidian", () ->
