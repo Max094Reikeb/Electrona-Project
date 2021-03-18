@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 
 import net.minecraftforge.common.util.Constants;
 
+import net.reikeb.electrona.blocks.WaterTurbine;
 import net.reikeb.electrona.utils.ElectronaUtils;
 
 import static net.reikeb.electrona.init.TileEntityInit.*;
@@ -30,7 +31,8 @@ public class TileWaterTurbine extends TileEntity implements ITickableTileEntity 
     }
 
     public Direction getDirection() {
-        try {
+        return this.getBlockState().getValue(WaterTurbine.FACING);
+        /*try {
             DirectionProperty property = (DirectionProperty) this.getBlockState().getBlock().getStateDefinition().getProperty("facing");
             if (property != null)
                 return this.getBlockState().getValue(property);
@@ -39,7 +41,7 @@ public class TileWaterTurbine extends TileEntity implements ITickableTileEntity 
                     Direction.AxisDirection.POSITIVE);
         } catch (Exception e) {
             return Direction.NORTH;
-        }
+        }*/
     }
 
     @Override
@@ -71,7 +73,7 @@ public class TileWaterTurbine extends TileEntity implements ITickableTileEntity 
                 if ((((world.getBlockState(new BlockPos(x - 1, y, z))).getMaterial() == Material.WATER)
                         && ((world.getBlockState(new BlockPos(x + 1, y, z))).getMaterial() == Material.WATER))) {
                     if ((electronicPower < 996)) {
-                        this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.15));
+                        this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.2));
                     } else if (((electronicPower >= 996) && (electronicPower < 1000))) {
                         this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.05));
                     }
@@ -95,7 +97,7 @@ public class TileWaterTurbine extends TileEntity implements ITickableTileEntity 
                 if ((((world.getBlockState(new BlockPos(x, y, z + 1))).getMaterial() == Material.WATER)
                         && ((world.getBlockState(new BlockPos(x, y, z - 1))).getMaterial() == Material.WATER))) {
                     if ((electronicPower < 996)) {
-                        this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.15));
+                        this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.2));
                     } else if (((electronicPower >= 996) && (electronicPower < 1000))) {
                         this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.05));
                     }

@@ -10,8 +10,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import net.minecraftforge.common.util.Constants;
-
 import net.reikeb.electrona.utils.ElectronaUtils;
 
 import static net.reikeb.electrona.init.TileEntityInit.*;
