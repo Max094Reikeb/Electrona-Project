@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "electrona:steel_sword"
+    },
+    "title": {
+      "translate": "advancements.steel_getting_an_upgrade.title"
+    },
+    "description": {
+      "translate": "advancements.steel_getting_an_upgrade.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "steel_getting_an_upgrade": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "experience": 1
+  },
+  "parent": "electrona:a_whole_new_world"
+}
