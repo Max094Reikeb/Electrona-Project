@@ -27,27 +27,25 @@ public class PlayerDiesEvent {
             boolean flag = player.getMainHandItem().getItem() == ItemInit.ADVANCED_TOTEM_OF_UNDYING.get();
             boolean flag1 = player.getOffhandItem().getItem() == ItemInit.ADVANCED_TOTEM_OF_UNDYING.get();
             if (flag) {
-                if (world.isClientSide()) {
-                    Minecraft.getInstance().gameRenderer.displayItemActivation(player.getMainHandItem());
-                }
+                if (world.isClientSide()) Minecraft.getInstance().gameRenderer.displayItemActivation(player.getMainHandItem());
                 player.setItemInHand((Hand.MAIN_HAND), new ItemStack(Blocks.AIR, 1));
                 player.inventory.setChanged();
             } else if (flag1) {
-                if (world.isClientSide()) {
-                    Minecraft.getInstance().gameRenderer.displayItemActivation(player.getOffhandItem());
-                }
+                if (world.isClientSide()) Minecraft.getInstance().gameRenderer.displayItemActivation(player.getOffhandItem());
                 player.setItemInHand((Hand.OFF_HAND), new ItemStack(Blocks.AIR, 1));
                 player.inventory.setChanged();
             }
-            player.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 1200, 1));
-            player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 600, 1));
-            player.addEffect(new EffectInstance(Effects.REGENERATION, 1200, 2));
-            player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 600, 1));
-            player.addEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 1200, 0));
-            player.addEffect(new EffectInstance(Effects.NIGHT_VISION, 2400, 0));
-            player.addEffect(new EffectInstance(Effects.ABSORPTION, 200, 0));
-            player.setHealth(player.getHealth() + 5);
-            event.setCanceled(true);
+            if (flag || flag1) {
+                player.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 1200, 1));
+                player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 600, 1));
+                player.addEffect(new EffectInstance(Effects.REGENERATION, 1200, 2));
+                player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 600, 1));
+                player.addEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 1200, 0));
+                player.addEffect(new EffectInstance(Effects.NIGHT_VISION, 2400, 0));
+                player.addEffect(new EffectInstance(Effects.ABSORPTION, 200, 0));
+                player.setHealth(player.getHealth() + 5);
+                event.setCanceled(true);
+            }
         }
     }
 }
