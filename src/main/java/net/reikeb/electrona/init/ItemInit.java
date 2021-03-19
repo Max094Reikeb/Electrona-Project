@@ -65,6 +65,8 @@ public class ItemInit {
             new BlockItem(BlockInit.STEEL_BLOCK.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
     public static final RegistryObject<Item> MACHINE_CASING_ITEM = ITEMS.register("machine_casing", () ->
             new BlockItem(BlockInit.MACHINE_CASING.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
+    public static final RegistryObject<Item> CABLE_ITEM = ITEMS.register("cable", () ->
+            new BlockItem(BlockInit.CABLE.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
     public static final RegistryObject<Item> COMPRESSED_OBSIDIAN_ITEM = ITEMS.register("compressed_obsidian", () ->
             new BlockItem(BlockInit.COMPRESSED_OBSIDIAN.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
 }

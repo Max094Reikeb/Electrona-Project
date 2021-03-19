@@ -80,6 +80,7 @@
   "block.electrona.xp_generator.desc1": "§dGenerates 1 XP level in 2 minutes",
   "block.electrona.xp_generator.desc2": "§dUses §c16ELs §dper second",
   "block.electrona.xp_generator.desc3": "§dCan store : §c10 000ELs",
+  "death.attack.electric_shock": "%1$s was electrocuted to death",
   "death.attack.radioactivity": "%1$s was too radioactive to be alive",
   "effect.radioactivity": "Radioactivity",
   "electrona.battery_gui.name": "Battery",

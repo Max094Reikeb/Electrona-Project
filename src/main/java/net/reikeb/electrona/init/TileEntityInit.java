@@ -31,4 +31,7 @@ public class TileEntityInit {
 
     public static final RegistryObject<TileEntityType<TileHeatGenerator>> TILE_HEAT_GENERATOR = TILE_ENTITIES.register("heat_generator", () ->
             TileEntityType.Builder.of(TileHeatGenerator::new, BlockInit.HEAT_GENERATOR.get()).build(null));
+
+    public static final RegistryObject<TileEntityType<TileCable>> TILE_CABLE = TILE_ENTITIES.register("cable", () ->
+            TileEntityType.Builder.of(TileCable::new, BlockInit.CABLE.get()).build(null));
 }
