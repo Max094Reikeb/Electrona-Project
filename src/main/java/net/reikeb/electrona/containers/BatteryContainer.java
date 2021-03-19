@@ -3,12 +3,17 @@ package net.reikeb.electrona.containers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.IContainerProvider;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.IntArray;
+import net.minecraft.util.math.BlockPos;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import net.reikeb.electrona.containers.sync.BatterySyncData;
 import net.reikeb.electrona.tileentities.TileBattery;
 
 import static net.reikeb.electrona.init.ContainerInit.*;
@@ -16,14 +21,27 @@ import static net.reikeb.electrona.init.ContainerInit.*;
 public class BatteryContainer extends Container {
 
     public TileBattery tileEntity;
+    private final IIntArray compressorData;
 
-    public BatteryContainer(int windowID, PlayerInventory playerInv) {
-        this(windowID, playerInv, new TileBattery());
+    /**
+     * Container factory for opening the container clientside
+     **/
+    public static BatteryContainer getClientContainer(int id, PlayerInventory playerInventory) {
+        // Init client inventory with dummy slots
+        return new BatteryContainer(id, playerInventory, BlockPos.ZERO, new IntArray(2));
     }
 
-    public BatteryContainer(int windowID, PlayerInventory playerInv, TileBattery tile) {
+    /**
+     * Get the server container provider for NetworkHooks.openGui
+     */
+    public static IContainerProvider getServerContainerProvider(TileBattery te, BlockPos activationPos) {
+        return (id, playerInventory, serverPlayer) -> new BatteryContainer(id, playerInventory, activationPos, new BatterySyncData(te));
+    }
+
+    public BatteryContainer(int windowID, PlayerInventory playerInv, BlockPos pos, IIntArray compressorData) {
         super(BATTERY_CONTAINER.get(), windowID);
-        this.tileEntity = tile;
+        this.tileEntity = (TileBattery) playerInv.player.level.getBlockEntity(pos);
+        this.compressorData = compressorData;
 
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
@@ -48,10 +66,15 @@ public class BatteryContainer extends Container {
             });
         }
         layoutPlayerInventorySlots(playerInv);
+        this.addDataSlots(compressorData);
     }
 
     public TileBattery getTileEntity() {
         return this.tileEntity;
+    }
+
+    public int getElectronicPower() {
+        return this.compressorData.get(0);
     }
 
     private void layoutPlayerInventorySlots(PlayerInventory playerInv) {

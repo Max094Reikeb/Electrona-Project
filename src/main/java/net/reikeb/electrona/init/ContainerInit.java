@@ -17,11 +17,12 @@ public class ContainerInit {
 
     public static final RegistryObject<ContainerType<BatteryContainer>> BATTERY_CONTAINER = CONTAINERS.register("battery",
             () -> IForgeContainerType.create((windowId, inv, data) -> {
-                return new BatteryContainer(windowId, inv);
+                
+                return BatteryContainer.getClientContainer(windowId, inv);
             }));
 
     public static final RegistryObject<ContainerType<CompressorContainer>> COMPRESSOR_CONTAINER = CONTAINERS.register("compressor",
             () -> IForgeContainerType.create((windowId, inv, data) -> {
-                return new CompressorContainer(windowId, inv);
+                return CompressorContainer.getClientContainer(windowId, inv);
             }));
 }

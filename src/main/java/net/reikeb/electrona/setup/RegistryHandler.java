@@ -1,7 +1,6 @@
 package net.reikeb.electrona.setup;
 
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ContainerInit;
 import net.reikeb.electrona.init.ItemInit;
