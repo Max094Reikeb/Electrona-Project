@@ -46,7 +46,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class TileCompressor extends TileEntity implements ITickableTileEntity {
+public class TileCompressor extends LockableLootTileEntity implements ITickableTileEntity {
 
     private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(3, ItemStack.EMPTY);
     private final ItemHandler inventory;
@@ -64,6 +64,36 @@ public class TileCompressor extends TileEntity implements ITickableTileEntity {
         super(TILE_COMPRESSOR.get());
 
         this.inventory = new ItemHandler(3);
+    }
+
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TranslationTextComponent("electrona.compressor_gui.name");
+    }
+
+    @Override
+    protected ITextComponent getDefaultName() {
+        return new StringTextComponent("compressor");
+    }
+
+    @Override
+    protected NonNullList<ItemStack> getItems() {
+        return this.stacks;
+    }
+
+    @Override
+    protected void setItems(NonNullList<ItemStack> stacks) {
+        this.stacks = stacks;
+    }
+
+    @Override
+    public Container createMenu(final int windowID, final PlayerInventory playerInv, final PlayerEntity playerIn) {
+        return new CompressorContainer(windowID, playerInv, this);
+    }
+
+    @Override
+    public Container createMenu(int id, PlayerInventory player) {
+        return new CompressorContainer(id, player);
     }
 
     @Override
@@ -218,5 +248,10 @@ public class TileCompressor extends TileEntity implements ITickableTileEntity {
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         this.load(this.getBlockState(), pkt.getTag());
+    }
+
+    @Override
+    public int getContainerSize() {
+        return 3;
     }
 }
