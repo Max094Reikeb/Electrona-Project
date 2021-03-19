@@ -8,7 +8,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.IContainerProvider;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
@@ -28,6 +30,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import net.reikeb.electrona.containers.BatteryContainer;
 import net.reikeb.electrona.tileentities.TileBattery;
 
 import java.util.Collections;
@@ -106,7 +109,13 @@ public class Battery extends Block {
         if (!worldIn.isClientSide) {
             TileEntity tile = worldIn.getBlockEntity(pos);
             if (tile instanceof TileBattery) {
-                NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tile, pos);
+                if (player instanceof ServerPlayerEntity) {
+                    ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+                    TileBattery core = (TileBattery) tile;
+                    IContainerProvider provider = BatteryContainer.getServerContainerProvider(core, pos);
+                    INamedContainerProvider namedProvider = new SimpleNamedContainerProvider(provider, new TranslationTextComponent("electrona.battery_gui.name"));
+                    NetworkHooks.openGui(serverPlayer, namedProvider);
+                }
                 return ActionResultType.SUCCESS;
             }
         }

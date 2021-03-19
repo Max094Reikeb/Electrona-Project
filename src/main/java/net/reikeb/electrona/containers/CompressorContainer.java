@@ -3,12 +3,17 @@ package net.reikeb.electrona.containers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.IContainerProvider;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.IntArray;
+import net.minecraft.util.math.BlockPos;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import net.reikeb.electrona.containers.sync.CompressorSyncData;
 import net.reikeb.electrona.tileentities.TileCompressor;
 
 import static net.reikeb.electrona.init.ContainerInit.*;
@@ -16,14 +21,27 @@ import static net.reikeb.electrona.init.ContainerInit.*;
 public class CompressorContainer extends Container {
 
     public TileCompressor tileEntity;
+    private final IIntArray compressorData;
 
-    public CompressorContainer(int windowID, PlayerInventory playerInv) {
-        this(windowID, playerInv, new TileCompressor());
+    /**
+     * Container factory for opening the container clientside
+     **/
+    public static CompressorContainer getClientContainer(int id, PlayerInventory playerInventory) {
+        // Init client inventory with dummy slots
+        return new CompressorContainer(id, playerInventory, BlockPos.ZERO, new IntArray(3));
     }
 
-    public CompressorContainer(int windowID, PlayerInventory playerInv, TileCompressor tile) {
+    /**
+     * Get the server container provider for NetworkHooks.openGui
+     */
+    public static IContainerProvider getServerContainerProvider(TileCompressor te, BlockPos activationPos) {
+        return (id, playerInventory, serverPlayer) -> new CompressorContainer(id, playerInventory, activationPos, new CompressorSyncData(te));
+    }
+
+    public CompressorContainer(int windowID, PlayerInventory playerInv, BlockPos pos, IIntArray compressorData) {
         super(COMPRESSOR_CONTAINER.get(), windowID);
-        this.tileEntity = tile;
+        this.tileEntity = (TileCompressor) playerInv.player.level.getBlockEntity(pos);
+        this.compressorData = compressorData;
 
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
@@ -45,10 +63,24 @@ public class CompressorContainer extends Container {
             });
         }
         layoutPlayerInventorySlots(playerInv);
+        this.addDataSlots(compressorData);
+        this.
     }
 
     public TileCompressor getTileEntity() {
         return this.tileEntity;
+    }
+
+    public int getElectronicPower() {
+        return this.compressorData.get(0);
+    }
+
+    public int getCompressingTime() {
+        return this.compressorData.get(1);
+    }
+
+    public int getCurrentCompressingTime() {
+        return this.compressorData.get(2);
     }
 
     private void layoutPlayerInventorySlots(PlayerInventory playerInv) {

@@ -23,45 +23,41 @@ import net.reikeb.electrona.network.packets.TotemPacket;
 @Mod.EventBusSubscriber(modid = Electrona.MODID)
 public class PlayerDiesEvent
 {
-    
     @SubscribeEvent
     public static void onPlayerDies(LivingDeathEvent event)
     {
-        if (event.getSource().isBypassInvul())
+        if (event != null && event.getEntity() instanceof PlayerEntity)
         {
-            return;
-        }
-        if (event.getEntity() instanceof PlayerEntity)
-        {
-            
-            PlayerEntity player = (PlayerEntity) event.getEntity();
-            Hand hand = null;
-            if (player.getMainHandItem().getItem().equals(ItemInit.ADVANCED_TOTEM_OF_UNDYING.get()))
+            if (!event.getSource().isBypassInvul())
             {
-                hand = Hand.MAIN_HAND;
-            }
-            if (player.getOffhandItem().getItem().equals(ItemInit.ADVANCED_TOTEM_OF_UNDYING.get()))
-            {
-                hand = Hand.OFF_HAND;
-            }
-            if (hand == null)
-            {
-                return;
-            }
+                PlayerEntity player = (PlayerEntity) event.getEntity();
+                Hand hand = null;
+                if (player.getOffhandItem().getItem().equals(ItemInit.ADVANCED_TOTEM_OF_UNDYING.get()))
+                {
+                    hand = Hand.OFF_HAND;
+                }
+                else if (player.getMainHandItem().getItem().equals(ItemInit.ADVANCED_TOTEM_OF_UNDYING.get()))
+                {
+                    hand = Hand.MAIN_HAND;
+                }
     
-            player.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 1200, 1));
-            player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 600, 1));
-            player.addEffect(new EffectInstance(Effects.REGENERATION, 1200, 2));
-            player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 600, 1));
-            player.addEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 1200, 0));
-            player.addEffect(new EffectInstance(Effects.NIGHT_VISION, 2400, 0));
-            player.addEffect(new EffectInstance(Effects.ABSORPTION, 200, 0));
-            player.setHealth(player.getHealth() + 5);
-            player.level.broadcastEntityEvent(player, (byte) 35);
-            NetworkManager.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new TotemPacket());
-            player.setItemInHand(hand, ItemStack.EMPTY);
-            player.inventory.setChanged();
-            event.setCanceled(true);
+                if (hand != null)
+                {
+                    player.setItemInHand(hand, ItemStack.EMPTY);
+                    player.inventory.setChanged();
+                    player.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 1200, 1));
+                    player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 600, 1));
+                    player.addEffect(new EffectInstance(Effects.REGENERATION, 1200, 2));
+                    player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 600, 1));
+                    player.addEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 1200, 0));
+                    player.addEffect(new EffectInstance(Effects.NIGHT_VISION, 2400, 0));
+                    player.addEffect(new EffectInstance(Effects.ABSORPTION, 200, 0));
+                    player.setHealth(player.getHealth() + 5);
+                    player.level.broadcastEntityEvent(player, (byte) 35);
+                    NetworkManager.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new TotemPacket());
+                    event.setCanceled(true);
+                }
+            }
         }
     }
 }
