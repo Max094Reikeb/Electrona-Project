@@ -12,19 +12,16 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.CompressorContainer;
+import net.reikeb.electrona.tileentities.TileCompressor;
 
 public class CompressorWindow extends ContainerScreen<CompressorContainer> {
 
     private static final ResourceLocation COMPRESSOR_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/compressor_gui.png");
-    public int electronicPower;
-    public int compressingTime;
-    public int currentCompressingTime;
+    public TileCompressor tileEntity;
 
     public CompressorWindow(CompressorContainer container, PlayerInventory inv, ITextComponent title) {
         super(container, inv, title);
-        this.electronicPower = container.getElectronicPower();
-        this.compressingTime = container.getCompressingTime();
-        this.currentCompressingTime = container.getCurrentCompressingTime();
+        this.tileEntity = container.getTileEntity();
         this.imageWidth = 176;
         this.imageHeight = 166;
     }
@@ -34,7 +31,9 @@ public class CompressorWindow extends ContainerScreen<CompressorContainer> {
         this.renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(matrixStack, mouseX, mouseY);
-        int percentage = (this.currentCompressingTime * 100) / ((this.compressingTime == 0) ? 100 : this.compressingTime);
+        int currentCompress = tileEntity.getTileData().getInt("CurrentCompressingTime");
+        int compressTime = tileEntity.getTileData().getInt("CompressingTime");
+        int percentage = (currentCompress * 100) / ((compressTime == 0) ? 100 : compressTime);
         int XposT1 = leftPos + 107;
         int XposT2 = leftPos + 125;
         int YposT1 = topPos + 43;
@@ -49,7 +48,7 @@ public class CompressorWindow extends ContainerScreen<CompressorContainer> {
     protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
         this.font.draw(matrixStack, new TranslationTextComponent("electrona.compressor_gui.name"), 50, 6, -16777216);
         this.font.draw(matrixStack, new TranslationTextComponent("electrona.generic_gui.power"), 126, 6, -16777216);
-        this.font.draw(matrixStack, "" + this.electronicPower + " ELs", 126, 16, -3407821);
+        this.font.draw(matrixStack, "" + ((int) this.tileEntity.getTileData().getDouble("ElectronicPower")) + " ELs", 126, 16, -3407821);
     }
 
     @Override
