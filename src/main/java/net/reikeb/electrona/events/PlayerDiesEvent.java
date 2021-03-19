@@ -44,6 +44,7 @@ public class PlayerDiesEvent
                 if (hand != null)
                 {
                     player.setItemInHand(hand, ItemStack.EMPTY);
+                    player.inventory.setChanged();
                     player.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 1200, 1));
                     player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 600, 1));
                     player.addEffect(new EffectInstance(Effects.REGENERATION, 1200, 2));

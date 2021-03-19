@@ -17,6 +17,7 @@ public class ContainerInit {
 
     public static final RegistryObject<ContainerType<BatteryContainer>> BATTERY_CONTAINER = CONTAINERS.register("battery",
             () -> IForgeContainerType.create((windowId, inv, data) -> {
+                
                 return BatteryContainer.getClientContainer(windowId, inv);
             }));
 
