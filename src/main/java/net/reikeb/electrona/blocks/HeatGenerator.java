@@ -46,7 +46,7 @@ public class HeatGenerator extends Block {
         super(Properties.of(Material.STONE)
                 .sound(SoundType.METAL)
                 .strength(4f, 6f)
-                .lightLevel(s -> 0)
+                .lightLevel(s -> (s.getValue(HEATING) ? 15 : 0))
                 .harvestLevel(2)
                 .harvestTool(ToolType.PICKAXE));
         this.registerDefaultState(this.getStateDefinition().any()

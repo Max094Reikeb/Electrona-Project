@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
+import net.reikeb.electrona.blocks.HeatGenerator;
 import net.reikeb.electrona.utils.ElectronaUtils;
 
 import static net.reikeb.electrona.init.TileEntityInit.*;
@@ -43,6 +44,12 @@ public class TileHeatGenerator extends TileEntity implements ITickableTileEntity
             // We generate the energy (this part is uncommon for all generators)
             ResourceLocation biomeRL = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(world.getBiome(pos));
 
+            if (electronicPower > 0) {
+                world.setBlockAndUpdate(pos, this.getBlockState().setValue(HeatGenerator.HEATING, true));
+            } else {
+                world.setBlockAndUpdate(pos, this.getBlockState().setValue(HeatGenerator.HEATING, false));
+            }
+
             if (((biomeRL != null)) && (biomeRL.equals(new ResourceLocation("desert"))
                     || (biomeRL.equals(new ResourceLocation("nether_wastes"))
                     || (biomeRL.equals(new ResourceLocation("ocean"))
@@ -63,6 +70,8 @@ public class TileHeatGenerator extends TileEntity implements ITickableTileEntity
 
             // We pass energy to blocks around (this part is common to all generators)
             ElectronaUtils.generatorTransferEnergy(world, pos, Direction.values(), this.getTileData(), 3, electronicPower, true);
+
+            this.setChanged();
         }
     }
 
