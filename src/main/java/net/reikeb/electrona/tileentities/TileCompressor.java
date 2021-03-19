@@ -43,6 +43,7 @@ import static net.reikeb.electrona.init.TileEntityInit.*;
 import javax.annotation.Nullable;
 
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -210,6 +211,8 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
         this.compressingTime = compound.getInt("CompressingTime");
         this.currentCompressingTime = compound.getInt("CurrentCompressingTime");
         this.energyRequired = compound.getInt("EnergyRequired");
+        inventory.deserializeNBT((CompoundNBT)compound.get("Inventory"));
+    
     }
 
     @Override
@@ -220,6 +223,7 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
         compound.putInt("CompressingTime", this.compressingTime);
         compound.putInt("CurrentCompressingTime", this.currentCompressingTime);
         compound.putInt("EnergyRequired", this.energyRequired);
+        compound.put("Inventory", inventory.serializeNBT());
         return compound;
     }
 

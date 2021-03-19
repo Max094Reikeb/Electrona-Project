@@ -48,8 +48,15 @@ public class BatteryContainer extends Container {
             });
         }
         layoutPlayerInventorySlots(playerInv);
+        
     }
-
+    
+    @Override
+    public void broadcastChanges()
+    {
+        super.broadcastChanges();
+    }
+    
     public TileBattery getTileEntity() {
         return this.tileEntity;
     }

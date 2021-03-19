@@ -82,7 +82,7 @@ public class TileBattery extends LockableLootTileEntity implements ITickableTile
 
     @Override
     public Container createMenu(int id, PlayerInventory player) {
-        return new BatteryContainer(id, player);
+        return new BatteryContainer(id, player, this);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class TileBattery extends LockableLootTileEntity implements ITickableTile
         // We get the NBT Tags
         this.getTileData().putInt("MaxStorage", 10000);
         double electronicPower = this.getTileData().getDouble("ElectronicPower");
-
+        
         if (world != null) { // Avoid NullPointerExceptions
 
             // Input slots - Handling slots
@@ -130,6 +130,7 @@ public class TileBattery extends LockableLootTileEntity implements ITickableTile
         super.load(blockState, compound);
         this.electronicPower = compound.getDouble("ElectronicPower");
         this.maxStorage = compound.getInt("MaxStorage");
+        inventory.deserializeNBT((CompoundNBT)compound.get("Inventory"));
     }
 
     @Override
@@ -137,6 +138,7 @@ public class TileBattery extends LockableLootTileEntity implements ITickableTile
         super.save(compound);
         compound.putDouble("ElectronicPower", this.electronicPower);
         compound.putInt("MaxStorage", this.maxStorage);
+        compound.put("Inventory", inventory.serializeNBT());
         return compound;
     }
 
