@@ -41,7 +41,7 @@ import static net.reikeb.electrona.init.TileEntityInit.*;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileBattery extends TileEntity implements ITickableTileEntity {
+public class TileBattery extends LockableLootTileEntity implements ITickableTileEntity {
 
     private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(2, ItemStack.EMPTY);
     private final ItemHandler inventory;
@@ -53,6 +53,36 @@ public class TileBattery extends TileEntity implements ITickableTileEntity {
         super(TILE_BATTERY.get());
 
         this.inventory = new ItemHandler(2);
+    }
+
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TranslationTextComponent("electrona.battery_gui.name");
+    }
+
+    @Override
+    protected ITextComponent getDefaultName() {
+        return new StringTextComponent("battery");
+    }
+
+    @Override
+    protected NonNullList<ItemStack> getItems() {
+        return this.stacks;
+    }
+
+    @Override
+    protected void setItems(NonNullList<ItemStack> stacks) {
+        this.stacks = stacks;
+    }
+
+    @Override
+    public Container createMenu(final int windowID, final PlayerInventory playerInv, final PlayerEntity playerIn) {
+        return new BatteryContainer(windowID, playerInv, this);
+    }
+
+    @Override
+    public Container createMenu(int id, PlayerInventory player) {
+        return new BatteryContainer(id, player);
     }
 
     @Override
@@ -137,5 +167,10 @@ public class TileBattery extends TileEntity implements ITickableTileEntity {
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         this.load(this.getBlockState(), pkt.getTag());
+    }
+
+    @Override
+    public int getContainerSize() {
+        return 2;
     }
 }
