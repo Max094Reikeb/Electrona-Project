@@ -30,10 +30,10 @@ public class ItemInit {
     public static final RegistryObject<Item> PUMP = ITEMS.register("pump", Pump::new);
     // Teleport Saver
     public static final RegistryObject<Item> ADVANCED_TOTEM_OF_UNDYING = ITEMS.register("advanced_totem_of_undying", AdvancedTotemOfUndying::new);
-    // Empty Cell
-    // Water Cell
-    // Lava Cell
-    // Biomass Cell
+    public static final RegistryObject<Item> EMPTY_CELL = ITEMS.register("empty_cell", EmptyCell::new);
+    public static final RegistryObject<Item> WATER_CELL = ITEMS.register("water_cell", WaterCell::new);
+    public static final RegistryObject<Item> LAVA_CELL = ITEMS.register("lava_cell", LavaCell::new);
+    public static final RegistryObject<Item> BIOMASS_CELL = ITEMS.register("biomass_cell", BiomassCell::new);
     // Sugar Bottle
     // Yellowcake
     // Concentrated Uranium

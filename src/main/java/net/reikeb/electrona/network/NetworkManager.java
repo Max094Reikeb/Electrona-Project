@@ -24,5 +24,6 @@ public class NetworkManager {
         int index = 0;
         INSTANCE.registerMessage(index++, TotemPacket.class, TotemPacket::encode, TotemPacket::decode, TotemPacket::whenThisPacketIsReceived);
         INSTANCE.registerMessage(index++, CompressionPacket.class, CompressionPacket::encode, CompressionPacket::decode, CompressionPacket::whenThisPacketIsReceived);
+        INSTANCE.registerMessage(index++, PlayerInventoryChangedPacket.class, PlayerInventoryChangedPacket::encode, PlayerInventoryChangedPacket::decode, PlayerInventoryChangedPacket::whenThisPacketIsReceived);
     }
 }
