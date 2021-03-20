@@ -210,6 +210,9 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
         this.compressingTime = compound.getInt("CompressingTime");
         this.currentCompressingTime = compound.getInt("CurrentCompressingTime");
         this.energyRequired = compound.getInt("EnergyRequired");
+        if (compound.contains("Inventory")) {
+            inventory.deserializeNBT((CompoundNBT) compound.get("Inventory"));
+        }
     }
 
     @Override
@@ -220,6 +223,7 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
         compound.putInt("CompressingTime", this.compressingTime);
         compound.putInt("CurrentCompressingTime", this.currentCompressingTime);
         compound.putInt("EnergyRequired", this.energyRequired);
+        compound.put("Inventory", inventory.serializeNBT());
         return compound;
     }
 

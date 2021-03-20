@@ -94,9 +94,6 @@ public class TileBattery extends LockableLootTileEntity implements ITickableTile
     public void tick() {
         // We get the variables
         World world = this.level;
-        int x = this.worldPosition.getX();
-        int y = this.worldPosition.getY();
-        int z = this.worldPosition.getZ();
         BlockPos blockPos = this.getBlockPos();
 
         // We get the NBT Tags
@@ -117,7 +114,7 @@ public class TileBattery extends LockableLootTileEntity implements ITickableTile
 
             this.setChanged();
             world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(),
-                    Constants.BlockFlags.BLOCK_UPDATE);
+                    Constants.BlockFlags.NOTIFY_NEIGHBORS);
         }
     }
 
@@ -130,6 +127,9 @@ public class TileBattery extends LockableLootTileEntity implements ITickableTile
         super.load(blockState, compound);
         this.electronicPower = compound.getDouble("ElectronicPower");
         this.maxStorage = compound.getInt("MaxStorage");
+        if (compound.contains("Inventory")) {
+            inventory.deserializeNBT((CompoundNBT) compound.get("Inventory"));
+        }
     }
 
     @Override
@@ -137,6 +137,7 @@ public class TileBattery extends LockableLootTileEntity implements ITickableTile
         super.save(compound);
         compound.putDouble("ElectronicPower", this.electronicPower);
         compound.putInt("MaxStorage", this.maxStorage);
+        compound.put("Inventory", inventory.serializeNBT());
         return compound;
     }
 
