@@ -16,7 +16,14 @@
   },
   "criteria": {
     "generator": {
-      "trigger": "minecraft:impossible"
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "blocks": [
+          {
+            "tag": "forge:electrona/generators"
+          }
+        ]
+      }
     }
   },
   "rewards": {
