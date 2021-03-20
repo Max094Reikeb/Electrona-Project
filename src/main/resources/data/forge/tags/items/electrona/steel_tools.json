@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "electrona:steel_axe",
+    "electrona:steel_hoe",
+    "electrona:steel_pickaxe",
+    "electrona:steel_shovel",
+    "electrona:steel_sword"
+  ]
+}

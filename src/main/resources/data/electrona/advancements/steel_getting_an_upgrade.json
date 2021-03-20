@@ -16,7 +16,14 @@
   },
   "criteria": {
     "steel_getting_an_upgrade": {
-      "trigger": "minecraft:impossible"
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:electrona/steel_tools"
+          }
+        ]
+      }
     }
   },
   "rewards": {

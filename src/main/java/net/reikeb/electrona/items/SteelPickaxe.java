@@ -1,14 +1,10 @@
 package net.reikeb.electrona.items;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.world.World;
 
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.setup.ItemGroups;
-import net.reikeb.electrona.utils.ElectronaUtils;
 
 public class SteelPickaxe extends PickaxeItem {
 
@@ -44,10 +40,5 @@ public class SteelPickaxe extends PickaxeItem {
                 return Ingredient.of(new ItemStack(ItemInit.STEEL_INGOT.get(), 1), new ItemStack(ItemInit.STEEL_PICKAXE.get(), 1));
             }
         }, 1, -2.8f, new Item.Properties().tab(ItemGroups.ELECTRONA_TOOLS));
-    }
-
-    @Override
-    public void onCraftedBy(ItemStack itemStack, World world, PlayerEntity entity) {
-        ElectronaUtils.steelToolCraftedAdvancement((ServerPlayerEntity) entity);
     }
 }
