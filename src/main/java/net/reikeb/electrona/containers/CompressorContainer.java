@@ -9,6 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import net.reikeb.electrona.network.NetworkManager;
+import net.reikeb.electrona.network.packets.CompressionPacket;
 import net.reikeb.electrona.tileentities.TileCompressor;
 
 import static net.reikeb.electrona.init.ContainerInit.*;
@@ -40,6 +42,12 @@ public class CompressorContainer extends Container {
                 addSlot(new SlotItemHandler(h, 2, 135, 39) {
                     public boolean mayPlace(ItemStack itemStack) {
                         return false;
+                    }
+
+                    public ItemStack onTake(PlayerEntity playerEntity, ItemStack stack) {
+                        // Trigger Advancement
+                        NetworkManager.INSTANCE.sendToServer(new CompressionPacket());
+                        return stack;
                     }
                 });
             });

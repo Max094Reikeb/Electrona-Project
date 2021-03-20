@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+import net.reikeb.electrona.advancements.TTriggers;
 import net.reikeb.electrona.client.render.MechanicWingsLayer;
 import net.reikeb.electrona.client.setup.ClientSetup;
 import net.reikeb.electrona.events.PlayerDiesEvent;
@@ -42,6 +43,9 @@ public class Electrona {
 
         // Init the RegistryHandler class
         RegistryHandler.init();
+
+        // Init Advancements
+        TTriggers.init();
 
         // Registers an event with the mod specific event bus. This is needed to register new stuff.
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
