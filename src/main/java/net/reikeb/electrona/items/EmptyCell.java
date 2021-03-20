@@ -8,10 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.Rarity;
+import net.minecraft.item.*;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -65,30 +62,29 @@ public class EmptyCell extends Item {
         BlockRayTraceResult raytraceresult = getPlayerPOVHitResult(worldIn, playerIn, RayTraceContext.FluidMode.SOURCE_ONLY);
         ActionResult<ItemStack> ret = net.minecraftforge.event.ForgeEventFactory.onBucketUse(playerIn, worldIn, itemstack, raytraceresult);
         if (ret != null) return ret;
-        if (raytraceresult.getType() == RayTraceResult.Type.MISS) {
-            return ActionResult.pass(itemstack);
-        } else if (raytraceresult.getType() != RayTraceResult.Type.BLOCK) {
-            return ActionResult.pass(itemstack);
-        } else {
-            BlockPos blockpos = raytraceresult.getBlockPos();
-            Direction direction = raytraceresult.getDirection();
-            BlockPos blockpos1 = blockpos.relative(direction);
-            if (worldIn.mayInteract(playerIn, blockpos) && playerIn.mayUseItemAt(blockpos1, direction, itemstack)) {
-                BlockState blockstate1 = worldIn.getBlockState(blockpos);
-                if (blockstate1.getBlock() instanceof IBucketPickupHandler) {
-                    Fluid fluid = ((IBucketPickupHandler)blockstate1.getBlock()).takeLiquid(worldIn, blockpos, blockstate1);
-                    if ((fluid != Fluids.WATER) && (fluid != Fluids.LAVA)) return ActionResult.fail(itemstack);
-                    if (fluid == Fluids.WATER) {
-                        playerIn.setItemInHand(handIn, new ItemStack(ItemInit.WATER_CELL.get(), 1));
-                    } else {
-                        playerIn.setItemInHand(handIn, new ItemStack(ItemInit.LAVA_CELL.get(), 1));
+        if (raytraceresult.getType() == RayTraceResult.Type.MISS) return ActionResult.pass(itemstack);
+        if (raytraceresult.getType() != RayTraceResult.Type.BLOCK) return ActionResult.pass(itemstack);
+        BlockPos blockpos = raytraceresult.getBlockPos();
+        Direction direction = raytraceresult.getDirection();
+        BlockPos blockpos1 = blockpos.relative(direction);
+        if (worldIn.mayInteract(playerIn, blockpos) && playerIn.mayUseItemAt(blockpos1, direction, itemstack)) {
+            BlockState blockstate1 = worldIn.getBlockState(blockpos);
+            if (blockstate1.getBlock() instanceof IBucketPickupHandler) {
+                Fluid fluid = ((IBucketPickupHandler)blockstate1.getBlock()).takeLiquid(worldIn, blockpos, blockstate1);
+                if ((fluid != Fluids.WATER) && (fluid != Fluids.LAVA)) return ActionResult.fail(itemstack);
+                worldIn.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 3);
+                if (playerIn.abilities.instabuild) {
+                    if (!((fluid == Fluids.WATER && playerIn.inventory.contains(new ItemStack(ItemInit.WATER_CELL.get(), 1)))
+                            || (fluid == Fluids.LAVA && playerIn.inventory.contains(new ItemStack(ItemInit.LAVA_CELL.get(), 1))))) {
+                        playerIn.inventory.add(new ItemStack((fluid == Fluids.WATER ? ItemInit.WATER_CELL.get() : ItemInit.LAVA_CELL.get()), 1));
                     }
-                    worldIn.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 3);
-                    return ActionResult.success(itemstack);
+                } else {
+                    playerIn.setItemInHand(handIn, new ItemStack((fluid == Fluids.WATER ? ItemInit.WATER_CELL.get() : ItemInit.LAVA_CELL.get()), 1));
                 }
+                return ActionResult.success(itemstack);
             }
-            return ActionResult.fail(itemstack);
         }
+        return ActionResult.fail(itemstack);
     }
 
     @Override
@@ -97,15 +93,19 @@ public class EmptyCell extends Item {
         World world = context.getLevel();
         BlockState state = world.getBlockState(context.getClickedPos());
         PlayerEntity entity = context.getPlayer();
-        ItemStack itemstack = context.getItemInHand();
 
-        if ((entity.getMainHandItem() != itemstack) && (entity.getOffhandItem() != itemstack)) return action;
-        Hand hand = ((entity.getMainHandItem() == itemstack) ? Hand.MAIN_HAND : Hand.OFF_HAND);
+        if (entity == null) return ActionResultType.FAIL;
 
         if (state.is(Blocks.COMPOSTER)) {
             int level = state.getValue(BlockStateProperties.LEVEL_COMPOSTER);
             if (level >= 4) {
-                entity.setItemInHand(hand, new ItemStack(ItemInit.BIOMASS_CELL.get(), 1));
+                if (entity.abilities.instabuild) {
+                    if (!entity.inventory.contains(new ItemStack(ItemInit.BIOMASS_CELL.get(), 1))) {
+                        entity.inventory.add(new ItemStack(ItemInit.BIOMASS_CELL.get(), 1));
+                    }
+                } else {
+                    entity.setItemInHand(context.getHand(), new ItemStack(ItemInit.BIOMASS_CELL.get(), 1));
+                }
                 world.setBlock(context.getClickedPos(), state.setValue(BlockStateProperties.LEVEL_COMPOSTER, (level - 4)), 3);
                 if (entity instanceof ServerPlayerEntity) {
                     entity.inventory.setChanged();
