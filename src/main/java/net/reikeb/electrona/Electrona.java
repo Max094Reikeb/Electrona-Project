@@ -18,6 +18,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import net.reikeb.electrona.client.render.MechanicWingsLayer;
 import net.reikeb.electrona.client.setup.ClientSetup;
+import net.reikeb.electrona.events.PlayerDiesEvent;
 import net.reikeb.electrona.recipes.CompressorRecipe;
 import net.reikeb.electrona.recipes.types.RecipeTypeCompressor;
 import net.reikeb.electrona.setup.RegistryHandler;
@@ -48,6 +49,7 @@ public class Electrona {
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, this::registerRecipeSerializers);
 
         // Register ourselves for server and other game events we are interested in
+        MinecraftForge.EVENT_BUS.register(new PlayerDiesEvent());
         MinecraftForge.EVENT_BUS.register(this);
     }
 
