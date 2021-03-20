@@ -2,88 +2,61 @@
   "multipart": [
     {
       "when": {
+        "middle": "close"
+      },
+      "apply": {
+        "model": "electrona:block/blue_cable_mid"
+      }
+    },
+    {
+      "when": {
+        "middle": "open"
+      },
+      "apply": {
+        "model": "electrona:block/blue_cable_mid_uninsulated"
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "electrona:block/blue_cable_side"
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "electrona:block/blue_cable_side",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "electrona:block/blue_cable_side",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "electrona:block/blue_cable_side",
+        "y": 270
+      }
+    },
+    {
+      "when": {
         "up": "true"
       },
       "apply": {
-        "model": "electrona:block/blue_cable_post"
-      }
-    },
-    {
-      "when": {
-        "north": "low"
-      },
-      "apply": {
-        "model": "electrona:block/blue_cable",
-        "uvlock": true
-      }
-    },
-    {
-      "when": {
-        "east": "low"
-      },
-      "apply": {
-        "model": "electrona:block/blue_cable",
-        "y": 90,
-        "uvlock": true
-      }
-    },
-    {
-      "when": {
-        "south": "low"
-      },
-      "apply": {
-        "model": "electrona:block/blue_cable",
-        "y": 180,
-        "uvlock": true
-      }
-    },
-    {
-      "when": {
-        "west": "low"
-      },
-      "apply": {
-        "model": "electrona:block/blue_cable",
-        "y": 270,
-        "uvlock": true
-      }
-    },
-    {
-      "when": {
-        "north": "tall"
-      },
-      "apply": {
-        "model": "electrona:block/blue_cable_side_tall",
-        "uvlock": true
-      }
-    },
-    {
-      "when": {
-        "east": "tall"
-      },
-      "apply": {
-        "model": "electrona:block/blue_cable_side_tall",
-        "y": 90,
-        "uvlock": true
-      }
-    },
-    {
-      "when": {
-        "south": "tall"
-      },
-      "apply": {
-        "model": "electrona:block/blue_cable_side_tall",
-        "y": 180,
-        "uvlock": true
-      }
-    },
-    {
-      "when": {
-        "west": "tall"
-      },
-      "apply": {
-        "model": "electrona:block/blue_cable_side_tall",
-        "y": 270,
-        "uvlock": true
+        "model": "electrona:block/blue_cable_up"
       }
     }
   ]

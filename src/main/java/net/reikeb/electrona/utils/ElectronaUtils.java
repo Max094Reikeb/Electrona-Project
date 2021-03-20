@@ -1,9 +1,6 @@
 package net.reikeb.electrona.utils;
 
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -36,7 +33,7 @@ public class ElectronaUtils {
         ITagCollection<Block> tagCollection = BlockTags.getAllTags();
         ITag<Block> machineTag, cableTag;
         machineTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", (isGenerator ? "electrona/machines_all" : "electrona/machines")));
-        cableTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", (isGenerator ? "electrona/cable" : "elctrona/blue_cable")));
+        cableTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", (isGenerator ? "electrona/cable" : "electrona/blue_cable")));
 
         for (Direction dir : directions) {
             if (generatorPower <= 0) return; // we have no more power
@@ -133,22 +130,6 @@ public class ElectronaUtils {
             } else {
                 cableNBT.putBoolean("logic", false);
                 return; // we have no more power
-            }
-        }
-    }
-
-    /**
-     * This method grants the advancement Steel Getting An Upgrade and is triggered when a Steel Tool is crafted
-     *
-     * @param player The Player who crafts the tool
-     */
-    public static void steelToolCraftedAdvancement(ServerPlayerEntity player) {
-        Advancement advancement = player.server.getAdvancements().getAdvancement(new ResourceLocation("electrona:steel_getting_an_upgrade"));
-        if (advancement == null) System.out.println("Advancement Steel Getting An Upgrade seems to be null");
-        AdvancementProgress advancementProgress = player.getAdvancements().getOrStartProgress(advancement);
-        if (!advancementProgress.isDone()) {
-            for (String criteria : advancementProgress.getRemainingCriteria()) {
-                player.getAdvancements().award(advancement, criteria);
             }
         }
     }
