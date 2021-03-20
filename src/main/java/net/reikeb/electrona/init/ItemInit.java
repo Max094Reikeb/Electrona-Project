@@ -84,7 +84,8 @@ public class ItemInit {
     public static final RegistryObject<Item> TIN_ORE_ITEM = ITEMS.register("tin_ore", () ->
             new BlockItem(BlockInit.TIN_ORE.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
     // Lead Ore
-    // Uranium Ore
+    public static final RegistryObject<Item> URANIUM_ORE_ITEM = ITEMS.register("uranium_ore", () ->
+            new BlockItem(BlockInit.URANIUM_ORE.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
     public static final RegistryObject<Item> TiN_BLOCK_ITEM = ITEMS.register("tin_block", () ->
             new BlockItem(BlockInit.TIN_BLOCK.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
     public static final RegistryObject<Item> STEEL_BLOCK_ITEM = ITEMS.register("steel_block", () ->
