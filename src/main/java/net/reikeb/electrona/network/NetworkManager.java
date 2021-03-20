@@ -9,7 +9,7 @@ import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.network.packets.TotemPacket;
+import net.reikeb.electrona.network.packets.*;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = Electrona.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -23,6 +23,5 @@ public class NetworkManager {
     public static void registerNetworkStuff(FMLCommonSetupEvent event) {
         int index = 0;
         INSTANCE.registerMessage(index++, TotemPacket.class, TotemPacket::encode, TotemPacket::decode, TotemPacket::whenThisPacketIsReceived);
-
     }
 }

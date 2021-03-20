@@ -4,9 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
@@ -15,9 +13,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.LockableLootTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.IntArray;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -108,10 +104,11 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
         ItemStack stackInSlot0 = this.inventory.getStackInSlot(0);
         ItemStack stackInSlot1 = this.inventory.getStackInSlot(1);
 
+        double electronicPower = this.getTileData().getDouble("ElectronicPower");
         this.getTileData().putInt("MaxStorage", 5000);
 
         if ((world != null) && (!world.isClientSide)) {
-            if ((this.electronicPower > 0) && (this.getRecipe(stackInSlot0, stackInSlot1) != null)) {
+            if ((electronicPower > 0) && (this.getRecipe(stackInSlot0, stackInSlot1) != null)) {
                 if (this.canCompress) {
                     this.energyRequired = getEnergyRequired(stackInSlot0, stackInSlot1);
                     this.compressingTime = getCompressingTime(stackInSlot0, stackInSlot1);
@@ -122,7 +119,9 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
                         world.setBlockAndUpdate(blockPos,
                                 this.getBlockState().setValue(Compressor.COMPRESSING, true));
                         this.currentCompressingTime += 1;
-                        this.electronicPower = this.electronicPower - (energyPerSecond * 0.05);
+                        electronicPower = electronicPower - (energyPerSecond * 0.05);
+
+                        this.getTileData().putDouble("ElectronicPower", electronicPower);
                     } else {
                         world.setBlockAndUpdate(blockPos,
                                 this.getBlockState().setValue(Compressor.COMPRESSING, false));
