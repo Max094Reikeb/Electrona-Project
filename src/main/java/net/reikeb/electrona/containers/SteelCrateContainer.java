@@ -3,8 +3,10 @@ package net.reikeb.electrona.containers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -17,13 +19,23 @@ public class SteelCrateContainer extends Container {
 
     public TileSteelCrate tileEntity;
 
-    public SteelCrateContainer(int windowID, PlayerInventory playerInv) {
-        this(windowID, playerInv, new TileSteelCrate());
+    public SteelCrateContainer(ContainerType<?> type, int id) {
+        super(type, id);
     }
 
-    public SteelCrateContainer(int windowID, PlayerInventory playerInv, TileSteelCrate tile) {
-        super(STEEL_CRATE_CONTAINER.get(), windowID);
-        this.tileEntity = tile;
+    // Client
+    public SteelCrateContainer(int id, PlayerInventory inv, PacketBuffer buf) {
+        super(STEEL_CRATE_CONTAINER.get(), id);
+        this.init(inv, this.tileEntity = (TileSteelCrate) inv.player.level.getBlockEntity(buf.readBlockPos()));
+    }
+
+    // Server
+    public SteelCrateContainer(int id, PlayerInventory inv, TileSteelCrate tile) {
+        super(STEEL_CRATE_CONTAINER.get(), id);
+        this.init(inv, this.tileEntity = tile);
+    }
+
+    public void init(PlayerInventory playerInv, TileSteelCrate tile) {
 
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {

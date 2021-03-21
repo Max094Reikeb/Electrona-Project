@@ -24,6 +24,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import net.reikeb.electrona.containers.SteelCrateContainer;
+import net.reikeb.electrona.init.ContainerInit;
 import net.reikeb.electrona.utils.ItemHandler;
 
 import static net.reikeb.electrona.init.TileEntityInit.*;
@@ -66,7 +67,7 @@ public class TileSteelCrate extends LockableLootTileEntity {
 
     @Override
     public Container createMenu(int id, PlayerInventory player) {
-        return new SteelCrateContainer(id, player);
+        return new SteelCrateContainer(ContainerInit.STEEL_CRATE_CONTAINER.get(), id);
     }
 
     @Override

@@ -3,8 +3,10 @@ package net.reikeb.electrona.containers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -19,13 +21,23 @@ public class CompressorContainer extends Container {
 
     public TileCompressor tileEntity;
 
-    public CompressorContainer(int windowID, PlayerInventory playerInv) {
-        this(windowID, playerInv, new TileCompressor());
+    public CompressorContainer(ContainerType<?> type, int id) {
+        super(type, id);
     }
 
-    public CompressorContainer(int windowID, PlayerInventory playerInv, TileCompressor tile) {
-        super(COMPRESSOR_CONTAINER.get(), windowID);
-        this.tileEntity = tile;
+    // Client
+    public CompressorContainer(int id, PlayerInventory inv, PacketBuffer buf) {
+        super(COMPRESSOR_CONTAINER.get(), id);
+        this.init(inv, this.tileEntity = (TileCompressor) inv.player.level.getBlockEntity(buf.readBlockPos()));
+    }
+
+    // Server
+    public CompressorContainer(int id, PlayerInventory inv, TileCompressor tile) {
+        super(COMPRESSOR_CONTAINER.get(), id);
+        this.init(inv, this.tileEntity = tile);
+    }
+
+    public void init(PlayerInventory playerInv, TileCompressor tile) {
 
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {

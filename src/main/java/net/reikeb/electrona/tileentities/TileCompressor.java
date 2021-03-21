@@ -31,6 +31,7 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.blocks.Compressor;
 import net.reikeb.electrona.containers.CompressorContainer;
+import net.reikeb.electrona.init.ContainerInit;
 import net.reikeb.electrona.recipes.CompressorRecipe;
 import net.reikeb.electrona.utils.ItemHandler;
 
@@ -89,7 +90,7 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
 
     @Override
     public Container createMenu(int id, PlayerInventory player) {
-        return new CompressorContainer(id, player);
+        return new CompressorContainer(ContainerInit.COMPRESSOR_CONTAINER.get(), id);
     }
 
     @Override
@@ -121,7 +122,6 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
                         this.currentCompressingTime += 1;
                         electronicPower = electronicPower - (energyPerSecond * 0.05);
 
-                        this.getTileData().putDouble("ElectronicPower", electronicPower);
                     } else {
                         world.setBlockAndUpdate(blockPos,
                                 this.getBlockState().setValue(Compressor.COMPRESSING, false));
@@ -130,12 +130,15 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
                         this.inventory.decrStackSize(0, 1);
                         this.inventory.decrStackSize(1, 1);
                     }
+                    this.getTileData().putDouble("ElectronicPower", electronicPower);
                 } else {
                     this.currentCompressingTime = 0;
                 }
             } else {
                 this.currentCompressingTime = 0;
             }
+            this.getTileData().putInt("CurrentCompressingTime", this.currentCompressingTime);
+            this.getTileData().putInt("CompressingTime", this.compressingTime);
         }
 
         if (world != null) {

@@ -33,7 +33,7 @@ public class CompressorWindow extends ContainerScreen<CompressorContainer> {
         this.renderTooltip(matrixStack, mouseX, mouseY);
         int currentCompress = tileEntity.getTileData().getInt("CurrentCompressingTime");
         int compressTime = tileEntity.getTileData().getInt("CompressingTime");
-        int percentage = (currentCompress * 100) / ((compressTime == 0) ? 100 : compressTime);
+        int percentage = (currentCompress * 5) / (compressTime == 0 ? 100 : compressTime);
         int XposT1 = leftPos + 107;
         int XposT2 = leftPos + 125;
         int YposT1 = topPos + 43;

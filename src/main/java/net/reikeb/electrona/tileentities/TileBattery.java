@@ -31,6 +31,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.reikeb.electrona.containers.BatteryContainer;
+import net.reikeb.electrona.init.ContainerInit;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.setup.RegistryHandler;
 import net.reikeb.electrona.utils.ElectronaUtils;
@@ -82,7 +83,7 @@ public class TileBattery extends LockableLootTileEntity implements ITickableTile
 
     @Override
     public Container createMenu(int id, PlayerInventory player) {
-        return new BatteryContainer(id, player);
+        return new BatteryContainer(ContainerInit.BATTERY_CONTAINER.get(), id);
     }
 
     @Override

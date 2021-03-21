@@ -3,8 +3,10 @@ package net.reikeb.electrona.containers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -17,13 +19,23 @@ public class BatteryContainer extends Container {
 
     public TileBattery tileEntity;
 
-    public BatteryContainer(int windowID, PlayerInventory playerInv) {
-        this(windowID, playerInv, new TileBattery());
+    public BatteryContainer(ContainerType<?> type, int id) {
+        super(type, id);
     }
 
-    public BatteryContainer(int windowID, PlayerInventory playerInv, TileBattery tile) {
-        super(BATTERY_CONTAINER.get(), windowID);
-        this.tileEntity = tile;
+    // Client
+    public BatteryContainer(int id, PlayerInventory inv, PacketBuffer buf) {
+        super(BATTERY_CONTAINER.get(), id);
+        this.init(inv, this.tileEntity = (TileBattery) inv.player.level.getBlockEntity(buf.readBlockPos()));
+    }
+
+    // Server
+    public BatteryContainer(int id, PlayerInventory inv, TileBattery tile) {
+        super(BATTERY_CONTAINER.get(), id);
+        this.init(inv, this.tileEntity = tile);
+    }
+
+    public void init(PlayerInventory playerInv, TileBattery tile) {
 
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
