@@ -40,7 +40,7 @@ public class ItemInit {
     public static final RegistryObject<Item> PURIFIED_URANIUM = ITEMS.register("purified_uranium", PurifiedUranium::new);
     public static final RegistryObject<Item> URANIUM_BAR = ITEMS.register("uranium_bar", UraniumBar::new);
     public static final RegistryObject<Item> URANIUM_DUAL_BAR = ITEMS.register("uranium_dual_bar", UraniumDualBar::new);
-    // Uranium Quad Bar
+    public static final RegistryObject<Item> URANIUM_QUAD_BAR = ITEMS.register("uranium_quad_bar", UraniumQuadBar::new);
     // Emitter
     // Wireless Booster
 
