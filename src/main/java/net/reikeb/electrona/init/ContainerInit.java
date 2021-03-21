@@ -24,4 +24,9 @@ public class ContainerInit {
             () -> IForgeContainerType.create((windowId, inv, data) -> {
                 return new CompressorContainer(windowId, inv);
             }));
+
+    public static final RegistryObject<ContainerType<SteelCrateContainer>> STEEL_CRATE_CONTAINER = CONTAINERS.register("steel_crate",
+            () -> IForgeContainerType.create(((windowId, inv, data) -> {
+                return new SteelCrateContainer(windowId, inv);
+            })));
 }

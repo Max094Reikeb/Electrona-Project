@@ -37,4 +37,7 @@ public class TileEntityInit {
 
     public static final RegistryObject<TileEntityType<TileBlueCable>> TILE_BLUE_CABLE = TILE_ENTITIES.register("blue_cable", () ->
             TileEntityType.Builder.of(TileBlueCable::new, BlockInit.BLUE_CABLE.get()).build(null));
+
+    public static final RegistryObject<TileEntityType<TileSteelCrate>> TILE_STEEL_CRATE = TILE_ENTITIES.register("steel_crate", () ->
+            TileEntityType.Builder.of(TileSteelCrate::new, BlockInit.STEEL_CRATE.get()).build(null));
 }

@@ -7,8 +7,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.guis.BatteryWindow;
-import net.reikeb.electrona.guis.CompressorWindow;
+import net.reikeb.electrona.guis.*;
 
 import static net.reikeb.electrona.init.ContainerInit.*;
 
@@ -18,5 +17,6 @@ public class ClientSetup {
     public static void init(final FMLClientSetupEvent event) {
         ScreenManager.register(BATTERY_CONTAINER.get(), BatteryWindow::new);
         ScreenManager.register(COMPRESSOR_CONTAINER.get(), CompressorWindow::new);
+        ScreenManager.register(STEEL_CRATE_CONTAINER.get(), SteelCrateWindow::new);
     }
 }

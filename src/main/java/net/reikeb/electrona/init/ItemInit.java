@@ -90,7 +90,8 @@ public class ItemInit {
             new BlockItem(BlockInit.TIN_BLOCK.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
     public static final RegistryObject<Item> STEEL_BLOCK_ITEM = ITEMS.register("steel_block", () ->
             new BlockItem(BlockInit.STEEL_BLOCK.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
-    // Steel Crate
+    public static final RegistryObject<Item> STEEL_CRATE_ITEM = ITEMS.register("steel_crate", () ->
+            new BlockItem(BlockInit.STEEL_CRATE.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
     // Lead Block
     // Lead Crate
     // Lead Door
