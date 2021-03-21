@@ -2,10 +2,7 @@ package net.reikeb.electrona.setup;
 
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-import net.reikeb.electrona.init.BlockInit;
-import net.reikeb.electrona.init.ContainerInit;
-import net.reikeb.electrona.init.ItemInit;
-import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.init.*;
 
 public class RegistryHandler {
 
@@ -14,5 +11,6 @@ public class RegistryHandler {
         ContainerInit.CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ItemInit.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         TileEntityInit.TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        PotionEffectInit.EFFECTS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 }
