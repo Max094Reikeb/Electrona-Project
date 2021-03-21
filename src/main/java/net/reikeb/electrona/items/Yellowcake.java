@@ -36,6 +36,6 @@ public class Yellowcake extends Item {
 
     @Override
     public void inventoryTick(ItemStack itemstack, World world, Entity entity, int slot, boolean selected) {
-        ElectronaUtils.radioactiveItemInInventory(itemstack, world, entity, slot, selected);
+        ElectronaUtils.radioactiveItemInInventory(itemstack, world, entity);
     }
 }

@@ -22,7 +22,6 @@ import net.reikeb.electrona.init.PotionEffectInit;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ElectronaUtils {
@@ -172,10 +171,8 @@ public class ElectronaUtils {
      * @param itemstack The radioactive item
      * @param world     The world the entity is in
      * @param entity    The entity who has the item
-     * @param slot      The slot the item is in
-     * @param selected  If the item is in the entity's hand
      */
-    public static void radioactiveItemInInventory(ItemStack itemstack, World world, Entity entity, int slot, boolean selected) {
+    public static void radioactiveItemInInventory(ItemStack itemstack, World world, Entity entity) {
         boolean entityWearsRadiationArmor = isEntityWearingAntiRadiationSuit((LivingEntity) entity);
         boolean entityWearsLeadArmor = isEntityWearingLeadArmor((LivingEntity) entity);
         double x = entity.getX();
@@ -186,7 +183,7 @@ public class ElectronaUtils {
                     new AxisAlignedBB(x - (10 / 2d), y - (10 / 2d), z - (10 / 2d), x + (10 / 2d), y + (10 / 2d), z + (10 / 2d)), null)
                     .stream().sorted(new Object() {
                         Comparator<Entity> compareDistOf(double _x, double _y, double _z) {
-                            return Comparator.comparing((Function<Entity, Double>) (_entcnd -> _entcnd.distanceToSqr(_x, _y, _z)));
+                            return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(_x, _y, _z));
                         }
                     }.compareDistOf(x, y, z)).collect(Collectors.toList());
             for (Entity entityiterator : _entfound) {

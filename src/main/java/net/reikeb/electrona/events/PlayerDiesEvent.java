@@ -25,28 +25,23 @@ public class PlayerDiesEvent {
         if (event != null && event.getEntity() instanceof PlayerEntity) {
             if (!event.getSource().isBypassInvul()) {
                 PlayerEntity player = (PlayerEntity) event.getEntity();
-                Hand hand = null;
-                if (player.getOffhandItem().getItem().equals(ItemInit.ADVANCED_TOTEM_OF_UNDYING.get())) {
-                    hand = Hand.OFF_HAND;
-                } else if (player.getMainHandItem().getItem().equals(ItemInit.ADVANCED_TOTEM_OF_UNDYING.get())) {
-                    hand = Hand.MAIN_HAND;
-                }
+                if (!(player.getMainHandItem().getItem().equals(ItemInit.ADVANCED_TOTEM_OF_UNDYING.get())
+                        || player.getOffhandItem().getItem().equals(ItemInit.ADVANCED_TOTEM_OF_UNDYING.get()))) return;
+                Hand hand = (player.getMainHandItem().getItem().equals(ItemInit.ADVANCED_TOTEM_OF_UNDYING.get()) ? Hand.MAIN_HAND : Hand.OFF_HAND);
 
-                if (hand != null) {
-                    player.setItemInHand(hand, ItemStack.EMPTY);
-                    player.inventory.setChanged();
-                    player.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 1200, 1));
-                    player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 600, 1));
-                    player.addEffect(new EffectInstance(Effects.REGENERATION, 1200, 2));
-                    player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 600, 1));
-                    player.addEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 1200, 0));
-                    player.addEffect(new EffectInstance(Effects.NIGHT_VISION, 2400, 0));
-                    player.addEffect(new EffectInstance(Effects.ABSORPTION, 200, 0));
-                    player.setHealth(player.getHealth() + 5);
-                    player.level.broadcastEntityEvent(player, (byte) 35);
-                    NetworkManager.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new TotemPacket());
-                    event.setCanceled(true);
-                }
+                player.setItemInHand(hand, ItemStack.EMPTY);
+                player.inventory.setChanged();
+                player.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 1200, 1));
+                player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 600, 1));
+                player.addEffect(new EffectInstance(Effects.REGENERATION, 1200, 2));
+                player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 600, 1));
+                player.addEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 1200, 0));
+                player.addEffect(new EffectInstance(Effects.NIGHT_VISION, 2400, 0));
+                player.addEffect(new EffectInstance(Effects.ABSORPTION, 200, 0));
+                player.setHealth(player.getHealth() + 5);
+                player.level.broadcastEntityEvent(player, (byte) 35);
+                NetworkManager.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new TotemPacket());
+                event.setCanceled(true);
             }
         }
     }

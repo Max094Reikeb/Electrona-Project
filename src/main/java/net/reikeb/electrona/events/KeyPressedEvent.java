@@ -7,7 +7,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.Direction;
 import net.minecraft.world.IWorld;
 
 import net.minecraftforge.client.event.InputEvent;
@@ -29,7 +28,6 @@ public class KeyPressedEvent {
             double x = entity.getX();
             double y = entity.getY();
             double z = entity.getZ();
-            Direction direction = entity.getDirection();
             ItemStack itemstack = ((LivingEntity) entity).getItemBySlot(EquipmentSlotType.byTypeAndIndex(EquipmentSlotType.Group.ARMOR, 2));
             if ((itemstack.getItem() == ItemInit.MECHANIC_WINGS.get().asItem()) && (itemstack.getOrCreateTag().getDouble("ElectronicPower") >= 0.3)) {
                 entity.setDeltaMovement((entity.getDeltaMovement().x()), 0.3, (entity.getDeltaMovement().z()));

@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance>, ICriterionInstance {
+
     private final ResourceLocation RL;
     private final Map<PlayerAdvancements, TriggerBase.Listeners> listeners = Maps.newHashMap();
 
@@ -62,7 +63,6 @@ public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance>, ICr
             myCustomTrigger$listeners = new TriggerBase.Listeners(playerAdvancementsIn);
             listeners.put(playerAdvancementsIn, myCustomTrigger$listeners);
         }
-
         myCustomTrigger$listeners.add(listener);
     }
 
@@ -154,6 +154,7 @@ public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance>, ICr
     }
 
     static class Listeners {
+
         private final PlayerAdvancements playerAdvancements;
         private final Set<ICriterionTrigger.Listener<TriggerBase.Instance>> listeners = Sets.newHashSet();
 
@@ -206,7 +207,6 @@ public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance>, ICr
                     if (list == null) {
                         list = Lists.newArrayList();
                     }
-
                     list.add(listener);
                 }
             }
