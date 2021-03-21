@@ -74,7 +74,9 @@ public class ItemInit {
 
     public static final RegistryObject<Item> HEAT_GENERATOR_ITEM = ITEMS.register("heat_generator", () ->
             new BlockItem(BlockInit.HEAT_GENERATOR.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));
-    // Biomass Generator
+
+    public static final RegistryObject<Item> BIOMASS_GENERATOR_ITEM = ITEMS.register("biomass_generator", () ->
+            new BlockItem(BlockInit.BIOMASS_GENERATOR.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));
     // Nuclear Generator Controller
     // Creative Generator
     // El Converter

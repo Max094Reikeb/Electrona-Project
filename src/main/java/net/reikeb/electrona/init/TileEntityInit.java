@@ -23,14 +23,17 @@ public class TileEntityInit {
     public static final RegistryObject<TileEntityType<TileWaterTurbine>> TILE_WATER_TURBINE = TILE_ENTITIES.register("water_turbine", () ->
             TileEntityType.Builder.of(TileWaterTurbine::new, BlockInit.WATER_TURBINE.get()).build(null));
 
+    public static final RegistryObject<TileEntityType<TileHeatGenerator>> TILE_HEAT_GENERATOR = TILE_ENTITIES.register("heat_generator", () ->
+            TileEntityType.Builder.of(TileHeatGenerator::new, BlockInit.HEAT_GENERATOR.get()).build(null));
+
+    public static final RegistryObject<TileEntityType<TileBiomassGenerator>> TILE_BIOMASS_GENERATOR = TILE_ENTITIES.register("biomass_generator", () ->
+            TileEntityType.Builder.of(TileBiomassGenerator::new, BlockInit.BIOMASS_GENERATOR.get()).build(null));
+
     public static final RegistryObject<TileEntityType<TileBattery>> TILE_BATTERY = TILE_ENTITIES.register("battery", () ->
             TileEntityType.Builder.of(TileBattery::new, BlockInit.BATTERY.get()).build(null));
 
     public static final RegistryObject<TileEntityType<TileCompressor>> TILE_COMPRESSOR = TILE_ENTITIES.register("compressor", () ->
             TileEntityType.Builder.of(TileCompressor::new, BlockInit.COMPRESSOR.get()).build(null));
-
-    public static final RegistryObject<TileEntityType<TileHeatGenerator>> TILE_HEAT_GENERATOR = TILE_ENTITIES.register("heat_generator", () ->
-            TileEntityType.Builder.of(TileHeatGenerator::new, BlockInit.HEAT_GENERATOR.get()).build(null));
 
     public static final RegistryObject<TileEntityType<TileCable>> TILE_CABLE = TILE_ENTITIES.register("cable", () ->
             TileEntityType.Builder.of(TileCable::new, BlockInit.CABLE.get()).build(null));

@@ -19,6 +19,7 @@ public class BlockInit {
     public static final RegistryObject<SolarPanelT2> SOLAR_PANEL_T_2 = BLOCKS.register("solar_panel_tiers2", SolarPanelT2::new);
     public static final RegistryObject<WaterTurbine> WATER_TURBINE = BLOCKS.register("water_turbine", WaterTurbine::new);
     public static final RegistryObject<HeatGenerator> HEAT_GENERATOR = BLOCKS.register("heat_generator", HeatGenerator::new);
+    public static final RegistryObject<BiomassGenerator> BIOMASS_GENERATOR = BLOCKS.register("biomass_generator", BiomassGenerator::new);
 
     // Machines
     public static final RegistryObject<Battery> BATTERY = BLOCKS.register("battery", Battery::new);

@@ -15,6 +15,7 @@ import static net.reikeb.electrona.init.ContainerInit.*;
 public class ClientSetup {
 
     public static void init(final FMLClientSetupEvent event) {
+        ScreenManager.register(BIOMASS_GENERATOR_CONTAINER.get(), BiomassGeneratorWindow::new);
         ScreenManager.register(BATTERY_CONTAINER.get(), BatteryWindow::new);
         ScreenManager.register(COMPRESSOR_CONTAINER.get(), CompressorWindow::new);
         ScreenManager.register(STEEL_CRATE_CONTAINER.get(), SteelCrateWindow::new);
