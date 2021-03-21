@@ -35,7 +35,7 @@ public class ItemInit {
     public static final RegistryObject<Item> LAVA_CELL = ITEMS.register("lava_cell", LavaCell::new);
     public static final RegistryObject<Item> BIOMASS_CELL = ITEMS.register("biomass_cell", BiomassCell::new);
     public static final RegistryObject<Item> SUGAR_BOTTLE = ITEMS.register("sugar_bottle", SugarBottle::new);
-    // Yellowcake
+    public static final RegistryObject<Item> YELLOWCAKE = ITEMS.register("yellowcake", Yellowcake::new);
     // Concentrated Uranium
     // Purified Uranium
     // Uranium Bar

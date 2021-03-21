@@ -1,6 +1,8 @@
 package net.reikeb.electrona.utils;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -132,5 +134,37 @@ public class ElectronaUtils {
                 return; // we have no more power
             }
         }
+    }
+
+    /**
+     * Method to get if the entity given is wearing the whole Anti-Radiation Suit
+     *
+     * @param entity   The entity we're checking
+     * @return boolean If the entity is wearing the full suit
+     */
+    public static boolean isEntityWearingAntiRadiationSuit(LivingEntity entity) {
+        return true;
+    }
+
+    /**
+     * Method to get if the entity given is wearing the whole Lead Armor
+     *
+     * @param entity   The entity we're checking
+     * @return boolean If the entity is wearing the full armor
+     */
+    public static boolean isEntityWearingLeadArmor(LivingEntity entity) {
+        return true;
+    }
+
+    /**
+     * Applies Radioactivity effect to the entity if it has radioactive item in his inventory
+     *
+     * @param itemstack The radioactive item
+     * @param world     The world the entity is in
+     * @param entity    The entity who has the item
+     * @param slot      The slot the item is in
+     * @param selected  If the item is in the entity's hand
+     */
+    public static void radioactiveItemInInventory(ItemStack itemstack, World world, Entity entity, int slot, boolean selected) {
     }
 }
