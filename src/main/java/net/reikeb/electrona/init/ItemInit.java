@@ -1,5 +1,6 @@
 package net.reikeb.electrona.init;
 
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 
@@ -51,7 +52,10 @@ public class ItemInit {
     public static final RegistryObject<Item> STEEL_AXE = ITEMS.register("steel_axe", SteelAxe::new);
     public static final RegistryObject<Item> STEEL_SHOVEL = ITEMS.register("steel_shovel", SteelShovel::new);
     public static final RegistryObject<Item> STEEL_HOE = ITEMS.register("steel_hoe", SteelHoe::new);
-    // Anti-Radiation Suit
+    public static final RegistryObject<Item> ANTI_RADIATION_HELMET = ITEMS.register("anti_radiation_helmet", () -> new AntiRadiationSuit(EquipmentSlotType.HEAD));
+    public static final RegistryObject<Item> ANTI_RADIATION_CHESTPLATE = ITEMS.register("anti_radiation_chestplate", () -> new AntiRadiationSuit(EquipmentSlotType.CHEST));
+    public static final RegistryObject<Item> ANTI_RADIATION_LEGGINGS = ITEMS.register("anti_radiation_leggings", () -> new AntiRadiationSuit(EquipmentSlotType.LEGS));
+    public static final RegistryObject<Item> ANTI_RADIATION_BOOTS = ITEMS.register("anti_radiation_boots", () -> new AntiRadiationSuit(EquipmentSlotType.FEET));
     // Lead Armor
     public static final RegistryObject<Item> MECHANIC_WINGS = ITEMS.register("mechanic_wings", MechanicWings::new);
 

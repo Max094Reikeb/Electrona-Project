@@ -3,6 +3,7 @@ package net.reikeb.electrona.utils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -152,7 +153,10 @@ public class ElectronaUtils {
      * @return boolean If the entity is wearing the full suit
      */
     public static boolean isEntityWearingAntiRadiationSuit(LivingEntity entity) {
-        return true;
+        return ((entity.getItemBySlot(EquipmentSlotType.HEAD).getItem() == ItemInit.ANTI_RADIATION_HELMET.get())
+                && (entity.getItemBySlot(EquipmentSlotType.CHEST).getItem() == ItemInit.ANTI_RADIATION_CHESTPLATE.get())
+                && (entity.getItemBySlot(EquipmentSlotType.LEGS).getItem() == ItemInit.ANTI_RADIATION_LEGGINGS.get())
+                && (entity.getItemBySlot(EquipmentSlotType.FEET).getItem() == ItemInit.ANTI_RADIATION_BOOTS.get()));
     }
 
     /**
