@@ -37,7 +37,7 @@ public class ItemInit {
     public static final RegistryObject<Item> SUGAR_BOTTLE = ITEMS.register("sugar_bottle", SugarBottle::new);
     public static final RegistryObject<Item> YELLOWCAKE = ITEMS.register("yellowcake", Yellowcake::new);
     public static final RegistryObject<Item> CONCENTRATED_URANIUM = ITEMS.register("concentrated_uranium", ConcentratedUranium::new);
-    // Purified Uranium
+    public static final RegistryObject<Item> PURIFIED_URANIUM = ITEMS.register("purified_uranium", PurifiedUranium::new);
     // Uranium Bar
     // Uranium Dual Bar
     // Uranium Quad Bar
