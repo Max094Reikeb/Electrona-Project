@@ -21,7 +21,7 @@ public class KeyPressedEvent {
 
     @SubscribeEvent
     public static void onPlayerPressesKey(InputEvent.KeyInputEvent event) {
-        if ((Minecraft.getInstance().screen != null) && (Minecraft.getInstance().screen instanceof ChatScreen)) return;
+        if ((Minecraft.getInstance().screen instanceof ChatScreen) || (Minecraft.getInstance().screen != null)) return;
         if (event.getKey() == Minecraft.getInstance().options.keyJump.getKey().getValue()) {
             Entity entity = Minecraft.getInstance().player;
             IWorld world = Minecraft.getInstance().level;
