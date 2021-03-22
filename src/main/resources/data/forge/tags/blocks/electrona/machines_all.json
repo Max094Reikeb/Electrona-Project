@@ -3,6 +3,7 @@
   "values": [
     "electrona:battery",
     "electrona:compressor",
-    "electrona:xp_generator"
+    "electrona:xp_generator",
+    "electrona:teleporter"
   ]
 }

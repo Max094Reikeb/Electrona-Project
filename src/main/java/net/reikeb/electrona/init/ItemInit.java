@@ -29,7 +29,7 @@ public class ItemInit {
     public static final RegistryObject<Item> MOTOR = ITEMS.register("motor", Motor::new);
     public static final RegistryObject<Item> PADDLE = ITEMS.register("paddle", Paddle::new);
     public static final RegistryObject<Item> PUMP = ITEMS.register("pump", Pump::new);
-    // Teleport Saver
+    public static final RegistryObject<Item> TELEPORT_SAVER = ITEMS.register("teleport_saver", TeleportSaver::new);
     public static final RegistryObject<Item> ADVANCED_TOTEM_OF_UNDYING = ITEMS.register("advanced_totem_of_undying", AdvancedTotemOfUndying::new);
     public static final RegistryObject<Item> EMPTY_CELL = ITEMS.register("empty_cell", EmptyCell::new);
     public static final RegistryObject<Item> WATER_CELL = ITEMS.register("water_cell", WaterCell::new);
@@ -82,7 +82,10 @@ public class ItemInit {
     // El Converter
     public static final RegistryObject<Item> COMPRESSOR_ITEM = ITEMS.register("compressor", () ->
             new BlockItem(BlockInit.COMPRESSOR.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));
-    // Teleporter
+
+    public static final RegistryObject<Item> TELEPORTER_ITEM = ITEMS.register("teleporter", () ->
+            new BlockItem(BlockInit.TELEPORTER.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));
+
     public static final RegistryObject<Item> XP_GENERATOR_ITEM = ITEMS.register("xp_generator", () ->
             new BlockItem(BlockInit.XP_GENERATOR.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));
     // Purificator

@@ -28,5 +28,7 @@ public class NetworkManager {
         INSTANCE.registerMessage(index++, CompressionPacket.class, CompressionPacket::encode, CompressionPacket::decode, CompressionPacket::whenThisPacketIsReceived);
         INSTANCE.registerMessage(index++, PlayerInventoryChangedPacket.class, PlayerInventoryChangedPacket::encode, PlayerInventoryChangedPacket::decode, PlayerInventoryChangedPacket::whenThisPacketIsReceived);
         INSTANCE.registerMessage(index++, ExperienceHarvestPacket.class, ExperienceHarvestPacket::encode, ExperienceHarvestPacket::decode, ExperienceHarvestPacket::whenThisPacketIsReceived);
+        INSTANCE.registerMessage(index++, TeleporterLinkPacket.class, TeleporterLinkPacket::encode, TeleporterLinkPacket::decode, TeleporterLinkPacket::whenThisPacketIsReceived);
+        INSTANCE.registerMessage(index++, TeleporterAutoDeletePacket.class, TeleporterAutoDeletePacket::encode, TeleporterAutoDeletePacket::decode, TeleporterAutoDeletePacket::whenThisPacketIsReceived);
     }
 }

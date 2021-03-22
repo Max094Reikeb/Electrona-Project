@@ -20,6 +20,7 @@ public class ContainerInit {
     public static final RegistryObject<ContainerType<BatteryContainer>> BATTERY_CONTAINER = CONTAINERS.register("battery", () -> registerContainer(BatteryContainer::new));
     public static final RegistryObject<ContainerType<CompressorContainer>> COMPRESSOR_CONTAINER = CONTAINERS.register("compressor", () -> registerContainer(CompressorContainer::new));
     public static final RegistryObject<ContainerType<XPGeneratorContainer>> XP_GENERATOR_CONTAINER = CONTAINERS.register("xp_generator", () -> registerContainer(XPGeneratorContainer::new));
+    public static final RegistryObject<ContainerType<TeleporterContainer>> TELEPORTER_CONTAINER = CONTAINERS.register("teleporter", () -> registerContainer(TeleporterContainer::new));
     public static final RegistryObject<ContainerType<SteelCrateContainer>> STEEL_CRATE_CONTAINER = CONTAINERS.register("steel_crate", () -> registerContainer(SteelCrateContainer::new));
 
     public static <T extends Container> ContainerType<T> registerContainer(IContainerFactory<T> fact) {
