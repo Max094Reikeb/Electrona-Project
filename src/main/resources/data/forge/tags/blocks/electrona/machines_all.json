@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "electrona:battery",
-    "electrona:compressor"
+    "electrona:compressor",
+    "electrona:xp_generator"
   ]
 }

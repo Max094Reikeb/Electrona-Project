@@ -83,7 +83,8 @@ public class ItemInit {
     public static final RegistryObject<Item> COMPRESSOR_ITEM = ITEMS.register("compressor", () ->
             new BlockItem(BlockInit.COMPRESSOR.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));
     // Teleporter
-    // XP Generator
+    public static final RegistryObject<Item> XP_GENERATOR_ITEM = ITEMS.register("xp_generator", () ->
+            new BlockItem(BlockInit.XP_GENERATOR.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));
     // Purificator
     // Water Pump
     // Sprayer

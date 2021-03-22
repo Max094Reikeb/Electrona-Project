@@ -18,6 +18,7 @@ public class ClientSetup {
         ScreenManager.register(BIOMASS_GENERATOR_CONTAINER.get(), BiomassGeneratorWindow::new);
         ScreenManager.register(BATTERY_CONTAINER.get(), BatteryWindow::new);
         ScreenManager.register(COMPRESSOR_CONTAINER.get(), CompressorWindow::new);
+        ScreenManager.register(XP_GENERATOR_CONTAINER.get(), XPGeneratorWindow::new);
         ScreenManager.register(STEEL_CRATE_CONTAINER.get(), SteelCrateWindow::new);
     }
 }

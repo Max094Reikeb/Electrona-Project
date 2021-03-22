@@ -35,6 +35,9 @@ public class TileEntityInit {
     public static final RegistryObject<TileEntityType<TileCompressor>> TILE_COMPRESSOR = TILE_ENTITIES.register("compressor", () ->
             TileEntityType.Builder.of(TileCompressor::new, BlockInit.COMPRESSOR.get()).build(null));
 
+    public static final RegistryObject<TileEntityType<TileXPGenerator>> TILE_XP_GENERATOR = TILE_ENTITIES.register("xp_generator", () ->
+            TileEntityType.Builder.of(TileXPGenerator::new, BlockInit.XP_GENERATOR.get()).build(null));
+
     public static final RegistryObject<TileEntityType<TileCable>> TILE_CABLE = TILE_ENTITIES.register("cable", () ->
             TileEntityType.Builder.of(TileCable::new, BlockInit.CABLE.get()).build(null));
 

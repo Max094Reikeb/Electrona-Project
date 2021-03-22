@@ -24,6 +24,7 @@ public class BlockInit {
     // Machines
     public static final RegistryObject<Battery> BATTERY = BLOCKS.register("battery", Battery::new);
     public static final RegistryObject<Compressor> COMPRESSOR = BLOCKS.register("compressor", Compressor::new);
+    public static final RegistryObject<XPGenerator> XP_GENERATOR = BLOCKS.register("xp_generator", XPGenerator::new);
 
     // Other blocks
     public static final RegistryObject<TinOre> TIN_ORE = BLOCKS.register("tin_ore", TinOre::new);

@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "electrona:compressor"
+    "electrona:compressor",
+    "electrona:xp_generator"
   ]
 }

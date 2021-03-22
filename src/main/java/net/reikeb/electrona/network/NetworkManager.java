@@ -16,7 +16,9 @@ import net.reikeb.electrona.network.packets.*;
 public class NetworkManager {
 
     public static final String PROTOCOL_VERSION = "1";
-    public static SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(Electrona.MODID, "main"), () -> NetworkManager.PROTOCOL_VERSION, NetworkManager.PROTOCOL_VERSION::equals, NetworkManager.PROTOCOL_VERSION::equals);
+    public static SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
+            new ResourceLocation(Electrona.MODID, "main"), () -> NetworkManager.PROTOCOL_VERSION,
+            NetworkManager.PROTOCOL_VERSION::equals, NetworkManager.PROTOCOL_VERSION::equals);
 
     @SuppressWarnings("UnusedAssignment")
     @SubscribeEvent
@@ -25,5 +27,6 @@ public class NetworkManager {
         INSTANCE.registerMessage(index++, TotemPacket.class, TotemPacket::encode, TotemPacket::decode, TotemPacket::whenThisPacketIsReceived);
         INSTANCE.registerMessage(index++, CompressionPacket.class, CompressionPacket::encode, CompressionPacket::decode, CompressionPacket::whenThisPacketIsReceived);
         INSTANCE.registerMessage(index++, PlayerInventoryChangedPacket.class, PlayerInventoryChangedPacket::encode, PlayerInventoryChangedPacket::decode, PlayerInventoryChangedPacket::whenThisPacketIsReceived);
+        INSTANCE.registerMessage(index++, ExperienceHarvestPacket.class, ExperienceHarvestPacket::encode, ExperienceHarvestPacket::decode, ExperienceHarvestPacket::whenThisPacketIsReceived);
     }
 }
