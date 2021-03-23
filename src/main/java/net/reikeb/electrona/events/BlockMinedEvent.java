@@ -34,6 +34,8 @@ public class BlockMinedEvent {
             }
         }
 
+        // Enchantments triggered
         EnchantmentFunction.lumberjackMain(player, player.level, event.getPos(), Direction.values());
+        EnchantmentFunction.veinminerMain(player, player.level, event.getPos(), Direction.values());
     }
 }

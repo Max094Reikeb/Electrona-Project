@@ -8,9 +8,9 @@ import net.minecraft.item.ItemStack;
 
 import net.reikeb.electrona.init.ItemInit;
 
-public class Lumberjack extends Enchantment {
+public class Veinminer extends Enchantment {
 
-    public Lumberjack(EquipmentSlotType... slots) {
+    public Veinminer(EquipmentSlotType... slots) {
         super(Enchantment.Rarity.UNCOMMON, EnchantmentType.DIGGER, slots);
     }
 
@@ -28,8 +28,6 @@ public class Lumberjack extends Enchantment {
     protected boolean checkCompatibility(Enchantment ench) {
         if (ench == Enchantments.BINDING_CURSE)
             return true;
-        if (ench == Enchantments.SHARPNESS)
-            return true;
         if (ench == Enchantments.BLOCK_EFFICIENCY)
             return true;
         if (ench == Enchantments.UNBREAKING)
@@ -41,7 +39,7 @@ public class Lumberjack extends Enchantment {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack) {
-        return stack.getItem() == ItemInit.STEEL_AXE.get();
+        return stack.getItem() == ItemInit.STEEL_PICKAXE.get();
     }
 
     @Override

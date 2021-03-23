@@ -16,4 +16,5 @@ public class EnchantmentInit {
             Electrona.MODID);
 
     public static final RegistryObject<Enchantment> LUMBERJACK = ENCHANTMENTS.register("lumberjack", () -> new Lumberjack(EquipmentSlotType.MAINHAND));
+    public static final RegistryObject<Enchantment> VEINMINER = ENCHANTMENTS.register("veinminer", () -> new Veinminer(EquipmentSlotType.MAINHAND));
 }
