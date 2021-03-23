@@ -10,7 +10,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import net.reikeb.electrona.utils.ElectronaUtils;
+import net.reikeb.electrona.misc.vm.EnergyFunction;
 
 import static net.reikeb.electrona.init.TileEntityInit.*;
 
@@ -55,7 +55,7 @@ public class TileSolarPanelT1 extends TileEntity implements ITickableTileEntity 
             }
 
             // We pass energy to blocks around (this part is common to all generators)
-            ElectronaUtils.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 4, electronicPower, true);
+            EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 4, electronicPower, true);
         }
     }
 

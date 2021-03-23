@@ -7,8 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraft.world.World;
 
+import net.reikeb.electrona.misc.vm.RadioactivityFunction;
 import net.reikeb.electrona.setup.ItemGroups;
-import net.reikeb.electrona.utils.ElectronaUtils;
 
 public class Yellowcake extends Item {
 
@@ -36,6 +36,6 @@ public class Yellowcake extends Item {
 
     @Override
     public void inventoryTick(ItemStack itemstack, World world, Entity entity, int slot, boolean selected) {
-        ElectronaUtils.radioactiveItemInInventory(itemstack, world, entity);
+        RadioactivityFunction.radioactiveItemInInventory(itemstack, world, entity);
     }
 }

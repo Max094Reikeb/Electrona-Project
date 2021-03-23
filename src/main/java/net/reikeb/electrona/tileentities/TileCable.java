@@ -8,7 +8,7 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 
-import net.reikeb.electrona.utils.ElectronaUtils;
+import net.reikeb.electrona.misc.vm.CableFunction;
 
 import static net.reikeb.electrona.init.TileEntityInit.*;
 
@@ -31,7 +31,7 @@ public class TileCable extends TileEntity implements ITickableTileEntity {
         this.getTileData().putInt("MaxStorage", 36);
 
         // We pass energy to blocks around (this part is common to all cables)
-        ElectronaUtils.cableTransferEnergy(this.level, this.getBlockPos(), Direction.values(), this.getTileData(), electronicPower, cableLogic, 6, false);
+        CableFunction.cableTransferEnergy(this.level, this.getBlockPos(), Direction.values(), this.getTileData(), electronicPower, cableLogic, 6, false);
 
         this.setChanged();
     }
