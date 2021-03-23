@@ -23,7 +23,7 @@ public class ItemInit {
     public static final RegistryObject<Item> STEEL_INGOT = ITEMS.register("steel_ingot", SteelIngot::new);
     public static final RegistryObject<Item> STEEL_PLATE = ITEMS.register("steel_plate", SteelPlate::new);
     // Lead Ingot
-    // Gold Powder
+    public static final RegistryObject<Item> GOLD_POWDER = ITEMS.register("gold_powder", GoldPowder::new);
     public static final RegistryObject<Item> PORTABLE_BATTERY = ITEMS.register("portable_battery", PortableBattery::new);
     public static final RegistryObject<Item> ELECTRONIC_CIRCUIT = ITEMS.register("electronic_circuit", ElectronicCircuit::new);
     public static final RegistryObject<Item> MOTOR = ITEMS.register("motor", Motor::new);
