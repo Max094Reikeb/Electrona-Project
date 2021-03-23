@@ -51,7 +51,7 @@ public class CompressorRecipe implements IRecipe<IInventory> {
     public String toString() {
 
         // Overriding toString is not required, it's just useful for debugging.
-        return "Compressor [input=" + this.input + ", input2=" + this.input2 + ", output=" + this.output + ", id=" + this.id + "]";
+        return "Compressor recipe [input=" + this.input + ", input2=" + this.input2 + ", output=" + this.output + ", id=" + this.id + "]";
     }
 
     public int getCompressingTime() {

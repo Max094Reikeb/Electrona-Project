@@ -23,7 +23,7 @@ public class CableFunction {
      * @param transferPerSecond The amount of energy transfered each second
      * @param isBlue            Defines if the Cable is a normal Cable or a Blue Cable
      */
-    public static void cableTransferEnergy(World world, BlockPos pos, Direction[] directions, CompoundNBT cableNBT, double cablePower, boolean cableLogic, int transferPerSecond, Boolean isBlue) {
+    public static void cableTransferEnergy(World world, BlockPos pos, Direction[] directions, CompoundNBT cableNBT, double cablePower, int transferPerSecond, Boolean isBlue) {
         double transferPerTick = transferPerSecond * 0.05;
 
         ITagCollection<Block> tagCollection = BlockTags.getAllTags();

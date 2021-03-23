@@ -26,6 +26,7 @@ public class BlockMinedEvent {
         if (eventBlock == BlockInit.TIN_ORE.get()) {
             Advancement advancement = player.server.getAdvancements().getAdvancement(new ResourceLocation("electrona:a_whole_new_world"));
             if (advancement == null) System.out.println("Advancement A Whole New World seems to be null");
+            if (advancement == null) return;
             AdvancementProgress advancementProgress = player.getAdvancements().getOrStartProgress(advancement);
             if (!advancementProgress.isDone()) {
                 for (String criteria : advancementProgress.getRemainingCriteria()) {

@@ -27,11 +27,10 @@ public class TileBlueCable extends TileEntity implements ITickableTileEntity {
 
         // We get NBT Tags
         double electronicPower = this.getTileData().getDouble("ElectronicPower");
-        boolean cableLogic = this.getTileData().getBoolean("logic");
         this.getTileData().putInt("MaxStorage", 36);
 
         // We pass energy to blocks around (this part is common to all cables)
-        CableFunction.cableTransferEnergy(this.level, this.getBlockPos(), Direction.values(), this.getTileData(), electronicPower, cableLogic, 6, true);
+        CableFunction.cableTransferEnergy(this.level, this.getBlockPos(), Direction.values(), this.getTileData(), electronicPower, 6, true);
 
         this.setChanged();
     }
