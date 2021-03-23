@@ -4,14 +4,16 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.ServerPlayerEntity;
-
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.BlockInit;
+import net.reikeb.electrona.misc.vm.EnchantmentFunction;
 
 @Mod.EventBusSubscriber(modid = Electrona.MODID)
 public class BlockMinedEvent {
@@ -31,5 +33,7 @@ public class BlockMinedEvent {
                 }
             }
         }
+
+        EnchantmentFunction.lumberjackMain(player, player.level, event.getPos(), Direction.values());
     }
 }
