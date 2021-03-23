@@ -29,7 +29,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 
 import net.reikeb.electrona.containers.BiomassGeneratorContainer;
 import net.reikeb.electrona.init.ContainerInit;
-import net.reikeb.electrona.utils.ElectronaUtils;
+import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.electrona.utils.ItemHandler;
 
 import static net.reikeb.electrona.init.TileEntityInit.TILE_BIOMASS_GENERATOR;
@@ -114,7 +114,7 @@ public class TileBiomassGenerator extends LockableLootTileEntity implements ITic
             }
 
             // Transfer energy
-            ElectronaUtils.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 3, electronicPower, true);
+            EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 3, electronicPower, true);
 
             this.setChanged();
             world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(),

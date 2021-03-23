@@ -33,8 +33,8 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.reikeb.electrona.containers.BatteryContainer;
 import net.reikeb.electrona.init.ContainerInit;
 import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.electrona.setup.RegistryHandler;
-import net.reikeb.electrona.utils.ElectronaUtils;
 import net.reikeb.electrona.utils.ItemHandler;
 
 import static net.reikeb.electrona.init.TileEntityInit.*;
@@ -104,14 +104,14 @@ public class TileBattery extends LockableLootTileEntity implements ITickableTile
         if (world != null) { // Avoid NullPointerExceptions
 
             // Input slots - Handling slots
-            ElectronaUtils.transferEnergyWithItemSlot(this.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), inventory, true, electronicPower, 1, 4);
-            ElectronaUtils.transferEnergyWithItemSlot(this.getTileData(), ItemInit.MECHANIC_WINGS.get().asItem(), inventory, true, electronicPower, 1, 8);
+            EnergyFunction.transferEnergyWithItemSlot(this.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), inventory, true, electronicPower, 1, 4);
+            EnergyFunction.transferEnergyWithItemSlot(this.getTileData(), ItemInit.MECHANIC_WINGS.get().asItem(), inventory, true, electronicPower, 1, 8);
 
             // Output slot - Handling slots
-            ElectronaUtils.transferEnergyWithItemSlot(this.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), inventory, false, electronicPower, 0, 4);
+            EnergyFunction.transferEnergyWithItemSlot(this.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), inventory, false, electronicPower, 0, 4);
 
             // We pass energy to blocks around (this part is common to all generators)
-            ElectronaUtils.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 6, electronicPower, false);
+            EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 6, electronicPower, false);
 
             this.setChanged();
             world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(),

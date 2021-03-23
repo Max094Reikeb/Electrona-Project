@@ -13,7 +13,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import net.reikeb.electrona.blocks.HeatGenerator;
-import net.reikeb.electrona.utils.ElectronaUtils;
+import net.reikeb.electrona.misc.vm.EnergyFunction;
 
 import static net.reikeb.electrona.init.TileEntityInit.*;
 
@@ -69,7 +69,7 @@ public class TileHeatGenerator extends TileEntity implements ITickableTileEntity
             }
 
             // We pass energy to blocks around (this part is common to all generators)
-            ElectronaUtils.generatorTransferEnergy(world, pos, Direction.values(), this.getTileData(), 3, electronicPower, true);
+            EnergyFunction.generatorTransferEnergy(world, pos, Direction.values(), this.getTileData(), 3, electronicPower, true);
 
             this.setChanged();
         }
