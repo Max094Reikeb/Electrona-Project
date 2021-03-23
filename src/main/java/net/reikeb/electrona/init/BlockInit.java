@@ -23,6 +23,7 @@ public class BlockInit {
 
     // Machines
     public static final RegistryObject<Battery> BATTERY = BLOCKS.register("battery", Battery::new);
+    public static final RegistryObject<ELConverter> EL_CONVERTER = BLOCKS.register("el_converter", ELConverter::new);
     public static final RegistryObject<Compressor> COMPRESSOR = BLOCKS.register("compressor", Compressor::new);
     public static final RegistryObject<XPGenerator> XP_GENERATOR = BLOCKS.register("xp_generator", XPGenerator::new);
     public static final RegistryObject<Teleporter> TELEPORTER = BLOCKS.register("teleporter", Teleporter::new);

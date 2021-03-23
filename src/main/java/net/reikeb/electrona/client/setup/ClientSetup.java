@@ -17,6 +17,7 @@ public class ClientSetup {
     public static void init(final FMLClientSetupEvent event) {
         ScreenManager.register(BIOMASS_GENERATOR_CONTAINER.get(), BiomassGeneratorWindow::new);
         ScreenManager.register(BATTERY_CONTAINER.get(), BatteryWindow::new);
+        ScreenManager.register(CONVERTER_CONTAINER.get(), ConverterWindow::new);
         ScreenManager.register(COMPRESSOR_CONTAINER.get(), CompressorWindow::new);
         ScreenManager.register(XP_GENERATOR_CONTAINER.get(), XPGeneratorWindow::new);
         ScreenManager.register(TELEPORTER_CONTAINER.get(), TeleporterWindow::new);

@@ -79,7 +79,9 @@ public class ItemInit {
             new BlockItem(BlockInit.BIOMASS_GENERATOR.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));
     // Nuclear Generator Controller
     // Creative Generator
-    // El Converter
+    public static final RegistryObject<Item> EL_CONVERTER_ITEM = ITEMS.register("el_converter", () ->
+            new BlockItem(BlockInit.EL_CONVERTER.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));
+
     public static final RegistryObject<Item> COMPRESSOR_ITEM = ITEMS.register("compressor", () ->
             new BlockItem(BlockInit.COMPRESSOR.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));
 

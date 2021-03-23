@@ -18,6 +18,7 @@ public class ContainerInit {
 
     public static final RegistryObject<ContainerType<BiomassGeneratorContainer>> BIOMASS_GENERATOR_CONTAINER = CONTAINERS.register("biomass_generator", () -> registerContainer(BiomassGeneratorContainer::new));
     public static final RegistryObject<ContainerType<BatteryContainer>> BATTERY_CONTAINER = CONTAINERS.register("battery", () -> registerContainer(BatteryContainer::new));
+    public static final RegistryObject<ContainerType<ConverterContainer>> CONVERTER_CONTAINER = CONTAINERS.register("el_converter", () -> registerContainer(ConverterContainer::new));
     public static final RegistryObject<ContainerType<CompressorContainer>> COMPRESSOR_CONTAINER = CONTAINERS.register("compressor", () -> registerContainer(CompressorContainer::new));
     public static final RegistryObject<ContainerType<XPGeneratorContainer>> XP_GENERATOR_CONTAINER = CONTAINERS.register("xp_generator", () -> registerContainer(XPGeneratorContainer::new));
     public static final RegistryObject<ContainerType<TeleporterContainer>> TELEPORTER_CONTAINER = CONTAINERS.register("teleporter", () -> registerContainer(TeleporterContainer::new));

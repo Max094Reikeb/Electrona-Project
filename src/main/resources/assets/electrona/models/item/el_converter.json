@@ -1,5 +1,5 @@
 {
-  "parent": "electrona:block/el_vp_converter",
+  "parent": "electrona:block/el_converter",
   "display": {
     "thirdperson": {
       "rotation": [

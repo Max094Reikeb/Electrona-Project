@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "electrona:el_converter",
     "electrona:compressor",
     "electrona:xp_generator",
     "electrona:teleporter"
