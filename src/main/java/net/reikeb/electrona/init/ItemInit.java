@@ -114,7 +114,9 @@ public class ItemInit {
 
     public static final RegistryObject<Item> STEEL_CRATE_ITEM = ITEMS.register("steel_crate", () ->
             new BlockItem(BlockInit.STEEL_CRATE.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
-    // Lead Block
+
+    public static final RegistryObject<Item> LEAD_BLOCK_ITEM = ITEMS.register("lead_block", () ->
+            new BlockItem(BlockInit.LEAD_BLOCK.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
     // Lead Crate
     // Lead Door
     public static final RegistryObject<Item> MACHINE_CASING_ITEM = ITEMS.register("machine_casing", () ->
