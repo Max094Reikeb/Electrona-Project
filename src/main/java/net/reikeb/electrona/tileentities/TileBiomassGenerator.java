@@ -131,6 +131,7 @@ public class TileBiomassGenerator extends LockableLootTileEntity implements ITic
         super.load(blockState, compound);
         this.electronicPower = compound.getDouble("ElectronicPower");
         this.maxStorage = compound.getInt("MaxStorage");
+        this.wait = compound.getInt("wait");
         if (compound.contains("Inventory")) {
             inventory.deserializeNBT((CompoundNBT) compound.get("Inventory"));
         }
@@ -141,6 +142,7 @@ public class TileBiomassGenerator extends LockableLootTileEntity implements ITic
         super.save(compound);
         compound.putDouble("ElectronicPower", this.electronicPower);
         compound.putInt("MaxStorage", this.maxStorage);
+        compound.putInt("wait", this.wait);
         compound.put("Inventory", inventory.serializeNBT());
         return compound;
     }
