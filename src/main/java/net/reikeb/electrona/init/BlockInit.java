@@ -30,6 +30,7 @@ public class BlockInit {
 
     // Other blocks
     public static final RegistryObject<TinOre> TIN_ORE = BLOCKS.register("tin_ore", TinOre::new);
+    public static final RegistryObject<LeadOre> LEAD_ORE = BLOCKS.register("lead_ore", LeadOre::new);
     public static final RegistryObject<UraniumOre> URANIUM_ORE = BLOCKS.register("uranium_ore", UraniumOre::new);
     public static final RegistryObject<TinBlock> TIN_BLOCK = BLOCKS.register("tin_block", TinBlock::new);
     public static final RegistryObject<SteelBlock> STEEL_BLOCK = BLOCKS.register("steel_block", SteelBlock::new);
