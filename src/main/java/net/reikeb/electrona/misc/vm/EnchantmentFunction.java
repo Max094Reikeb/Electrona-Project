@@ -1,15 +1,18 @@
 package net.reikeb.electrona.misc.vm;
 
 import net.minecraft.block.Block;
-import net.minecraft.enchantment.Enchantment;
+import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.LightningBoltEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ITagCollection;
@@ -146,8 +149,38 @@ public class EnchantmentFunction {
                 lightning.setVisualOnly(false);
                 world.addFreshEntity(lightning);
                 if (!player.abilities.instabuild) stack.hurtAndBreak(damageValue, player, (entity) ->
-                            entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
+                        entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
             }
+        }
+    }
+
+    /**
+     * Smelting enchantment function
+     *
+     * @param world  The world
+     * @param pos    The position of the mined block
+     * @param block  The mined block
+     * @param player The player who mines the block
+     * @param handIn The hand with the used item
+     */
+    public static void smelting(World world, BlockPos pos, Block block, PlayerEntity player, Hand handIn) {
+        ItemStack stack = handIn == Hand.MAIN_HAND ? player.getMainHandItem() : player.getOffhandItem();
+        ItemStack result = world.getRecipeManager().getRecipeFor(IRecipeType.SMELTING, new Inventory(new ItemStack(block)), world).isPresent() ?
+                world.getRecipeManager().getRecipeFor(IRecipeType.SMELTING, new Inventory(new ItemStack(block)), world).get().getResultItem().copy() :
+                ItemStack.EMPTY;
+        if (result == ItemStack.EMPTY || result.equals(new ItemStack(Blocks.AIR, 1))) return;
+
+        if (EnchantmentHelper.getItemEnchantmentLevel(EnchantmentInit.SMELTING.get(), stack) > 0) {
+            world.destroyBlock(pos, false);
+            if (world instanceof ServerWorld) {
+                ItemEntity entityToSpawn = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), result);
+                entityToSpawn.setPickUpDelay(10);
+                world.addFreshEntity(entityToSpawn);
+            }
+            int unbreakingLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, stack);
+            int damageValue = ((9 - (3 * unbreakingLevel)) + (unbreakingLevel == 0 ? 0 : 3));
+            if (!player.abilities.instabuild) stack.hurtAndBreak(damageValue, player, (entity) ->
+                    entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
         }
     }
 }
