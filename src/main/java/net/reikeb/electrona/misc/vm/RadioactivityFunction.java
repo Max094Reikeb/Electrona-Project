@@ -5,6 +5,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 
@@ -78,6 +80,29 @@ public class RadioactivityFunction {
                     }
                 }
             }
+        }
+    }
+
+    public static void radioactivityEffect(LivingEntity entity, int amplifier) {
+        double radioactivity = entity.getPersistentData().getDouble("radioactive");
+        entity.getPersistentData().putDouble("radioactive", (radioactivity + 1));
+        if (radioactivity > (1200 - (60 * amplifier))) {
+            entity.addEffect(new EffectInstance(Effects.CONFUSION, 1400, 2));
+            entity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 1400, 2));
+            entity.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, 1400, 2));
+            entity.addEffect(new EffectInstance(Effects.WEAKNESS, 1400, 2));
+            entity.hurt(new DamageSource("radioactivity").bypassArmor(), (float) 10);
+            entity.setSecondsOnFire(10);
+        } else if (radioactivity > (800 - (40 * amplifier))) {
+            entity.addEffect(new EffectInstance(Effects.CONFUSION, 600, 1));
+            entity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 600, 1));
+            entity.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, 600, 1));
+            entity.hurt(new DamageSource("radioactivity").bypassArmor(), (float) 6);
+        } else if (radioactivity > (300 - (20 * amplifier))) {
+            entity.addEffect(new EffectInstance(Effects.CONFUSION, 300, 0));
+            entity.hurt(new DamageSource("radioactivity").bypassArmor(), (float) 4);
+        } else if (radioactivity > (100 - (20 * amplifier))) {
+            entity.hurt(new DamageSource("radioactivity").bypassArmor(), (float) 1);
         }
     }
 }

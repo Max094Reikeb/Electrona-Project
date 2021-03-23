@@ -5,11 +5,10 @@ import net.minecraft.entity.ai.attributes.AttributeModifierManager;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.EffectType;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 
 import net.reikeb.electrona.init.PotionEffectInit;
+import net.reikeb.electrona.misc.vm.RadioactivityFunction;
 
 import java.util.Collection;
 
@@ -52,26 +51,7 @@ public class RadioactivityEffect extends Effect {
 
     @Override
     public void applyEffectTick(LivingEntity entity, int amplifier) {
-        double radioactivity = entity.getPersistentData().getDouble("radioactive");
-        entity.getPersistentData().putDouble("radioactive", (radioactivity + 1));
-        if (radioactivity > (1200 - (60 * amplifier))) {
-            entity.addEffect(new EffectInstance(Effects.CONFUSION, 1400, 2));
-            entity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 1400, 2));
-            entity.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, 1400, 2));
-            entity.addEffect(new EffectInstance(Effects.WEAKNESS, 1400, 2));
-            entity.hurt(new DamageSource("radioactivity").bypassArmor(), (float) 10);
-            entity.setSecondsOnFire(10);
-        } else if (radioactivity > (800 - (40 * amplifier))) {
-            entity.addEffect(new EffectInstance(Effects.CONFUSION, 600, 1));
-            entity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 600, 1));
-            entity.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, 600, 1));
-            entity.hurt(new DamageSource("radioactivity").bypassArmor(), (float) 6);
-        } else if (radioactivity > (300 - (20 * amplifier))) {
-            entity.addEffect(new EffectInstance(Effects.CONFUSION, 300, 0));
-            entity.hurt(new DamageSource("radioactivity").bypassArmor(), (float) 4);
-        } else if (radioactivity > (100 - (20 * amplifier))) {
-            entity.hurt(new DamageSource("radioactivity").bypassArmor(), (float) 1);
-        }
+        RadioactivityFunction.radioactivityEffect(entity, amplifier);
     }
 
 	@Override
