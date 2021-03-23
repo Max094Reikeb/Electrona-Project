@@ -17,4 +17,5 @@ public class EnchantmentInit {
 
     public static final RegistryObject<Enchantment> LUMBERJACK = ENCHANTMENTS.register("lumberjack", () -> new Lumberjack(EquipmentSlotType.MAINHAND));
     public static final RegistryObject<Enchantment> VEINMINER = ENCHANTMENTS.register("veinminer", () -> new Veinminer(EquipmentSlotType.MAINHAND));
+    public static final RegistryObject<Enchantment> THUNDERING = ENCHANTMENTS.register("thundering", () -> new Thundering(EquipmentSlotType.MAINHAND));
 }

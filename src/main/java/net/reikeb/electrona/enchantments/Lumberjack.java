@@ -6,6 +6,7 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 
+import net.reikeb.electrona.init.EnchantmentInit;
 import net.reikeb.electrona.init.ItemInit;
 
 public class Lumberjack extends Enchantment {
@@ -36,7 +37,9 @@ public class Lumberjack extends Enchantment {
             return true;
         if (ench == Enchantments.MENDING)
             return true;
-        return ench == Enchantments.VANISHING_CURSE;
+        if (ench == Enchantments.VANISHING_CURSE)
+            return true;
+        return ench == EnchantmentInit.THUNDERING.get();
     }
 
     @Override
