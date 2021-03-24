@@ -42,7 +42,7 @@ public class ItemInit {
     public static final RegistryObject<Item> URANIUM_BAR = ITEMS.register("uranium_bar", UraniumBar::new);
     public static final RegistryObject<Item> URANIUM_DUAL_BAR = ITEMS.register("uranium_dual_bar", UraniumDualBar::new);
     public static final RegistryObject<Item> URANIUM_QUAD_BAR = ITEMS.register("uranium_quad_bar", UraniumQuadBar::new);
-    // Emitter
+    public static final RegistryObject<Item> EMITTER = ITEMS.register("emitter", Emitter::new);
     // Wireless Booster
 
     // Tools and armors
