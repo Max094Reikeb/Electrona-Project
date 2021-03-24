@@ -39,7 +39,10 @@ public class RadioactivityFunction {
      * @return boolean If the entity is wearing the full armor
      */
     public static boolean isEntityWearingLeadArmor(LivingEntity entity) {
-        return false;
+        return ((entity.getItemBySlot(EquipmentSlotType.HEAD).getItem() == ItemInit.LEAD_HELMET.get())
+                && (entity.getItemBySlot(EquipmentSlotType.CHEST).getItem() == ItemInit.LEAD_CHESTPLATE.get())
+                && (entity.getItemBySlot(EquipmentSlotType.LEGS).getItem() == ItemInit.LEAD_LEGGINGS.get())
+                && (entity.getItemBySlot(EquipmentSlotType.FEET).getItem() == ItemInit.LEAD_BOOTS.get()));
     }
 
     /**
