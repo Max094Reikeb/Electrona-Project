@@ -12,6 +12,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import net.reikeb.electrona.advancements.TTriggers;
@@ -21,6 +22,7 @@ import net.reikeb.electrona.events.PlayerDiesEvent;
 import net.reikeb.electrona.recipes.CompressorRecipe;
 import net.reikeb.electrona.recipes.types.RecipeTypeCompressor;
 import net.reikeb.electrona.setup.RegistryHandler;
+import net.reikeb.electrona.world.gen.ConfiguredFeatures;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,12 +49,17 @@ public class Electrona {
 
         // Registers an event with the mod specific event bus. This is needed to register new stuff.
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientLoad);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, this::registerRecipeSerializers);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(new PlayerDiesEvent());
         MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    public void setup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(ConfiguredFeatures::registerConfiguredFeatures);
     }
 
     public void clientLoad(FMLClientSetupEvent event) {
