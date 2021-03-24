@@ -15,7 +15,7 @@ And last, for any mod, I advice you to use JEI (Just Enough Items) for the craft
 
 ## What's next?
 There is still a lot of stuff I'm planning to add to Electrona.
-- Major update in 1.16.4 is coming, adding a lot of stuff and fixing some bugs.
+- Next major update will port the mod to 1.16.5. Electrona will drop MCreator so all the code will be remade from scratch.
 - A minor update will be following, named "Sounds and Lights update"!
 
 ## Electrona trailer
@@ -24,7 +24,7 @@ There is still a lot of stuff I'm planning to add to Electrona.
 </p>
 
 ## Images
-<img align="center" width="800" src="https://www.zupimages.net/up/20/34/r6xo.png">
+<img align="center" width="800" src="https://www.zupimages.net/up/21/12/oazs.png">
 <img align="center" width="800" src="https://www.zupimages.net/up/20/34/5qls.png">
 <img align="center" width="800" src="https://www.zupimages.net/up/20/34/9veq.png">
 
@@ -32,7 +32,7 @@ There is still a lot of stuff I'm planning to add to Electrona.
 None.
 
 ## Other links
-**The Trello of Electrona : https://trello.com/b/iDpxVYxZ/electrona**
+**Electrona's website : http://max-electrona.000webhostapp.com/**
 
 **My Discord Dev Server : http://discord.gg/8As6xhKXd5**
 
