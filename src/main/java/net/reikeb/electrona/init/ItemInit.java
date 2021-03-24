@@ -56,7 +56,10 @@ public class ItemInit {
     public static final RegistryObject<Item> ANTI_RADIATION_CHESTPLATE = ITEMS.register("anti_radiation_chestplate", () -> new AntiRadiationSuit(EquipmentSlotType.CHEST));
     public static final RegistryObject<Item> ANTI_RADIATION_LEGGINGS = ITEMS.register("anti_radiation_leggings", () -> new AntiRadiationSuit(EquipmentSlotType.LEGS));
     public static final RegistryObject<Item> ANTI_RADIATION_BOOTS = ITEMS.register("anti_radiation_boots", () -> new AntiRadiationSuit(EquipmentSlotType.FEET));
-    // Lead Armor
+    public static final RegistryObject<Item> LEAD_HELMET = ITEMS.register("lead_helmet", () -> new LeadArmor(EquipmentSlotType.HEAD));
+    public static final RegistryObject<Item> LEAD_CHESTPLATE = ITEMS.register("lead_chestplate", () -> new LeadArmor(EquipmentSlotType.CHEST));
+    public static final RegistryObject<Item> LEAD_LEGGINGS = ITEMS.register("lead_leggings", () -> new LeadArmor(EquipmentSlotType.LEGS));
+    public static final RegistryObject<Item> LEAD_BOOTS = ITEMS.register("lead_boots", () -> new LeadArmor(EquipmentSlotType.FEET));
     public static final RegistryObject<Item> MECHANIC_WINGS = ITEMS.register("mechanic_wings", MechanicWings::new);
 
     // Generators & Machines - BlockItems
