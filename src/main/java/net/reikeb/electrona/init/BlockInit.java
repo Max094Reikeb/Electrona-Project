@@ -40,5 +40,6 @@ public class BlockInit {
     public static final RegistryObject<MachineCasing> MACHINE_CASING = BLOCKS.register("machine_casing", MachineCasing::new);
     public static final RegistryObject<Cable> CABLE = BLOCKS.register("cable", Cable::new);
     public static final RegistryObject<BlueCable> BLUE_CABLE = BLOCKS.register("blue_cable", BlueCable::new);
+    public static final RegistryObject<Cooler> COOLER = BLOCKS.register("cooler", Cooler::new);
     public static final RegistryObject<CompressedObsidian> COMPRESSED_OBSIDIAN = BLOCKS.register("compressed_obsidian", CompressedObsidian::new);
 }

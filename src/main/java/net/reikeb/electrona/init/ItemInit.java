@@ -135,7 +135,9 @@ public class ItemInit {
 
     public static final RegistryObject<Item> COMPRESSED_OBSIDIAN_ITEM = ITEMS.register("compressed_obsidian", () ->
             new BlockItem(BlockInit.COMPRESSED_OBSIDIAN.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
-    // Cooler
+
+    public static final RegistryObject<Item> COOLER_ITEM = ITEMS.register("cooler", () ->
+            new BlockItem(BlockInit.COOLER.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
     // Dimension Linker
     // Singularity
 }

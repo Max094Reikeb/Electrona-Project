@@ -52,4 +52,7 @@ public class TileEntityInit {
 
     public static final RegistryObject<TileEntityType<TileSteelCrate>> TILE_STEEL_CRATE = TILE_ENTITIES.register("steel_crate", () ->
             TileEntityType.Builder.of(TileSteelCrate::new, BlockInit.STEEL_CRATE.get()).build(null));
+
+    public static final RegistryObject<TileEntityType<TileCooler>> TILE_COOLER = TILE_ENTITIES.register("cooler", () ->
+            TileEntityType.Builder.of(TileCooler::new, BlockInit.COOLER.get()).build(null));
 }
