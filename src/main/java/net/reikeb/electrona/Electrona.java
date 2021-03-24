@@ -22,6 +22,7 @@ import net.reikeb.electrona.events.PlayerDiesEvent;
 import net.reikeb.electrona.recipes.CompressorRecipe;
 import net.reikeb.electrona.recipes.types.RecipeTypeCompressor;
 import net.reikeb.electrona.setup.RegistryHandler;
+import net.reikeb.electrona.world.gamerules.DoBlackholesExist;
 import net.reikeb.electrona.world.gen.ConfiguredFeatures;
 
 import org.apache.logging.log4j.LogManager;
@@ -55,6 +56,7 @@ public class Electrona {
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(new PlayerDiesEvent());
+        MinecraftForge.EVENT_BUS.register(new DoBlackholesExist());
         MinecraftForge.EVENT_BUS.register(this);
     }
 
