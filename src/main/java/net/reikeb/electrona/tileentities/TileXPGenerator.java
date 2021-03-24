@@ -99,9 +99,7 @@ public class TileXPGenerator extends LockableLootTileEntity implements ITickable
         if (world != null) { // Avoid NullPointerExceptions
 
             // Handle slot
-            if ((electronicPower > 0) && (this.inventory.getStackInSlot(0).getItem() == Items.EMERALD)) {
-                world.setBlockAndUpdate(blockPos,
-                        this.getBlockState().setValue(XPGenerator.ACTIVATED, true));
+            if ((electronicPower >= 0.8) && (this.inventory.getStackInSlot(0).getItem() == Items.EMERALD)) {
                 xp += 1;
                 this.getTileData().putInt("wait", xp);
                 this.getTileData().putDouble("ElectronicPower", electronicPower - 0.8);
@@ -112,15 +110,9 @@ public class TileXPGenerator extends LockableLootTileEntity implements ITickable
                 }
             } else {
                 this.getTileData().putInt("wait", 0);
-                if (xpLevel == 0) {
-                    world.setBlockAndUpdate(blockPos,
-                            this.getBlockState().setValue(XPGenerator.ACTIVATED, false));
-                }
-                if (xpLevel > 0) {
-                    world.setBlockAndUpdate(blockPos,
-                            this.getBlockState().setValue(XPGenerator.ACTIVATED, true));
-                }
             }
+            world.setBlockAndUpdate(blockPos, this.getBlockState()
+                    .setValue(XPGenerator.ACTIVATED, (xpLevel > 0 || xp > 0)));
 
             this.setChanged();
             world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(),

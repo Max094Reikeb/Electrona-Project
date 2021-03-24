@@ -57,13 +57,13 @@ public class TileHeatGenerator extends TileEntity implements ITickableTileEntity
                     || (biomeRL.equals(new ResourceLocation("modified_badlands_plateau")))))))) {
                 if (electronicPower < 1996) {
                     this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.15));
-                } else if ((electronicPower >= 1996) && (electronicPower < 2000)) {
+                } else if ((electronicPower >= 1996) && (electronicPower <= 1999.95)) {
                     this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.05));
                 }
             } else {
-                if (electronicPower > 4) {
+                if (electronicPower > 0.15) {
                     this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.15));
-                } else if ((electronicPower <= 4) && (electronicPower > 0)) {
+                } else if ((electronicPower <= 0.15) && (electronicPower >= 0.05)) {
                     this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.05));
                 }
             }

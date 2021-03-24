@@ -43,13 +43,13 @@ public class TileSolarPanelT2 extends TileEntity implements ITickableTileEntity 
                     } else {
                         this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.3));
                     }
-                } else if (electronicPower >= 1996 && electronicPower < 2000) {
+                } else if (electronicPower >= 1996 && electronicPower <= 1999.95) {
                     this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.05));
                 }
             } else {
-                if (electronicPower > 4) {
+                if (electronicPower > 0.2) {
                     this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.2));
-                } else if (electronicPower > 0 && electronicPower <= 4) {
+                } else if (electronicPower <= 0.2 && electronicPower >= 0.05) {
                     this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.05));
                 }
             }

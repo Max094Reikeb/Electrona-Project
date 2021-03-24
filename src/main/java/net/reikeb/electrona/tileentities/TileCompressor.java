@@ -117,14 +117,10 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
                     double energyPerSecond = (double) this.energyRequired / this.compressingTime;
 
                     if (this.currentCompressingTime < (this.compressingTime * 20)) {
-                        world.setBlockAndUpdate(blockPos,
-                                this.getBlockState().setValue(Compressor.COMPRESSING, true));
                         this.currentCompressingTime += 1;
                         electronicPower = electronicPower - (energyPerSecond * 0.05);
 
                     } else {
-                        world.setBlockAndUpdate(blockPos,
-                                this.getBlockState().setValue(Compressor.COMPRESSING, false));
                         this.currentCompressingTime = 0;
                         this.inventory.insertItem(2, output.copy(), false);
                         this.inventory.decrStackSize(0, 1);
@@ -137,6 +133,9 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
             } else {
                 this.currentCompressingTime = 0;
             }
+            world.setBlockAndUpdate(blockPos, this.getBlockState()
+                    .setValue(Compressor.COMPRESSING, this.currentCompressingTime > 0));
+
             this.getTileData().putInt("CurrentCompressingTime", this.currentCompressingTime);
             this.getTileData().putInt("CompressingTime", this.compressingTime);
         }
