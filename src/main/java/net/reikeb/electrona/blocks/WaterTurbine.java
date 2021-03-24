@@ -1,9 +1,6 @@
 package net.reikeb.electrona.blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.BlockItemUseContext;
@@ -16,6 +13,10 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.IBooleanFunction;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
@@ -25,12 +26,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 
 import net.reikeb.electrona.tileentities.TileWaterTurbine;
+import net.reikeb.electrona.utils.ElectronaUtils;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
-public class WaterTurbine extends Block {
+public class WaterTurbine extends AbstractWaterLoggableBlock {
 
     public static final DirectionProperty FACING = HorizontalBlock.FACING;
 
@@ -41,7 +44,9 @@ public class WaterTurbine extends Block {
                 .lightLevel(s -> 0)
                 .harvestLevel(1)
                 .harvestTool(ToolType.PICKAXE));
-        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
+        this.registerDefaultState(this.getStateDefinition().any()
+                .setValue(FACING, Direction.NORTH)
+                .setValue(WATERLOGGED, false));
     }
 
     @Override
@@ -52,9 +57,36 @@ public class WaterTurbine extends Block {
         list.add(new TranslationTextComponent("block.electrona.water_turbine.desc2"));
     }
 
+    VoxelShape shape = Stream.of(
+            Block.box(0, 0, 0, 16, 16, 14),
+            Block.box(0, 0, 14, 4, 16, 16),
+            Block.box(12, 0, 14, 16, 16, 16),
+            Block.box(4, 0, 14, 12, 4, 16),
+            Block.box(4, 12, 14, 12, 16, 16)
+    ).reduce((v1, v2) -> {
+        return VoxelShapes.join(v1, v2, IBooleanFunction.OR);
+    }).get();
+
+    VoxelShape northShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.SOUTH, shape);
+    VoxelShape westShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.EAST, shape);
+    VoxelShape eastShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.WEST, shape);
+
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+    public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+        Direction facing = state.getValue(FACING);
+        if (facing == Direction.NORTH) {
+            return northShape;
+        } else if (facing == Direction.EAST) {
+            return eastShape;
+        } else if (facing == Direction.WEST) {
+            return westShape;
+        }
+        return shape;
+    }
+
+    @Override
+    public void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(FACING, WATERLOGGED);
     }
 
     public BlockState rotate(BlockState state, Rotation rot) {
@@ -67,7 +99,10 @@ public class WaterTurbine extends Block {
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+        BlockState replaceState = context.getLevel().getBlockState(context.getClickedPos());
+        return this.defaultBlockState()
+                .setValue(FACING, context.getHorizontalDirection().getOpposite())
+                .setValue(WATERLOGGED, replaceState.getBlock() == Blocks.WATER);
     }
 
     @Override

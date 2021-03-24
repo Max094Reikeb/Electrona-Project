@@ -34,10 +34,9 @@ public class TileWaterTurbine extends TileEntity implements ITickableTileEntity 
     public void tick() {
         // We get the variables
         World world = this.level;
-        int x = this.worldPosition.getX();
-        int y = this.worldPosition.getY();
-        int z = this.worldPosition.getZ();
         BlockPos blockPos = this.getBlockPos();
+        BlockPos frontPos = blockPos.relative(this.getDirection().getOpposite());
+        BlockPos backPos = blockPos.relative(this.getDirection());
 
         // We get the NBT Tags
         this.getTileData().putInt("MaxStorage", 1000);
@@ -46,53 +45,25 @@ public class TileWaterTurbine extends TileEntity implements ITickableTileEntity 
         if (world != null) { // Avoid NullPointerExceptions
 
             // We generate the energy (this part is uncommon for all generators)
-            if ((this.getDirection() == Direction.WEST) || (this.getDirection() == Direction.EAST)) {
-                if ((this.getDirection() == Direction.WEST)
-                        && (Blocks.AIR == world.getBlockState(new BlockPos(x - 1, y, z)).getBlock())
-                        && (world.getBlockState(new BlockPos(x + 1, y, z)).getMaterial() == Material.WATER)) {
-                    world.setBlock(new BlockPos(x - 1, y, z), Blocks.WATER.defaultBlockState(), 3);
-                } else if (((this.getDirection() == Direction.EAST)
-                        && (Blocks.AIR == world.getBlockState(new BlockPos(x + 1, y, z)).getBlock())
-                        && (world.getBlockState(new BlockPos(x - 1, y, z)).getMaterial() == Material.WATER))) {
-                    world.setBlock(new BlockPos(x + 1, y, z), Blocks.WATER.defaultBlockState(), 3);
+            if ((Blocks.AIR == world.getBlockState(backPos).getBlock())
+                    && (Material.WATER == world.getBlockState(frontPos).getMaterial())) {
+                world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(WaterTurbine.WATERLOGGED, true));
+            } else if (Material.WATER != world.getBlockState(frontPos).getMaterial()) {
+                world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(WaterTurbine.WATERLOGGED, false));
+            }
+
+            if ((Material.WATER == world.getBlockState(backPos).getMaterial())
+                    && (Material.WATER == world.getBlockState(frontPos).getMaterial())) {
+                if ((electronicPower < 996)) {
+                    this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.2));
+                } else if (((electronicPower >= 996) && (electronicPower <= 999.95))) {
+                    this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.05));
                 }
-                if ((((world.getBlockState(new BlockPos(x - 1, y, z))).getMaterial() == Material.WATER)
-                        && ((world.getBlockState(new BlockPos(x + 1, y, z))).getMaterial() == Material.WATER))) {
-                    if ((electronicPower < 996)) {
-                        this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.2));
-                    } else if (((electronicPower >= 996) && (electronicPower < 1000))) {
-                        this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.05));
-                    }
-                } else {
-                    if ((electronicPower > 4)) {
-                        this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.2));
-                    } else if (((electronicPower <= 4) && (electronicPower > 0))) {
-                        this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.05));
-                    }
-                }
-            } else if (((this.getDirection() == Direction.NORTH) || (this.getDirection() == Direction.SOUTH))) {
-                if (((this.getDirection() == Direction.NORTH)
-                        && ((Blocks.AIR == (world.getBlockState(new BlockPos((int) x, y, z - 1))).getBlock())
-                        && ((world.getBlockState(new BlockPos(x, y, z + 1))).getMaterial() == Material.WATER)))) {
-                    world.setBlock(new BlockPos(x, y, z - 1), Blocks.WATER.defaultBlockState(), 3);
-                } else if (((this.getDirection() == Direction.SOUTH)
-                        && ((Blocks.AIR == (world.getBlockState(new BlockPos(x, y, z + 1))).getBlock())
-                        && ((world.getBlockState(new BlockPos(x, y, z - 1))).getMaterial() == Material.WATER)))) {
-                    world.setBlock(new BlockPos(x, y, z + 1), Blocks.WATER.defaultBlockState(), 3);
-                }
-                if ((((world.getBlockState(new BlockPos(x, y, z + 1))).getMaterial() == Material.WATER)
-                        && ((world.getBlockState(new BlockPos(x, y, z - 1))).getMaterial() == Material.WATER))) {
-                    if ((electronicPower < 996)) {
-                        this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.2));
-                    } else if (((electronicPower >= 996) && (electronicPower < 1000))) {
-                        this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.05));
-                    }
-                } else {
-                    if ((electronicPower > 4)) {
-                        this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.2));
-                    } else if (((electronicPower <= 4) && (electronicPower > 0))) {
-                        this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.05));
-                    }
+            } else {
+                if ((electronicPower > 0.2)) {
+                    this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.2));
+                } else if (((electronicPower <= 0.2) && (electronicPower >= 0.05))) {
+                    this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.05));
                 }
             }
 
