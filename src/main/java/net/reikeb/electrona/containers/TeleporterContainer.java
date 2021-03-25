@@ -14,7 +14,7 @@ import net.minecraftforge.items.SlotItemHandler;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.tileentities.TileTeleporter;
 
-import static net.reikeb.electrona.init.ContainerInit.TELEPORTER_CONTAINER;
+import static net.reikeb.electrona.init.ContainerInit.*;
 
 public class TeleporterContainer extends Container {
 

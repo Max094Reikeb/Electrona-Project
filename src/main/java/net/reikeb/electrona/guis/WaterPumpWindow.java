@@ -56,7 +56,7 @@ public class WaterPumpWindow extends ContainerScreen<WaterPumpContainer> {
         int XposT2 = leftPos + 32;
         int YposT1 = topPos + 6;
         int YposT2 = topPos + 59;
-        String string = (currentWater + " mb");
+        String string = (currentWater.get() + " mb");
         if (mouseX > XposT1 && mouseX < XposT2 && mouseY > YposT1 && mouseY < YposT2) {
             renderTooltip(matrixStack, ITextComponent.nullToEmpty(string), mouseX, mouseY);
         }

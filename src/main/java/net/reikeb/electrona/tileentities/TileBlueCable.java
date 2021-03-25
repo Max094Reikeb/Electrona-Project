@@ -10,7 +10,7 @@ import net.minecraft.util.Direction;
 
 import net.reikeb.electrona.misc.vm.CableFunction;
 
-import static net.reikeb.electrona.init.TileEntityInit.TILE_BLUE_CABLE;
+import static net.reikeb.electrona.init.TileEntityInit.*;
 
 public class TileBlueCable extends TileEntity implements ITickableTileEntity {
 

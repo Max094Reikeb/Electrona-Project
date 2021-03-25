@@ -32,7 +32,7 @@ import net.reikeb.electrona.init.ContainerInit;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.electrona.utils.ItemHandler;
 
-import static net.reikeb.electrona.init.TileEntityInit.TILE_BIOMASS_GENERATOR;
+import static net.reikeb.electrona.init.TileEntityInit.*;
 
 public class TileBiomassGenerator extends LockableLootTileEntity implements ITickableTileEntity {
 

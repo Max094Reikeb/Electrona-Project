@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import net.reikeb.electrona.tileentities.TileBattery;
 import net.reikeb.electrona.tileentities.TileBiomassGenerator;
 
 import static net.reikeb.electrona.init.ContainerInit.*;
