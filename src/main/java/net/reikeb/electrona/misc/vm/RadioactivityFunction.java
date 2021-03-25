@@ -2,6 +2,7 @@ package net.reikeb.electrona.misc.vm;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
@@ -67,6 +68,10 @@ public class RadioactivityFunction {
                         }
                     }.compareDistOf(x, y, z)).collect(Collectors.toList());
             for (Entity entityiterator : _entfound) {
+                if (!(entityiterator instanceof LivingEntity)) return;
+                if (entityiterator instanceof PlayerEntity) {
+                    if (((PlayerEntity) entityiterator).abilities.instabuild) return;
+                }
                 if (!entityWearsRadiationArmor) {
                     if (itemstack.getItem() == ItemInit.URANIUM_QUAD_BAR.get()) {
                         ((LivingEntity) (entityWearsLeadArmor ? entity : entityiterator)).addEffect(new EffectInstance(PotionEffectInit.RADIOACTIVITY.get(), 600, 3));

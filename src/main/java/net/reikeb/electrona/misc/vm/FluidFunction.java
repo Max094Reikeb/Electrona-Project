@@ -54,8 +54,8 @@ public class FluidFunction {
             double headroom = machineCapacity.get() - machineLevel.get();
             double actualTransfer = Math.min(Math.min(transferPerTick, generatorLevel), headroom);
 
-            drainWater(generatorTE, (int) (generatorLevel - actualTransfer));
-            fillWater(tileEntity, (int) (machineLevel.get() + actualTransfer));
+            drainWater(generatorTE, (int) actualTransfer);
+            fillWater(tileEntity, (int) actualTransfer);
         }
     }
 
