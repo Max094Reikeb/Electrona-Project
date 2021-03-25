@@ -41,6 +41,9 @@ public class TileEntityInit {
     public static final RegistryObject<TileEntityType<TileXPGenerator>> TILE_XP_GENERATOR = TILE_ENTITIES.register("xp_generator", () ->
             TileEntityType.Builder.of(TileXPGenerator::new, BlockInit.XP_GENERATOR.get()).build(null));
 
+    public static final RegistryObject<TileEntityType<TileWaterPump>> TILE_WATER_PUMP = TILE_ENTITIES.register("water_pump", () ->
+            TileEntityType.Builder.of(TileWaterPump::new, BlockInit.WATER_PUMP.get()).build(null));
+
     public static final RegistryObject<TileEntityType<TileTeleporter>> TILE_TELEPORTER = TILE_ENTITIES.register("teleporter", () ->
             TileEntityType.Builder.of(TileTeleporter::new, BlockInit.TELEPORTER.get()).build(null));
 

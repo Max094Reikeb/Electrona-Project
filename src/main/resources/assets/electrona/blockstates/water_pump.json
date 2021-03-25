@@ -1,9 +1,9 @@
 {
   "variants": {
-    "lit=false": {
+    "pumping=false": {
       "model": "electrona:block/water_pump"
     },
-    "lit=true": {
+    "pumping=true": {
       "model": "electrona:block/water_pump_activated"
     }
   }

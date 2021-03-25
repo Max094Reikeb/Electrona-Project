@@ -94,7 +94,9 @@ public class ItemInit {
     public static final RegistryObject<Item> XP_GENERATOR_ITEM = ITEMS.register("xp_generator", () ->
             new BlockItem(BlockInit.XP_GENERATOR.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));
     // Purificator
-    // Water Pump
+
+    public static final RegistryObject<Item> WATER_PUMP_ITEM = ITEMS.register("water_pump", () ->
+            new BlockItem(BlockInit.WATER_PUMP.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));
     // Sprayer
     // Mining Machine
     // Conveyor

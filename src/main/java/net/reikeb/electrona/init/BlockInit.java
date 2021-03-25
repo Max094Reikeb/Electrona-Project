@@ -27,6 +27,7 @@ public class BlockInit {
     public static final RegistryObject<Compressor> COMPRESSOR = BLOCKS.register("compressor", Compressor::new);
     public static final RegistryObject<XPGenerator> XP_GENERATOR = BLOCKS.register("xp_generator", XPGenerator::new);
     public static final RegistryObject<Teleporter> TELEPORTER = BLOCKS.register("teleporter", Teleporter::new);
+    public static final RegistryObject<WaterPump> WATER_PUMP = BLOCKS.register("water_pump", WaterPump::new);
 
     // Other blocks
     public static final RegistryObject<TinOre> TIN_ORE = BLOCKS.register("tin_ore", TinOre::new);

@@ -21,6 +21,7 @@ public class ClientSetup {
         ScreenManager.register(COMPRESSOR_CONTAINER.get(), CompressorWindow::new);
         ScreenManager.register(XP_GENERATOR_CONTAINER.get(), XPGeneratorWindow::new);
         ScreenManager.register(TELEPORTER_CONTAINER.get(), TeleporterWindow::new);
+        ScreenManager.register(WATER_PUMP_CONTAINER.get(), WaterPumpWindow::new);
         ScreenManager.register(STEEL_CRATE_CONTAINER.get(), SteelCrateWindow::new);
     }
 }

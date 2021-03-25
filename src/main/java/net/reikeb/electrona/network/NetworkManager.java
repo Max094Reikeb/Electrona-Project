@@ -31,5 +31,6 @@ public class NetworkManager {
         INSTANCE.registerMessage(index++, TeleporterLinkPacket.class, TeleporterLinkPacket::encode, TeleporterLinkPacket::decode, TeleporterLinkPacket::whenThisPacketIsReceived);
         INSTANCE.registerMessage(index++, TeleporterAutoDeletePacket.class, TeleporterAutoDeletePacket::encode, TeleporterAutoDeletePacket::decode, TeleporterAutoDeletePacket::whenThisPacketIsReceived);
         INSTANCE.registerMessage(index++, ConverterPacket.class, ConverterPacket::encode, ConverterPacket::decode, ConverterPacket::whenThisPacketIsReceived);
+        INSTANCE.registerMessage(index++, WaterPumpActivationPacket.class, WaterPumpActivationPacket::encode, WaterPumpActivationPacket::decode, WaterPumpActivationPacket::whenThisPacketIsReceived);
     }
 }
