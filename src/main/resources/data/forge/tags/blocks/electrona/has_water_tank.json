@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "electrona:purificator",
     "electrona:cooler",
     "electrona:water_pump"
   ]

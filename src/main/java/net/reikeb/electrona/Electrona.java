@@ -20,7 +20,9 @@ import net.reikeb.electrona.client.render.MechanicWingsLayer;
 import net.reikeb.electrona.client.setup.ClientSetup;
 import net.reikeb.electrona.events.PlayerDiesEvent;
 import net.reikeb.electrona.recipes.CompressorRecipe;
+import net.reikeb.electrona.recipes.PurificatorRecipe;
 import net.reikeb.electrona.recipes.types.RecipeTypeCompressor;
+import net.reikeb.electrona.recipes.types.RecipeTypePurificator;
 import net.reikeb.electrona.setup.RegistryHandler;
 import net.reikeb.electrona.world.gamerules.DoBlackholesExist;
 import net.reikeb.electrona.world.gen.ConfiguredFeatures;
@@ -39,6 +41,7 @@ public class Electrona {
 
     // Creates a new recipe type. This is used for storing recipes in the map, and looking them up.
     public static final IRecipeType<CompressorRecipe> COMPRESSING = new RecipeTypeCompressor();
+    public static final IRecipeType<PurificatorRecipe> PURIFYING = new RecipeTypePurificator();
 
     public Electrona() {
 
@@ -84,8 +87,10 @@ public class Electrona {
         // While this makes registering your recipe type an optional step, I recommend
         // registering it anyway to allow other mods to discover your custom recipe types.
         Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(COMPRESSING.toString()), COMPRESSING);
+        Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(PURIFYING.toString()), PURIFYING);
 
         // Register the recipe serializer. This handles from json, from packet, and to packet.
         event.getRegistry().register(CompressorRecipe.SERIALIZER);
+        event.getRegistry().register(PurificatorRecipe.SERIALIZER);
     }
 }
