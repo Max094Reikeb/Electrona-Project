@@ -1,7 +1,7 @@
 <img align="center" width="800" src="https://www.zupimages.net/up/21/12/oazs.png">
 <p align="center"><b>The latest update adds a lot of stuff!</b></p>
 
-Our Website and Discord server! <br />
+<b><u>Our Website and Discord server!</u></b> <br />
 You want informations about the blocks/items/mechanics of the mod? <br />
 http://max-electrona.000webhostapp.com/ <br />
 Want more help than the website can provide? <br />
