@@ -84,7 +84,8 @@ public class ItemInit {
     public static final RegistryObject<Item> NUCLEAR_GENERATOR_ITEM = ITEMS.register("nuclear_generator_controller", () ->
             new BlockItem(BlockInit.NUCLEAR_GENERATOR_CONTROLLER.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));
 
-    // Creative Generator
+    public static final RegistryObject<Item> CREATIVE_GENERATOR_ITEM = ITEMS.register("creative_generator", () ->
+            new BlockItem(BlockInit.CREATIVE_GENERATOR.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));
 
     public static final RegistryObject<Item> EL_CONVERTER_ITEM = ITEMS.register("el_converter", () ->
             new BlockItem(BlockInit.EL_CONVERTER.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));
