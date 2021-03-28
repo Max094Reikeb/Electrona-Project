@@ -112,7 +112,7 @@ public class TilePurificator extends LockableLootTileEntity implements ITickable
 
         // Input slot - Handling slots
         if ((this.inventory.getStackInSlot(0).getItem() == Items.WATER_BUCKET)
-                && (waterLevel.get() < (tankCapacity.get() + 1000))) {
+                && (waterLevel.get() < (tankCapacity.get() - 1000))) {
             this.inventory.decrStackSize(0, 1);
             this.inventory.insertItem(0, new ItemStack(Items.BUCKET, 1), false);
             FluidFunction.fillWater(this, 1000);
