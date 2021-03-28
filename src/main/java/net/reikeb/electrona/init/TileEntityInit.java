@@ -29,6 +29,9 @@ public class TileEntityInit {
     public static final RegistryObject<TileEntityType<TileBiomassGenerator>> TILE_BIOMASS_GENERATOR = TILE_ENTITIES.register("biomass_generator", () ->
             TileEntityType.Builder.of(TileBiomassGenerator::new, BlockInit.BIOMASS_GENERATOR.get()).build(null));
 
+    public static final RegistryObject<TileEntityType<TileNuclearGeneratorController>> TILE_NUCLEAR_GENERATOR_CONTROLLER = TILE_ENTITIES.register("nuclear_generator_controller", () ->
+            TileEntityType.Builder.of(TileNuclearGeneratorController::new, BlockInit.NUCLEAR_GENERATOR_CONTROLLER.get()).build(null));
+
     public static final RegistryObject<TileEntityType<TileBattery>> TILE_BATTERY = TILE_ENTITIES.register("battery", () ->
             TileEntityType.Builder.of(TileBattery::new, BlockInit.BATTERY.get()).build(null));
 

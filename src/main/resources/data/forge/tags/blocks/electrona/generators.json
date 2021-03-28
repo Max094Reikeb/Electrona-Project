@@ -5,6 +5,7 @@
     "electrona:solar_panel_tiers2",
     "electrona:water_turbine",
     "electrona:heat_generator",
-    "electrona:biomass_generator"
+    "electrona:biomass_generator",
+    "electrona:nuclear_generator_controller"
   ]
 }
