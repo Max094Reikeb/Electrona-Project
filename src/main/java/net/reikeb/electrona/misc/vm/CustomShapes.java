@@ -106,6 +106,14 @@ public class CustomShapes {
     }).get();
 
     /**
+     * VoxelShape of the Teleporter
+     */
+    public static VoxelShape Teleporter = VoxelShapes.join(
+            Block.box(-2, 0, -2, 18, 3, 18),
+            Block.box(0, 3, 0, 16, 6, 16),
+            IBooleanFunction.OR);
+
+    /**
      * VoxelShape of the Water Turbine
      */
     public static VoxelShape WaterTurbine = Stream.of(
