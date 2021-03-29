@@ -2,26 +2,26 @@ package net.reikeb.electrona.misc.vm;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.*;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.*;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.text.*;
+import net.minecraft.world.*;
+import net.minecraft.world.server.ServerWorld;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import net.reikeb.electrona.init.BlockInit;
-import net.reikeb.electrona.init.ItemInit;
-import net.reikeb.electrona.tileentities.TileTeleporter;
+import net.reikeb.electrona.events.TeleporterUseEvent;
+import net.reikeb.electrona.init.*;
+import net.reikeb.electrona.tileentities.*;
 
-import java.util.Collections;
-import java.util.Objects;
+import java.util.*;
 
 public class TeleporterFunction {
 
@@ -39,29 +39,26 @@ public class TeleporterFunction {
         BlockState state = world.getBlockState(pos);
         BlockPos posBelow = new BlockPos(x, (y - 1), z);
         TileEntity tile = world.getBlockEntity(pos);
-        if (!(tile instanceof TileTeleporter)) return;
+        TileEntity tileBelow = world.getBlockEntity(posBelow);
+        if ((!(tile instanceof TileTeleporter)) || (!(tileBelow instanceof TileDimensionLinker))) return;
         TileTeleporter tileEntity = (TileTeleporter) tile;
+        TileDimensionLinker tileEntityBelow = (TileDimensionLinker) tileBelow;
         boolean isTeleporter = false;
         boolean autoDeletion = tileEntity.getTileData().getBoolean("autoDeletion");
-        String dimension = new Object() {
-            public String getValue(IWorld world, BlockPos pos, String tag) {
-                TileEntity tileEntity = world.getBlockEntity(pos);
-                if (tileEntity != null)
-                    return tileEntity.getTileData().getString(tag);
-                return "";
-            }
-        }.getValue(world, new BlockPos((int) x, (int) (y - 1), (int) z), "dimensionID");
+        String dimension = tileEntityBelow.getTileData().getString("dimensionID");
         double teleportXCo = tileEntity.getTileData().getDouble("teleportX");
         double teleportYCo = tileEntity.getTileData().getDouble("teleportY");
         double teleportZCo = tileEntity.getTileData().getDouble("teleportZ");
+        BlockPos teleportPos = new BlockPos(teleportXCo, teleportYCo, teleportZCo);
         double electronicPower = tileEntity.getTileData().getDouble("ElectronicPower");
         if (electronicPower >= 1000) {
-            /*
-            if ((DimensionLinkerBlock.block.getBlock() == (world.getBlockState(new BlockPos((int) x, (int) (y - 1), (int) z))).getBlock())) {
+            if (BlockInit.DIMENSION_LINKER.get() == world.getBlockState(posBelow).getBlock()) {
                 if (world instanceof ServerWorld) {
                     RegistryKey<World> key = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dimension));
+                    System.out.println("Debug 0");
                     if ((key != null) && (!dimension.equals("")) && ((ServerWorld) world).getServer().getLevel(key) != null) {
-                        if ((TeleporterBlock.block.getBlock() == (((ServerWorld) world).getServer().getLevel(key)
+                        System.out.println("Debug 1");
+                        if ((BlockInit.TELEPORTER.get() == (((ServerWorld) world).getServer().getLevel(key)
                                 .getBlockState(new BlockPos((int) (teleportXCo - 0.5), (int) teleportYCo, (int) (teleportZCo - 0.5)))).getBlock())) {
                             isTeleporter = true;
                         }
@@ -72,136 +69,91 @@ public class TeleporterFunction {
                         }
                     }
                 }
-                if ((isTeleporter)) {
+                if (isTeleporter) {
                     RegistryKey<World> newKey = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dimension));
                     RegistryKey<World> defaultKey = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation("minecraft:overworld"));
-                    IWorld _newWorld = ((ServerWorld) world).getServer().getLevel(newKey);
+                    ServerWorld _newWorld = ((ServerWorld) world).getServer().getLevel(newKey);
                     IWorld _defaultWorld = ((ServerWorld) world).getServer().getLevel(defaultKey);
-                    if (!((world instanceof World ? ((World) world) : _defaultWorld) == _newWorld)) {
-                        {
-                            ServerWorld nextWorld = (ServerWorld) _newWorld;
-                            if (!entity.level.isClientSide && entity instanceof ServerPlayerEntity) {
-                                if (nextWorld != null) {
-                                    ((ServerPlayerEntity) entity).connection
-                                            .send(new SChangeGameStatePacket(SChangeGameStatePacket.WIN_GAME, 0));
-                                    ((ServerPlayerEntity) entity).teleportTo(nextWorld, nextWorld.getSharedSpawnPos().getX(),
-                                            nextWorld.getSharedSpawnPos().getY() + 1, nextWorld.getSharedSpawnPos().getZ(), entity.yRot,
-                                            entity.xRot);
-                                    ((ServerPlayerEntity) entity).connection
-                                            .send(new SPlayerAbilitiesPacket(((ServerPlayerEntity) entity).abilities));
-                                    for (EffectInstance effectinstance : ((ServerPlayerEntity) entity).getActiveEffects()) {
+                    if (!((world instanceof World ? world : _defaultWorld) == _newWorld)) {
+                        if (!MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Pre(world, _newWorld, pos, teleportPos, entity))) {
+                            {
+                                ServerWorld nextWorld = _newWorld;
+                                if (!entity.level.isClientSide && entity instanceof ServerPlayerEntity) {
+                                    if (nextWorld != null) {
                                         ((ServerPlayerEntity) entity).connection
-                                                .send(new SPlayEntityEffectPacket(entity.getId(), effectinstance));
+                                                .send(new SChangeGameStatePacket(SChangeGameStatePacket.WIN_GAME, 0));
+                                        ((ServerPlayerEntity) entity).teleportTo(nextWorld, nextWorld.getSharedSpawnPos().getX(),
+                                                nextWorld.getSharedSpawnPos().getY() + 1, nextWorld.getSharedSpawnPos().getZ(), entity.yRot,
+                                                entity.xRot);
+                                        ((ServerPlayerEntity) entity).connection
+                                                .send(new SPlayerAbilitiesPacket(((ServerPlayerEntity) entity).abilities));
+                                        for (EffectInstance effectinstance : ((ServerPlayerEntity) entity).getActiveEffects()) {
+                                            ((ServerPlayerEntity) entity).connection
+                                                    .send(new SPlayEntityEffectPacket(entity.getId(), effectinstance));
+                                        }
+                                        ((ServerPlayerEntity) entity).connection.send(new SPlaySoundEventPacket(1032, BlockPos.ZERO, 0, false));
                                     }
-                                    ((ServerPlayerEntity) entity).connection.send(new SPlaySoundEventPacket(1032, BlockPos.ZERO, 0, false));
                                 }
                             }
-                        }
-                    }
-                    {
-                        entity.teleportTo(teleportXCo, teleportYCo, teleportZCo);
-                        if (entity instanceof ServerPlayerEntity) {
-                            ((ServerPlayerEntity) entity).connection.teleport(teleportXCo, teleportYCo, teleportZCo, entity.yRot,
-                                    entity.xRot, Collections.emptySet());
-                        }
-                    }
-                    if (!world.isClientSide()) {
-                        TileEntity _tileEntity = world.getBlockEntity(pos);
-                        if (_tileEntity != null)
-                            _tileEntity.getTileData().putDouble("ElectronicPower", (electronicPower - 1000));
-                        if (world instanceof World)
-                            ((World) world).sendBlockUpdated(pos, state, state, 3);
-                    }
-                    if (world instanceof World && !world.isClientSide()) {
-                        ((World) world).playSound(null, pos,
-                                Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"))),
-                                SoundCategory.NEUTRAL, (float) 5, (float) 5);
-                    } else {
-                        ((World) world).playLocalSound(x, y, z,
-                                Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"))),
-                                SoundCategory.NEUTRAL, (float) 5, (float) 5, false);
-                    }
-                    if (world instanceof World && !world.isClientSide()) {
-                        ((World) world).playSound(null, new BlockPos((int) (teleportXCo - 0.5), (int) teleportYCo, (int) (teleportZCo - 0.5)),
-                                Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"))),
-                                SoundCategory.NEUTRAL, (float) 5, (float) 5);
-                    } else {
-                        ((World) world).playLocalSound((teleportXCo - 0.5), teleportYCo, (teleportZCo - 0.5),
-                                Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"))),
-                                SoundCategory.NEUTRAL, (float) 5, (float) 5, false);
-                    }
-                    if (autoDeletion) {
-                        if (!world.isClientSide()) {
-                            TileEntity _tileEntity = world.getBlockEntity(pos);
-                            if (_tileEntity != null)
-                                _tileEntity.getTileData().putDouble("teleportX", 0);
-                            if (world instanceof World)
-                                ((World) world).sendBlockUpdated(pos, state, state, 3);
-                        }
-                        if (!world.isClientSide()) {
-                            TileEntity _tileEntity = world.getBlockEntity(pos);
-                            if (_tileEntity != null)
-                                _tileEntity.getTileData().putDouble("teleportY", 0);
-                            if (world instanceof World)
-                                ((World) world).sendBlockUpdated(pos, state, state, 3);
-                        }
-                        if (!world.isClientSide()) {
-                            TileEntity _tileEntity = world.getBlockEntity(pos);
-                            if (_tileEntity != null)
-                                _tileEntity.getTileData().putDouble("teleportZ", 0);
-                            if (world instanceof World)
-                                ((World) world).sendBlockUpdated(pos, state, state, 3);
+                            teleport(world, _newWorld, pos, teleportPos, state, tileEntity, entity, autoDeletion, electronicPower);
                         }
                     }
                 } else {
                     if (entity instanceof PlayerEntity && !entity.level.isClientSide) {
-                        ((PlayerEntity) entity).displayClientMessage(new TranslationTextComponent("electrona.block.teleporter.no_world_coos_info"),
-                                true);
+                        ((PlayerEntity) entity).displayClientMessage(new TranslationTextComponent("electrona.block.teleporter.no_world_coos_info"), true);
                     }
                 }
-            } else {*/
-            if ((BlockInit.TELEPORTER.get() == (world.getBlockState(new
+            } else if ((BlockInit.TELEPORTER.get() == (world.getBlockState(new
                     BlockPos((int) (teleportXCo - 0.5), (int) teleportYCo, (int) (teleportZCo - 0.5)))).getBlock())) {
-                {
-                    entity.teleportTo(teleportXCo, teleportYCo, teleportZCo);
-                    if (entity instanceof ServerPlayerEntity) {
-                        ((ServerPlayerEntity) entity).connection.teleport(teleportXCo, teleportYCo, teleportZCo, entity.yRot,
-                                entity.xRot, Collections.emptySet());
-                    }
-                }
-                if (!world.isClientSide()) {
-                    tileEntity.getTileData().putDouble("ElectronicPower", (electronicPower - 1000));
-                    world.sendBlockUpdated(pos, state, state, 3);
-                    world.playSound(null, pos,
-                            Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"))),
-                            SoundCategory.NEUTRAL, (float) 5, (float) 5);
-                    world.playSound(null, new BlockPos((int) (teleportXCo - 0.5), (int) teleportYCo, (int) (teleportZCo - 0.5)),
-                            Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"))),
-                            SoundCategory.NEUTRAL, (float) 5, (float) 5);
-                } else {
-                    world.playLocalSound(x, y, z,
-                            Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"))),
-                            SoundCategory.NEUTRAL, (float) 5, (float) 5, false);
-                    world.playLocalSound((teleportXCo - 0.5), teleportYCo, (teleportZCo - 0.5),
-                            Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"))),
-                            SoundCategory.NEUTRAL, (float) 5, (float) 5, false);
-                }
-                if (autoDeletion && !world.isClientSide()) {
-                    tileEntity.getTileData().putDouble("teleportX", 0);
-                    tileEntity.getTileData().putDouble("teleportY", 0);
-                    tileEntity.getTileData().putDouble("teleportZ", 0);
-                    world.sendBlockUpdated(pos, state, state, 3);
+                if (!MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Pre(world, world, pos, teleportPos, entity))) {
+                    teleport(world, world, pos, teleportPos, state, tileEntity, entity, autoDeletion, electronicPower);
                 }
             } else {
                 if (entity instanceof PlayerEntity && !entity.level.isClientSide) {
                     ((PlayerEntity) entity).displayClientMessage(new TranslationTextComponent("electrona.block.teleporter.no_coos_info"), true);
                 }
             }
-            //}
         } else {
             if (entity instanceof PlayerEntity && !entity.level.isClientSide) {
                 ((PlayerEntity) entity).displayClientMessage(new TranslationTextComponent("electrona.block.teleporter.not_enough_power_info"), true);
             }
+        }
+    }
+
+    public static void teleport(World world, World teleportWorld, BlockPos pos, BlockPos teleportPos, BlockState state, TileTeleporter tileEntity, Entity entity, boolean autoDeletion, double electronicPower) {
+        double teleportXCo = teleportPos.getX();
+        double teleportYCo = teleportPos.getY();
+        double teleportZCo = teleportPos.getZ();
+        {
+            entity.teleportTo(teleportXCo, teleportYCo, teleportZCo);
+            if (entity instanceof ServerPlayerEntity) {
+                ((ServerPlayerEntity) entity).connection.teleport(teleportXCo, teleportYCo, teleportZCo, entity.yRot,
+                        entity.xRot, Collections.emptySet());
+            }
+        }
+        MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(world, teleportWorld, pos, teleportPos, entity));
+        if (!world.isClientSide()) {
+            tileEntity.getTileData().putDouble("ElectronicPower", (electronicPower - 1000));
+            world.sendBlockUpdated(pos, state, state, 3);
+            world.playSound(null, pos,
+                    Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"))),
+                    SoundCategory.NEUTRAL, (float) 5, (float) 5);
+            world.playSound(null, new BlockPos((int) (teleportXCo - 0.5), (int) teleportYCo, (int) (teleportZCo - 0.5)),
+                    Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"))),
+                    SoundCategory.NEUTRAL, (float) 5, (float) 5);
+        } else {
+            world.playLocalSound(pos.getX(), pos.getY(), pos.getZ(),
+                    Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"))),
+                    SoundCategory.NEUTRAL, (float) 5, (float) 5, false);
+            world.playLocalSound((teleportXCo - 0.5), teleportYCo, (teleportZCo - 0.5),
+                    Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"))),
+                    SoundCategory.NEUTRAL, (float) 5, (float) 5, false);
+        }
+        if (autoDeletion && !world.isClientSide()) {
+            tileEntity.getTileData().putDouble("teleportX", 0);
+            tileEntity.getTileData().putDouble("teleportY", 0);
+            tileEntity.getTileData().putDouble("teleportZ", 0);
+            world.sendBlockUpdated(pos, state, state, 3);
         }
     }
 

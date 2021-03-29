@@ -147,7 +147,9 @@ public class ItemInit {
 
     public static final RegistryObject<Item> COOLER_ITEM = ITEMS.register("cooler", () ->
             new BlockItem(BlockInit.COOLER.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
-    // Dimension Linker
+
+    public static final RegistryObject<Item> DIMENSION_LINKER_ITEM = ITEMS.register("dimension_linker", () ->
+            new BlockItem(BlockInit.DIMENSION_LINKER.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
 
     public static final RegistryObject<Item> SINGULARITY_ITEM = ITEMS.register("singularity", () ->
             new BlockItem(BlockInit.SINGULARITY.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));

@@ -34,5 +34,6 @@ public class NetworkManager {
         INSTANCE.registerMessage(index++, WaterPumpActivationPacket.class, WaterPumpActivationPacket::encode, WaterPumpActivationPacket::decode, WaterPumpActivationPacket::whenThisPacketIsReceived);
         INSTANCE.registerMessage(index++, NuclearActivatePacket.class, NuclearActivatePacket::encode, NuclearActivatePacket::decode, NuclearActivatePacket::whenThisPacketIsReceived);
         INSTANCE.registerMessage(index++, NuclearBarStatusPacket.class, NuclearBarStatusPacket::encode, NuclearBarStatusPacket::decode, NuclearBarStatusPacket::whenThisPacketIsReceived);
+        INSTANCE.registerMessage(index++, DimensionIDPacket.class, DimensionIDPacket::encode, DimensionIDPacket::decode, DimensionIDPacket::whenThisPacketIsReceived);
     }
 }

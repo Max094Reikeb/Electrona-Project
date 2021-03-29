@@ -45,6 +45,7 @@ public class BlockInit {
     public static final RegistryObject<Cable> CABLE = BLOCKS.register("cable", Cable::new);
     public static final RegistryObject<BlueCable> BLUE_CABLE = BLOCKS.register("blue_cable", BlueCable::new);
     public static final RegistryObject<Cooler> COOLER = BLOCKS.register("cooler", Cooler::new);
+    public static final RegistryObject<DimensionLinker> DIMENSION_LINKER = BLOCKS.register("dimension_linker", DimensionLinker::new);
     public static final RegistryObject<CompressedObsidian> COMPRESSED_OBSIDIAN = BLOCKS.register("compressed_obsidian", CompressedObsidian::new);
     public static final RegistryObject<Singularity> SINGULARITY = BLOCKS.register("singularity", Singularity::new);
     public static final RegistryObject<Hole> HOLE = BLOCKS.register("hole", Hole::new);
