@@ -67,4 +67,10 @@ public class TileEntityInit {
 
     public static final RegistryObject<TileEntityType<TileCooler>> TILE_COOLER = TILE_ENTITIES.register("cooler", () ->
             TileEntityType.Builder.of(TileCooler::new, BlockInit.COOLER.get()).build(null));
+
+    public static final RegistryObject<TileEntityType<TileHole>> TILE_HOLE = TILE_ENTITIES.register("hole", () ->
+            TileEntityType.Builder.of(TileHole::new, BlockInit.HOLE.get()).build(null));
+
+    public static final RegistryObject<TileEntityType<TileSingularity>> TILE_SINGULARITY = TILE_ENTITIES.register("singularity", () ->
+            TileEntityType.Builder.of(TileSingularity::new, BlockInit.SINGULARITY.get()).build(null));
 }

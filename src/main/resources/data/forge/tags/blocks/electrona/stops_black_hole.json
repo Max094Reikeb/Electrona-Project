@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:air",
+    "electrona:singularity",
+    "electrona:hole",
+    "electrona:lead_block",
+    "electrona:lead_door"
+  ]
+}

@@ -35,6 +35,7 @@ import net.reikeb.electrona.containers.NuclearGeneratorControllerContainer;
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.misc.vm.*;
 import net.reikeb.electrona.utils.ItemHandler;
+import net.reikeb.electrona.world.gamerules.DoBlackholesExist;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -171,7 +172,10 @@ public class TileNuclearGeneratorController extends LockableLootTileEntity imple
     public void explodes() {
         this.level.explode(null, this.getBlockPos().getX(), this.getBlockPos().getY(),
                 this.getBlockPos().getZ(), 20, Explosion.Mode.BREAK);
-        // Singularity spawn percentage
+        if ((Math.random() < 0.25) && this.level.getLevelData().getGameRules().getBoolean(DoBlackholesExist.DO_BLACK_HOLES_EXIST)) {
+            this.level.setBlockAndUpdate(this.getBlockPos(), BlockInit.SINGULARITY.get().defaultBlockState());
+            // Advancement "I am... Inevitable!"
+        }
     }
 
     @Override
