@@ -13,5 +13,6 @@ public class RegistryHandler {
         TileEntityInit.TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         PotionEffectInit.EFFECTS.register(FMLJavaModLoadingContext.get().getModEventBus());
         EnchantmentInit.ENCHANTMENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ParticleInit.PARTICLES.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 }

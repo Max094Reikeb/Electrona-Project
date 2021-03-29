@@ -1,13 +1,18 @@
 package net.reikeb.electrona.client.setup;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.guis.*;
+import net.reikeb.electrona.init.ParticleInit;
+import net.reikeb.electrona.particles.DarkMatter;
 
 import static net.reikeb.electrona.init.ContainerInit.*;
 
@@ -25,5 +30,10 @@ public class ClientSetup {
         ScreenManager.register(WATER_PUMP_CONTAINER.get(), WaterPumpWindow::new);
         ScreenManager.register(PURIFICATOR_CONTAINER.get(), PurificatorWindow::new);
         ScreenManager.register(STEEL_CRATE_CONTAINER.get(), SteelCrateWindow::new);
+    }
+
+    @SubscribeEvent
+    public static void registerParticles(ParticleFactoryRegisterEvent event) {
+        Minecraft.getInstance().particleEngine.register(ParticleInit.DARK_MATTER.get(), DarkMatter.DarkMatterParticleFactory::new);
     }
 }
