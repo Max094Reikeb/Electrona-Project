@@ -15,7 +15,6 @@ import net.minecraft.tileentity.LockableLootTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -31,7 +30,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.reikeb.electrona.containers.BiomassGeneratorContainer;
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
-import net.reikeb.electrona.utils.ItemHandler;
+import net.reikeb.electrona.utils.*;
 
 import static net.reikeb.electrona.init.TileEntityInit.*;
 
@@ -108,12 +107,7 @@ public class TileBiomassGenerator extends LockableLootTileEntity implements ITic
                         this.getTileData().putDouble("ElectronicPower", 3000);
                     }
                     this.inventory.decrStackSize(0, 1);
-                    if (world.isClientSide) {
-                        world.playLocalSound(this.getBlockPos().getX(), this.getBlockPos().getY(), this.getBlockPos().getZ(),
-                                SoundsInit.BIOMASS_GENERATOR_ACTIVE.get(), SoundCategory.BLOCKS, 1F, 1F, false);
-                    } else {
-                        world.playSound(null, this.getBlockPos(), SoundsInit.BIOMASS_GENERATOR_ACTIVE.get(), SoundCategory.BLOCKS, 1F, 1F);
-                    }
+                    ElectronaUtils.playSound(world, this.getBlockPos(), SoundsInit.BIOMASS_GENERATOR_ACTIVE.get());
                     wait = 0;
                 }
             } else {
