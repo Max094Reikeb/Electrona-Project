@@ -4,13 +4,15 @@ license="All rights reserved"
 
 [[mods]]
 modId="electrona"
-version="1.16.5-a2.0"
+version="1.16.5-c2.0"
 displayName="Electrona"
 credits="Credits are on mod's page."
-displayURL="https://trello.com/b/iDpxVYxZ/electrona"
+displayURL="http://max-electrona.000webhostapp.com/"
 authors="Max094_Reikeb"
 description='''
-Electrona is a tech mod
+Electrona is a tech mod made by Max094_Reikeb.
+
+It was originally made on MCreator, but then, the r2.0 version ported it off.
 '''
 
 [[dependencies.electrona]] #optional
