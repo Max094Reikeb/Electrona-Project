@@ -16,6 +16,7 @@ import net.minecraft.tileentity.LockableLootTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -150,8 +151,13 @@ public class TileNuclearGeneratorController extends LockableLootTileEntity imple
             }
         }
 
-        if (this.getTileData().getBoolean("alert")) {
-            // play alert sound
+        if ((this.getTileData().getBoolean("alert")) && (this.level.getGameTime() % 20 == 0)) {
+            if (this.level.isClientSide) {
+                this.level.playLocalSound(this.getBlockPos().getX(), this.getBlockPos().getY(), this.getBlockPos().getZ(),
+                        SoundsInit.NUCLEAR_GENERATOR_CONTROLLER_ALERT.get(), SoundCategory.BLOCKS, 1F, 1F, false);
+            } else {
+                this.level.playSound(null, this.getBlockPos(), SoundsInit.NUCLEAR_GENERATOR_CONTROLLER_ALERT.get(), SoundCategory.BLOCKS, 1F, 1F);
+            }
         }
 
         // Transfer energy

@@ -14,5 +14,6 @@ public class RegistryHandler {
         PotionEffectInit.EFFECTS.register(FMLJavaModLoadingContext.get().getModEventBus());
         EnchantmentInit.ENCHANTMENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ParticleInit.PARTICLES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        SoundsInit.SOUNDS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 }

@@ -1,0 +1,12 @@
+{
+  "block.nuclear_generator_controller.alert": {
+    "category": "block",
+    "subtitle": "subtitles.block.nuclear_generator_controller.alert",
+    "sounds": [
+      {
+        "name": "electrona:block.nuclear_generator_controller.alert",
+        "stream": false
+      }
+    ]
+  }
+}
