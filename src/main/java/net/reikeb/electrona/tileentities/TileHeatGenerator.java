@@ -31,9 +31,6 @@ public class TileHeatGenerator extends TileEntity implements ITickableTileEntity
         // We get the variables
         World world = this.level;
         BlockPos pos = this.getBlockPos();
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
 
         // We set the NBT Tags
         this.getTileData().putInt("MaxStorage", 2000);
@@ -52,9 +49,14 @@ public class TileHeatGenerator extends TileEntity implements ITickableTileEntity
 
             if (((biomeRL != null)) && (biomeRL.equals(new ResourceLocation("desert"))
                     || (biomeRL.equals(new ResourceLocation("nether_wastes"))
-                    || (biomeRL.equals(new ResourceLocation("ocean"))
+                    || (biomeRL.equals(new ResourceLocation("warm_ocean"))
+                    || (biomeRL.equals(new ResourceLocation("deep_warm_ocean")))
                     || (biomeRL.equals(new ResourceLocation("modified_wooded_badlands_plateau"))
-                    || (biomeRL.equals(new ResourceLocation("modified_badlands_plateau")))))))) {
+                    || (biomeRL.equals(new ResourceLocation("modified_badlands_plateau"))
+                    || (biomeRL.equals(new ResourceLocation("crimson_forest"))
+                    || (biomeRL.equals(new ResourceLocation("warped_forest"))
+                    || (biomeRL.equals(new ResourceLocation("soul_sand_valley"))
+                    || (biomeRL.equals(new ResourceLocation("basalt_deltas")))))))))))) {
                 if (electronicPower < 1996) {
                     this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.15));
                 } else if ((electronicPower >= 1996) && (electronicPower <= 1999.95)) {
