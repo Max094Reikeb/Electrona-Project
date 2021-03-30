@@ -18,7 +18,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.reikeb.electrona.advancements.TTriggers;
 import net.reikeb.electrona.client.render.MechanicWingsLayer;
 import net.reikeb.electrona.client.setup.ClientSetup;
-import net.reikeb.electrona.events.PlayerDiesEvent;
+import net.reikeb.electrona.events.entity.PlayerDiesEvent;
 import net.reikeb.electrona.recipes.CompressorRecipe;
 import net.reikeb.electrona.recipes.PurificatorRecipe;
 import net.reikeb.electrona.recipes.types.RecipeTypeCompressor;

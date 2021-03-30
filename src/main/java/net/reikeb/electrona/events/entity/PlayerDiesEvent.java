@@ -1,4 +1,4 @@
-package net.reikeb.electrona.events;
+package net.reikeb.electrona.events.entity;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;

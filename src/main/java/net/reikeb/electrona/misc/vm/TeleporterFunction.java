@@ -17,7 +17,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import net.reikeb.electrona.events.TeleporterUseEvent;
+import net.reikeb.electrona.events.local.TeleporterUseEvent;
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.tileentities.*;
 

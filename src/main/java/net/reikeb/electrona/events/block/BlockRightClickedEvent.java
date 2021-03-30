@@ -1,4 +1,4 @@
-package net.reikeb.electrona.events;
+package net.reikeb.electrona.events.block;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;

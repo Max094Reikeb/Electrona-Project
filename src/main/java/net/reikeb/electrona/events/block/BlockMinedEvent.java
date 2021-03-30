@@ -1,4 +1,4 @@
-package net.reikeb.electrona.events;
+package net.reikeb.electrona.events.block;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;

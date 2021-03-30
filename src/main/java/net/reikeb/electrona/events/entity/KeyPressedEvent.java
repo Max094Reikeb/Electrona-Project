@@ -1,4 +1,4 @@
-package net.reikeb.electrona.events;
+package net.reikeb.electrona.events.entity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;

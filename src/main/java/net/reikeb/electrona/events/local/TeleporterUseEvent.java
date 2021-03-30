@@ -1,4 +1,4 @@
-package net.reikeb.electrona.events;
+package net.reikeb.electrona.events.local;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;

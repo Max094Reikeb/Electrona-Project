@@ -1,4 +1,4 @@
-package net.reikeb.electrona.events;
+package net.reikeb.electrona.events.world;
 
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
