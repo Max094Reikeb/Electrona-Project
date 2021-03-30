@@ -28,5 +28,15 @@
         "stream": false
       }
     ]
+  },
+  "block.purificator.purification": {
+    "category": "block",
+    "subtitle": "subtitles.block.purificator.purification",
+    "sounds": [
+      {
+        "name": "electrona:block.purificator.purification",
+        "stream": false
+      }
+    ]
   }
 }
