@@ -35,7 +35,11 @@ public class ClientSetup {
 
         // Make this deferred because RenderTypeLookup is not thread safe
         event.enqueueWork(() -> {
+            // Cutout
             RenderTypeLookup.setRenderLayer(BlockInit.SINGULARITY.get(), RenderType.cutout());
+            RenderTypeLookup.setRenderLayer(BlockInit.PURIFICATOR.get(), RenderType.cutout());
+
+            // Translucent
             RenderTypeLookup.setRenderLayer(BlockInit.HOLE.get(), RenderType.translucent());
         });
     }
