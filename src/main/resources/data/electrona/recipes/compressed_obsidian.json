@@ -1,13 +1,13 @@
 {
   "type": "electrona:compressing",
   "input": {
-    "block": "minecraft:obsidian"
+    "item": "minecraft:obsidian"
   },
   "input2": {
-    "block": "minecraft:obsidian"
+    "item": "minecraft:obsidian"
   },
   "output": {
-    "block": "electrona:compressed_obsidian"
+    "item": "electrona:compressed_obsidian"
   },
   "time": 40,
   "energy": 800
