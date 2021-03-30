@@ -1,9 +1,6 @@
 package net.reikeb.electrona.blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,7 +30,7 @@ import net.reikeb.electrona.tileentities.TileBattery;
 import java.util.Collections;
 import java.util.List;
 
-public class Battery extends Block {
+public class Battery extends AbstractWaterLoggableBlock {
 
     public static final DirectionProperty FACING = HorizontalBlock.FACING;
 
@@ -47,7 +44,9 @@ public class Battery extends Block {
                 .requiresCorrectToolForDrops()
                 .noOcclusion()
                 .isRedstoneConductor((bs, br, bp) -> false));
-        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
+        this.registerDefaultState(this.getStateDefinition().any()
+                .setValue(FACING, Direction.NORTH)
+                .setValue(WATERLOGGED, false));
     }
 
     @Override
@@ -79,8 +78,8 @@ public class Battery extends Block {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+    public void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(FACING, WATERLOGGED);
     }
 
     public BlockState rotate(BlockState state, Rotation rot) {
@@ -93,7 +92,10 @@ public class Battery extends Block {
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+        BlockState replaceState = context.getLevel().getBlockState(context.getClickedPos());
+        return this.defaultBlockState()
+                .setValue(FACING, context.getHorizontalDirection().getOpposite())
+                .setValue(WATERLOGGED, replaceState.getBlock() == Blocks.WATER);
     }
 
     @Override

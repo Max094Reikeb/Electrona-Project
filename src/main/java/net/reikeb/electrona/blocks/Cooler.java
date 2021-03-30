@@ -1,12 +1,12 @@
 package net.reikeb.electrona.blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -23,7 +23,7 @@ import net.reikeb.electrona.tileentities.TileCooler;
 import java.util.Collections;
 import java.util.List;
 
-public class Cooler extends Block {
+public class Cooler extends AbstractWaterLoggableBlock {
 
     public Cooler() {
         super(Properties.of(Material.METAL)
@@ -35,6 +35,8 @@ public class Cooler extends Block {
                 .requiresCorrectToolForDrops()
                 .noOcclusion()
                 .isRedstoneConductor((bs, br, bp) -> false));
+        this.registerDefaultState(this.getStateDefinition().any()
+                .setValue(WATERLOGGED, false));
     }
 
     @Override
@@ -68,6 +70,18 @@ public class Cooler extends Block {
         if (!dropsOriginal.isEmpty())
             return dropsOriginal;
         return Collections.singletonList(new ItemStack(this, 1));
+    }
+
+    @Override
+    public void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(WATERLOGGED);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        BlockState replaceState = context.getLevel().getBlockState(context.getClickedPos());
+        return this.defaultBlockState()
+                .setValue(WATERLOGGED, replaceState.getBlock() == Blocks.WATER);
     }
 
     @Override

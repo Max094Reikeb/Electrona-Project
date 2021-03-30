@@ -28,7 +28,7 @@ import net.reikeb.electrona.tileentities.TileTeleporter;
 
 import java.util.*;
 
-public class Teleporter extends Block {
+public class Teleporter extends AbstractWaterLoggableBlock {
 
     public static final DirectionProperty FACING = HorizontalBlock.FACING;
 
@@ -43,7 +43,8 @@ public class Teleporter extends Block {
                 .noOcclusion()
                 .isRedstoneConductor((bs, br, bp) -> false));
         this.registerDefaultState(this.getStateDefinition().any()
-                .setValue(FACING, Direction.NORTH));
+                .setValue(FACING, Direction.NORTH)
+                .setValue(WATERLOGGED, false));
     }
 
     @Override
@@ -85,8 +86,8 @@ public class Teleporter extends Block {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+    public void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(FACING, WATERLOGGED);
     }
 
     public BlockState rotate(BlockState state, Rotation rot) {
@@ -99,8 +100,10 @@ public class Teleporter extends Block {
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        ;
-        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+        BlockState replaceState = context.getLevel().getBlockState(context.getClickedPos());
+        return this.defaultBlockState()
+                .setValue(FACING, context.getHorizontalDirection().getOpposite())
+                .setValue(WATERLOGGED, replaceState.getBlock() == Blocks.WATER);
     }
 
     @Override

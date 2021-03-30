@@ -5,8 +5,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.*;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.loot.LootContext;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -20,7 +21,7 @@ import net.reikeb.electrona.tileentities.TileSingularity;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class Singularity extends Block {
+public class Singularity extends AbstractWaterLoggableBlock {
 
     public Singularity() {
         super(Properties.of(Material.STONE)
@@ -30,6 +31,8 @@ public class Singularity extends Block {
                 .noCollission()
                 .noOcclusion()
                 .isRedstoneConductor((bs, br, bp) -> false));
+        this.registerDefaultState(this.getStateDefinition().any()
+                .setValue(WATERLOGGED, false));
     }
 
     @Override
@@ -49,6 +52,18 @@ public class Singularity extends Block {
     public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
         Vector3d offset = state.getOffset(world, pos);
         return VoxelShapes.or(box(1, 1, 1, 15, 15, 15)).move(offset.x, offset.y, offset.z);
+    }
+
+    @Override
+    public void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(WATERLOGGED);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        BlockState replaceState = context.getLevel().getBlockState(context.getClickedPos());
+        return this.defaultBlockState()
+                .setValue(WATERLOGGED, replaceState.getBlock() == Blocks.WATER);
     }
 
     @Override

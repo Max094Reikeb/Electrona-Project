@@ -25,7 +25,7 @@ import net.reikeb.electrona.utils.ElectronaUtils;
 
 import java.util.*;
 
-public class Conveyor extends Block {
+public class Conveyor extends AbstractWaterLoggableBlock {
 
     public static final DirectionProperty FACING = HorizontalBlock.FACING;
     public static final BooleanProperty ACTIVATED = BooleanProperty.create("activated");
@@ -42,7 +42,8 @@ public class Conveyor extends Block {
                 .isRedstoneConductor((bs, br, bp) -> false));
         this.registerDefaultState(this.getStateDefinition().any()
                 .setValue(FACING, Direction.NORTH)
-                .setValue(ACTIVATED, false));
+                .setValue(ACTIVATED, false)
+                .setValue(WATERLOGGED, false));
     }
 
     @Override
@@ -85,8 +86,8 @@ public class Conveyor extends Block {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(FACING, ACTIVATED);
+    public void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(FACING, ACTIVATED, WATERLOGGED);
     }
 
     public BlockState rotate(BlockState state, Rotation rot) {
@@ -99,8 +100,10 @@ public class Conveyor extends Block {
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        ;
-        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+        BlockState replaceState = context.getLevel().getBlockState(context.getClickedPos());
+        return this.defaultBlockState()
+                .setValue(FACING, context.getHorizontalDirection().getOpposite())
+                .setValue(WATERLOGGED, replaceState.getBlock() == Blocks.WATER);
     }
 
     @Override

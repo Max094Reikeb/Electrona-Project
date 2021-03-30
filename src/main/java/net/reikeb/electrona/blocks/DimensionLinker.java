@@ -21,10 +21,9 @@ import net.reikeb.electrona.tileentities.TileDimensionLinker;
 
 import java.util.*;
 
-public class DimensionLinker extends Block {
+public class DimensionLinker extends AbstractWaterLoggableBlock {
 
     public static final DirectionProperty FACING = HorizontalBlock.FACING;
-    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public DimensionLinker() {
         super(Properties.of(Material.METAL)
@@ -67,7 +66,7 @@ public class DimensionLinker extends Block {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    public void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(FACING, WATERLOGGED);
     }
 
@@ -81,23 +80,10 @@ public class DimensionLinker extends Block {
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        boolean flag = context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER;
-        ;
-        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite()).setValue(WATERLOGGED, flag);
-    }
-
-    @Override
-    public FluidState getFluidState(BlockState state) {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-    }
-
-    @Override
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos,
-                                  BlockPos facingPos) {
-        if (state.getValue(WATERLOGGED)) {
-            world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
-        }
-        return super.updateShape(state, facing, facingState, world, currentPos, facingPos);
+        BlockState replaceState = context.getLevel().getBlockState(context.getClickedPos());
+        return this.defaultBlockState()
+                .setValue(FACING, context.getHorizontalDirection().getOpposite())
+                .setValue(WATERLOGGED, replaceState.getBlock() == Blocks.WATER);
     }
 
     @Override
