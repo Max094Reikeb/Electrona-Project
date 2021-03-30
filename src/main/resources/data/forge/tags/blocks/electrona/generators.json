@@ -6,6 +6,7 @@
     "electrona:water_turbine",
     "electrona:heat_generator",
     "electrona:biomass_generator",
-    "electrona:nuclear_generator_controller"
+    "electrona:nuclear_generator_controller",
+    "electrona:creative_generator"
   ]
 }
