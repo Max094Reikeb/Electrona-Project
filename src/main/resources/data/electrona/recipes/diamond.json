@@ -1,0 +1,14 @@
+{
+  "type": "electrona:compressing",
+  "input": {
+    "block": "minecraft:coal_block"
+  },
+  "input2": {
+    "block": "minecraft:coal_block"
+  },
+  "output": {
+    "item": "minecraft:diamond"
+  },
+  "time": 240,
+  "energy": 1500
+}

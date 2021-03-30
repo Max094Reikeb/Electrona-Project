@@ -1,34 +1,31 @@
 package net.reikeb.electrona;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.PlayerRenderer;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.client.renderer.entity.*;
+import net.minecraft.item.*;
+import net.minecraft.item.crafting.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.*;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import net.reikeb.electrona.advancements.TTriggers;
 import net.reikeb.electrona.client.render.MechanicWingsLayer;
 import net.reikeb.electrona.client.setup.ClientSetup;
 import net.reikeb.electrona.events.entity.PlayerDiesEvent;
-import net.reikeb.electrona.recipes.CompressorRecipe;
-import net.reikeb.electrona.recipes.PurificatorRecipe;
-import net.reikeb.electrona.recipes.types.RecipeTypeCompressor;
-import net.reikeb.electrona.recipes.types.RecipeTypePurificator;
+import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.recipes.*;
+import net.reikeb.electrona.recipes.types.*;
 import net.reikeb.electrona.setup.RegistryHandler;
 import net.reikeb.electrona.world.gamerules.DoBlackholesExist;
 import net.reikeb.electrona.world.gen.ConfiguredFeatures;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 @Mod(Electrona.MODID)
 public class Electrona {
@@ -65,6 +62,16 @@ public class Electrona {
 
     public void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(ConfiguredFeatures::registerConfiguredFeatures);
+
+        /**
+         * Custom potion recipes
+         */
+        // Sugar Bottle recipe
+        BrewingRecipeRegistry.addRecipe(Ingredient.of(Items.GLASS_BOTTLE), Ingredient.of(Items.SUGAR),
+                new ItemStack(ItemInit.SUGAR_BOTTLE.get()));
+        // Concentrated Uranium recipe
+        BrewingRecipeRegistry.addRecipe(Ingredient.of(ItemInit.SUGAR_BOTTLE.get()), Ingredient.of(ItemInit.YELLOWCAKE.get()),
+                new ItemStack(ItemInit.CONCENTRATED_URANIUM.get()));
     }
 
     public void clientLoad(FMLClientSetupEvent event) {

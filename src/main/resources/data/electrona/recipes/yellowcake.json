@@ -1,0 +1,14 @@
+{
+  "type": "electrona:compressing",
+  "input": {
+    "block": "electrona:uranium_ore"
+  },
+  "input2": {
+    "block": "electrona:uranium_ore"
+  },
+  "output": {
+    "item": "electrona:yellowcake"
+  },
+  "time": 20,
+  "energy": 400
+}
