@@ -5,6 +5,7 @@
     "electrona:compressor",
     "electrona:xp_generator",
     "electrona:teleporter",
-    "electrona:water_pump"
+    "electrona:water_pump",
+    "electrona:conveyor"
   ]
 }

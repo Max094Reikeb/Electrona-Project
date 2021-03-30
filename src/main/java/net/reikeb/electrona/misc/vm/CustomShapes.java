@@ -8,6 +8,17 @@ import java.util.stream.Stream;
 public class CustomShapes {
 
     /**
+     * VoxelShape of the Conveyor
+     */
+    public static VoxelShape Conveyor = Stream.of(
+            Block.box(0, 0, 0, 16, 2, 16),
+            Block.box(15, 2, 0, 16, 4, 16),
+            Block.box(0, 2, 0, 1, 4, 16)
+    ).reduce((v1, v2) -> {
+        return VoxelShapes.join(v1, v2, IBooleanFunction.OR);
+    }).get();
+
+    /**
      * VoxelShape of the Nuclear Generator Controller
      */
     public static VoxelShape NuclearGenerator = Stream.of(
@@ -101,7 +112,7 @@ public class CustomShapes {
             Block.box(9, 3.6000000000000005, 3.45, 10, 5.5, 4.45),
             Block.box(7.5, 3.6000000000000005, 3.45, 8.5, 5.5, 4.45),
             Block.box(6, 3.6000000000000005, 3.45, 7, 5.5, 4.45)
-            ).reduce((v1, v2) -> {
+    ).reduce((v1, v2) -> {
         return VoxelShapes.join(v1, v2, IBooleanFunction.OR);
     }).get();
 
