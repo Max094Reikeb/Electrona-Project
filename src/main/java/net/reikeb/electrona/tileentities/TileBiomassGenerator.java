@@ -99,12 +99,12 @@ public class TileBiomassGenerator extends LockableLootTileEntity implements ITic
 
             // Handle slot
             if (ItemTags.getAllTags().getTagOrEmpty(new ResourceLocation(("forge:biomass").toLowerCase(java.util.Locale.ENGLISH)))
-                    .contains(this.inventory.getStackInSlot(0).getItem())) {
+                    .contains(this.inventory.getStackInSlot(0).getItem()) && electronicPower < 3000) {
                 wait += 1;
                 if (wait >= 20) {
                     if (electronicPower <= 2990) {
                         this.getTileData().putDouble("ElectronicPower", electronicPower + 10);
-                    } else if ((electronicPower > 2990) && (electronicPower < 3000)) {
+                    } else {
                         this.getTileData().putDouble("ElectronicPower", 3000);
                     }
                     this.inventory.decrStackSize(0, 1);
