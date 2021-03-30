@@ -1,4 +1,14 @@
 {
+  "block.biomass_generator.active": {
+    "category": "block",
+    "subtitle": "subtitles.block.biomass_generator.active",
+    "sounds": [
+      {
+        "name": "electrona:block.biomass_generator.active",
+        "stream": false
+      }
+    ]
+  },
   "block.nuclear_generator_controller.alert": {
     "category": "block",
     "subtitle": "subtitles.block.nuclear_generator_controller.alert",

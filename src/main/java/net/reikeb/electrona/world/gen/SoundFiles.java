@@ -33,6 +33,7 @@ public class SoundFiles implements IDataProvider {
         final Path outputPath = getPath(path, Electrona.MODID);
 
         this.addSound(SoundsInit.NUCLEAR_GENERATOR_CONTROLLER_ALERT.get(), "electrona/block.nuclear_generator_controller.alert");
+        this.addSound(SoundsInit.BIOMASS_GENERATOR_ACTIVE.get(), "electrona/block.biomass_generator.active");
 
         //Save the json object to a file after we have added everything
         IDataProvider.save(GSON, cache, this.root, outputPath);

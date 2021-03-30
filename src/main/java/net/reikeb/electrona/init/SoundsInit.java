@@ -15,6 +15,9 @@ public class SoundsInit {
     public static final RegistryObject<SoundEvent> NUCLEAR_GENERATOR_CONTROLLER_ALERT = SOUNDS
             .register("block.nuclear_generator_controller.alert", () -> setupSound("block.nuclear_generator_controller.alert"));
 
+    public static final RegistryObject<SoundEvent> BIOMASS_GENERATOR_ACTIVE = SOUNDS
+            .register("block.biomass_generator.active", () -> setupSound("block.biomass_generator.active"));
+
     private static SoundEvent setupSound(String soundName) {
         return new SoundEvent(new ResourceLocation(Electrona.MODID, soundName));
     }
