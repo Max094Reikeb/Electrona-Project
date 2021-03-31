@@ -27,6 +27,7 @@ public class ContainerInit {
     public static final RegistryObject<ContainerType<PurificatorContainer>> PURIFICATOR_CONTAINER = CONTAINERS.register("purificator", () -> registerContainer(PurificatorContainer::new));
     public static final RegistryObject<ContainerType<DimensionLinkerContainer>> DIMENSION_LINKER_CONTAINER = CONTAINERS.register("dimension_linker", () -> registerContainer(DimensionLinkerContainer::new));
     public static final RegistryObject<ContainerType<SteelCrateContainer>> STEEL_CRATE_CONTAINER = CONTAINERS.register("steel_crate", () -> registerContainer(SteelCrateContainer::new));
+    public static final RegistryObject<ContainerType<LeadCrateContainer>> LEAD_CRATE_CONTAINER = CONTAINERS.register("lead_crate", () -> registerContainer(LeadCrateContainer::new));
 
     public static <T extends Container> ContainerType<T> registerContainer(IContainerFactory<T> fact) {
         ContainerType<T> type = new ContainerType<T>(fact);

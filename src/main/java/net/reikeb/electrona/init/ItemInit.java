@@ -131,7 +131,10 @@ public class ItemInit {
 
     public static final RegistryObject<Item> LEAD_BLOCK_ITEM = ITEMS.register("lead_block", () ->
             new BlockItem(BlockInit.LEAD_BLOCK.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
-    // Lead Crate
+
+    public static final RegistryObject<Item> LEAD_CRATE_ITEM = ITEMS.register("lead_crate", () ->
+            new BlockItem(BlockInit.LEAD_CRATE.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
+
     public static final RegistryObject<Item> LEAD_DOOR_ITEM = ITEMS.register("lead_door", () ->
             new BlockItem(BlockInit.LEAD_DOOR.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
 

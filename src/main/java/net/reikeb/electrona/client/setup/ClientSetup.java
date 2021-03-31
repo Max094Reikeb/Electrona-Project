@@ -32,6 +32,7 @@ public class ClientSetup {
         ScreenManager.register(PURIFICATOR_CONTAINER.get(), PurificatorWindow::new);
         ScreenManager.register(DIMENSION_LINKER_CONTAINER.get(), DimensionLinkerWindow::new);
         ScreenManager.register(STEEL_CRATE_CONTAINER.get(), SteelCrateWindow::new);
+        ScreenManager.register(LEAD_CRATE_CONTAINER.get(), LeadCrateWindow::new);
 
         // Make this deferred because RenderTypeLookup is not thread safe
         event.enqueueWork(() -> {

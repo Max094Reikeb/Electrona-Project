@@ -41,6 +41,7 @@ public class BlockInit {
     public static final RegistryObject<SteelBlock> STEEL_BLOCK = BLOCKS.register("steel_block", SteelBlock::new);
     public static final RegistryObject<SteelCrate> STEEL_CRATE = BLOCKS.register("steel_crate", SteelCrate::new);
     public static final RegistryObject<LeadBlock> LEAD_BLOCK = BLOCKS.register("lead_block", LeadBlock::new);
+    public static final RegistryObject<LeadCrate> LEAD_CRATE = BLOCKS.register("lead_crate", LeadCrate::new);
     public static final RegistryObject<LeadDoor> LEAD_DOOR = BLOCKS.register("lead_door", LeadDoor::new);
     public static final RegistryObject<MachineCasing> MACHINE_CASING = BLOCKS.register("machine_casing", MachineCasing::new);
     public static final RegistryObject<Cable> CABLE = BLOCKS.register("cable", Cable::new);
