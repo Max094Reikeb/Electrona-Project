@@ -10,6 +10,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.*;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -22,6 +23,7 @@ import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.recipes.*;
 import net.reikeb.electrona.recipes.types.*;
 import net.reikeb.electrona.setup.RegistryHandler;
+import net.reikeb.electrona.villages.*;
 import net.reikeb.electrona.world.gamerules.DoBlackholesExist;
 import net.reikeb.electrona.world.gen.ConfiguredFeatures;
 
@@ -53,6 +55,7 @@ public class Electrona {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientLoad);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, this::registerRecipeSerializers);
+        registerAllDeferredRegistryObjects(FMLJavaModLoadingContext.get().getModEventBus());
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(new PlayerDiesEvent());
@@ -60,8 +63,14 @@ public class Electrona {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
+    private void registerAllDeferredRegistryObjects(IEventBus modBus) {
+        Villagers.POI.register(modBus);
+        Villagers.PROFESSIONS.register(modBus);
+    }
+
     public void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(ConfiguredFeatures::registerConfiguredFeatures);
+        POIFixup.fixup();
 
         /**
          * Custom potion recipes
