@@ -2,12 +2,10 @@ package net.reikeb.electrona.items;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Rarity;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.item.*;
+import net.minecraft.util.text.*;
 import net.minecraft.world.World;
+
 import net.reikeb.electrona.setup.ItemGroups;
 
 import java.util.List;

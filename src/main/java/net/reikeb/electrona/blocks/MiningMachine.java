@@ -12,8 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.util.text.*;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 
 import net.minecraftforge.api.distmarker.*;
 import net.minecraftforge.common.ToolType;

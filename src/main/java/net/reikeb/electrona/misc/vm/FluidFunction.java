@@ -2,18 +2,14 @@ package net.reikeb.electrona.misc.vm;
 
 import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag;
-import net.minecraft.tags.ITagCollection;
+import net.minecraft.tags.*;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.*;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

@@ -1,21 +1,17 @@
 package net.reikeb.electrona.misc.vm;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
+import net.minecraft.potion.*;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 
-import net.reikeb.electrona.init.ItemInit;
-import net.reikeb.electrona.init.PotionEffectInit;
+import net.reikeb.electrona.init.*;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RadioactivityFunction {
@@ -23,7 +19,7 @@ public class RadioactivityFunction {
     /**
      * Method to get if the entity given is wearing the whole Anti-Radiation Suit
      *
-     * @param entity   The entity we're checking
+     * @param entity The entity we're checking
      * @return boolean If the entity is wearing the full suit
      */
     public static boolean isEntityWearingAntiRadiationSuit(LivingEntity entity) {
@@ -36,7 +32,7 @@ public class RadioactivityFunction {
     /**
      * Method to get if the entity given is wearing the whole Lead Armor
      *
-     * @param entity   The entity we're checking
+     * @param entity The entity we're checking
      * @return boolean If the entity is wearing the full armor
      */
     public static boolean isEntityWearingLeadArmor(LivingEntity entity) {

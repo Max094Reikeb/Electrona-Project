@@ -3,8 +3,7 @@ package net.reikeb.electrona.init;
 import net.minecraft.block.Block;
 
 import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.*;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.blocks.*;

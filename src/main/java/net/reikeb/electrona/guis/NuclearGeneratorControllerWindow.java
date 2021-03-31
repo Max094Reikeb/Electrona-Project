@@ -9,8 +9,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.*;
 
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
@@ -18,8 +17,7 @@ import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.NuclearGeneratorControllerContainer;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.*;
-import net.reikeb.electrona.tileentities.TileCooler;
-import net.reikeb.electrona.tileentities.TileNuclearGeneratorController;
+import net.reikeb.electrona.tileentities.*;
 
 import org.lwjgl.opengl.GL11;
 
@@ -88,8 +86,8 @@ public class NuclearGeneratorControllerWindow extends ContainerScreen<NuclearGen
         // Water level
         AtomicInteger currentWater = new AtomicInteger();
         if (underTileEntity instanceof TileCooler)
-        underTileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
-                .ifPresent(cap -> currentWater.set(cap.getFluidInTank(1).getAmount()));
+            underTileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+                    .ifPresent(cap -> currentWater.set(cap.getFluidInTank(1).getAmount()));
         int XposWaterT1 = leftPos + 6;
         int XposWaterT2 = leftPos + 23;
         int YposWaterT1 = topPos + 6;
@@ -139,8 +137,8 @@ public class NuclearGeneratorControllerWindow extends ContainerScreen<NuclearGen
         // get current water
         AtomicInteger currentWater = new AtomicInteger();
         if (underTileEntity instanceof TileCooler)
-        underTileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
-                .ifPresent(cap -> currentWater.set(cap.getFluidInTank(1).getAmount()));
+            underTileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+                    .ifPresent(cap -> currentWater.set(cap.getFluidInTank(1).getAmount()));
         // get water progress as a double between 0 and 1
         double waterProgress = (currentWater.get() / 10000.0);
         int yOffsetWater = (int) ((1.0 - waterProgress) * WATER_HEIGHT);

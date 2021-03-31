@@ -1,10 +1,8 @@
 package net.reikeb.electrona.events.entity;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.*;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
+import net.minecraft.potion.*;
 import net.minecraft.util.Hand;
 
 import net.minecraftforge.event.entity.living.LivingDeathEvent;

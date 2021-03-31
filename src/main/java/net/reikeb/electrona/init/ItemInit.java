@@ -1,12 +1,10 @@
 package net.reikeb.electrona.init;
 
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
+import net.minecraft.item.*;
 
 import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.*;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.items.*;

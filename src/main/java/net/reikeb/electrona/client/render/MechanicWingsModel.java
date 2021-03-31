@@ -1,10 +1,10 @@
 package net.reikeb.electrona.client.render;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.client.renderer.entity.model.ElytraModel;
-
 import com.google.common.collect.ImmutableList;
+
+import net.minecraft.client.renderer.entity.model.ElytraModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.entity.LivingEntity;
 
 public class MechanicWingsModel<T extends LivingEntity> extends ElytraModel<T> {
     private final ModelRenderer root;

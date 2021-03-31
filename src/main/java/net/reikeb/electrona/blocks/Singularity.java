@@ -1,9 +1,7 @@
 package net.reikeb.electrona.blocks;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.block.material.PushReaction;
+import net.minecraft.block.material.*;
 import net.minecraft.entity.*;
 import net.minecraft.item.*;
 import net.minecraft.loot.LootContext;

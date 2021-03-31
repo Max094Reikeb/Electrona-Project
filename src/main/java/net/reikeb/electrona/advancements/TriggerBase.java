@@ -1,23 +1,15 @@
 package net.reikeb.electrona.advancements;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 import com.google.gson.JsonObject;
 
-import net.minecraft.advancements.ICriterionInstance;
-import net.minecraft.advancements.ICriterionTrigger;
-import net.minecraft.advancements.PlayerAdvancements;
-import net.minecraft.advancements.criterion.CriterionInstance;
-import net.minecraft.advancements.criterion.EntityPredicate;
+import net.minecraft.advancements.*;
+import net.minecraft.advancements.criterion.*;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.loot.ConditionArrayParser;
-import net.minecraft.loot.ConditionArraySerializer;
+import net.minecraft.loot.*;
 import net.minecraft.util.ResourceLocation;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance>, ICriterionInstance {
 

@@ -1,12 +1,10 @@
 package net.reikeb.electrona.init;
 
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.inventory.container.*;
 
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.IContainerFactory;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.*;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.*;

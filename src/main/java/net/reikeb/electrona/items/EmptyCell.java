@@ -1,22 +1,14 @@
 package net.reikeb.electrona.items;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.IBucketPickupHandler;
+import net.minecraft.block.*;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
+import net.minecraft.entity.player.*;
+import net.minecraft.fluid.*;
 import net.minecraft.item.*;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.math.*;
+import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 
 import net.reikeb.electrona.init.ItemInit;
@@ -70,7 +62,7 @@ public class EmptyCell extends Item {
         if (worldIn.mayInteract(playerIn, blockpos) && playerIn.mayUseItemAt(blockpos1, direction, itemstack)) {
             BlockState blockstate1 = worldIn.getBlockState(blockpos);
             if (blockstate1.getBlock() instanceof IBucketPickupHandler) {
-                Fluid fluid = ((IBucketPickupHandler)blockstate1.getBlock()).takeLiquid(worldIn, blockpos, blockstate1);
+                Fluid fluid = ((IBucketPickupHandler) blockstate1.getBlock()).takeLiquid(worldIn, blockpos, blockstate1);
                 if ((fluid != Fluids.WATER) && (fluid != Fluids.LAVA)) return ActionResult.fail(itemstack);
                 worldIn.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 3);
                 if (playerIn.abilities.instabuild) {
