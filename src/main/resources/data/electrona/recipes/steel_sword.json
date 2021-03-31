@@ -1,0 +1,24 @@
+{
+  "group": "electrona",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "0",
+    "1",
+    "2"
+  ],
+  "key": {
+    "0": {
+      "tag": "forge:ingots/steel"
+    },
+    "1": {
+      "tag": "forge:ingots/steel"
+    },
+    "2": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "electrona:steel_sword",
+    "count": 1
+  }
+}

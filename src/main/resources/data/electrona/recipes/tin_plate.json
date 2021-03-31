@@ -1,0 +1,16 @@
+{
+  "group": "electrona",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "electrona:hammer"
+    },
+    {
+      "tag": "forge:ingots/tin"
+    }
+  ],
+  "result": {
+    "item": "electrona:tin_plate",
+    "count": 1
+  }
+}

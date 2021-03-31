@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "minecraft:leather_helmet"
+  },
+  "addition": {
+    "item": "electrona:steel_plate"
+  },
+  "result": {
+    "item": "electrona:anti_radiation_helmet"
+  }
+}

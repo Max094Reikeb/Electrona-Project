@@ -1,0 +1,13 @@
+{
+  "group": "electrona",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "electrona:lead_block"
+    }
+  ],
+  "result": {
+    "item": "electrona:lead_ingot",
+    "count": 9
+  }
+}

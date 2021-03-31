@@ -1,0 +1,42 @@
+{
+  "group": "electrona",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "012",
+    "345",
+    "678"
+  ],
+  "key": {
+    "0": {
+      "item": "minecraft:daylight_detector"
+    },
+    "1": {
+      "item": "electrona:solar_panel_tiers1"
+    },
+    "2": {
+      "item": "minecraft:daylight_detector"
+    },
+    "3": {
+      "tag": "forge:ingots/steel"
+    },
+    "4": {
+      "item": "electrona:machine_casing"
+    },
+    "5": {
+      "tag": "forge:ingots/steel"
+    },
+    "6": {
+      "tag": "forge:ingots/tin"
+    },
+    "7": {
+      "item": "electrona:motor"
+    },
+    "8": {
+      "tag": "forge:ingots/tin"
+    }
+  },
+  "result": {
+    "item": "electrona:solar_panel_tiers2",
+    "count": 1
+  }
+}

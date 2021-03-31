@@ -1,0 +1,36 @@
+{
+  "group": "electrona",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " 1 ",
+    "345",
+    "678"
+  ],
+  "key": {
+    "1": {
+      "item": "electrona:emitter"
+    },
+    "3": {
+      "item": "electrona:electronic_circuit"
+    },
+    "4": {
+      "item": "electrona:machine_casing"
+    },
+    "5": {
+      "item": "minecraft:gold_ingot"
+    },
+    "6": {
+      "item": "electrona:steel_plate"
+    },
+    "7": {
+      "item": "electrona:steel_plate"
+    },
+    "8": {
+      "item": "electrona:steel_plate"
+    }
+  },
+  "result": {
+    "item": "electrona:sprayer",
+    "count": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "group": "electrona",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "012",
+    "3 5",
+    "678"
+  ],
+  "key": {
+    "0": {
+      "item": "electrona:tin_ingot"
+    },
+    "1": {
+      "item": "electrona:steel_ingot"
+    },
+    "2": {
+      "item": "electrona:tin_ingot"
+    },
+    "3": {
+      "item": "electrona:tin_ingot"
+    },
+    "5": {
+      "item": "electrona:tin_ingot"
+    },
+    "6": {
+      "item": "electrona:tin_ingot"
+    },
+    "7": {
+      "item": "electrona:steel_ingot"
+    },
+    "8": {
+      "item": "electrona:tin_ingot"
+    }
+  },
+  "result": {
+    "item": "electrona:empty_cell",
+    "count": 1
+  }
+}

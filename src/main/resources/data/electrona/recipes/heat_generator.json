@@ -1,0 +1,42 @@
+{
+  "group": "electrona",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "012",
+    "345",
+    "678"
+  ],
+  "key": {
+    "0": {
+      "tag": "forge:ingots/steel"
+    },
+    "1": {
+      "item": "electrona:motor"
+    },
+    "2": {
+      "tag": "forge:ingots/steel"
+    },
+    "3": {
+      "tag": "forge:ingots/steel"
+    },
+    "4": {
+      "item": "electrona:lava_cell"
+    },
+    "5": {
+      "tag": "forge:ingots/steel"
+    },
+    "6": {
+      "tag": "forge:ingots/steel"
+    },
+    "7": {
+      "item": "electrona:machine_casing"
+    },
+    "8": {
+      "tag": "forge:ingots/steel"
+    }
+  },
+  "result": {
+    "item": "electrona:heat_generator",
+    "count": 1
+  }
+}
