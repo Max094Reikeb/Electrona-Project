@@ -1,0 +1,16 @@
+{
+    "name": "Bloc d'Étain",
+    "icon": "electrona:tin_block",
+    "category": "blocks_category",
+    "sortnum": 5,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Le Bloc d'Étain est un bloc de décoration qui peut être obtenu avec des lingots d'étain."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:tinblockrecipe",
+            "text": "Ingrédients requis :$(br)- 9 Lingots d'Étain"
+        }
+    ]
+}

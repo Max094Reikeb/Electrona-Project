@@ -1,0 +1,32 @@
+{
+    "name": "Verzauberungen",
+    "icon": "minecraft:enchanted_book",
+    "category": "tools_category",
+    "sortnum": 3,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Verzauberungen sind ein großer Teil von Minecraft, deshalb sind sie auch hier, in Electrona."
+        }, {
+            "type": "spotlight",
+            "item": "minecraft:enchanted_book",
+            "title": "Holzfäller",
+            "text": "Die Verzauberung Holzfäller ermöglicht es dem Spieler, eine ganze Holzader mit nur einem Schnitt abzubauen.$(br)Nur mit Stahlaxt verwendbar."
+        }, {
+            "type": "spotlight",
+            "item": "minecraft:enchanted_book",
+            "title": "Verhüttung",
+            "text": "Die Verzauberung Verhüttung ermöglicht es dem Spieler, alles, was er abbaut, sofort zu riechen.$(br)Nur mit Stahlspitzhacke verwendbar."
+        }, {
+            "type": "spotlight",
+            "item": "minecraft:enchanted_book",
+            "title": "Donnernd",
+            "text": "Die Verzauberung Donnernd ermöglicht es dem Spieler, einen Blitz zu beschwören, wo immer er will.$(br)Nur mit Stahlaxt verwendbar."
+        }, {
+            "type": "spotlight",
+            "item": "minecraft:enchanted_book",
+            "title": "Veinminer",
+            "text": "Die Verzauberung Veinminer ermöglicht es dem Spieler, eine ganze Erzader mit nur einem abgebauten Block abzubauen.$(br)Nur mit Stahlspitzhacke verwendbar."
+        }
+    ]
+}

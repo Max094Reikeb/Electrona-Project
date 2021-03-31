@@ -1,0 +1,16 @@
+{
+    "name": "XP Generator",
+    "icon": "electrona:xp_generator",
+    "category": "machines_category",
+    "sortnum": 9,
+    "pages": [
+        {
+            "type": "text",
+            "text": "XP Generatorn är en maskin som använder ELs och smaragder för att generera XP nivåer."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:recipexpgenerator",
+            "text": "Krävande ingredienser :$(br)- 4 Stålplåtar$(br)- 2 Tennplåtar$(br)- 1 Motor$(br)- 1 Maskinhölje$(br)- 1 Smaragdblock"
+        }
+    ]
+}

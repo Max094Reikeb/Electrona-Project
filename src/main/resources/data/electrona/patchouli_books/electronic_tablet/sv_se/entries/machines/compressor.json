@@ -1,0 +1,16 @@
+{
+    "name": "Kompressor",
+    "icon": "electrona:compressor",
+    "category": "machines_category",
+    "sortnum": 7,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Kompressorn är en hantverksmaskin som använder ELs för att komprimera saker och få andra saker i gengäld."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:compressorrecipe",
+            "text": "Krävande ingredienser :$(br)- 4 Tenntackor$(br)- 2 Kolvar$(br)- 1 Elektronisk krets$(br)- 1 Motor$(br)- 1 Maskinhölje"
+        }
+    ]
+}

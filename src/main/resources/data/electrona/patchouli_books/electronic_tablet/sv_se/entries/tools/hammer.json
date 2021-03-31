@@ -1,0 +1,16 @@
+{
+    "name": "Hammare",
+    "icon": "electrona:hammer",
+    "category": "tools_category",
+    "sortnum": 0,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Hammaren är ett verktyg"
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:hammerrecipe",
+            "text": "Krävande ingredienser :$(br)- 5 Tenntackor$(br)- 2 Pinnar"
+        }
+    ]
+}

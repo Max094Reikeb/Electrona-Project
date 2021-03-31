@@ -1,0 +1,16 @@
+{
+    "name": "EL Converter",
+    "icon": "electrona:el_vp_converter",
+    "category": "machines_category",
+    "sortnum": 6,
+    "pages": [
+        {
+            "type": "text",
+            "text": "The EL Converter is a machine that converts ELs to an other energy type. For now, only VP is taken."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:recipeelconverter",
+            "text": "Needed ingredients :$(br)- 4 Tin Ingots$(br)- 2 Electronic Circuits$(br)- 2 Steel Plates$(br)- 1 Machine Casing"
+        }
+    ]
+}

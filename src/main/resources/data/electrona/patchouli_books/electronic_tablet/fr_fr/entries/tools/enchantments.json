@@ -1,0 +1,32 @@
+{
+    "name": "Enchantements",
+    "icon": "minecraft:enchanted_book",
+    "category": "tools_category",
+    "sortnum": 3,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Les Enchantements sont une grosse partie de Minecraft, c'est pourquoi ils sont aussi dans Electrona."
+        }, {
+            "type": "spotlight",
+            "item": "minecraft:enchanted_book",
+            "title": "Bûcheron",
+            "text": "L'Enchantement Bûcheron permet au joueur de miner un filon entier de bois en ne cassant que la bûche principale.$(br)Uniquement applicable sur : Hache en Acier."
+        }, {
+            "type": "spotlight",
+            "item": "minecraft:enchanted_book",
+            "title": "Fonderie",
+            "text": "L'Enchantement Fonderie permet au joueur de cuire instantanément tout ce qu'il mine.$(br)Uniquement applicable sur : Pioche en Acier."
+        }, {
+            "type": "spotlight",
+            "item": "minecraft:enchanted_book",
+            "title": "Tonnerre",
+            "text": "L'Enchantement Tonnerre permet au joueur de faire apparaitre un éclair à l'endroit voulu par un simple clic droit sur le sol.$(br)Uniquement applicable sur : Hache en Acier."
+        }, {
+            "type": "spotlight",
+            "item": "minecraft:enchanted_book",
+            "title": "Mine-Filon",
+            "text": "L'Enchantement Mine-Filon permet au joueur de miner un filon entier de minerais en ne cassant qu'un seul de ce minerais.$(br)Uniquement applicable sur : Pioche en Acier."
+        }
+    ]
+}

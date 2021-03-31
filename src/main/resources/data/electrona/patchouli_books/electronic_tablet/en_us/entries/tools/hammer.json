@@ -1,0 +1,16 @@
+{
+    "name": "Hammer",
+    "icon": "electrona:hammer",
+    "category": "tools_category",
+    "sortnum": 0,
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Hammer is a tool."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:hammerrecipe",
+            "text": "Needed ingredients :$(br)- 5 Tin Ingots$(br)- 2 Sticks"
+        }
+    ]
+}

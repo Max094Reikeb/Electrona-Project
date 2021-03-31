@@ -1,0 +1,16 @@
+{
+    "name": "Batterie",
+    "icon": "electrona:battery",
+    "category": "machines_category",
+    "sortnum": 0,
+    "pages": [
+        {
+            "type": "text",
+            "text": "La Batterie est une machine qui peut stocker des ELs produits par les générateurs. Elle peut aussi les donner aux machines."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:recipebattery",
+            "text": "Ingrédients requis :$(br)- 6 Lingots d'Étain$(br)- 2 Lingots d'Acier$(br)- 1 Circuit Électronique"
+        }
+    ]
+}

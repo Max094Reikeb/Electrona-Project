@@ -1,0 +1,16 @@
+{
+    "name": "Teleportör",
+    "icon": "electrona:teleporter",
+    "category": "machines_category",
+    "sortnum": 8,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Teleportören är en maskin som använder ELs för att teleportera enheter (mobs och spelare) långt bort. $ (Br) Du kan aktivera alternativet 'auto-radering' som tar bort de länkade koordinaterna från teleportören efter att du har använt den."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:recipeteleporter",
+            "text": "Krävande ingredienser :$(br)- 3 Komprimerade obsidian$(br)- 2 Stålplåtar$(br)- 2 Elektroniska kretser$(br)- 1 Maskinhölje"
+        }
+    ]
+}

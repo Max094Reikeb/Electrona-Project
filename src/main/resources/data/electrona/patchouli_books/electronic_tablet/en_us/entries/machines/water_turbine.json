@@ -1,0 +1,16 @@
+{
+    "name": "Water Turbine",
+    "icon": "electrona:water_turbine",
+    "category": "machines_category",
+    "sortnum": 3,
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Water Turbine is a generator that produces ELs with the force of water. It only needs water from one of its sides and let the magic happens!"
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:waterturbinerecipe",
+            "text": "Needed ingredients :$(br)- 2 Tin Ingots$(br)- 2 Steel Ingots$(br)- 2 Water Cells$(br)- 1 Machine Casing$(br)- 1 Motor$(br)- 1 Paddle"
+        }
+    ]
+}

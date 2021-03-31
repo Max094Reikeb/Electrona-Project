@@ -1,0 +1,16 @@
+{
+    "name": "Solarzelle (Stufe 1)",
+    "icon": "electrona:solar_panel_tiers1",
+    "category": "machines_category",
+    "sortnum": 1,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Die Solarzelle (Stufe 1) ist ein Generator welche ELs am Tag produziert, falls er einen Zugang zum Himmel hat."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:solarpanelrecipe",
+            "text": "Braucht zum herstellen :$(br)- 4 Eisenbarren$(br)- 3 Zinnbarren$(br)- 1 Electronic Schaltkreis$(br)- 1 Tageslichtsensor"
+        }
+    ]
+}

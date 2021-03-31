@@ -1,0 +1,16 @@
+{
+    "name": "Panneau Solaire (T1)",
+    "icon": "electrona:solar_panel_tiers1",
+    "category": "machines_category",
+    "sortnum": 1,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Le Panneau Solaire de Tiers 1 est un générateur qui produit des ELs durant la journée, s'il n'a pas de blocs au dessus de lui."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:solarpanelrecipe",
+            "text": "Ingrédients requis :$(br)- 4 Lingots de Fer$(br)- 3 Lingots d'Étain$(br)- 1 Circuit Électronique$(br)- 1 Capteur de Lumière"
+        }
+    ]
+}

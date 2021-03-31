@@ -1,0 +1,16 @@
+{
+    "name": "Stahlblock",
+    "icon": "electrona:steel_block",
+    "category": "blocks_category",
+    "sortnum": 6,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Der Stahlblock ist ein dekorations Block, welcher aus Stahlbarren hergestellt wird"
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:recipesteelblock",
+            "text": "Braucht zum herstellen :$(br)- 9 Stahlbarren"
+        }
+    ]
+}

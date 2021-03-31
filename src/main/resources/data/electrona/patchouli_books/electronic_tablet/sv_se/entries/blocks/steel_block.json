@@ -1,0 +1,16 @@
+{
+    "name": "Stålblock",
+    "icon": "electrona:steel_block",
+    "category": "blocks_category",
+    "sortnum": 6,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Stålblocket är ett dekorationsblock som kan skapas med hjälp av ståltackor."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:recipesteelblock",
+            "text": "Krävande ingredienser :$(br)- 9 Ståltackor"
+        }
+    ]
+}

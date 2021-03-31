@@ -1,0 +1,12 @@
+{
+    "name": "Uranium Ore",
+    "icon": "electrona:uranium_ore",
+    "category": "blocks_category",
+    "sortnum": 1,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Uranium Ore is the second ore of Electrona and it's the base to all radioactive components."
+        }
+    ]
+}

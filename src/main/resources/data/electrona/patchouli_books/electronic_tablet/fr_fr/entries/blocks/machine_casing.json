@@ -1,0 +1,16 @@
+{
+    "name": "Boitier de Machine",
+    "icon": "electrona:machine_casing",
+    "category": "blocks_category",
+    "sortnum": 2,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Le Boitier de Machine est un composant basique de plusieurs machines et de générateurs avancés."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:machinecasingrecipe",
+            "text": "Ingrédients requis :$(br)- 8 Plaques d'Étain$(br)- 1 Circuit Électronique"
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "name": "Hitze Generator",
+    "icon": "electrona:heat_generator",
+    "category": "machines_category",
+    "sortnum": 4,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Der Hitze Generator ist ein Generator welcher aus Hitze ELs produziert. Du kannst es in einem warmen Biom platzieren (Wüste, Tafelberge) oder du gibst ihm Lava mit einem Rechtsklick und einem Lavaeimer in der Hand."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:heatgeneratorrecipe",
+            "text": "Braucht zum herstellen :$(br)- 6 Stahlbarren$(br)- 1 Maschinengehäuse$(br)- 1 Motor$(br)- 1 Lava-Zelle"
+        }
+    ]
+}

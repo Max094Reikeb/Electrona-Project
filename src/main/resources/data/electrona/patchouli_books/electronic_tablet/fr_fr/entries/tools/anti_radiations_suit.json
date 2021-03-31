@@ -1,0 +1,20 @@
+{
+    "name": "Équipement Anti-Radiation",
+    "icon": "electrona:anti_radiation_chestplate",
+    "category": "tools_category",
+    "sortnum": 2,
+    "pages": [
+        {
+            "type": "text",
+            "text": "L'Équipement Anti-Radiation est un équipent qui protège le joueur des radiations des éléments radioactifs (comme le yellowcake ou l'uranium concentré)"
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:anti_radiation_helmet_recipe",
+            "recipe2": "electrona:anti_radiation_chestplate_recipe"
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:anti_radiation_leggings_recipe",
+            "recipe2": "electrona:anti_radiation_boots_recipe"
+        }
+    ]
+}

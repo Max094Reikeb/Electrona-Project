@@ -1,0 +1,16 @@
+{
+    "name": "Solpanel (T1)",
+    "icon": "electrona:solar_panel_tiers1",
+    "category": "machines_category",
+    "sortnum": 1,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Solpanelen av Tier 1 är en generator som producerar ELs endast under dagstid och om den har tillgång till himlen."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:solarpanelrecipe",
+            "text": "Krävande ingredienser :$(br)- 4 Järntackor$(br)- 3 Tenntackor$(br)- 1 Elektronisk krets$(br)- 1 Dagsljusdetektor"
+        }
+    ]
+}

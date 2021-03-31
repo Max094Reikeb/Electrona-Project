@@ -1,0 +1,16 @@
+{
+    "name": "Teleporter",
+    "icon": "electrona:teleporter",
+    "category": "machines_category",
+    "sortnum": 8,
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Teleporter is a machine that uses ELs to teleport entities (mobs and players) far away.$(br)You can activate the 'auto-deletion' option that will remove the linked coordinates from the teleporter after you use it."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:recipeteleporter",
+            "text": "Needed ingredients :$(br)- 3 Compressed Obsidians$(br)- 2 Steel Plates$(br)- 2 Electronic Circuits$(br)- 1 Machine Casing"
+        }
+    ]
+}

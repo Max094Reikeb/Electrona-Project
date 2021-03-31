@@ -1,0 +1,24 @@
+{
+    "name": "Biomassgenerator",
+    "icon": "electrona:biomass_generator",
+    "category": "machines_category",
+    "sortnum": 5,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Biomassgeneratorn är en generator som producerar ELs med biomassa. För att starta den måste du placera biomassa i sin plats. För att se den biomassa som generatorn accepterar, vänligen vänd sidan."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:biomassgeneratorrecipe",
+            "text": "Krävande ingredienser :$(br)- 2 Ståltackor$(br)- 2 Tenntackor$(br)- 2 Biomassacell$(br)- 1 Maskinhölje$(br)- 1 Motor$(br)- 1 Hammare"
+        }, {
+            "type": "text",
+            "title": "Accepterad biomassa",
+            "text": "Ben, benmjöl, ruttet kött, äpple, socker, vetefrön, vete, morot, potatis, pumapaj, bröd, pumpafrön, sockerrör, ägg, kaka, melonskiva, melonfrön, söta bär, rå torsk, rå lax, tropisk fisk/clownfisk, blåsfisk, rå fläskkotlett, rå biff, rå kyckling, rått fårkött, rå kanin, kaninfot, fantommembran, rödbetsfrön och rödbeta."
+        }, {
+            "type": "text",
+            "title": "Mera biomassa?",
+            "text": "Alla mods med 'forge:biomass' tagg på ett föremål kan lägga till biomassa som kommer att accepteras av den här biomassgeneratorn."
+        }
+    ]
+}

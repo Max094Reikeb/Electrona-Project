@@ -1,0 +1,12 @@
+{
+    "name": "Uranerz",
+    "icon": "electrona:uranium_ore",
+    "category": "blocks_category",
+    "sortnum": 1,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Uranerz ist das zweite Erz von Electrona und bildet die Basis für alle radioaktiven Komponenten."
+        }
+    ]
+}

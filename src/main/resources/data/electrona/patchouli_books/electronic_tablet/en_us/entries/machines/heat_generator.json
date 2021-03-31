@@ -1,0 +1,16 @@
+{
+    "name": "Heat Generator",
+    "icon": "electrona:heat_generator",
+    "category": "machines_category",
+    "sortnum": 4,
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Heat Generator is a generator that produces ELs with heat. You can either place it in a warm biome (meza or desert) or give it lava, with a right click on it with a lava bucket."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:heatgeneratorrecipe",
+            "text": "Needed ingredients :$(br)- 6 Steel Ingots$(br)- 1 Machine Casing$(br)- 1 Motor$(br)- 1 Lava Cell"
+        }
+    ]
+}

@@ -1,0 +1,24 @@
+{
+    "name": "Biomassen Generator",
+    "icon": "electrona:biomass_generator",
+    "category": "machines_category",
+    "sortnum": 5,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Der Biomassen Generator ist ein Generator welcher aus Biomasse ELs produziert. Um ihn zum laufen zu bringen musst du Biomasse in sein Slot packen. Um zu sehen was der Biomassen Generator alles akzeptiert wechsel die Seite."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:biomassgeneratorrecipe",
+            "text": "Braucht zum herstellen :$(br)- 2 Stahlbarren$(br)- 2 Zinnbarren$(br)- 2 Biomasse-Zellen$(br)- 1 Maschinengehäuse$(br)- 1 Motor$(br)- 1 Hammer"
+        }, {
+            "type": "text",
+            "title": "Biomasse",
+            "text": "Knochen, Knochenmehl, Verrottetes Fleisch, Apfel, Zucker, Weizenkörner, Weizen, Karotten, Kartoffeln, Kürbiskuchen, Brot, Kürbiskerne, Zuckerrohr, Eier, Kekse, Melonenscheiben, Melonenkerne, Süßbeeren, Roher Kabeljau, Roher Lachs, Tropenfisch, Kugelfisch, Rohes Schweinefleisch, Rohes Rindfleisch, Rohes Hühnchen, Rohes Hammelfleisch, Rohes Kaninchen, Hasenpfoten, Phantomhaut, Rote-Bete-Samen und Rote Bete."
+        }, {
+            "type": "text",
+            "title": "Weitere Biomasse ?",
+            "text": "Jede Mod, welche auf Items den Tag 'forge:biomass' besitzen können in den Biomassengenrator eingefügt werden."
+        }
+    ]
+}

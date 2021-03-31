@@ -1,0 +1,16 @@
+{
+    "name": "Cooler",
+    "icon": "electrona:cooler",
+    "category": "blocks_category",
+    "sortnum": 8,
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Cooler is a block that is used to cool down Uranium Bars."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:cooler_recipe",
+            "text": "Needed ingredients :$(br)- 4 Water Cells$(br)- 3 Steel Plates$(br)- 1 Machine Casing$(br)- 1 Motor"
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "name": "Värmegenerator",
+    "icon": "electrona:heat_generator",
+    "category": "machines_category",
+    "sortnum": 4,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Värmegeneratorn är en generator som producerar EL med hjälp av värmen. Du kan antingen placera ut den i en varm biome (mesa eller öken"
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:heatgeneratorrecipe",
+            "text": "Krävande ingredienser :$(br)- 6 Ståltackor$(br)- 1 Maskinhölje$(br)- 1 Motor$(br)- 1 Lavacell"
+        }
+    ]
+}

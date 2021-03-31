@@ -1,0 +1,16 @@
+{
+    "name": "Cable Bleu",
+    "icon": "electrona:blue_cable",
+    "category": "blocks_category",
+    "sortnum": 4,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Le Cable Bleu est un moyen de transmettre de l'énergie entre une Batterie et une Machine."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:blue_cable_recipe",
+            "text": "Ingrédients requis :$(br)- 4 Plaques d'Acier$(br)- 2 Lingots d'Étain$(br)- 1 Colorant Bleu$(br)- 1 Circuit Électronique"
+        }
+    ]
+}

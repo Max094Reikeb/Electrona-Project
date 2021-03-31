@@ -1,0 +1,16 @@
+{
+    "name": "Compressor",
+    "icon": "electrona:compressor",
+    "category": "machines_category",
+    "sortnum": 7,
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Compressor is a crafting machine that uses ELs to compress things and get other things in return."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:compressorrecipe",
+            "text": "Needed ingredients :$(br)- 4 Tin Ingots$(br)- 2 Pistons$(br)- 1 Electronic Circuit$(br)- 1 Motor$(br)- 1 Machine Casing"
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+{
+    "name": "Enchantments",
+    "icon": "minecraft:enchanted_book",
+    "category": "tools_category",
+    "sortnum": 3,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Enchantments are a big part of Minecraft, that's why they're also here, in Electrona."
+        }, {
+            "type": "spotlight",
+            "item": "minecraft:enchanted_book",
+            "title": "Lumberjack",
+            "text": "The enchantment Lumberjack allows the player to mine an entire vein of wood with only one cut.$(br)Only usable with : Steel Axe."
+        }, {
+            "type": "spotlight",
+            "item": "minecraft:enchanted_book",
+            "title": "Smelting",
+            "text": "The enchantment Smelting allows the player to instantly smelt everything he mines.$(br)Only usable with : Steel Pickaxe."
+        }, {
+            "type": "spotlight",
+            "item": "minecraft:enchanted_book",
+            "title": "Thundering",
+            "text": "The enchantment Thundering allows the player to summon a lightning bolt wherever he wants.$(br)Only usable with : Steel Axe."
+        }, {
+            "type": "spotlight",
+            "item": "minecraft:enchanted_book",
+            "title": "Veinminer",
+            "text": "The enchantment Veinminer allows the player to mine an entire vein of ore with only one mined block.$(br)Only usable with : Steel Pickaxe."
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+{
+    "name": "Anti-Strahlenschutzanzug",
+    "icon": "electrona:anti_radiation_chestplate",
+    "category": "tools_category",
+    "sortnum": 2,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Strahlenschutzanzug ist ein Anzug, der den Spieler vor der Strahlung radioaktiver Elemente (wie z.B. Yellowcake oder konzentriertes Uran) schützt."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:anti_radiation_helmet_recipe",
+            "recipe2": "electrona:anti_radiation_chestplate_recipe"
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:anti_radiation_leggings_recipe",
+            "recipe2": "electrona:anti_radiation_boots_recipe"
+        }
+    ]
+}

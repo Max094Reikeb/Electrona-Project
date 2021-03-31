@@ -1,0 +1,24 @@
+{
+    "name": "Biomass Generator",
+    "icon": "electrona:biomass_generator",
+    "category": "machines_category",
+    "sortnum": 5,
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Biomass Generator is a generator that produces ELs with biomass. To power it, you have to place biomass in its slot. To see the biomass that the generator accepts, please, turn the page."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:biomassgeneratorrecipe",
+            "text": "Needed ingredients :$(br)- 2 Steel Ingots$(br)- 2 Tin Ingots$(br)- 2 Biomass Cells$(br)- 1 Machine Casing$(br)- 1 Motor$(br)- 1 Hammer"
+        }, {
+            "type": "text",
+            "title": "Biomass accepted",
+            "text": "Bone, bonemeal, rotten flesh, apple, sugar, wheat seeds, wheat, carrot, potato, pumpkin pie, bread, pumpkin seeds, sugar cane, egg, cookie, melon slice, melon seeds, sweet berries, raw cod, raw salmon, clownfish, pufferfish, raw porkshop, raw beef, raw chicken, raw mutton, raw rabbit, rabbit foot, phantom membrane, beetroot seeds and beetroot."
+        }, {
+            "type": "text",
+            "title": "More Biomass?",
+            "text": "Any mod with 'forge:biomass' tag on an item can add biomass that will be accepted by this Biomass Generator."
+        }
+    ]
+}

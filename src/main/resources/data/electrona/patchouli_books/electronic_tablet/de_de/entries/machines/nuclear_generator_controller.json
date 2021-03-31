@@ -1,0 +1,16 @@
+{
+    "name": "SVN",
+    "icon": "electrona:nuclear_generator_controller",
+    "category": "machines_category",
+    "sortnum": 11,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Der SVN, auch bekannt als Steuerung von Nukleargeneratoren, ist ein Regler für Kernreaktionen. Er benötigt Strom und Wasser, um die Uranstäbe abzukühlen, mit denen er Energie erzeugt."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:ngc_recipe",
+            "text": "Braucht zum herstellen :$(br)- 6 Stahlplatten$(br)- 2 Elektronische Schaltungen$(br)- 1 Maschinengehaeuse"
+        }
+    ]
+}

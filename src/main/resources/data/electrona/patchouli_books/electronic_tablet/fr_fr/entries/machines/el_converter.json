@@ -1,0 +1,16 @@
+{
+    "name": "Convertisseur d'EL",
+    "icon": "electrona:el_vp_converter",
+    "category": "machines_category",
+    "sortnum": 6,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Le Convertisseur d'EL est une machine qui converti les ELs en une autre énergie. Pour l'instant, seulement les VP marchent."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:recipeelconverter",
+            "text": "Ingrédients requis :$(br)- 4 Lingots d'Étain$(br)- 2 Circuits Électroniques$(br)- 2 Plaques d'Acier$(br)- 1 Boitier de Machine"
+        }
+    ]
+}

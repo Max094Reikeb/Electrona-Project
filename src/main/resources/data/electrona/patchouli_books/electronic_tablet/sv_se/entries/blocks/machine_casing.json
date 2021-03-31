@@ -1,0 +1,16 @@
+{
+    "name": "Maskinhölje",
+    "icon": "electrona:machine_casing",
+    "category": "blocks_category",
+    "sortnum": 2,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Maskinhöljet är en enkel kompnent av många olika maskiner och avancerade generatorer."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:machinecasingrecipe",
+            "text": "Krävande ingredienser :$(br)- 8 Tennplåtar$(br)- 1 Elektronisk krets"
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "name": "Battery",
+    "icon": "electrona:battery",
+    "category": "machines_category",
+    "sortnum": 0,
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Battery is a machine that stores ELs produced by generators. It can also deliver it to machines."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:recipebattery",
+            "text": "Needed ingredients :$(br)- 6 Tin Ingots$(br)- 2 Steel Ingots$(br)- 1 Electronic Circuit"
+        }
+    ]
+}

@@ -1,0 +1,12 @@
+{
+    "name": "Tin Ore",
+    "icon": "electrona:tin_ore",
+    "category": "blocks_category",
+    "sortnum": 0,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Tin Ore is the basic ore of Electrona. Almost all components are crafted from Tin."
+        }
+    ]
+}

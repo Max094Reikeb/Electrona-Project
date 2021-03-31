@@ -1,0 +1,16 @@
+{
+    "name": "Wasserpumpe",
+    "icon": "electrona:water_pump",
+    "category": "machines_category",
+    "sortnum": 12,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Die Wasserpumpe ist eine Maschine, die ELs verwendet, um das Wasser, das sich darunter befindet, in ihren Tank zu bekommen."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:water_pump_recipe",
+            "text": "Braucht zum herstellen :$(br)- 4 Wasser-Zellen$(br)- 2 Stahlplatten$(br)- 1 Maschinengehaeuse$(br)- 1 Motor$(br)- 1 Pumpe"
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "name": "Stållåda",
+    "icon": "electrona:steel_crate",
+    "category": "blocks_category",
+    "sortnum": 7,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Stållådan är en stålversion av en vanlig kista. Det är ett dekorativt lagringsblock."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:steel_crate_recipe",
+            "text": "Krävande ingredienser :$(br)- 8 Ståltackor$(br)- 1 Kista"
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "name": "Steel Crate",
+    "icon": "electrona:steel_crate",
+    "category": "blocks_category",
+    "sortnum": 7,
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Steel Crate is a steel version of the Chest. It's a decorative storage block."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:steel_crate_recipe",
+            "text": "Needed ingredients :$(br)- 8 Steel Ingots$(br)- 1 Chest"
+        }
+    ]
+}

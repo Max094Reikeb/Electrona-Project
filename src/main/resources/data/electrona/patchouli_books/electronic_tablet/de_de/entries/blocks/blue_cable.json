@@ -1,0 +1,16 @@
+{
+    "name": "Blaues Kabel",
+    "icon": "electrona:blue_cable",
+    "category": "blocks_category",
+    "sortnum": 4,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Das Blaue Kabel ist eine Möglichkeit, Energie zwischen einer Batterie und einer Maschine zu übertragen."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:blue_cable_recipe",
+            "text": "Braucht zum herstellen :$(br)- 4 Stahlplatten$(br)- 2 Zinnbarren$(br)- 2 Blaue Farbstoffe$(br)- 1 Electronic Schaltkreis"
+        }
+    ]
+}

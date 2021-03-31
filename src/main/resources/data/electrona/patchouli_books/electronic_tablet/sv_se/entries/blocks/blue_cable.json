@@ -1,0 +1,16 @@
+{
+    "name": "Blå Kabel",
+    "icon": "electrona:blue_cable",
+    "category": "blocks_category",
+    "sortnum": 4,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Blå Kabeln är ett sätt att överföra energi mellan ett batteri och en maskin."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:blue_cable_recipe",
+            "text": "Krävande ingredienser :$(br)- 2 Stålplåtar$(br)- 2 Tenntackor$(br)- 2 Blå Färgämnen$(br)- 1 Elektronisk krets"
+        }
+    ]
+}

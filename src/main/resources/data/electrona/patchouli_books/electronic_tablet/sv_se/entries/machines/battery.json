@@ -1,0 +1,16 @@
+{
+    "name": "Batteri",
+    "icon": "electrona:battery",
+    "category": "machines_category",
+    "sortnum": 0,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Batteriet är en maskin som lagrar ELs producerat av generatorer. Den kan också leverera det till maskiner."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:recipebattery",
+            "text": "Kräver ingredienserna :$(br)- 6 Tenntackor$(br)- 2 Ståltackor$(br)- 1 Elektronisk krets"
+        }
+    ]
+}

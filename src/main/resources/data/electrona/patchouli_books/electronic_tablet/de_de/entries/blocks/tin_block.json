@@ -1,0 +1,16 @@
+{
+    "name": "Zinnblock",
+    "icon": "electrona:tin_block",
+    "category": "blocks_category",
+    "sortnum": 5,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Der Zinnblock ist ein dekorations Block, welcher aus Zinnbarren hergestellt wird"
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:tinblockrecipe",
+            "text": "Braucht zum herstellen :$(br)- 9 Zinnbarren"
+        }
+    ]
+}

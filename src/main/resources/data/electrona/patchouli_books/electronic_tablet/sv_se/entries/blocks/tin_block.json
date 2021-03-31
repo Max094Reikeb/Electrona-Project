@@ -1,0 +1,16 @@
+{
+    "name": "Tennblock",
+    "icon": "electrona:tin_block",
+    "category": "blocks_category",
+    "sortnum": 5,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Tennblocket är ett dekorationsblock som kan skapas med hjälp av tenntackor."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:tinblockrecipe",
+            "text": "Krävande ingredienser :$(br)- 9 Tenntackor"
+        }
+    ]
+}

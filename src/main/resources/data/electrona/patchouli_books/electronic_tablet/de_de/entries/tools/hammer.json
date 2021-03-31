@@ -1,0 +1,16 @@
+{
+    "name": "Hammer",
+    "icon": "electrona:hammer",
+    "category": "tools_category",
+    "sortnum": 0,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Der Hammer ist ein Tool."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:hammerrecipe",
+            "text": "Braucht zum herstellen :$(br)- 5 Zinnbarren$(br)- 2 Stöcker"
+        }
+    ]
+}

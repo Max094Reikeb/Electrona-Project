@@ -1,0 +1,16 @@
+{
+    "name": "Bloc d'Acier",
+    "icon": "electrona:steel_block",
+    "category": "blocks_category",
+    "sortnum": 6,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Le Bloc d'Acier est un bloc de décoration qui peut être obtenu avec des lingots d'acier."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:recipesteelblock",
+            "text": "Ingrédients requis :$(br)- 9 Lingots d'Acier"
+        }
+    ]
+}

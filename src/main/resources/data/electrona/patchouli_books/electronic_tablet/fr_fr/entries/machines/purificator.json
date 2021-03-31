@@ -1,0 +1,16 @@
+{
+    "name": "Purificateur",
+    "icon": "electrona:purificator",
+    "category": "machines_category",
+    "sortnum": 10,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Le Purificateur est une version moderne de l'Alambic. Il utilise de l'eau pour purifier des éléments."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:purificator_recipe",
+            "text": "Ingrédients requis :$(br)- 2 Cellules d'eau$(br)- 2 Blocks de Verre$(br)- 1 Boitier de Machine$(br)- 1 Alambic$(br)- 1 Fiole"
+        }
+    ]
+}

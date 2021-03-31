@@ -1,0 +1,16 @@
+{
+    "name": "Kylare",
+    "icon": "electrona:cooler",
+    "category": "blocks_category",
+    "sortnum": 8,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Kylaren är ett block som används för att kyla ner uranstänger."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:cooler_recipe",
+            "text": "Krävande ingredienser :$(br)- 4 Vattenceller$(br)- 3 Stålplåtar$(br)- 1 Maskinhölje$(br)- 1 Motor"
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "name": "EL-konverterare",
+    "icon": "electrona:el_vp_converter",
+    "category": "machines_category",
+    "sortnum": 6,
+    "pages": [
+        {
+            "type": "text",
+            "text": "EL-konverteraren är en maskin som konverterar EL till en annan energityp. För tillfället sp tas bara VP."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:recipeelconverter",
+            "text": "Krävande ingredienser :$(br)- 4 Tenntackor$(br)- 2 Elektroniska kretsar$(br)- 2 Stålplåtar$(br)- 1 Maskinhölje"
+        }
+    ]
+}

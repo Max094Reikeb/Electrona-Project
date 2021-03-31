@@ -1,0 +1,16 @@
+{
+    "name": "Caisse en Acier",
+    "icon": "electrona:steel_crate",
+    "category": "blocks_category",
+    "sortnum": 7,
+    "pages": [
+        {
+            "type": "text",
+            "text": "La Caisse en Acier est une version en Acier du Coffre. C'est un bloc de stockage décoratif."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:steel_crate_recipe",
+            "text": "Ingrédients requis :$(br)- 8 Lingots d'Acier$(br)- 1 Coffre"
+        }
+    ]
+}

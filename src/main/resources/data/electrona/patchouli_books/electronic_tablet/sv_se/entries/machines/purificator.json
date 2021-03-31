@@ -1,0 +1,16 @@
+{
+    "name": "Purifierare",
+    "icon": "electrona:purificator",
+    "category": "machines_category",
+    "sortnum": 10,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Purifieraren är en modern version av Brygdställ. Det använder vatten för att rena element."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:purificator_recipe",
+            "text": "Krävande ingredienser :$(br)- 2 Vattenceller$(br)- 2 Glas$(br)- 1 Maskinhölje$(br)- 1 Brygdställ$(br)- 1 Glasflaska"
+        }
+    ]
+}

@@ -1,0 +1,12 @@
+{
+    "name": "Minerais d'Uranium",
+    "icon": "electrona:uranium_ore",
+    "category": "blocks_category",
+    "sortnum": 1,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Le Minerais d'Uranium est le second Minerais d'Electrona et c'est base de tous les composés radioactifs."
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "name": "Marteau",
+    "icon": "electrona:hammer",
+    "category": "tools_category",
+    "sortnum": 0,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Le Marteau est un outil."
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:hammerrecipe",
+            "text": "Ingrédients requis :$(br)- 5 Lingots d'Étain$(br)- 2 Bâtons"
+        }
+    ]
+}

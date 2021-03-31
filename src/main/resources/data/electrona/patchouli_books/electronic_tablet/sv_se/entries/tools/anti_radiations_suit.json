@@ -1,0 +1,20 @@
+{
+    "name": "Strålningsdräkt",
+    "icon": "electrona:anti_radiation_chestplate",
+    "category": "tools_category",
+    "sortnum": 2,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Strålningsdräkten är en dräkt som skyddar spelare mot strålning från radioaktiva element (t.ex. Yellowcake eller koncentrerat uran)"
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:anti_radiation_helmet_recipe",
+            "recipe2": "electrona:anti_radiation_chestplate_recipe"
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:anti_radiation_leggings_recipe",
+            "recipe2": "electrona:anti_radiation_boots_recipe"
+        }
+    ]
+}

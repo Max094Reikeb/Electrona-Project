@@ -1,0 +1,20 @@
+{
+    "name": "Anti-Radiation Suit",
+    "icon": "electrona:anti_radiation_chestplate",
+    "category": "tools_category",
+    "sortnum": 2,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Anti-Radiation suit is a suit that protects the player against radiations from radioactive elements (such as yellowcake or concentrated uranium)"
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:anti_radiation_helmet_recipe",
+            "recipe2": "electrona:anti_radiation_chestplate_recipe"
+        }, {
+            "type": "crafting",
+            "recipe": "electrona:anti_radiation_leggings_recipe",
+            "recipe2": "electrona:anti_radiation_boots_recipe"
+        }
+    ]
+}
