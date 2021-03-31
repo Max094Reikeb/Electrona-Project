@@ -3,8 +3,7 @@ package net.reikeb.electrona.network.packets;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.*;
 
 import net.minecraftforge.fml.network.NetworkEvent;
 

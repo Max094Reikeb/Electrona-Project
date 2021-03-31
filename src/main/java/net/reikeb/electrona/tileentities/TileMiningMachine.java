@@ -21,13 +21,12 @@ import net.minecraftforge.common.util.*;
 import net.minecraftforge.items.*;
 
 import net.reikeb.electrona.containers.MiningMachineContainer;
-import net.reikeb.electrona.init.BlockInit;
-import net.reikeb.electrona.init.ContainerInit;
+import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.utils.ItemHandler;
 
-import java.util.Random;
-
 import static net.reikeb.electrona.init.TileEntityInit.*;
+
+import java.util.Random;
 
 public class TileMiningMachine extends LockableLootTileEntity implements ITickableTileEntity {
 

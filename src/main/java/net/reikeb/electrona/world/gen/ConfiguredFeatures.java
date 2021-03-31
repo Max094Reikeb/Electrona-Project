@@ -2,11 +2,8 @@ package net.reikeb.electrona.world.gen;
 
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.WorldGenRegistries;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.OreFeature;
-import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.util.registry.*;
+import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.feature.template.TagMatchRuleTest;
 
 import net.reikeb.electrona.Electrona;

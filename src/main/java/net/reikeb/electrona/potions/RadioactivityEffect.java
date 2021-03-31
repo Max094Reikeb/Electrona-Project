@@ -2,9 +2,7 @@ package net.reikeb.electrona.potions;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierManager;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.EffectType;
+import net.minecraft.potion.*;
 import net.minecraft.util.ResourceLocation;
 
 import net.reikeb.electrona.init.PotionEffectInit;
@@ -54,18 +52,18 @@ public class RadioactivityEffect extends Effect {
         RadioactivityFunction.radioactivityEffect(entity, amplifier);
     }
 
-	@Override
-	public void removeAttributeModifiers(LivingEntity entity, AttributeModifierManager attributeMapIn, int amplifier) {
-		Collection<EffectInstance> effects = entity.getActiveEffects();
-		for (EffectInstance effect : effects) {
-		    if (effect.getEffect() == PotionEffectInit.RADIOACTIVITY.get()) {
+    @Override
+    public void removeAttributeModifiers(LivingEntity entity, AttributeModifierManager attributeMapIn, int amplifier) {
+        Collection<EffectInstance> effects = entity.getActiveEffects();
+        for (EffectInstance effect : effects) {
+            if (effect.getEffect() == PotionEffectInit.RADIOACTIVITY.get()) {
                 entity.getPersistentData().putDouble("radioactive", 0);
             }
-		}
-	}
+        }
+    }
 
-	@Override
-	public boolean isDurationEffectTick(int duration, int amplifier) {
-		return true;
-	}
+    @Override
+    public boolean isDurationEffectTick(int duration, int amplifier) {
+        return true;
+    }
 }

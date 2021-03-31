@@ -2,22 +2,22 @@ package net.reikeb.electrona.misc;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.item.*;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.Minecraft;
-import net.minecraft.block.Blocks;
-
-import mezz.jei.api.registration.*;
-import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.helpers.*;
-import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
-import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
+import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.helpers.*;
 import mezz.jei.api.IModPlugin;
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.category.IRecipeCategory;
+import mezz.jei.api.registration.*;
+
+import net.minecraft.block.Blocks;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.item.*;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import net.reikeb.electrona.init.*;
 
