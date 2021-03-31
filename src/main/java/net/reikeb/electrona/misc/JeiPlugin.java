@@ -224,7 +224,7 @@ public class JeiPlugin implements IModPlugin {
 
         public CompressorBlockJeiCategory(IGuiHelper guiHelper) {
             this.title = "Compressing";
-            this.background = guiHelper.createDrawable(new ResourceLocation("electrona", "textures/compressorgui.png"), 0, 0, 176, 65);
+            this.background = guiHelper.createDrawable(new ResourceLocation("electrona", "textures/guis/compressor_gui.png"), 0, 0, 176, 65);
         }
 
         @Override
@@ -308,7 +308,7 @@ public class JeiPlugin implements IModPlugin {
 
         public PurificatorBlockJeiCategory(IGuiHelper guiHelper) {
             this.title = "Purifying";
-            this.background = guiHelper.createDrawable(new ResourceLocation("electrona", "textures/purificator_gui.png"), 0, 0, 166, 73);
+            this.background = guiHelper.createDrawable(new ResourceLocation("electrona", "textures/guis/purificator_gui.png"), 0, 0, 166, 73);
         }
 
         @Override
