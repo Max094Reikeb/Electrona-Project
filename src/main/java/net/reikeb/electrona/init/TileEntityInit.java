@@ -56,6 +56,9 @@ public class TileEntityInit {
     public static final RegistryObject<TileEntityType<TilePurificator>> TILE_PURIFICATOR = TILE_ENTITIES.register("purificator", () ->
             TileEntityType.Builder.of(TilePurificator::new, BlockInit.PURIFICATOR.get()).build(null));
 
+    public static final RegistryObject<TileEntityType<TileSprayer>> TILE_SPRAYER = TILE_ENTITIES.register("sprayer", () ->
+            TileEntityType.Builder.of(TileSprayer::new, BlockInit.SPRAYER.get()).build(null));
+
     public static final RegistryObject<TileEntityType<TileConveyor>> TILE_CONVEYOR = TILE_ENTITIES.register("conveyor", () ->
             TileEntityType.Builder.of(TileConveyor::new, BlockInit.CONVEYOR.get()).build(null));
 
