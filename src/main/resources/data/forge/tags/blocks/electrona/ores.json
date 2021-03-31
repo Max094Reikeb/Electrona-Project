@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "electrona:tin_ore",
+    "electrona:uranium_ore",
+    "electrona:lead_ore"
+  ]
+}
