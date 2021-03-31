@@ -25,6 +25,7 @@ public class ContainerInit {
     public static final RegistryObject<ContainerType<TeleporterContainer>> TELEPORTER_CONTAINER = CONTAINERS.register("teleporter", () -> registerContainer(TeleporterContainer::new));
     public static final RegistryObject<ContainerType<WaterPumpContainer>> WATER_PUMP_CONTAINER = CONTAINERS.register("water_pump", () -> registerContainer(WaterPumpContainer::new));
     public static final RegistryObject<ContainerType<PurificatorContainer>> PURIFICATOR_CONTAINER = CONTAINERS.register("purificator", () -> registerContainer(PurificatorContainer::new));
+    public static final RegistryObject<ContainerType<MiningMachineContainer>> MINING_MACHINE_CONTAINER = CONTAINERS.register("mining_machine", () -> registerContainer(MiningMachineContainer::new));
     public static final RegistryObject<ContainerType<SprayerContainer>> SPRAYER_CONTAINER = CONTAINERS.register("sprayer", () -> registerContainer(SprayerContainer::new));
     public static final RegistryObject<ContainerType<DimensionLinkerContainer>> DIMENSION_LINKER_CONTAINER = CONTAINERS.register("dimension_linker", () -> registerContainer(DimensionLinkerContainer::new));
     public static final RegistryObject<ContainerType<SteelCrateContainer>> STEEL_CRATE_CONTAINER = CONTAINERS.register("steel_crate", () -> registerContainer(SteelCrateContainer::new));

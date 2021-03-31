@@ -3,10 +3,11 @@
   "values": [
     "electrona:el_converter",
     "electrona:compressor",
-    "electrona:xp_generator",
     "electrona:teleporter",
+    "electrona:xp_generator",
     "electrona:water_pump",
-    "electrona:conveyor",
-    "electrona:sprayer"
+    "electrona:sprayer",
+    "electrona:mining_machine",
+    "electrona:conveyor"
   ]
 }

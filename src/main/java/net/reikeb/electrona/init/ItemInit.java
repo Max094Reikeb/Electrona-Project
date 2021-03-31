@@ -107,7 +107,9 @@ public class ItemInit {
 
     public static final RegistryObject<Item> SPRAYER_ITEM = ITEMS.register("sprayer", () ->
             new BlockItem(BlockInit.SPRAYER.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));
-    // Mining Machine
+
+    public static final RegistryObject<Item> MINING_MACHINE_ITEM = ITEMS.register("mining_machine", () ->
+            new BlockItem(BlockInit.MINING_MACHINE.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));
 
     public static final RegistryObject<Item> CONVEYOR_ITEM = ITEMS.register("conveyor", () ->
             new BlockItem(BlockInit.CONVEYOR.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_MACHINES)));

@@ -30,6 +30,7 @@ public class ClientSetup {
         ScreenManager.register(TELEPORTER_CONTAINER.get(), TeleporterWindow::new);
         ScreenManager.register(WATER_PUMP_CONTAINER.get(), WaterPumpWindow::new);
         ScreenManager.register(PURIFICATOR_CONTAINER.get(), PurificatorWindow::new);
+        ScreenManager.register(MINING_MACHINE_CONTAINER.get(), MiningMachineWindow::new);
         ScreenManager.register(SPRAYER_CONTAINER.get(), SprayerWindow::new);
         ScreenManager.register(DIMENSION_LINKER_CONTAINER.get(), DimensionLinkerWindow::new);
         ScreenManager.register(STEEL_CRATE_CONTAINER.get(), SteelCrateWindow::new);

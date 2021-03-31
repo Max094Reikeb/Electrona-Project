@@ -31,6 +31,8 @@ public class BlockInit {
     public static final RegistryObject<Teleporter> TELEPORTER = BLOCKS.register("teleporter", Teleporter::new);
     public static final RegistryObject<WaterPump> WATER_PUMP = BLOCKS.register("water_pump", WaterPump::new);
     public static final RegistryObject<Purificator> PURIFICATOR = BLOCKS.register("purificator", Purificator::new);
+    public static final RegistryObject<MiningPipe> MINING_PIPE = BLOCKS.register("mining_pipe", MiningPipe::new);
+    public static final RegistryObject<MiningMachine> MINING_MACHINE = BLOCKS.register("mining_machine", MiningMachine::new);
     public static final RegistryObject<Sprayer> SPRAYER = BLOCKS.register("sprayer", Sprayer::new);
     public static final RegistryObject<Conveyor> CONVEYOR = BLOCKS.register("conveyor", Conveyor::new);
 
