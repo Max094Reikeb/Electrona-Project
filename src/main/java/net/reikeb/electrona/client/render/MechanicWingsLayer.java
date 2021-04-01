@@ -16,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import net.reikeb.electrona.init.ItemInit;
 
 public class MechanicWingsLayer<T extends LivingEntity, M extends EntityModel<T>> extends ElytraLayer<T, M> {
-    private static final ResourceLocation TEXTURE_WINGS = new ResourceLocation("electrona", "textures/mechanic_wings.png");
+    private static final ResourceLocation TEXTURE_WINGS = new ResourceLocation("electrona", "textures/models/mechanic_wings.png");
     private final MechanicWingsModel<T> wingsModel = new MechanicWingsModel<>();
 
     public MechanicWingsLayer(IEntityRenderer<T, M> p_i50942_1_) {
