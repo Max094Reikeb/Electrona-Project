@@ -13,6 +13,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.*;
+import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import net.reikeb.electrona.advancements.TTriggers;
@@ -60,12 +61,20 @@ public class Electrona {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(new PlayerDiesEvent());
         MinecraftForge.EVENT_BUS.register(new DoBlackholesExist());
+        MinecraftForge.EVENT_BUS.addListener(this::setupEngineerHouses);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void registerAllDeferredRegistryObjects(IEventBus modBus) {
         Villagers.POI.register(modBus);
         Villagers.PROFESSIONS.register(modBus);
+    }
+
+    /*
+      Add to Village pools in FMLServerAboutToStartEvent so Engineer houses shows up in Villages modified by datapacks.
+     */
+    public void setupEngineerHouses(FMLServerAboutToStartEvent event) {
+        StructureGen.setupVillageWorldGen(event.getServer().registryAccess());
     }
 
     public void setup(final FMLCommonSetupEvent event) {
