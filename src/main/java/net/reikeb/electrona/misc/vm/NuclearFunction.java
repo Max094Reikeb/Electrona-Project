@@ -1,12 +1,19 @@
 package net.reikeb.electrona.misc.vm;
 
+import net.minecraft.advancements.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.*;
+import net.minecraft.world.World;
 
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.tileentities.TileNuclearGeneratorController;
 
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class NuclearFunction {
 
@@ -105,6 +112,41 @@ public class NuclearFunction {
                 } else if ((waterLevel >= 1) && (temperature >= 1)) {
                     FluidFunction.drainWater(tileCooler, 1);
                     tileEntity.getTileData().putInt("temperature", temperature - 1);
+                }
+            }
+        }
+    }
+
+    /**
+     * Handles the I Am... Inevitable! advancement
+     *
+     * @param world World of the player(s)
+     * @param pos   Position of the Singularity
+     */
+    public static void advancementInevitableFunction(World world, BlockPos pos) {
+        double x = pos.getX();
+        double y = pos.getY();
+        double z = pos.getZ();
+        {
+            List<Entity> _entfound = world.getEntitiesOfClass(Entity.class,
+                    new AxisAlignedBB(x - 5, y - 5, z - 5,
+                            x + 5, y + 5, z + 5), null)
+                    .stream().sorted(new Object() {
+                        Comparator<Entity> compareDistOf(double _x, double _y, double _z) {
+                            return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(_x, _y, _z));
+                        }
+                    }.compareDistOf(x, y, z)).collect(Collectors.toList());
+            for (Entity entityiterator : _entfound) {
+                if (entityiterator instanceof ServerPlayerEntity) {
+                    Advancement advancement = ((ServerPlayerEntity) entityiterator).server.getAdvancements().getAdvancement(new ResourceLocation("electrona:i_am_inevitable"));
+                    if (advancement == null) System.out.println("Advancement I Am... Inevitable! seems to be null");
+                    if (advancement == null) return;
+                    AdvancementProgress advancementProgress = ((ServerPlayerEntity) entityiterator).getAdvancements().getOrStartProgress(advancement);
+                    if (!advancementProgress.isDone()) {
+                        for (String criteria : advancementProgress.getRemainingCriteria()) {
+                            ((ServerPlayerEntity) entityiterator).getAdvancements().award(advancement, criteria);
+                        }
+                    }
                 }
             }
         }

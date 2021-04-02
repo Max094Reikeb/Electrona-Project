@@ -158,11 +158,12 @@ public class TileNuclearGeneratorController extends LockableLootTileEntity imple
     }
 
     public void explodes() {
+        if (this.level == null) return;
         this.level.explode(null, this.getBlockPos().getX(), this.getBlockPos().getY(),
                 this.getBlockPos().getZ(), 20, Explosion.Mode.BREAK);
-        if ((Math.random() < 0.25) && this.level.getLevelData().getGameRules().getBoolean(DoBlackholesExist.DO_BLACK_HOLES_EXIST)) {
-            this.level.setBlockAndUpdate(this.getBlockPos(), BlockInit.SINGULARITY.get().defaultBlockState());
-            // Advancement "I am... Inevitable!"
+        if ((Math.random() < 0.65) && this.level.getLevelData().getGameRules().getBoolean(DoBlackholesExist.DO_BLACK_HOLES_EXIST)) {
+            this.level.setBlock(this.getBlockPos(), BlockInit.SINGULARITY.get().defaultBlockState(), 3);
+            NuclearFunction.advancementInevitableFunction(this.level, this.getBlockPos());
         }
     }
 
