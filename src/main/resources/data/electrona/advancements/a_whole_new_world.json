@@ -19,8 +19,5 @@
     "a_whole_new_world": {
       "trigger": "minecraft:impossible"
     }
-  },
-  "rewards": {
-    "experience": 1
   }
 }

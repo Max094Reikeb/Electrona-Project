@@ -26,8 +26,5 @@
       }
     }
   },
-  "rewards": {
-    "experience": 1
-  },
-  "parent": "electrona:a_whole_new_world"
+  "parent": "electrona:first_compression"
 }
