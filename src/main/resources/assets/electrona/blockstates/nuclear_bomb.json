@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "electrona:block/nuclear_bomb"
+    },
+    "facing=east": {
+      "model": "electrona:block/nuclear_bomb",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "electrona:block/nuclear_bomb",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "electrona:block/nuclear_bomb",
+      "y": 270
+    }
+  }
+}

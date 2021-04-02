@@ -19,6 +19,20 @@ public class CustomShapes {
     }).get();
 
     /**
+     * VoxelShape of the Nuclear Bomb
+     */
+    public static VoxelShape NuclearBomb = Stream.of(
+            Block.box(1, 2, 3, 15, 8, 13),
+            Block.box(-7, -1, 2, -2, 11, 14),
+            Block.box(-2, 1, 4, 16, 9, 12),
+            Block.box(1, 0, 5, 15, 10, 11),
+            Block.box(16, 2, 5, 17, 8, 11),
+            Block.box(17, 3, 6, 18, 7, 10)
+    ).reduce((v1, v2) -> {
+        return VoxelShapes.join(v1, v2, IBooleanFunction.OR);
+    }).get();
+
+    /**
      * VoxelShape of the Nuclear Generator Controller
      */
     public static VoxelShape NuclearGenerator = Stream.of(

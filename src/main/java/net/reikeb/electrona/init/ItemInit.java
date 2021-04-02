@@ -160,4 +160,7 @@ public class ItemInit {
 
     public static final RegistryObject<Item> SINGULARITY_ITEM = ITEMS.register("singularity", () ->
             new BlockItem(BlockInit.SINGULARITY.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
+
+    public static final RegistryObject<Item> NUCLEAR_BOMB_ITEM = ITEMS.register("nuclear_bomb", () ->
+            new BlockItem(BlockInit.NUCLEAR_BOMB.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
 }

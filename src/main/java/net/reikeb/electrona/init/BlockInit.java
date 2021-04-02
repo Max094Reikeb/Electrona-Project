@@ -53,4 +53,5 @@ public class BlockInit {
     public static final RegistryObject<CompressedObsidian> COMPRESSED_OBSIDIAN = BLOCKS.register("compressed_obsidian", CompressedObsidian::new);
     public static final RegistryObject<Singularity> SINGULARITY = BLOCKS.register("singularity", Singularity::new);
     public static final RegistryObject<Hole> HOLE = BLOCKS.register("hole", Hole::new);
+    public static final RegistryObject<NuclearBomb> NUCLEAR_BOMB = BLOCKS.register("nuclear_bomb", NuclearBomb::new);
 }

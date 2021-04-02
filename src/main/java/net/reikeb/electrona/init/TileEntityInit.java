@@ -90,4 +90,7 @@ public class TileEntityInit {
 
     public static final RegistryObject<TileEntityType<TileSingularity>> TILE_SINGULARITY = TILE_ENTITIES.register("singularity", () ->
             TileEntityType.Builder.of(TileSingularity::new, BlockInit.SINGULARITY.get()).build(null));
+
+    public static final RegistryObject<TileEntityType<TileNuclearBomb>> TILE_NUCLEAR_BOMB = TILE_ENTITIES.register("nuclear_bomb", () ->
+            TileEntityType.Builder.of(TileNuclearBomb::new, BlockInit.NUCLEAR_BOMB.get()).build(null));
 }
