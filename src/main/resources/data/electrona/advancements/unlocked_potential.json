@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "electrona:nuclear_generator_controller"
+    },
+    "title": {
+      "translate": "advancements.unlocked_potential.title"
+    },
+    "description": {
+      "translate": "advancements.unlocked_potential.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "unlocked_potential": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "parent": "electrona:generator"
+}

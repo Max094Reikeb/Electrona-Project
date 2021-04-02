@@ -1,8 +1,10 @@
 package net.reikeb.electrona.blocks;
 
+import net.minecraft.advancements.*;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.*;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.*;
@@ -19,6 +21,7 @@ import net.minecraftforge.api.distmarker.*;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.misc.vm.CustomShapes;
 import net.reikeb.electrona.tileentities.TileNuclearGeneratorController;
 import net.reikeb.electrona.utils.ElectronaUtils;
@@ -69,6 +72,23 @@ public class NuclearGeneratorController extends Block {
             return westShape;
         }
         return shape;
+    }
+
+    @Override
+    public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack itemStack) {
+        if (BlockInit.COOLER.get() == world.getBlockState(new BlockPos(pos.getX(), (pos.getY() - 1), pos.getZ())).getBlock()) {
+            if (entity instanceof ServerPlayerEntity) {
+                Advancement advancement = ((ServerPlayerEntity) entity).server.getAdvancements().getAdvancement(new ResourceLocation("electrona:unlocked_potential"));
+                if (advancement == null) System.out.println("Advancement Unlocked Potential! seems to be null");
+                if (advancement == null) return;
+                AdvancementProgress advancementProgress = ((ServerPlayerEntity) entity).getAdvancements().getOrStartProgress(advancement);
+                if (!advancementProgress.isDone()) {
+                    for (String criteria : advancementProgress.getRemainingCriteria()) {
+                        ((ServerPlayerEntity) entity).getAdvancements().award(advancement, criteria);
+                    }
+                }
+            }
+        }
     }
 
     @Override

@@ -11,6 +11,8 @@
   "advancements.machinator.title": "Machinator!",
   "advancements.steel_getting_an_upgrade.descr": "Craft a Steel Tool.",
   "advancements.steel_getting_an_upgrade.title": "Steel Getting An Upgrade!",
+  "advancements.unlocked_potential.descr": "Make a Nuclear Generator with its Controller and a Cooler.",
+  "advancements.unlocked_potential.title": "Unlocked Potential!",
   "block.electrona.battery": "Battery",
   "block.electrona.battery.desc1": "§dStores ELs",
   "block.electrona.battery.desc2": "§dCan store : §c10 000ELs",
