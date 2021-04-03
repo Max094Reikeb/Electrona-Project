@@ -8,7 +8,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.*;
 
 /**
- * TeleporterUseEvent triggers when an entity uses the Teleporter to teleport itself.<br>
+ * TeleporterUseEvent triggers when an entity uses the Teleporter (or Portable Teleporter) to teleport itself.<br>
  * <br>
  * TeleporterUseEvent.Pre is fired before the entity is teleported.<br>
  * TeleporterUseEvent.Post is fired once the entity has teleported.<br>
@@ -54,7 +54,8 @@ public class TeleporterUseEvent extends Event {
         return entity;
     }
 
-    /** TeleporterUseEvent.Pre is fired before the entity is teleported.  Canceling this event will prevent the entity to teleport itself.<br>
+    /**
+     * TeleporterUseEvent.Pre is fired before the entity is teleported. Canceling this event will prevent the entity to teleport itself.<br>
      * <br>
      * This event is {@link net.minecraftforge.eventbus.api.Cancelable}.<br>
      * This event does not use {@link HasResult}.<br>
@@ -67,7 +68,8 @@ public class TeleporterUseEvent extends Event {
         }
     }
 
-    /** TeleporterUseEvent.Post is fired once the entity has teleported.<br>
+    /**
+     * TeleporterUseEvent.Post is fired once the entity has teleported.<br>
      * <br>
      * This event is not {@link Cancelable}.<br>
      * This event does not use {@link HasResult}.<br>

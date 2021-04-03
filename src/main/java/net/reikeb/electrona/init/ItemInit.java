@@ -28,6 +28,7 @@ public class ItemInit {
     public static final RegistryObject<Item> PADDLE = ITEMS.register("paddle", Paddle::new);
     public static final RegistryObject<Item> PUMP = ITEMS.register("pump", Pump::new);
     public static final RegistryObject<Item> TELEPORT_SAVER = ITEMS.register("teleport_saver", TeleportSaver::new);
+    public static final RegistryObject<Item> PORTABLE_TELEPORTER = ITEMS.register("portable_teleporter", PortableTeleporter::new);
     public static final RegistryObject<Item> ADVANCED_TOTEM_OF_UNDYING = ITEMS.register("advanced_totem_of_undying", AdvancedTotemOfUndying::new);
     public static final RegistryObject<Item> EMPTY_CELL = ITEMS.register("empty_cell", EmptyCell::new);
     public static final RegistryObject<Item> WATER_CELL = ITEMS.register("water_cell", WaterCell::new);

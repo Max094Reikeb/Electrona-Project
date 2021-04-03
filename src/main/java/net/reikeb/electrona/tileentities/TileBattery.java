@@ -92,6 +92,7 @@ public class TileBattery extends LockableLootTileEntity implements ITickableTile
             // Input slots - Handling slots
             EnergyFunction.transferEnergyWithItemSlot(this.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), inventory, true, electronicPower, 1, 4);
             EnergyFunction.transferEnergyWithItemSlot(this.getTileData(), ItemInit.MECHANIC_WINGS.get().asItem(), inventory, true, electronicPower, 1, 8);
+            EnergyFunction.transferEnergyWithItemSlot(this.getTileData(), ItemInit.PORTABLE_TELEPORTER.get().asItem(), inventory, true, electronicPower, 1, 8);
 
             // Output slot - Handling slots
             EnergyFunction.transferEnergyWithItemSlot(this.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), inventory, false, electronicPower, 0, 4);
