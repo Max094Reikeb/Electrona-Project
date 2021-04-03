@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "electrona:lead_chestplate"
+    },
+    "title": {
+      "translate": "advancements.leader.title"
+    },
+    "description": {
+      "translate": "advancements.leader.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "leader": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "parent": "electrona:steel_getting_an_upgrade"
+}

@@ -35,5 +35,6 @@ public class NetworkManager {
         INSTANCE.registerMessage(index++, NuclearActivatePacket.class, NuclearActivatePacket::encode, NuclearActivatePacket::decode, NuclearActivatePacket::whenThisPacketIsReceived);
         INSTANCE.registerMessage(index++, NuclearBarStatusPacket.class, NuclearBarStatusPacket::encode, NuclearBarStatusPacket::decode, NuclearBarStatusPacket::whenThisPacketIsReceived);
         INSTANCE.registerMessage(index++, DimensionIDPacket.class, DimensionIDPacket::encode, DimensionIDPacket::decode, DimensionIDPacket::whenThisPacketIsReceived);
+        INSTANCE.registerMessage(index++, SkyHighPacket.class, SkyHighPacket::encode, SkyHighPacket::decode, SkyHighPacket::whenThisPacketIsReceived);
     }
 }

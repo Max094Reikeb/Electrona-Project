@@ -14,6 +14,8 @@ import net.minecraftforge.fml.common.Mod;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.network.NetworkManager;
+import net.reikeb.electrona.network.packets.SkyHighPacket;
 
 @Mod.EventBusSubscriber(modid = Electrona.MODID)
 public class KeyPressedEvent {
@@ -35,6 +37,11 @@ public class KeyPressedEvent {
                     world.addParticle(ParticleTypes.CLOUD, x, y, z, 0, -0.1, 0);
                 }
                 itemstack.getOrCreateTag().putDouble("ElectronicPower", (itemstack.getOrCreateTag().getDouble("ElectronicPower")) - 0.3);
+
+                // SkyHigh advancement
+                if (entity.getY() >= 500) {
+                    NetworkManager.INSTANCE.sendToServer(new SkyHighPacket());
+                }
             }
         }
     }
