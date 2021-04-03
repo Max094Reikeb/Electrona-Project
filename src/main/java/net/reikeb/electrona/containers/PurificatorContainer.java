@@ -7,6 +7,9 @@ import net.minecraft.network.PacketBuffer;
 
 import net.minecraftforge.items.*;
 
+import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.network.NetworkManager;
+import net.reikeb.electrona.network.packets.PurificationPacket;
 import net.reikeb.electrona.tileentities.TilePurificator;
 
 import javax.annotation.Nonnull;
@@ -51,6 +54,15 @@ public class PurificatorContainer extends Container {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack) {
                         return false;
+                    }
+
+                    public ItemStack onTake(PlayerEntity playerEntity, ItemStack stack) {
+                        if (stack.getItem() == ItemInit.GOLD_POWDER.get()) {
+                            // Trigger Advancement
+                            NetworkManager.INSTANCE.sendToServer(new PurificationPacket());
+                            return stack;
+                        }
+                        return stack;
                     }
                 });
             });

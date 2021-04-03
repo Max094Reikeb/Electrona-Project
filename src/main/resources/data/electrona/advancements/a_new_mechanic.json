@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:gold_ore"
+    },
+    "title": {
+      "translate": "advancements.a_new_mechanic.title"
+    },
+    "description": {
+      "translate": "advancements.a_new_mechanic.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "a_new_mechanic": {
+      "trigger": "a_new_mechanic"
+    }
+  },
+  "parent": "electrona:a_whole_new_world"
+}
