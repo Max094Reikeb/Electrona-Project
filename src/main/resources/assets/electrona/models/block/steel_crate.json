@@ -1,12 +1,12 @@
 {
   "parent": "block/cube",
   "textures": {
-    "down": "electrona:blocks/crate_steel_top",
-    "up": "electrona:blocks/crate_steel_top",
-    "north": "electrona:blocks/crate_steel_side",
-    "east": "electrona:blocks/crate_steel_side",
-    "south": "electrona:blocks/crate_steel_side",
-    "west": "electrona:blocks/crate_steel_side",
-    "particle": "electrona:blocks/crate_steel_top"
+    "down": "electrona:blocks/steel_crate_top",
+    "up": "electrona:blocks/steel_crate_top",
+    "north": "electrona:blocks/steel_crate_side",
+    "east": "electrona:blocks/steel_crate_side",
+    "south": "electrona:blocks/steel_crate_side",
+    "west": "electrona:blocks/steel_crate_side",
+    "particle": "electrona:blocks/steel_crate_top"
   }
 }
