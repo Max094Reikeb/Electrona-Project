@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:villager_spawn_egg"
+    },
+    "title": {
+      "translate": "advancements.we_have_work_to_do.title"
+    },
+    "description": {
+      "translate": "advancements.we_have_work_to_do.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "we_have_work_to_do": {
+      "trigger": "minecraft:villager_trade",
+      "conditions": {
+        "villager": {
+          "nbt": "{VillagerData:{profession:\"electrona:engineer\"}}"
+        }
+      }
+    }
+  },
+  "parent": "electrona:a_whole_new_world"
+}
