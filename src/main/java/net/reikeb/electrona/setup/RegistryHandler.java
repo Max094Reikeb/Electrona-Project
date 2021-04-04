@@ -9,11 +9,11 @@ public class RegistryHandler {
     public static void init() {
         BlockInit.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ContainerInit.CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        ItemInit.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        TileEntityInit.TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         PotionEffectInit.EFFECTS.register(FMLJavaModLoadingContext.get().getModEventBus());
         EnchantmentInit.ENCHANTMENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ItemInit.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ParticleInit.PARTICLES.register(FMLJavaModLoadingContext.get().getModEventBus());
         SoundsInit.SOUNDS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TileEntityInit.TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 }
