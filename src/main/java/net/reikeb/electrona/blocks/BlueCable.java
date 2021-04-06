@@ -19,7 +19,7 @@ import java.util.*;
 public class BlueCable extends AbstractCable {
 
     public BlueCable() {
-        super("cable", Material.GLASS, 1f, 6f, SoundType.GLASS, 4);
+        super("cable", Material.CLOTH_DECORATION, 1f, 6f, SoundType.WOOL, 4);
     }
 
     @Override
