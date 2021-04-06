@@ -22,6 +22,7 @@ import net.minecraftforge.fluids.capability.*;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.*;
 
+import net.reikeb.electrona.blocks.WaterPump;
 import net.reikeb.electrona.containers.WaterPumpContainer;
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.misc.vm.*;
@@ -100,6 +101,8 @@ public class TileWaterPump extends LockableLootTileEntity implements ITickableTi
         this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).ifPresent(cap -> tankCapacity.set(cap.getTankCapacity(1)));
 
         if (world != null) { // Avoid NullPointerExceptions
+
+            world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(WaterPump.PUMPING, isOn));
 
             // Pump water
             if (isOn) {
