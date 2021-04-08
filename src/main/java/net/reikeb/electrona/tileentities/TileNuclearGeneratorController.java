@@ -24,7 +24,6 @@ import net.reikeb.electrona.containers.NuclearGeneratorControllerContainer;
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.misc.vm.*;
 import net.reikeb.electrona.utils.*;
-import net.reikeb.electrona.world.gamerules.DoBlackholesExist;
 
 import static net.reikeb.electrona.init.TileEntityInit.*;
 
@@ -100,6 +99,9 @@ public class TileNuclearGeneratorController extends LockableLootTileEntity imple
         boolean ubIn = this.getTileData().getBoolean("UBIn");
         this.getTileData().putInt("MaxStorage", 10000);
 
+        world.setBlockAndUpdate(blockPos, this.getBlockState()
+                .setValue(NuclearGeneratorController.ACTIVATED, this.getTileData().getBoolean("powered")));
+
         if (tileUnder instanceof TileCooler) {
             AtomicReference<ItemStack> stackInSlot1 = new AtomicReference<>();
             tileUnder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
@@ -119,9 +121,6 @@ public class TileNuclearGeneratorController extends LockableLootTileEntity imple
                 FluidFunction.fillWater(tileUnder, 1000);
             }
 
-            // Generation function
-            NuclearFunction.nuclearGeneration(this, tileUnder, stackInSlot1.get(), this.inventory.getStackInSlot(1), electronicPower, temperature, waterLevel.get());
-
             if (blockUnder == BlockInit.COOLER.get()) {
                 if (((stackInSlot1.get().getItem() == ItemInit.URANIUM_BAR.get())
                         || (stackInSlot1.get().getItem() == ItemInit.URANIUM_DUAL_BAR.get())
@@ -136,6 +135,9 @@ public class TileNuclearGeneratorController extends LockableLootTileEntity imple
                 this.getTileData().putBoolean("powered", false);
                 this.inventory.decrStackSize(1, 1);
             }
+
+            // Generation function
+            NuclearFunction.nuclearGeneration(this, tileUnder, stackInSlot1.get(), this.inventory.getStackInSlot(1), electronicPower, temperature, waterLevel.get());
         }
 
         if ((this.getTileData().getBoolean("alert")) && (this.level.getGameTime() % 20 == 0)) {
@@ -145,9 +147,6 @@ public class TileNuclearGeneratorController extends LockableLootTileEntity imple
         // Transfer energy
         EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 10, electronicPower, true);
 
-        world.setBlockAndUpdate(blockPos, this.getBlockState()
-                .setValue(NuclearGeneratorController.ACTIVATED, this.getTileData().getBoolean("powered")));
-
         this.setChanged();
         world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(),
                 Constants.BlockFlags.BLOCK_UPDATE);
@@ -155,16 +154,6 @@ public class TileNuclearGeneratorController extends LockableLootTileEntity imple
 
     public final IItemHandlerModifiable getInventory() {
         return this.inventory;
-    }
-
-    public void explodes() {
-        if (this.level == null) return;
-        this.level.explode(null, this.getBlockPos().getX(), this.getBlockPos().getY(),
-                this.getBlockPos().getZ(), 20, Explosion.Mode.BREAK);
-        if ((Math.random() < 0.65) && this.level.getLevelData().getGameRules().getBoolean(DoBlackholesExist.DO_BLACK_HOLES_EXIST)) {
-            this.level.setBlock(this.getBlockPos(), BlockInit.SINGULARITY.get().defaultBlockState(), 3);
-            NuclearFunction.advancementInevitableFunction(this.level, this.getBlockPos());
-        }
     }
 
     @Override

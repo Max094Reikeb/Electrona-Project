@@ -1,16 +1,18 @@
 package net.reikeb.electrona.misc.vm;
 
 import net.minecraft.advancements.*;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.*;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 
-import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.tileentities.TileNuclearGeneratorController;
+import net.reikeb.electrona.world.gamerules.DoBlackholesExist;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -98,7 +100,16 @@ public class NuclearFunction {
                     tileEntity.getTileData().putBoolean("alert", true);
                 }
                 if ((waterLevel < 800) && (temperature >= 2800)) {
-                    tileEntity.explodes();
+                    if (tileEntity.getLevel() == null) return;
+                    World world = tileEntity.getLevel();
+                    BlockPos pos = tileEntity.getBlockPos();
+                    world.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                    world.setBlock(tileCooler.getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
+                    world.explode(null, pos.getX(), pos.getY(), pos.getZ(), 20, Explosion.Mode.DESTROY);
+                    if ((Math.random() < 0.45) && world.getLevelData().getGameRules().getBoolean(DoBlackholesExist.DO_BLACK_HOLES_EXIST)) {
+                        world.setBlock(pos, BlockInit.SINGULARITY.get().defaultBlockState(), 3);
+                        advancementInevitableFunction(world, pos);
+                    }
                 }
                 if ((waterLevel > 400) && (temperature >= 2000)) {
                     FluidFunction.drainWater(tileCooler, 40);
