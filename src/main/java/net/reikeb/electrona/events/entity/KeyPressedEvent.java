@@ -27,14 +27,11 @@ public class KeyPressedEvent {
             LivingEntity entity = Minecraft.getInstance().player;
             IWorld world = Minecraft.getInstance().level;
             if (entity == null || world == null) return;
-            double x = entity.getX();
-            double y = entity.getY();
-            double z = entity.getZ();
             ItemStack itemstack = entity.getItemBySlot(EquipmentSlotType.byTypeAndIndex(EquipmentSlotType.Group.ARMOR, 2));
             if ((itemstack.getItem() == ItemInit.MECHANIC_WINGS.get().asItem()) && (itemstack.getOrCreateTag().getDouble("ElectronicPower") >= 0.3)) {
                 entity.setDeltaMovement((entity.getDeltaMovement().x()), 0.3, (entity.getDeltaMovement().z()));
                 for (int i = 0; i < 9; i++) {
-                    world.addParticle(ParticleTypes.CLOUD, x, y, z, 0, -0.1, 0);
+                    world.addParticle(ParticleTypes.CLOUD, entity.getX(), entity.getY(), entity.getZ(), 0, -0.1, 0);
                 }
                 itemstack.getOrCreateTag().putDouble("ElectronicPower", (itemstack.getOrCreateTag().getDouble("ElectronicPower")) - 0.3);
 
