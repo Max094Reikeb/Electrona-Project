@@ -21,6 +21,7 @@ import net.reikeb.electrona.entity.BombFallingEntity;
 import net.reikeb.electrona.misc.vm.CustomShapes;
 import net.reikeb.electrona.tileentities.TileNuclearBomb;
 import net.reikeb.electrona.utils.ElectronaUtils;
+import net.reikeb.electrona.world.NuclearExplosion;
 
 import java.util.*;
 
@@ -93,7 +94,7 @@ public class NuclearBomb extends FallingBlock {
 
     public void wasExploded(World world, BlockPos pos, Explosion explosion) {
         if (!world.isClientSide) {
-            explode((ServerWorld) world, pos);
+            new NuclearExplosion(world, pos.getX(), pos.getY(), pos.getZ(), 84);
         }
     }
 
@@ -148,7 +149,7 @@ public class NuclearBomb extends FallingBlock {
                                 p_220287_1_.broadcastBreakEvent(handIn);
                             });
                         }
-                        worldIn.explode(player, pos.getX(), pos.getY(), pos.getZ(), 10, Explosion.Mode.BREAK);
+                        new NuclearExplosion(worldIn, pos.getX(), pos.getY(), pos.getZ(), 84);
                         return ActionResultType.SUCCESS;
                     }
                 }

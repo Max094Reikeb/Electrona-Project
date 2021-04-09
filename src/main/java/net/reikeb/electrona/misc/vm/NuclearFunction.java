@@ -12,6 +12,7 @@ import net.minecraft.world.*;
 
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.tileentities.TileNuclearGeneratorController;
+import net.reikeb.electrona.world.NuclearExplosion;
 import net.reikeb.electrona.world.gamerules.DoBlackholesExist;
 
 import java.util.*;
@@ -105,7 +106,7 @@ public class NuclearFunction {
                     BlockPos pos = tileEntity.getBlockPos();
                     world.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
                     world.setBlock(tileCooler.getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
-                    world.explode(null, pos.getX(), pos.getY(), pos.getZ(), 20, Explosion.Mode.DESTROY);
+                    new NuclearExplosion(world, pos.getX(), pos.getY(), pos.getZ(), 20);
                     if ((Math.random() < 0.45) && world.getLevelData().getGameRules().getBoolean(DoBlackholesExist.DO_BLACK_HOLES_EXIST)) {
                         world.setBlock(pos, BlockInit.SINGULARITY.get().defaultBlockState(), 3);
                         advancementInevitableFunction(world, pos);

@@ -96,6 +96,7 @@
   "block.electrona.xp_generator.desc2": "§dNutzt §c16ELs §dpro Sekunde",
   "block.electrona.xp_generator.desc3": "§dKann §c10 000ELs §dspeichern",
   "death.attack.electric_shock": "%1$s wurde durch einen Stromschlag zu Tode gebracht",
+  "death.attack.nuclear_blast": "",
   "death.attack.radioactivity": "%1$s war zu radioaktiv, um zu leben",
   "effect.radioactivity": "Radioaktivität",
   "electrona.battery_gui.name": "Batterie",
@@ -200,5 +201,6 @@
   "subtitles.block.biomass_generator.active": "Biomasse",
   "subtitles.block.compressor.compression_end": "Komprimierung",
   "subtitles.block.nuclear_generator_controller.alert": "Alarm für die Steuerung des Nukleargenerators",
-  "subtitles.block.purificator.purification": "Reinigung"
+  "subtitles.block.purificator.purification": "Reinigung",
+  "subtitles.common.nuclear_explosion": ""
 }
