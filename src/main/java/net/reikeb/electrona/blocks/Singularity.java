@@ -7,7 +7,6 @@ import net.minecraft.item.*;
 import net.minecraft.loot.LootContext;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.*;
 import net.minecraft.util.math.vector.Vector3d;
@@ -76,20 +75,12 @@ public class Singularity extends AbstractWaterLoggableBlock {
 
     @Override
     public void onPlace(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moving) {
-        super.onPlace(state, world, pos, oldState, moving);
-        BlackHoleFunction.HoleProcedure(world, pos, Direction.values());
-    }
-
-    @Override
-    public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
-        super.entityInside(state, world, pos, entity);
-        BlackHoleFunction.HoleProcedure(world, pos, Direction.values());
+        BlackHoleFunction.SingularitySpawn(world, pos);
     }
 
     @Override
     public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack itemstack) {
-        super.setPlacedBy(world, pos, state, entity, itemstack);
-        BlackHoleFunction.HoleProcedure(world, pos, Direction.values());
+        BlackHoleFunction.SingularitySpawn(world, pos);
     }
 
     @Override
