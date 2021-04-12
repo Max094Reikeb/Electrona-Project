@@ -146,6 +146,8 @@
   "entity.minecraft.villager.electrona.engineer": "Ingenieur",
   "gamerule.doBlackholesExist": "Existenz von Schwarzen Löchern",
   "gamerule.doBlackholesExist.description": "Legt fest, ob schwarze Löcher entstehen, wenn ein Nukleargenerator-Controller explodiert",
+  "gamerule.doNuclearBombsExplode": "",
+  "gamerule.doNuclearBombsExplode.description": "",
   "item.electrona.advanced_totem_of_undying": "§eFortgeschrittenes Totem der Unsterblichkeit",
   "item.electrona.anti_radiation_boots": "Anti-Strahlenschutzanzug (Stiefel)",
   "item.electrona.anti_radiation_chestplate": "Anti-Strahlenschutzanzug (Brustpanzer)",

@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import net.reikeb.electrona.init.*;
-import net.reikeb.electrona.world.gamerules.DoBlackholesExist;
+import net.reikeb.electrona.world.Gamerules;
 
 public class BlackHoleFunction {
 
@@ -24,7 +24,7 @@ public class BlackHoleFunction {
         ITagCollection<Block> tagCollection = BlockTags.getAllTags();
         ITag<Block> stopsHoleTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/stops_black_hole"));
 
-        if (world.getLevelData().getGameRules().getBoolean(DoBlackholesExist.DO_BLACK_HOLES_EXIST)) {
+        if (world.getLevelData().getGameRules().getBoolean(Gamerules.DO_BLACK_HOLES_EXIST)) {
             for (Direction dir : directions) {
                 Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
                 BlockPos belowPos = new BlockPos(pos.getX(), (pos.getY() - 1), pos.getZ());
@@ -57,7 +57,7 @@ public class BlackHoleFunction {
         ITagCollection<Block> tagCollection = BlockTags.getAllTags();
         ITag<Block> stopsHoleTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/stops_black_hole"));
 
-        if (world.getLevelData().getGameRules().getBoolean(DoBlackholesExist.DO_BLACK_HOLES_EXIST)) {
+        if (world.getLevelData().getGameRules().getBoolean(Gamerules.DO_BLACK_HOLES_EXIST)) {
             BlockPos closestPos = null;
             BlockPos checkPos;
             for (int n = 0; n < 4; n++) {

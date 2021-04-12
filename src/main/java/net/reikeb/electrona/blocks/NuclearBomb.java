@@ -21,7 +21,7 @@ import net.reikeb.electrona.entity.BombFallingEntity;
 import net.reikeb.electrona.misc.vm.CustomShapes;
 import net.reikeb.electrona.tileentities.TileNuclearBomb;
 import net.reikeb.electrona.utils.ElectronaUtils;
-import net.reikeb.electrona.world.NuclearExplosion;
+import net.reikeb.electrona.world.*;
 
 import java.util.*;
 
@@ -143,7 +143,8 @@ public class NuclearBomb extends FallingBlock {
                 return ActionResultType.SUCCESS;
             } else if (player.getItemInHand(handIn).getItem() == Items.FLINT_AND_STEEL) {
                 if (tile instanceof TileNuclearBomb) {
-                    if (((TileNuclearBomb) tile).isCharged()) {
+                    if (((TileNuclearBomb) tile).isCharged()
+                            && worldIn.getLevelData().getGameRules().getBoolean(Gamerules.DO_NUCLEAR_BOMBS_EXPLODE)) {
                         if (!player.isCreative()) {
                             player.getItemInHand(handIn).hurtAndBreak(1, player, (p_220287_1_) -> {
                                 p_220287_1_.broadcastBreakEvent(handIn);

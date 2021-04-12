@@ -146,6 +146,8 @@
   "entity.minecraft.villager.electrona.engineer": "Ingenjör",
   "gamerule.doBlackholesExist": "Svarta håls existens",
   "gamerule.doBlackholesExist.description": "Definierar om svarta hål skapas när en kärngeneratorstyrenhet exploderar",
+  "gamerule.doNuclearBombsExplode": "",
+  "gamerule.doNuclearBombsExplode.description": "",
   "item.electrona.advanced_totem_of_undying": "§eAvancerad odödlighetstotem",
   "item.electrona.anti_radiation_boots": "Strålningsdräkt (Stövlar)",
   "item.electrona.anti_radiation_chestplate": "Strålningsdräkt (Harnesk)",

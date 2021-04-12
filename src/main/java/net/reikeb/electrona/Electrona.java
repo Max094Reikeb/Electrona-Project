@@ -25,7 +25,7 @@ import net.reikeb.electrona.recipes.*;
 import net.reikeb.electrona.recipes.types.*;
 import net.reikeb.electrona.setup.RegistryHandler;
 import net.reikeb.electrona.villages.*;
-import net.reikeb.electrona.world.gamerules.DoBlackholesExist;
+import net.reikeb.electrona.world.Gamerules;
 import net.reikeb.electrona.world.gen.ConfiguredFeatures;
 
 import org.apache.logging.log4j.*;
@@ -60,7 +60,7 @@ public class Electrona {
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(new PlayerDiesEvent());
-        MinecraftForge.EVENT_BUS.register(new DoBlackholesExist());
+        MinecraftForge.EVENT_BUS.register(new Gamerules());
         MinecraftForge.EVENT_BUS.addListener(this::setupEngineerHouses);
         MinecraftForge.EVENT_BUS.register(this);
     }

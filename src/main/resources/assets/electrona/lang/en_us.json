@@ -146,6 +146,8 @@
   "entity.minecraft.villager.electrona.engineer": "Engineer",
   "gamerule.doBlackholesExist": "Black Holes existence",
   "gamerule.doBlackholesExist.description": "Defines if black holes spawn when a Nuclear Generator Controller explodes",
+  "gamerule.doNuclearBombsExplode": "Nuclear Bombs explosion",
+  "gamerule.doNuclearBombsExplode.description": "Defines if nuclear bombs explode.",
   "item.electrona.advanced_totem_of_undying": "Advanced Totem of Undying",
   "item.electrona.anti_radiation_boots": "Anti-Radiation Suit (Boots)",
   "item.electrona.anti_radiation_chestplate": "Anti-Radiation Suit (Chestplate)",

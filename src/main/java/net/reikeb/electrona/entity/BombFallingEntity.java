@@ -5,7 +5,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.world.*;
 
-import net.reikeb.electrona.world.NuclearExplosion;
+import net.reikeb.electrona.world.*;
 
 public class BombFallingEntity extends FallingBlockEntity {
 
@@ -21,7 +21,8 @@ public class BombFallingEntity extends FallingBlockEntity {
     }
 
     public boolean causeFallDamage(float p_225503_1_, float p_225503_2_) {
-        if (p_225503_1_ >= 3.0F && this.isCharged) {
+        if (p_225503_1_ >= 3.0F && this.isCharged
+                && this.level.getLevelData().getGameRules().getBoolean(Gamerules.DO_NUCLEAR_BOMBS_EXPLODE)) {
             new NuclearExplosion(this.level, this.blockPosition().getX(),
                     this.blockPosition().getY(), this.blockPosition().getZ(), 84);
         }
