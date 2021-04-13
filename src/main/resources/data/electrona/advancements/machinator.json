@@ -18,9 +18,9 @@
     "machinator": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
-        "blocks": [
+        "items": [
           {
-            "tag": "forge:electrona/machines_all"
+            "tag": "forge:electrona/machines"
           }
         ]
       }
