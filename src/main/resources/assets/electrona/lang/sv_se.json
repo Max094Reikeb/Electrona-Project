@@ -67,6 +67,7 @@
   "block.electrona.nuclear_generator_controller": "Kärngeneratorregulator",
   "block.electrona.purificator": "Renare",
   "block.electrona.purificator.desc": "§dEn modern version av §cbryggdstället",
+  "block.electrona.radioactive_dirt": "",
   "block.electrona.singularity": "Sällsynthet",
   "block.electrona.solar_panel_tiers1": "Nivå 1 solpanel",
   "block.electrona.solar_panel_tiers1.desc1": "§dGenererar 4ELs/t",

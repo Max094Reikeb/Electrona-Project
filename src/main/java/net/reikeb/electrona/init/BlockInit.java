@@ -55,4 +55,5 @@ public class BlockInit {
     public static final RegistryObject<Singularity> SINGULARITY = BLOCKS.register("singularity", Singularity::new);
     public static final RegistryObject<Hole> HOLE = BLOCKS.register("hole", Hole::new);
     public static final RegistryObject<NuclearBomb> NUCLEAR_BOMB = BLOCKS.register("nuclear_bomb", NuclearBomb::new);
+    public static final RegistryObject<RadioactiveDirt> RADIOACTIVE_DIRT = BLOCKS.register("radioactive_dirt", RadioactiveDirt::new);
 }

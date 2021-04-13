@@ -67,6 +67,7 @@
   "block.electrona.nuclear_generator_controller": "Steuerung von Nukleargeneratoren",
   "block.electrona.purificator": "Reiniger",
   "block.electrona.purificator.desc": "§dEine moderne Version des §cBrauereistands",
+  "block.electrona.radioactive_dirt": "",
   "block.electrona.singularity": "Singularität",
   "block.electrona.solar_panel_tiers1": "Solarzelle (Stufe 1)",
   "block.electrona.solar_panel_tiers1.desc1": "§dGeneriert 4ELs/t",

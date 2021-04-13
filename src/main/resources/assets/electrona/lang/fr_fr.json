@@ -67,6 +67,7 @@
   "block.electrona.nuclear_generator_controller": "Controlleur de Générateur Nucléaire",
   "block.electrona.purificator": "Purificateur",
   "block.electrona.purificator.desc": "§dUne version moderne de l\u0027§cAlambic",
+  "block.electrona.radioactive_dirt": "",
   "block.electrona.singularity": "Singularité",
   "block.electrona.solar_panel_tiers1": "Panneau Solaire de Tiers 1",
   "block.electrona.solar_panel_tiers1.desc1": "§dGénère 4ELs/t",

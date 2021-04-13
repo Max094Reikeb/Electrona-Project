@@ -9,7 +9,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
 
-import net.reikeb.electrona.init.SoundsInit;
+import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.utils.ElectronaUtils;
 
 import java.util.*;
@@ -82,12 +82,8 @@ public class NuclearExplosion {
                                     } else if (block == Blocks.STONE && rand.nextInt(randomness) < randomness / 2) {
                                         world.setBlockAndUpdate(new BlockPos(xx, yy, zz), Blocks.COBBLESTONE.defaultBlockState());
                                         block = Blocks.COBBLESTONE;
-                                        /*
-                                         * } else if ((block == Blocks.GRASS || block == Blocks.DIRT)) {
-                                         *    world.setBlock(xx, yy, zz, RivalRebels.radioactivedirt);
-                                         * } else if ((block == Blocks.sand || block == Blocks.sandstone)) {
-                                         *    world.setBlock(xx, yy, zz, RivalRebels.radioactivesand);
-                                         */
+                                    } else if ((block == Blocks.GRASS_BLOCK) || (block == Blocks.DIRT)) {
+                                        world.setBlockAndUpdate(new BlockPos(xx, yy, zz), BlockInit.RADIOACTIVE_DIRT.get().defaultBlockState());
                                     } else if ((rand.nextInt(varrand) == 0 || rand.nextInt(varrand / 2 + 1) == 0)) {
                                         world.setBlockAndUpdate(new BlockPos(xx, yy, zz), Blocks.AIR.defaultBlockState());
                                         block = Blocks.AIR;
@@ -100,12 +96,8 @@ public class NuclearExplosion {
                                 } else if (logTag.contains(world.getBlockState(new BlockPos(xx, yy - 1, zz)).getBlock())
                                         || plankTag.contains(world.getBlockState(new BlockPos(xx, yy - 1, zz)).getBlock())) {
                                     world.setBlockAndUpdate(new BlockPos(xx, yy, zz), Blocks.FIRE.defaultBlockState());
-                                    /*
-                                     * } else if ((block == Blocks.grass || block == Blocks.dirt)) {
-                                     *    world.setBlock(xx, yy, zz, RivalRebels.radioactivedirt);
-                                     * } else if ((block == Blocks.sand || block == Blocks.sandstone)) {
-                                     *    world.setBlock(xx, yy, zz, RivalRebels.radioactivesand);
-                                     */
+                                } else if ((block == Blocks.GRASS_BLOCK) || (block == Blocks.DIRT)) {
+                                    world.setBlockAndUpdate(new BlockPos(xx, yy, zz), BlockInit.RADIOACTIVE_DIRT.get().defaultBlockState());
                                 }
                             }
                         }

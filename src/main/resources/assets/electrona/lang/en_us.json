@@ -67,6 +67,7 @@
   "block.electrona.nuclear_generator_controller": "Nuclear Generator Controller",
   "block.electrona.purificator": "Purificator",
   "block.electrona.purificator.desc": "§dA modern version of the §cBrewing Stand",
+  "block.electrona.radioactive_dirt": "Radioactive Dirt",
   "block.electrona.singularity": "Singularity",
   "block.electrona.solar_panel_tiers1": "Tiers 1 Solar Panel",
   "block.electrona.solar_panel_tiers1.desc1": "§dGenerates 4ELs/t",

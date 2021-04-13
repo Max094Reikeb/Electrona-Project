@@ -6,7 +6,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.*;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 
 import net.reikeb.electrona.init.*;
@@ -87,6 +87,46 @@ public class RadioactivityFunction {
         }
     }
 
+    /**
+     * Applies Radioactivity effect to the entity if it steps on a radioactive block
+     *
+     * @param world  The world the entity is in
+     * @param pos    The pos of the block
+     * @param entity The entity that steps on the radioactive block
+     */
+    public static void stepOnRadioactiveBlock(World world, BlockPos pos, Entity entity) {
+        if (!(entity instanceof LivingEntity)) return;
+        boolean entityWearsRadiationArmor = isEntityWearingAntiRadiationSuit((LivingEntity) entity);
+        boolean entityWearsLeadArmor = isEntityWearingLeadArmor((LivingEntity) entity);
+        double x = pos.getX();
+        double y = pos.getY();
+        double z = pos.getZ();
+        {
+            List<Entity> _entfound = world.getEntitiesOfClass(Entity.class,
+                    new AxisAlignedBB(x - (10 / 2d), y - (10 / 2d), z - (10 / 2d), x + (10 / 2d), y + (10 / 2d), z + (10 / 2d)), null)
+                    .stream().sorted(new Object() {
+                        Comparator<Entity> compareDistOf(double _x, double _y, double _z) {
+                            return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(_x, _y, _z));
+                        }
+                    }.compareDistOf(x, y, z)).collect(Collectors.toList());
+            for (Entity entityiterator : _entfound) {
+                if (!(entityiterator instanceof LivingEntity)) return;
+                if (entityiterator instanceof PlayerEntity) {
+                    if (((PlayerEntity) entityiterator).abilities.instabuild) return;
+                }
+                if (!entityWearsRadiationArmor) {
+                    ((LivingEntity) (entityWearsLeadArmor ? entity : entityiterator)).addEffect(new EffectInstance(PotionEffectInit.RADIOACTIVITY.get(), 200, 2));
+                }
+            }
+        }
+    }
+
+    /**
+     * This method applies the side effects of the radioactivity
+     *
+     * @param entity    The entity that has the effect
+     * @param amplifier The amplifier of the effect
+     */
     public static void radioactivityEffect(LivingEntity entity, int amplifier) {
         double radioactivity = entity.getPersistentData().getDouble("radioactive");
         entity.getPersistentData().putDouble("radioactive", (radioactivity + 1));
