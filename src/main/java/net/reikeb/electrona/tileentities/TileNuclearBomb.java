@@ -81,6 +81,18 @@ public class TileNuclearBomb extends LockableLootTileEntity {
                 && (this.inventory.getStackInSlot(1).getItem() == ItemInit.URANIUM_QUAD_BAR.get())));
     }
 
+    public int getNuclearCharge() {
+        int returnValue = 0;
+        if ((this.inventory.getStackInSlot(0).getItem() == ItemInit.URANIUM_BAR.get())
+                && (this.inventory.getStackInSlot(1).getItem() == ItemInit.URANIUM_DUAL_BAR.get())) {
+            returnValue = 63;
+        } else if ((this.inventory.getStackInSlot(0).getItem() == ItemInit.URANIUM_DUAL_BAR.get())
+                && (this.inventory.getStackInSlot(1).getItem() == ItemInit.URANIUM_QUAD_BAR.get())) {
+            returnValue = 84;
+        }
+        return returnValue;
+    }
+
     @Override
     public void load(BlockState blockState, CompoundNBT compound) {
         super.load(blockState, compound);

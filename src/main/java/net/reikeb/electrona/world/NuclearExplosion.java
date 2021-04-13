@@ -117,19 +117,20 @@ public class NuclearExplosion {
     }
 
     private void pushAndHurtEntities(World world, int x, int y, int z, int radius) {
-        radius *= 4;
-        int var3 = MathHelper.floor(x - (double) radius - 1.0D);
-        int var4 = MathHelper.floor(x + (double) radius + 1.0D);
-        int var5 = MathHelper.floor(y - (double) radius - 1.0D);
-        int var28 = MathHelper.floor(y + (double) radius + 1.0D);
-        int var7 = MathHelper.floor(z - (double) radius - 1.0D);
-        int var29 = MathHelper.floor(z + (double) radius + 1.0D);
+        int halfradius = radius / 2;
+        int onepointfiveradius = halfradius * 3;
+        int var3 = MathHelper.floor(x - (double) onepointfiveradius - 1.0D);
+        int var4 = MathHelper.floor(x + (double) onepointfiveradius + 1.0D);
+        int var5 = MathHelper.floor(y - (double) onepointfiveradius - 1.0D);
+        int var28 = MathHelper.floor(y + (double) onepointfiveradius + 1.0D);
+        int var7 = MathHelper.floor(z - (double) onepointfiveradius - 1.0D);
+        int var29 = MathHelper.floor(z + (double) onepointfiveradius + 1.0D);
         List var9 = world.getEntities(null, AxisAlignedBB.of(new MutableBoundingBox(var3, var5, var7, var4, var28, var29)));
         Vector3d var30 = new Vector3d(x, y, z);
 
         for (Object o : var9) {
             Entity var31 = (Entity) o;
-            double var13 = var31.distanceToSqr(x, y, z) / radius;
+            double var13 = var31.distanceToSqr(x, y, z) / onepointfiveradius;
 
             if (var13 <= 1.0D) {
                 double var15 = var31.getX() - x;
@@ -144,8 +145,8 @@ public class NuclearExplosion {
                     double var32 = Explosion.getSeenPercent(var30, var31);
                     double var34 = (1.0D - var13) * var32;
                     if (var31 instanceof FallingBlockEntity) var31.remove();
-                    var31.hurt(new DamageSource("nuclear_blast"), (int) ((var34 * var34 + var34) / 2.0D * 8.0D * radius + 1.0D) * 4);
-                    var31.getDeltaMovement().add(new Vector3d(-var15 * var34 * 8, -var17 * var34 * 8, -var19 * var34 * 8));
+                    var31.hurt(new DamageSource("nuclear_blast"), (int) ((var34 * var34 + var34) / 2.0D * 8.0D * onepointfiveradius + 1.0D) * 4);
+                    var31.setDeltaMovement(new Vector3d(-var15 * var34 * 8, -var17 * var34 * 8, -var19 * var34 * 8));
                 }
             }
         }
@@ -167,7 +168,7 @@ public class NuclearExplosion {
                                 && world.getBlockState(new BlockPos(xx, yy, zz + 1)).getBlock() != Blocks.AIR
                                 && world.getBlockState(new BlockPos(xx, yy, zz - 1)).getBlock() != Blocks.AIR) {
                             int r = world.random.nextInt(50);
-                            Block id = null;
+                            Block id;
                             if (r == 0) {
                                 id = prblocks[world.random.nextInt(prblocks.length)];
                             } else {

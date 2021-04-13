@@ -94,7 +94,10 @@ public class NuclearBomb extends FallingBlock {
 
     public void wasExploded(World world, BlockPos pos, Explosion explosion) {
         if (!world.isClientSide) {
-            new NuclearExplosion(world, pos.getX(), pos.getY(), pos.getZ(), 84);
+            TileEntity tile = world.getBlockEntity(pos);
+            if (tile instanceof TileNuclearBomb) {
+                new NuclearExplosion(world, pos.getX(), pos.getY(), pos.getZ(), ((TileNuclearBomb) tile).getNuclearCharge());
+            }
         }
     }
 
@@ -108,7 +111,7 @@ public class NuclearBomb extends FallingBlock {
     private void explode(ServerWorld world, BlockPos pos) {
         TileEntity tile = world.getBlockEntity(pos);
         if (tile instanceof TileNuclearBomb) {
-            BombFallingEntity bombFallingEntity = new BombFallingEntity(world, (double) pos.getX() + 0.5D, pos.getY(), (double) pos.getZ() + 0.5D, world.getBlockState(pos), ((TileNuclearBomb) tile).isCharged());
+            BombFallingEntity bombFallingEntity = new BombFallingEntity(world, (double) pos.getX() + 0.5D, pos.getY(), (double) pos.getZ() + 0.5D, world.getBlockState(pos), ((TileNuclearBomb) tile).isCharged(), ((TileNuclearBomb) tile).getNuclearCharge());
             this.falling(bombFallingEntity);
             world.addFreshEntity(bombFallingEntity);
         }
@@ -150,7 +153,7 @@ public class NuclearBomb extends FallingBlock {
                                 p_220287_1_.broadcastBreakEvent(handIn);
                             });
                         }
-                        new NuclearExplosion(worldIn, pos.getX(), pos.getY(), pos.getZ(), 84);
+                        new NuclearExplosion(worldIn, pos.getX(), pos.getY(), pos.getZ(), ((TileNuclearBomb) tile).getNuclearCharge());
                         return ActionResultType.SUCCESS;
                     }
                 }
