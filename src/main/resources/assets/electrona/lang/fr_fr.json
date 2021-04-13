@@ -85,6 +85,7 @@
   "block.electrona.tin_block": "Bloc d\u0027Étain",
   "block.electrona.tin_ore": "Minerais d\u0027Étain",
   "block.electrona.uranium_ore": "Minerais d\u0027Uranium",
+  "block.electrona.water_cable": "",
   "block.electrona.water_pump": "Pompe à Eau",
   "block.electrona.water_pump.desc1": "§dUtilise 20ELs pour 1 000mb de pompé",
   "block.electrona.water_pump.desc2": "§dPeut stocker : §c1 000ELs/10 000mb",

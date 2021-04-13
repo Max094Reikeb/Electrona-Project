@@ -24,15 +24,14 @@ public class FluidFunction {
      * @param generatorTE       The TileEntity of the generator
      * @param generatorLevel    The current fluid amount of the generator
      * @param transferPerSecond The amount of fluid transfered per second
-     * @param isGenerator       Defines if the method is used by a generator or a storage
      */
-    public static void generatorTransferFluid(World world, BlockPos pos, Direction[] directions, TileEntity generatorTE, int generatorLevel, int transferPerSecond, Boolean isGenerator) {
+    public static void generatorTransferFluid(World world, BlockPos pos, Direction[] directions, TileEntity generatorTE, int generatorLevel, int transferPerSecond) {
         double transferPerTick = transferPerSecond * 0.05;
 
         ITagCollection<Block> tagCollection = BlockTags.getAllTags();
         ITag<Block> machineTag, cableTag;
-        machineTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", (isGenerator ? "electrona/has_water_tank" : "electrona/has_water_tank")));
-        cableTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", (isGenerator ? "electrona/fluid_cable" : "electrona/fluid_cable")));
+        machineTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/has_water_tank"));
+        cableTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/water_cable"));
 
         for (Direction dir : directions) {
             if (generatorLevel <= 0) return; // we have no more fluid

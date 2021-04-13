@@ -85,6 +85,7 @@
   "block.electrona.tin_block": "Tennblock",
   "block.electrona.tin_ore": "Tennmalm",
   "block.electrona.uranium_ore": "Uranmalm",
+  "block.electrona.water_cable": "",
   "block.electrona.water_pump": "Vattenpump",
   "block.electrona.water_pump.desc1": "§dAnvänder 20ELs per 1 000mb pumpat",
   "block.electrona.water_pump.desc2": "§dKan lagra : §c1 000ELs/10 000mb",

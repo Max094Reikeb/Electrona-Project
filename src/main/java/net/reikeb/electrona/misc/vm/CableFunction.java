@@ -8,6 +8,12 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+
+import net.reikeb.electrona.tileentities.TileWaterCable;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class CableFunction {
 
     /**
@@ -50,17 +56,68 @@ public class CableFunction {
                     if ((!machineLogic) && ((transferPerTick + machinePower) < machineMax)) {
                         tileEntity.getTileData().putDouble("ElectronicPower", (machinePower + transferPerTick));
                         cableNBT.putDouble("ElectronicPower", (cablePower - transferPerTick));
-                        if (cableNBT.getDouble("ElectronicPower") > 0) {
-                            cableNBT.putBoolean("logic", false);
-                        } else {
-                            cableNBT.putBoolean("logic", true);
-                        }
+                        cableNBT.putBoolean("logic", !(cableNBT.getDouble("ElectronicPower") > 0));
                         tileEntity.getTileData().putBoolean("logic", false);
                     }
                 }
             } else {
                 cableNBT.putBoolean("logic", false);
                 return; // we have no more power
+            }
+        }
+    }
+
+    /**
+     * This method is used by Cables to transfer fluid to Machines or other cables
+     *
+     * @param world             The world the blocks are in
+     * @param pos               The blockpos of the Cable
+     * @param directions        The directions of the Cable
+     * @param cable             The Tile Entity of the Cable
+     * @param cableFLuid        The amount of fluid in the Cable
+     * @param transferPerSecond The amount of fluid transfered each second by the Cable
+     */
+    public static void cableTransferFluid(World world, BlockPos pos, Direction[] directions, TileWaterCable cable, double cableFLuid, int transferPerSecond) {
+        double transferPerTick = transferPerSecond * 0.05;
+
+        ITagCollection<Block> tagCollection = BlockTags.getAllTags();
+        ITag<Block> machineTag, cableTag;
+        machineTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/has_water_tank"));
+        cableTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/water_cable"));
+
+        for (Direction dir : directions) {
+            if (cableFLuid > 0) {
+                TileEntity tileEntity = world.getBlockEntity(pos.relative(dir));
+                if (tileEntity == null) continue;
+                Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
+                if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
+
+                AtomicInteger machineFluid = new AtomicInteger();
+                tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+                        .ifPresent(cap -> machineFluid.set(cap.getFluidInTank(1).getAmount()));
+                AtomicInteger machineMax = new AtomicInteger();
+                tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+                        .ifPresent(cap -> machineMax.set(cap.getTankCapacity(1)));
+                boolean machineLogic = tileEntity.getTileData().getBoolean("logic");
+
+                if (machineTag.contains(offsetBlock)) {
+                    if (machineFluid.get() < (machineMax.get() - cableFLuid)) {
+                        FluidFunction.fillWater(tileEntity, (int) transferPerTick);
+                        FluidFunction.drainWater(cable, (int) transferPerTick);
+                    } else {
+                        FluidFunction.fillWater(tileEntity, (machineMax.get() - machineFluid.get()));
+                    }
+                } else if (cableTag.contains(offsetBlock)) {
+                    if ((!machineLogic) && ((transferPerTick + machineFluid.get()) < machineMax.get())) {
+                        FluidFunction.fillWater(tileEntity, (int) transferPerTick);
+                        FluidFunction.drainWater(cable, (int) transferPerTick);
+                        cable.getTileData().putBoolean("logic", !(cable.getTileData().getDouble("ElectronicPower") > 0));
+                        tileEntity.getTileData().putBoolean("logic", false);
+                    }
+                }
+            } else {
+                cable.getTileData().putBoolean("logic", false);
+                return; // we have no more fluid
             }
         }
     }

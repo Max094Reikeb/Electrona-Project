@@ -150,6 +150,9 @@ public class ItemInit {
     public static final RegistryObject<Item> BLUE_CABLE_ITEM = ITEMS.register("blue_cable", () ->
             new BlockItem(BlockInit.BLUE_CABLE.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
 
+    public static final RegistryObject<Item> WATER_CABLE_ITEM = ITEMS.register("water_cable", () ->
+            new BlockItem(BlockInit.WATER_CABLE.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
+
     public static final RegistryObject<Item> COMPRESSED_OBSIDIAN_ITEM = ITEMS.register("compressed_obsidian", () ->
             new BlockItem(BlockInit.COMPRESSED_OBSIDIAN.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
 

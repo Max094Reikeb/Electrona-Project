@@ -152,7 +152,7 @@ public class TileWaterPump extends LockableLootTileEntity implements ITickableTi
             EnergyFunction.transferEnergyWithItemSlot(this.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), inventory, false, electronicPower, 1, 4);
 
             // We pass water to blocks around
-            FluidFunction.generatorTransferFluid(world, blockPos, Direction.values(), this, waterLevel.get(), 100, true);
+            FluidFunction.generatorTransferFluid(world, blockPos, Direction.values(), this, waterLevel.get(), 100);
 
             this.setChanged();
             world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(),
