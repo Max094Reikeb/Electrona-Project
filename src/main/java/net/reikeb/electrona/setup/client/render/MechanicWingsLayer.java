@@ -1,4 +1,4 @@
-package net.reikeb.electrona.client.render;
+package net.reikeb.electrona.setup.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;

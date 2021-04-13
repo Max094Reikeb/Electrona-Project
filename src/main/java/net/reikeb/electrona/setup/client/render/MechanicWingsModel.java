@@ -1,4 +1,4 @@
-package net.reikeb.electrona.client.render;
+package net.reikeb.electrona.setup.client.render;
 
 import com.google.common.collect.ImmutableList;
 

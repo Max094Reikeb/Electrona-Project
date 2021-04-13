@@ -17,13 +17,13 @@ import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import net.reikeb.electrona.advancements.TTriggers;
-import net.reikeb.electrona.client.render.MechanicWingsLayer;
-import net.reikeb.electrona.client.setup.ClientSetup;
 import net.reikeb.electrona.events.entity.PlayerDiesEvent;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.recipes.*;
 import net.reikeb.electrona.recipes.types.*;
 import net.reikeb.electrona.setup.RegistryHandler;
+import net.reikeb.electrona.setup.client.ClientSetup;
+import net.reikeb.electrona.setup.client.render.MechanicWingsLayer;
 import net.reikeb.electrona.villages.*;
 import net.reikeb.electrona.world.Gamerules;
 import net.reikeb.electrona.world.gen.ConfiguredFeatures;

@@ -1,4 +1,4 @@
-package net.reikeb.electrona.client.setup;
+package net.reikeb.electrona.setup.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
