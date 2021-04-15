@@ -35,6 +35,6 @@ public class RadioactiveDirt extends Block {
 
     @Override
     public void stepOn(World world, BlockPos pos, Entity entity) {
-        RadioactivityFunction.stepOnRadioactiveBlock(world, pos, entity);
+        RadioactivityFunction.stepOnRadioactiveBlock(entity);
     }
 }

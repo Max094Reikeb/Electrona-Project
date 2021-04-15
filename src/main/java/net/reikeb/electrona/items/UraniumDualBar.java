@@ -34,6 +34,6 @@ public class UraniumDualBar extends Item {
 
     @Override
     public void inventoryTick(ItemStack itemstack, World world, Entity entity, int slot, boolean selected) {
-        RadioactivityFunction.radioactiveItemInInventory(itemstack, world, entity);
+        RadioactivityFunction.radioactiveItemInInventory(world, entity, 400, 3);
     }
 }

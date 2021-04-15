@@ -5,16 +5,15 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.*;
 import net.minecraft.world.World;
 
+import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.misc.vm.RadioactivityFunction;
 import net.reikeb.electrona.setup.ItemGroups;
 
-public class Yellowcake extends Item {
+public class RadioactiveDirtItem extends BlockItem {
 
-    public Yellowcake() {
-        super(new Properties()
-                .stacksTo(16)
-                .rarity(Rarity.COMMON)
-                .tab(ItemGroups.ELECTRONA_ITEMS));
+    public RadioactiveDirtItem() {
+        super(BlockInit.RADIOACTIVE_DIRT.get(), new Properties()
+                .stacksTo(64).rarity(Rarity.COMMON).tab(ItemGroups.ELECTRONA_BLOCKS));
     }
 
     @Override
@@ -34,6 +33,6 @@ public class Yellowcake extends Item {
 
     @Override
     public void inventoryTick(ItemStack itemstack, World world, Entity entity, int slot, boolean selected) {
-        RadioactivityFunction.radioactiveItemInInventory(world, entity, 200, 0);
+        RadioactivityFunction.radioactiveItemInInventory(world, entity, 200, 1);
     }
 }

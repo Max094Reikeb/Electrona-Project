@@ -168,6 +168,5 @@ public class ItemInit {
     public static final RegistryObject<Item> NUCLEAR_BOMB_ITEM = ITEMS.register("nuclear_bomb", () ->
             new BlockItem(BlockInit.NUCLEAR_BOMB.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
 
-    public static final RegistryObject<Item> RADIOACTIVE_DIRT_ITEM = ITEMS.register("radioactive_dirt", () ->
-            new BlockItem(BlockInit.RADIOACTIVE_DIRT.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
+    public static final RegistryObject<Item> RADIOACTIVE_DIRT_ITEM = ITEMS.register("radioactive_dirt", RadioactiveDirtItem::new);
 }

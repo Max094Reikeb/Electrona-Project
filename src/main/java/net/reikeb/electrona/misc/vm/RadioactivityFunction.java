@@ -3,7 +3,6 @@ package net.reikeb.electrona.misc.vm;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.*;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.*;
@@ -45,43 +44,31 @@ public class RadioactivityFunction {
     /**
      * Applies Radioactivity effect to the entity if it has radioactive item in his inventory
      *
-     * @param itemstack The radioactive item
-     * @param world     The world the entity is in
-     * @param entity    The entity who has the item
+     * @param world    The world the entity is in
+     * @param entity   The entity who has the item
+     * @param duration The duration of the given effect
+     * @param power    The power of the give effect
      */
-    public static void radioactiveItemInInventory(ItemStack itemstack, World world, Entity entity) {
-        boolean entityWearsRadiationArmor = isEntityWearingAntiRadiationSuit((LivingEntity) entity);
-        boolean entityWearsLeadArmor = isEntityWearingLeadArmor((LivingEntity) entity);
-        double x = entity.getX();
-        double y = entity.getY();
-        double z = entity.getZ();
+    public static void radioactiveItemInInventory(World world, Entity entity, int duration, int power) {
         {
             List<Entity> _entfound = world.getEntitiesOfClass(Entity.class,
-                    new AxisAlignedBB(x - (10 / 2d), y - (10 / 2d), z - (10 / 2d), x + (10 / 2d), y + (10 / 2d), z + (10 / 2d)), null)
+                    new AxisAlignedBB(entity.getX() - (10 / 2d),
+                            entity.getY() - (10 / 2d), entity.getZ() - (10 / 2d),
+                            entity.getX() + (10 / 2d), entity.getY() + (10 / 2d),
+                            entity.getZ() + (10 / 2d)), null)
                     .stream().sorted(new Object() {
                         Comparator<Entity> compareDistOf(double _x, double _y, double _z) {
                             return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(_x, _y, _z));
                         }
-                    }.compareDistOf(x, y, z)).collect(Collectors.toList());
+                    }.compareDistOf(entity.getX(), entity.getY(), entity.getZ())).collect(Collectors.toList());
             for (Entity entityiterator : _entfound) {
                 if (!(entityiterator instanceof LivingEntity)) return;
                 if (entityiterator instanceof PlayerEntity) {
                     if (((PlayerEntity) entityiterator).abilities.instabuild) return;
                 }
-                if (!entityWearsRadiationArmor) {
-                    if (itemstack.getItem() == ItemInit.URANIUM_QUAD_BAR.get()) {
-                        ((LivingEntity) (entityWearsLeadArmor ? entity : entityiterator)).addEffect(new EffectInstance(PotionEffectInit.RADIOACTIVITY.get(), 600, 3));
-                    } else if (itemstack.getItem() == ItemInit.URANIUM_DUAL_BAR.get()) {
-                        ((LivingEntity) (entityWearsLeadArmor ? entity : entityiterator)).addEffect(new EffectInstance(PotionEffectInit.RADIOACTIVITY.get(), 400, 3));
-                    } else if (itemstack.getItem() == ItemInit.URANIUM_BAR.get()) {
-                        ((LivingEntity) (entityWearsLeadArmor ? entity : entityiterator)).addEffect(new EffectInstance(PotionEffectInit.RADIOACTIVITY.get(), 300, 3));
-                    } else if (itemstack.getItem() == ItemInit.PURIFIED_URANIUM.get()) {
-                        ((LivingEntity) (entityWearsLeadArmor ? entity : entityiterator)).addEffect(new EffectInstance(PotionEffectInit.RADIOACTIVITY.get(), 200, 2));
-                    } else if (itemstack.getItem() == ItemInit.CONCENTRATED_URANIUM.get()) {
-                        ((LivingEntity) (entityWearsLeadArmor ? entity : entityiterator)).addEffect(new EffectInstance(PotionEffectInit.RADIOACTIVITY.get(), 200, 1));
-                    } else if (itemstack.getItem() == ItemInit.YELLOWCAKE.get()) {
-                        ((LivingEntity) (entityWearsLeadArmor ? entity : entityiterator)).addEffect(new EffectInstance(PotionEffectInit.RADIOACTIVITY.get(), 200, 0));
-                    }
+                if (!isEntityWearingAntiRadiationSuit((LivingEntity) entity)) {
+                    boolean entityWearsLeadArmor = isEntityWearingLeadArmor((LivingEntity) entity);
+                    ((LivingEntity) (entityWearsLeadArmor ? entity : entityiterator)).addEffect(new EffectInstance(PotionEffectInit.RADIOACTIVITY.get(), duration, power));
                 }
             }
         }
@@ -90,34 +77,15 @@ public class RadioactivityFunction {
     /**
      * Applies Radioactivity effect to the entity if it steps on a radioactive block
      *
-     * @param world  The world the entity is in
-     * @param pos    The pos of the block
      * @param entity The entity that steps on the radioactive block
      */
-    public static void stepOnRadioactiveBlock(World world, BlockPos pos, Entity entity) {
+    public static void stepOnRadioactiveBlock(Entity entity) {
         if (!(entity instanceof LivingEntity)) return;
-        boolean entityWearsRadiationArmor = isEntityWearingAntiRadiationSuit((LivingEntity) entity);
-        boolean entityWearsLeadArmor = isEntityWearingLeadArmor((LivingEntity) entity);
-        double x = pos.getX();
-        double y = pos.getY();
-        double z = pos.getZ();
-        {
-            List<Entity> _entfound = world.getEntitiesOfClass(Entity.class,
-                    new AxisAlignedBB(x - (10 / 2d), y - (10 / 2d), z - (10 / 2d), x + (10 / 2d), y + (10 / 2d), z + (10 / 2d)), null)
-                    .stream().sorted(new Object() {
-                        Comparator<Entity> compareDistOf(double _x, double _y, double _z) {
-                            return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(_x, _y, _z));
-                        }
-                    }.compareDistOf(x, y, z)).collect(Collectors.toList());
-            for (Entity entityiterator : _entfound) {
-                if (!(entityiterator instanceof LivingEntity)) return;
-                if (entityiterator instanceof PlayerEntity) {
-                    if (((PlayerEntity) entityiterator).abilities.instabuild) return;
-                }
-                if (!entityWearsRadiationArmor) {
-                    ((LivingEntity) (entityWearsLeadArmor ? entity : entityiterator)).addEffect(new EffectInstance(PotionEffectInit.RADIOACTIVITY.get(), 200, 2));
-                }
-            }
+        if (entity instanceof PlayerEntity) {
+            if (((PlayerEntity) entity).abilities.instabuild) return;
+        }
+        if (!isEntityWearingAntiRadiationSuit((LivingEntity) entity)) {
+            ((LivingEntity) entity).addEffect(new EffectInstance(PotionEffectInit.RADIOACTIVITY.get(), 200, 2));
         }
     }
 
