@@ -63,13 +63,13 @@ public class WaterPumpWindow extends ContainerScreen<WaterPumpContainer> {
 
     @Override
     protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.water_pump_gui.name"), 51, 8, -16777216);
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.generic_gui.storage"), 125, 6, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.water_pump.name"), 51, 8, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.storage"), 125, 6, -16777216);
         this.font.draw(matrixStack, "" + ((int) tileEntity.getTileData().getDouble("ElectronicPower")) + " EL", 125, 16, -3407821);
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.generic_gui.state"), 62, 24, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.state"), 62, 24, -16777216);
         boolean isPowered = tileEntity.getTileData().getBoolean("isOn");
         this.font.draw(matrixStack, (isPowered ? "ON" : "OFF"), 99, 24, -3407821);
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.generic_gui.input"), 132, 47, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.input"), 132, 47, -16777216);
     }
 
     @Override

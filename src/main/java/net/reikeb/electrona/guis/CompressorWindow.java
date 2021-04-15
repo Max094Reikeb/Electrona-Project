@@ -45,8 +45,8 @@ public class CompressorWindow extends ContainerScreen<CompressorContainer> {
 
     @Override
     protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.compressor_gui.name"), 50, 6, -16777216);
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.generic_gui.power"), 126, 6, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.compressor.name"), 50, 6, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.power"), 126, 6, -16777216);
         this.font.draw(matrixStack, "" + ((int) this.tileEntity.getTileData().getDouble("ElectronicPower")) + " ELs", 126, 16, -3407821);
     }
 

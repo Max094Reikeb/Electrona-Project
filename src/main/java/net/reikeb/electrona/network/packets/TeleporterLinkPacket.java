@@ -36,7 +36,7 @@ public class TeleporterLinkPacket {
                 tileEntity.getTileData().putDouble("teleportY", stack.getOrCreateTag().getDouble("teleportY"));
                 tileEntity.getTileData().putDouble("teleportZ", stack.getOrCreateTag().getDouble("teleportZ"));
                 playerEntity.displayClientMessage(new StringTextComponent((
-                        new TranslationTextComponent("electrona.block.teleporter.coordinates_transfered_info").getString())), true);
+                        new TranslationTextComponent("message.electrona.coordinates_transfered_info").getString())), true);
             }
         });
         context.get().setPacketHandled(true);

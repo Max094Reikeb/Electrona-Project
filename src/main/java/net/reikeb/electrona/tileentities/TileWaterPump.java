@@ -50,7 +50,7 @@ public class TileWaterPump extends LockableLootTileEntity implements ITickableTi
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("electrona.water_pump.name");
+        return new TranslationTextComponent("gui.electrona.water_pump.name");
     }
 
     @Override

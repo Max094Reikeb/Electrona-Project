@@ -35,10 +35,10 @@ public class SprayerWindow extends ContainerScreen<SprayerContainer> {
 
     @Override
     protected void renderLabels(MatrixStack ms, int mouseX, int mouseY) {
-        this.font.draw(ms, new TranslationTextComponent("electrona.sprayer_gui.name"), 51, 7, -16777216);
-        this.font.draw(ms, new TranslationTextComponent("electrona.generic_gui.power"), 126, 7, -16777216);
+        this.font.draw(ms, new TranslationTextComponent("gui.electrona.sprayer.name"), 51, 7, -16777216);
+        this.font.draw(ms, new TranslationTextComponent("gui.electrona.generic.power"), 126, 7, -16777216);
         this.font.draw(ms, "" + ((int) this.tileEntity.getTileData().getDouble("ElectronicPower")) + " ELs", 126, 17, -3407821);
-        this.font.draw(ms, new TranslationTextComponent("electrona.generic_gui.radius"), 126, 26, -16777216);
+        this.font.draw(ms, new TranslationTextComponent("gui.electrona.generic.radius"), 126, 26, -16777216);
         this.font.draw(ms, "" + this.tileEntity.getTileData().getInt("radius") + "", 126, 36, -3407821);
     }
 

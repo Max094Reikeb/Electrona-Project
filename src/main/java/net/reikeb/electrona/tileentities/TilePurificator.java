@@ -57,7 +57,7 @@ public class TilePurificator extends LockableLootTileEntity implements ITickable
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("electrona.purificator_gui.name");
+        return new TranslationTextComponent("gui.electrona.purificator.name");
     }
 
     @Override
@@ -120,13 +120,13 @@ public class TilePurificator extends LockableLootTileEntity implements ITickable
                     if (this.currentPurifyingTime < (this.purifyingTime * 20)) {
                         this.currentPurifyingTime += 1;
                         FluidFunction.drainWater(this, (int) (waterPerSecond * 0.05));
-                        ElectronaUtils.playSound(world, blockPos, SoundsInit.PURIFICATOR_PURIFICATION.get());
+                        ElectronaUtils.playSound(world, blockPos, SoundsInit.PURIFICATOR_PURIFICATION.get(), SoundCategory.BLOCKS);
 
                     } else {
                         this.currentPurifyingTime = 0;
                         this.inventory.insertItem(2, new ItemStack(output.copy().getItem(), this.getRecipe(stackInSlot1).getCountOutput()), false);
                         this.inventory.decrStackSize(1, this.getRecipe(stackInSlot1).getCountInput());
-                        ElectronaUtils.playSound(world, blockPos, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.brewing_stand.brew")));
+                        ElectronaUtils.playSound(world, blockPos, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.brewing_stand.brew")), SoundCategory.BLOCKS);
                     }
                 } else {
                     this.currentPurifyingTime = 0;

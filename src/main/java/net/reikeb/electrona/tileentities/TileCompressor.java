@@ -56,7 +56,7 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("electrona.compressor_gui.name");
+        return new TranslationTextComponent("gui.electrona.compressor.name");
     }
 
     @Override
@@ -116,7 +116,7 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
                         this.inventory.insertItem(2, output.copy(), false);
                         this.inventory.decrStackSize(0, 1);
                         this.inventory.decrStackSize(1, 1);
-                        ElectronaUtils.playSound(world, this.getBlockPos(), SoundsInit.COMPRESSOR_END_COMPRESSION.get());
+                        ElectronaUtils.playSound(world, this.getBlockPos(), SoundsInit.COMPRESSOR_END_COMPRESSION.get(), SoundCategory.BLOCKS);
                     }
                     this.getTileData().putDouble("ElectronicPower", electronicPower);
                 } else {

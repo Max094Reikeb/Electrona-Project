@@ -44,7 +44,7 @@ public class TileBattery extends LockableLootTileEntity implements ITickableTile
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("electrona.battery_gui.name");
+        return new TranslationTextComponent("gui.electrona.battery.name");
     }
 
     @Override

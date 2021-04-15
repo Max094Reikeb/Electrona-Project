@@ -32,12 +32,12 @@ public class ExperienceHarvestPacket {
             if (xpLevels > 0) {
                 playerEntity.closeContainer();
                 playerEntity.displayClientMessage(new StringTextComponent((xpLevels + "" +
-                        (new TranslationTextComponent("electrona.block.xp_generator.levels_harvested_success_info").getString()))), false);
+                        (new TranslationTextComponent("message.electrona.levels_harvested_success_info").getString()))), false);
                 playerEntity.giveExperienceLevels(xpLevels);
                 tileEntity.getTileData().putInt("XPLevels", 0);
             } else {
                 playerEntity.displayClientMessage(new StringTextComponent(
-                        (new TranslationTextComponent("electrona.block.xp_generator.levels_none_to_harvest_info").getString())), false);
+                        (new TranslationTextComponent("message.electrona.levels_none_to_harvest_info").getString())), false);
             }
         });
         context.get().setPacketHandled(true);

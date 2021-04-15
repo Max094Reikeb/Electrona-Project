@@ -63,7 +63,7 @@ public class TeleporterFunction {
                         }
                     } else {
                         if (entity instanceof PlayerEntity && !entity.level.isClientSide) {
-                            ((PlayerEntity) entity).displayClientMessage(new TranslationTextComponent("electrona.block.teleporter.no_dimension_info"),
+                            ((PlayerEntity) entity).displayClientMessage(new TranslationTextComponent("message.electrona.no_dimension_info"),
                                     true);
                         }
                     }
@@ -99,7 +99,7 @@ public class TeleporterFunction {
                     }
                 } else {
                     if (entity instanceof PlayerEntity && !entity.level.isClientSide) {
-                        ((PlayerEntity) entity).displayClientMessage(new TranslationTextComponent("electrona.block.teleporter.no_world_coos_info"), true);
+                        ((PlayerEntity) entity).displayClientMessage(new TranslationTextComponent("message.electrona.no_world_coos_info"), true);
                     }
                 }
             } else if ((BlockInit.TELEPORTER.get() == (world.getBlockState(new
@@ -109,12 +109,12 @@ public class TeleporterFunction {
                 }
             } else {
                 if (entity instanceof PlayerEntity && !entity.level.isClientSide) {
-                    ((PlayerEntity) entity).displayClientMessage(new TranslationTextComponent("electrona.block.teleporter.no_coos_info"), true);
+                    ((PlayerEntity) entity).displayClientMessage(new TranslationTextComponent("message.electrona.no_coos_info"), true);
                 }
             }
         } else {
             if (entity instanceof PlayerEntity && !entity.level.isClientSide) {
-                ((PlayerEntity) entity).displayClientMessage(new TranslationTextComponent("electrona.block.teleporter.not_enough_power_info"), true);
+                ((PlayerEntity) entity).displayClientMessage(new TranslationTextComponent("message.electrona.not_enough_power_info"), true);
             }
         }
     }
@@ -257,12 +257,12 @@ public class TeleporterFunction {
                 }
             } else {
                 if (!playerIn.level.isClientSide) {
-                    playerIn.displayClientMessage(new TranslationTextComponent("electrona.block.teleporter.no_coos_info"), true);
+                    playerIn.displayClientMessage(new TranslationTextComponent("message.electrona.no_coos_info"), true);
                 }
             }
         } else {
             if (!playerIn.level.isClientSide) {
-                playerIn.displayClientMessage(new TranslationTextComponent("electrona.block.teleporter.not_enough_power_info"), true);
+                playerIn.displayClientMessage(new TranslationTextComponent("message.electrona.not_enough_power_info"), true);
             }
         }
         return false;

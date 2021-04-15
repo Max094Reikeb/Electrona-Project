@@ -35,12 +35,12 @@ public class ElectronaUtils {
      * @param pos   The position of the entity/block
      * @param sound The sound
      */
-    public static void playSound(World world, BlockPos pos, SoundEvent sound) {
+    public static void playSound(World world, BlockPos pos, SoundEvent sound, SoundCategory category) {
         if (world.isClientSide) {
             world.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), sound,
-                    SoundCategory.BLOCKS, 1F, 1F, false);
+                    category, 1F, 1F, false);
         } else {
-            world.playSound(null, pos, sound, SoundCategory.BLOCKS, 1F, 1F);
+            world.playSound(null, pos, sound, category, 1F, 1F);
         }
     }
 }

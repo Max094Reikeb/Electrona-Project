@@ -36,7 +36,7 @@ public class LeadCrateWindow extends ContainerScreen<LeadCrateContainer> {
 
     @Override
     protected void renderLabels(MatrixStack ms, int mouseX, int mouseY) {
-        this.font.draw(ms, new TranslationTextComponent("electrona.lead_crate_gui.name"), 7, 6, -16777216);
+        this.font.draw(ms, new TranslationTextComponent("gui.electrona.lead_crate.name"), 7, 6, -16777216);
     }
 
     @Override

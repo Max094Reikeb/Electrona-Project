@@ -43,7 +43,7 @@ public class TileSprayer extends LockableLootTileEntity implements ITickableTile
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("electrona.sprayer_gui.name");
+        return new TranslationTextComponent("gui.electrona.sprayer.name");
     }
 
     @Override

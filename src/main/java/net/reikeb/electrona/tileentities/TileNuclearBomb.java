@@ -37,7 +37,7 @@ public class TileNuclearBomb extends LockableLootTileEntity {
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("electrona.nuclear_bomb_gui.name");
+        return new TranslationTextComponent("gui.electrona.nuclear_bomb.name");
     }
 
     @Override

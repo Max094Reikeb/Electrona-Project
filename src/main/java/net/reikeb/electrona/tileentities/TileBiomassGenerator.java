@@ -43,7 +43,7 @@ public class TileBiomassGenerator extends LockableLootTileEntity implements ITic
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("electrona.biomass_generator_gui.name");
+        return new TranslationTextComponent("gui.electrona.biomass_generator.name");
     }
 
     @Override
@@ -99,7 +99,7 @@ public class TileBiomassGenerator extends LockableLootTileEntity implements ITic
                         this.getTileData().putDouble("ElectronicPower", 3000);
                     }
                     this.inventory.decrStackSize(0, 1);
-                    ElectronaUtils.playSound(world, this.getBlockPos(), SoundsInit.BIOMASS_GENERATOR_ACTIVE.get());
+                    ElectronaUtils.playSound(world, this.getBlockPos(), SoundsInit.BIOMASS_GENERATOR_ACTIVE.get(), SoundCategory.BLOCKS);
                     wait = 0;
                 }
             } else {

@@ -41,7 +41,7 @@ public class DimensionLinkerWindow extends ContainerScreen<DimensionLinkerContai
 
     @Override
     protected void renderLabels(MatrixStack ms, int mouseX, int mouseY) {
-        this.font.draw(ms, new TranslationTextComponent("electrona.dimension_linker_gui.name"), 48, 6, -16777216);
+        this.font.draw(ms, new TranslationTextComponent("gui.electrona.dimension_linker.name"), 48, 6, -16777216);
     }
 
     @Override

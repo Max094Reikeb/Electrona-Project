@@ -36,7 +36,7 @@ public class SteelCrateWindow extends ContainerScreen<SteelCrateContainer> {
 
     @Override
     protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.steel_crate_gui.name"), 7, 6, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.steel_crate.name"), 7, 6, -16777216);
     }
 
     @Override

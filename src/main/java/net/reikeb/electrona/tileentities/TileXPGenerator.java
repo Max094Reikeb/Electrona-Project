@@ -43,7 +43,7 @@ public class TileXPGenerator extends LockableLootTileEntity implements ITickable
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("electrona.xp_generator_gui.name");
+        return new TranslationTextComponent("gui.electrona.xp_generator.name");
     }
 
     @Override

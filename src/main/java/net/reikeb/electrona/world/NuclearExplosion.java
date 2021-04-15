@@ -2,7 +2,7 @@ package net.reikeb.electrona.world;
 
 import net.minecraft.block.*;
 import net.minecraft.entity.*;
-import net.minecraft.entity.item.FallingBlockEntity;
+import net.minecraft.entity.item.*;
 import net.minecraft.tags.*;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
@@ -19,6 +19,7 @@ import java.util.*;
  * https://github.com/rodolphito/Rival-Rebels-Mod/blob/master/main/java/assets/rivalrebels/common/explosion/NuclearExplosion.java
  */
 public class NuclearExplosion {
+
     public static Block[] prblocks = {
             Blocks.COAL_ORE,
             Blocks.IRON_ORE,
@@ -105,7 +106,7 @@ public class NuclearExplosion {
                 }
             }
         }
-        ElectronaUtils.playSound(world, new BlockPos(x, y, z), SoundsInit.NUCLEAR_EXPLOSION.get());
+        ElectronaUtils.playSound(world, new BlockPos(x, y, z), SoundsInit.NUCLEAR_EXPLOSION.get(), SoundCategory.WEATHER);
     }
 
     private void pushAndHurtEntities(World world, int x, int y, int z, int radius) {
@@ -137,6 +138,7 @@ public class NuclearExplosion {
                     double var32 = Explosion.getSeenPercent(var30, var31);
                     double var34 = (1.0D - var13) * var32;
                     if (var31 instanceof FallingBlockEntity) var31.remove();
+                    if (var31 instanceof ItemEntity) var31.remove();
                     var31.hurt(new DamageSource("nuclear_blast"), (int) ((var34 * var34 + var34) / 2.0D * 8.0D * onepointfiveradius + 1.0D) * 4);
                     var31.setDeltaMovement(new Vector3d(-var15 * var34 * 8, -var17 * var34 * 8, -var19 * var34 * 8));
                 }

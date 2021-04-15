@@ -35,8 +35,8 @@ public class MiningMachineWindow extends ContainerScreen<MiningMachineContainer>
 
     @Override
     protected void renderLabels(MatrixStack ms, int mouseX, int mouseY) {
-        this.font.draw(ms, new TranslationTextComponent("electrona.mining_machine_gui.name"), 45, 6, -16777216);
-        this.font.draw(ms, new TranslationTextComponent("electrona.generic_gui.power"), 126, 6, -16777216);
+        this.font.draw(ms, new TranslationTextComponent("gui.electrona.mining_machine.name"), 45, 6, -16777216);
+        this.font.draw(ms, new TranslationTextComponent("gui.electrona.generic.power"), 126, 6, -16777216);
         this.font.draw(ms, "" + ((int) tileEntity.getTileData().getDouble("ElectronicPower")) + " ELs", 126, 17, -3407821);
     }
 

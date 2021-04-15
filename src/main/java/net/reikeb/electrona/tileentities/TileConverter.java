@@ -46,7 +46,7 @@ public class TileConverter extends LockableLootTileEntity implements ITickableTi
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("electrona.el_converter_gui.name");
+        return new TranslationTextComponent("gui.electrona.el_converter.name");
     }
 
     @Override

@@ -41,7 +41,7 @@ public class TileTeleporter extends LockableLootTileEntity implements ITickableT
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("electrona.teleporter_gui.name");
+        return new TranslationTextComponent("gui.electrona.teleporter.name");
     }
 
     @Override

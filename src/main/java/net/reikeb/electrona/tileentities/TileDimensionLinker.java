@@ -39,7 +39,7 @@ public class TileDimensionLinker extends LockableLootTileEntity {
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("electrona.dimension_linker_gui.name");
+        return new TranslationTextComponent("gui.electrona.dimension_linker.name");
     }
 
     @Override

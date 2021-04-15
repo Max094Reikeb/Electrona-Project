@@ -45,7 +45,7 @@ public class TileMiningMachine extends LockableLootTileEntity implements ITickab
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("electrona.mining_machine_gui.name");
+        return new TranslationTextComponent("gui.electrona.mining_machine.name");
     }
 
     @Override

@@ -35,8 +35,8 @@ public class BiomassGeneratorWindow extends ContainerScreen<BiomassGeneratorCont
 
     @Override
     protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.biomass_generator_gui.name"), 7, 7, -16777216);
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.generic_gui.storage"), 125, 5, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.biomass_generator.name"), 7, 7, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.storage"), 125, 5, -16777216);
         this.font.draw(matrixStack, "" + ((int) this.tileEntity.getTileData().getDouble("ElectronicPower")) + " ELs", 125, 15, -3407821);
     }
 

@@ -37,7 +37,7 @@ public class TileLeadCrate extends LockableLootTileEntity {
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("electrona.lead_crate_gui.name");
+        return new TranslationTextComponent("gui.electrona.lead_crate.name");
     }
 
     @Override

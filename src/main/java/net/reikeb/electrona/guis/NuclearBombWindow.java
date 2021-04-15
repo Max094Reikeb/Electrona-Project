@@ -34,7 +34,7 @@ public class NuclearBombWindow extends ContainerScreen<NuclearBombContainer> {
 
     @Override
     protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.nuclear_bomb_gui.name"), 54, 17, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.nuclear_bomb.name"), 54, 17, -16777216);
     }
 
     @Override

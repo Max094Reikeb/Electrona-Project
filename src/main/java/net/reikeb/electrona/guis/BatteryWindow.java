@@ -34,11 +34,11 @@ public class BatteryWindow extends ContainerScreen<BatteryContainer> {
 
     @Override
     protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.battery_gui.name"), 72, 7, -16777216);
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.generic_gui.storage"), 5, 7, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.battery.name"), 72, 7, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.storage"), 5, 7, -16777216);
         this.font.draw(matrixStack, "" + ((int) this.tileEntity.getTileData().getDouble("ElectronicPower")) + "ELs", 5, 17, -3407821);
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.generic_gui.output"), 110, 51, -16777216);
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.generic_gui.input"), 40, 51, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.output"), 110, 51, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.input"), 40, 51, -16777216);
     }
 
     @Override

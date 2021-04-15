@@ -120,10 +120,10 @@ public class NuclearGeneratorControllerWindow extends ContainerScreen<NuclearGen
     protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
         boolean isPowered = tileEntity.getTileData().getBoolean("powered");
         boolean isIn = tileEntity.getTileData().getBoolean("UBIn");
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.nuclear_generator_controller_gui.name"), 70, 8, -16777216);
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.generic_gui.state"), 79, 24, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.nuclear_generator_controller.name"), 70, 8, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.state"), 79, 24, -16777216);
         this.font.draw(matrixStack, (isPowered ? "ON" : "OFF"), 115, 24, -3407821);
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.generic_gui.bars"), 79, 34, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.bars"), 79, 34, -16777216);
         this.font.draw(matrixStack, (isIn ? "IN" : "OUT"), 115, 34, -3407821);
     }
 

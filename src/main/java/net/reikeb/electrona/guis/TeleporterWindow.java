@@ -37,14 +37,14 @@ public class TeleporterWindow extends ContainerScreen<TeleporterContainer> {
 
     @Override
     protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.teleporter_gui.name"), 62, 8, -16777216);
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.teleporter_gui.link"), 136, 8, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.teleporter.name"), 62, 8, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.teleporter.link"), 136, 8, -16777216);
         this.font.draw(matrixStack, "" + this.tileEntity.getTileData().getDouble("teleportX") + "", 135, 19, -13408513);
         this.font.draw(matrixStack, "" + this.tileEntity.getTileData().getDouble("teleportY") + "", 135, 28, -13408513);
         this.font.draw(matrixStack, "" + this.tileEntity.getTileData().getDouble("teleportZ") + "", 135, 38, -13408513);
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.generic_gui.storage"), 5, 7, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.storage"), 5, 7, -16777216);
         this.font.draw(matrixStack, "" + ((int) this.tileEntity.getTileData().getDouble("ElectronicPower")) + " ELs", 5, 18, -3407821);
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.teleporter_gui.auto_deletion"), 6, 28, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.teleporter.auto_deletion"), 6, 28, -16777216);
         this.font.draw(matrixStack, "" + this.tileEntity.getTileData().getBoolean("autoDeletion") + "", 5, 38, -3407821);
     }
 
@@ -81,12 +81,12 @@ public class TeleporterWindow extends ContainerScreen<TeleporterContainer> {
     public void init(Minecraft minecraft, int width, int height) {
         super.init(minecraft, width, height);
         this.addButton(new Button(this.leftPos + 89, this.topPos + 60, 70, 20,
-                new TranslationTextComponent("electrona.teleporter_gui.transfer_button"), e -> {
+                new TranslationTextComponent("gui.electrona.teleporter.transfer_button"), e -> {
             NetworkManager.INSTANCE.sendToServer(new TeleporterLinkPacket());
         }));
 
         this.addButton(new Button(this.leftPos + 7, this.topPos + 60, 40, 20,
-                new TranslationTextComponent("electrona.teleporter_gui.auto_button"), e -> {
+                new TranslationTextComponent("gui.electrona.teleporter.auto_button"), e -> {
             NetworkManager.INSTANCE.sendToServer(new TeleporterAutoDeletePacket());
         }));
     }

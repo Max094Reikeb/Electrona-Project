@@ -50,7 +50,7 @@ public class TileNuclearGeneratorController extends LockableLootTileEntity imple
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("electrona.nuclear_generator_controller_gui.name");
+        return new TranslationTextComponent("gui.electrona.nuclear_generator_controller.name");
     }
 
     @Override
@@ -141,7 +141,7 @@ public class TileNuclearGeneratorController extends LockableLootTileEntity imple
         }
 
         if ((this.getTileData().getBoolean("alert")) && (this.level.getGameTime() % 20 == 0)) {
-            ElectronaUtils.playSound(world, this.getBlockPos(), SoundsInit.NUCLEAR_GENERATOR_CONTROLLER_ALERT.get());
+            ElectronaUtils.playSound(world, this.getBlockPos(), SoundsInit.NUCLEAR_GENERATOR_CONTROLLER_ALERT.get(), SoundCategory.BLOCKS);
         }
 
         // Transfer energy

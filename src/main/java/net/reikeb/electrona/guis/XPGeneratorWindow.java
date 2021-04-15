@@ -47,12 +47,12 @@ public class XPGeneratorWindow extends ContainerScreen<XPGeneratorContainer> {
 
     @Override
     protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.xp_generator_gui.name"), 8, 7, -16777216);
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.generic_gui.power"), 121, 7, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.xp_generator.name"), 8, 7, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.power"), 121, 7, -16777216);
         this.font.draw(matrixStack, "" + ((int) this.tileEntity.getTileData().getDouble("ElectronicPower")) + " ELs", 121, 17, -3407821);
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.xp_generator_gui.xp_levels"), 121, 26, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.xp_generator.xp_levels"), 121, 26, -16777216);
         this.font.draw(matrixStack, "" + tileEntity.getTileData().getInt("XPLevels") + "", 121, 36, -13395712);
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.xp_generator_gui.fuel"), 79, 37, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.xp_generator.fuel"), 79, 37, -16777216);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class XPGeneratorWindow extends ContainerScreen<XPGeneratorContainer> {
     public void init(Minecraft minecraft, int width, int height) {
         super.init(minecraft, width, height);
         this.addButton(new Button(this.leftPos + 98, this.topPos + 60, 70, 20,
-                new TranslationTextComponent("electrona.xp_generator_gui.harvest_button"), e -> {
+                new TranslationTextComponent("gui.electrona.xp_generator.harvest_button"), e -> {
             NetworkManager.INSTANCE.sendToServer(new ExperienceHarvestPacket());
         }));
     }

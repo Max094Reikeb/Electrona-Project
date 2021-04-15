@@ -44,10 +44,10 @@ public class ConverterWindow extends ContainerScreen<ConverterContainer> {
         AtomicInteger energy = new AtomicInteger();
         boolean toOthers = tileEntity.getTileData().getBoolean("toOthers");
         tileEntity.getCapability(CapabilityEnergy.ENERGY, null).ifPresent(cap -> energy.set(cap.getEnergyStored()));
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.el_converter_gui.name"), 66, 6, -16777216);
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.generic_gui.storage"), 7, 6, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.el_converter.name"), 66, 6, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.storage"), 7, 6, -16777216);
         this.font.draw(matrixStack, "" + (toOthers ? energy.get() + " FE" : ((int) tileEntity.getTileData().getDouble("vp")) + " VPs"), 7, 16, -3407821);
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.generic_gui.input"), 77, 49, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.input"), 77, 49, -16777216);
         this.font.draw(matrixStack, "" + tileEntity.getTileData().getBoolean("toVP") + "", 140, 16, -3407821);
         this.font.draw(matrixStack, "VP", 140, 6, -16777216);
         this.font.draw(matrixStack, "FE", 140, 26, -16777216);
@@ -87,7 +87,7 @@ public class ConverterWindow extends ContainerScreen<ConverterContainer> {
     public void init(Minecraft minecraft, int width, int height) {
         super.init(minecraft, width, height);
         this.addButton(new Button(this.leftPos + 109, this.topPos + 61, 60, 20,
-                new TranslationTextComponent("electrona.el_converter_gui.change_button"), e -> {
+                new TranslationTextComponent("gui.electrona.el_converter.change_button"), e -> {
             NetworkManager.INSTANCE.sendToServer(new ConverterPacket());
         }));
     }

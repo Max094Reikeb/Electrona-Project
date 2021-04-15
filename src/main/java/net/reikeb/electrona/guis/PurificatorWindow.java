@@ -82,7 +82,7 @@ public class PurificatorWindow extends ContainerScreen<PurificatorContainer> {
 
     @Override
     protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
-        this.font.draw(matrixStack, new TranslationTextComponent("electrona.purificator_gui.name"), 48, 6, -16777216);
+        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.purificator.name"), 48, 6, -16777216);
     }
 
     @Override
