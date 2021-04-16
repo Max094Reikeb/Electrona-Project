@@ -126,7 +126,7 @@ public class Teleporter extends AbstractWaterLoggableBlock {
 
     @Override
     public void stepOn(World world, BlockPos pos, Entity entity) {
-        TeleporterFunction.function(world, pos, entity);
+        TeleporterFunction.stepOnTeleporter(world, pos, entity);
     }
 
     @Override

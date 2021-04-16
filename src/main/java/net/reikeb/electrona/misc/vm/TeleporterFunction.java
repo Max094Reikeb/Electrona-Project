@@ -32,7 +32,7 @@ public class TeleporterFunction {
      * @param pos    The position of the Teleporter
      * @param entity The entity which travels through the Teleporter
      */
-    public static void function(World world, BlockPos pos, Entity entity) {
+    public static void stepOnTeleporter(World world, BlockPos pos, Entity entity) {
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
@@ -141,25 +141,6 @@ public class TeleporterFunction {
             if (entity instanceof ServerPlayerEntity) {
                 ((ServerPlayerEntity) entity).connection.teleport(teleportXCo, teleportYCo, teleportZCo, entity.yRot,
                         entity.xRot, Collections.emptySet());
-            }
-        }
-        if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) entity;
-            ItemStack stack = player.getMainHandItem();
-            if ((ItemInit.TELEPORT_SAVER.get() == stack.getItem())
-                    && stack.getOrCreateTag().getBoolean("linked")) {
-                ItemStack newStack = new ItemStack(ItemInit.PORTABLE_TELEPORTER.get());
-                newStack.getOrCreateTag().putDouble("teleportX", (teleportXCo + 0.5));
-                newStack.getOrCreateTag().putDouble("teleportY", teleportYCo);
-                newStack.getOrCreateTag().putDouble("teleportZ", (teleportZCo + 0.5));
-                player.setItemInHand(Hand.MAIN_HAND, newStack);
-            } else if (ItemInit.PORTABLE_TELEPORTER.get() == stack.getItem()) {
-                ItemStack newStack = new ItemStack(ItemInit.TELEPORT_SAVER.get());
-                newStack.getOrCreateTag().putDouble("teleportX", (teleportXCo + 0.5));
-                newStack.getOrCreateTag().putDouble("teleportY", teleportYCo);
-                newStack.getOrCreateTag().putDouble("teleportZ", (teleportZCo + 0.5));
-                newStack.getOrCreateTag().putBoolean("linked", true);
-                player.setItemInHand(Hand.MAIN_HAND, newStack);
             }
         }
         MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(world, teleportWorld, pos, teleportPos, entity));

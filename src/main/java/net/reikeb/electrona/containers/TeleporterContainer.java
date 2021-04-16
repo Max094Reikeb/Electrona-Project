@@ -39,7 +39,8 @@ public class TeleporterContainer extends Container {
                 addSlot(new SlotItemHandler(h, 0, 81, 27) {
                     @Override
                     public boolean mayPlace(ItemStack itemStack) {
-                        return (itemStack.getItem() == ItemInit.TELEPORT_SAVER.get());
+                        return ((itemStack.getItem() == ItemInit.TELEPORT_SAVER.get())
+                                || (itemStack.getItem() == ItemInit.PORTABLE_TELEPORTER.get()));
                     }
                 });
             });

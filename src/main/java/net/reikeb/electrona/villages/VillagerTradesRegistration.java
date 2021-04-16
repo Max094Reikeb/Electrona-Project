@@ -123,6 +123,19 @@ public class VillagerTradesRegistration {
                     .setForSale(ItemInit.MECHANIC_WINGS.get(), 1, 1)
                     .build()
             );
+            /**
+             * Price: 50 Emeralds
+             * Price2: 1 Teleport Saver
+             * Sale: 1 Portable Teleporter
+             * Max trades: 5
+             * XP: 10
+             * Price multiplier: 0.05F
+             */
+            trades.get(5).add(new RandomTradeBuilder(5, 10, 0.05F)
+                    .setPrice(Items.EMERALD, 50, 50)
+                    .setPrice2(ItemInit.TELEPORT_SAVER.get(), 1, 1)
+                    .setForSale(ItemInit.PORTABLE_TELEPORTER.get(), 1, 1)
+                    .build());
         }
     }
 }
