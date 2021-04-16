@@ -15,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.*;
 import net.minecraftforge.items.*;
@@ -23,6 +24,7 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.blocks.Compressor;
 import net.reikeb.electrona.containers.CompressorContainer;
+import net.reikeb.electrona.events.local.CompressionEvent;
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.recipes.CompressorRecipe;
 import net.reikeb.electrona.utils.*;
@@ -112,11 +114,13 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
                         electronicPower = electronicPower - (energyPerSecond * 0.05);
 
                     } else {
-                        this.currentCompressingTime = 0;
-                        this.inventory.insertItem(2, output.copy(), false);
-                        this.inventory.decrStackSize(0, 1);
-                        this.inventory.decrStackSize(1, 1);
-                        ElectronaUtils.playSound(world, this.getBlockPos(), SoundsInit.COMPRESSOR_END_COMPRESSION.get(), SoundCategory.BLOCKS);
+                        if (!MinecraftForge.EVENT_BUS.post(new CompressionEvent(world, blockPos, stackInSlot0, stackInSlot1, output.copy(), this.compressingTime, this.energyRequired))) {
+                            this.currentCompressingTime = 0;
+                            this.inventory.insertItem(2, output.copy(), false);
+                            this.inventory.decrStackSize(0, 1);
+                            this.inventory.decrStackSize(1, 1);
+                            ElectronaUtils.playSound(world, this.getBlockPos(), SoundsInit.COMPRESSOR_END_COMPRESSION.get(), SoundCategory.BLOCKS);
+                        }
                     }
                     this.getTileData().putDouble("ElectronicPower", electronicPower);
                 } else {

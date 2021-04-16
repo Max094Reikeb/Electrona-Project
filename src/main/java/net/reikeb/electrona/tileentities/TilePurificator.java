@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -26,6 +27,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.PurificatorContainer;
+import net.reikeb.electrona.events.local.PurificationEvent;
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.misc.vm.FluidFunction;
 import net.reikeb.electrona.recipes.PurificatorRecipe;
@@ -123,10 +125,12 @@ public class TilePurificator extends LockableLootTileEntity implements ITickable
                         ElectronaUtils.playSound(world, blockPos, SoundsInit.PURIFICATOR_PURIFICATION.get(), SoundCategory.BLOCKS);
 
                     } else {
-                        this.currentPurifyingTime = 0;
-                        this.inventory.insertItem(2, new ItemStack(output.copy().getItem(), this.getRecipe(stackInSlot1).getCountOutput()), false);
-                        this.inventory.decrStackSize(1, this.getRecipe(stackInSlot1).getCountInput());
-                        ElectronaUtils.playSound(world, blockPos, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.brewing_stand.brew")), SoundCategory.BLOCKS);
+                        if (!MinecraftForge.EVENT_BUS.post(new PurificationEvent(world, blockPos, stackInSlot1, new ItemStack(output.copy().getItem(), this.getRecipe(stackInSlot1).getCountOutput()), this.purifyingTime, this.waterRequired))) {
+                            this.currentPurifyingTime = 0;
+                            this.inventory.insertItem(2, new ItemStack(output.copy().getItem(), this.getRecipe(stackInSlot1).getCountOutput()), false);
+                            this.inventory.decrStackSize(1, this.getRecipe(stackInSlot1).getCountInput());
+                            ElectronaUtils.playSound(world, blockPos, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.brewing_stand.brew")), SoundCategory.BLOCKS);
+                        }
                     }
                 } else {
                     this.currentPurifyingTime = 0;
