@@ -140,7 +140,7 @@ public class EnchantmentFunction {
                 lightning.moveTo(Vector3d.atBottomCenterOf(pos));
                 lightning.setVisualOnly(false);
                 world.addFreshEntity(lightning);
-                if (!player.abilities.instabuild) stack.hurtAndBreak(damageValue, player, (entity) ->
+                if (!player.isCreative()) stack.hurtAndBreak(damageValue, player, (entity) ->
                         entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
             }
         }
@@ -171,7 +171,7 @@ public class EnchantmentFunction {
             }
             int unbreakingLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, stack);
             int damageValue = ((9 - (3 * unbreakingLevel)) + (unbreakingLevel == 0 ? 0 : 3));
-            if (!player.abilities.instabuild) stack.hurtAndBreak(damageValue, player, (entity) ->
+            if (!player.isCreative()) stack.hurtAndBreak(damageValue, player, (entity) ->
                     entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
         }
     }

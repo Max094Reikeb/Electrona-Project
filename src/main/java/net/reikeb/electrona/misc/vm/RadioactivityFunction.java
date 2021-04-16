@@ -64,7 +64,7 @@ public class RadioactivityFunction {
             for (Entity entityiterator : _entfound) {
                 if (!(entityiterator instanceof LivingEntity)) return;
                 if (entityiterator instanceof PlayerEntity) {
-                    if (((PlayerEntity) entityiterator).abilities.instabuild) return;
+                    if (((PlayerEntity) entityiterator).isCreative()) return;
                 }
                 if (!isEntityWearingAntiRadiationSuit((LivingEntity) entity)) {
                     boolean entityWearsLeadArmor = isEntityWearingLeadArmor((LivingEntity) entity);
@@ -82,7 +82,7 @@ public class RadioactivityFunction {
     public static void stepOnRadioactiveBlock(Entity entity) {
         if (!(entity instanceof LivingEntity)) return;
         if (entity instanceof PlayerEntity) {
-            if (((PlayerEntity) entity).abilities.instabuild) return;
+            if (((PlayerEntity) entity).isCreative()) return;
         }
         if (!isEntityWearingAntiRadiationSuit((LivingEntity) entity)) {
             ((LivingEntity) entity).addEffect(new EffectInstance(PotionEffectInit.RADIOACTIVITY.get(), 200, 2));

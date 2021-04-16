@@ -11,9 +11,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.util.text.*;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.*;
 
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.*;
 import net.minecraftforge.common.ToolType;
 
@@ -85,7 +84,7 @@ public class HeatGenerator extends Block {
                     if (!world.isClientSide()) {
                         tileHeatGenerator.getTileData().putDouble("ElectronicPower", electronicPower + 200);
                     }
-                    if (!serverPlayer.abilities.instabuild) {
+                    if (!serverPlayer.isCreative()) {
                         serverPlayer.setItemInHand(Hand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
                         serverPlayer.inventory.setChanged();
                     }
@@ -93,7 +92,7 @@ public class HeatGenerator extends Block {
                     if (!world.isClientSide()) {
                         tileHeatGenerator.getTileData().putDouble("ElectronicPower", electronicPower + (1000 - electronicPower));
                     }
-                    if (!serverPlayer.abilities.instabuild) {
+                    if (!serverPlayer.isCreative()) {
                         serverPlayer.setItemInHand(Hand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
                         serverPlayer.inventory.setChanged();
                     }

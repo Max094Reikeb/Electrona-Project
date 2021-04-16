@@ -65,7 +65,7 @@ public class EmptyCell extends Item {
                 Fluid fluid = ((IBucketPickupHandler) blockstate1.getBlock()).takeLiquid(worldIn, blockpos, blockstate1);
                 if ((fluid != Fluids.WATER) && (fluid != Fluids.LAVA)) return ActionResult.fail(itemstack);
                 worldIn.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 3);
-                if (playerIn.abilities.instabuild) {
+                if (playerIn.isCreative()) {
                     if (!((fluid == Fluids.WATER && playerIn.inventory.contains(new ItemStack(ItemInit.WATER_CELL.get(), 1)))
                             || (fluid == Fluids.LAVA && playerIn.inventory.contains(new ItemStack(ItemInit.LAVA_CELL.get(), 1))))) {
                         playerIn.inventory.add(new ItemStack((fluid == Fluids.WATER ? ItemInit.WATER_CELL.get() : ItemInit.LAVA_CELL.get()), 1));
@@ -91,7 +91,7 @@ public class EmptyCell extends Item {
         if (state.is(Blocks.COMPOSTER)) {
             int level = state.getValue(BlockStateProperties.LEVEL_COMPOSTER);
             if (level >= 4) {
-                if (entity.abilities.instabuild) {
+                if (entity.isCreative()) {
                     if (!entity.inventory.contains(new ItemStack(ItemInit.BIOMASS_CELL.get(), 1))) {
                         entity.inventory.add(new ItemStack(ItemInit.BIOMASS_CELL.get(), 1));
                     }

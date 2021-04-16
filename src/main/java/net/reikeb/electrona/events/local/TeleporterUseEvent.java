@@ -57,7 +57,7 @@ public class TeleporterUseEvent extends Event {
     /**
      * TeleporterUseEvent.Pre is fired before the entity is teleported. Canceling this event will prevent the entity to teleport itself.<br>
      * <br>
-     * This event is {@link net.minecraftforge.eventbus.api.Cancelable}.<br>
+     * This event is {@link Cancelable}.<br>
      * This event does not use {@link HasResult}.<br>
      * This event is fired on the {@link MinecraftForge#EVENT_BUS}.<br>
      */
