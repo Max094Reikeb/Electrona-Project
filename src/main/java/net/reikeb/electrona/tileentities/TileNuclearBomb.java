@@ -85,10 +85,10 @@ public class TileNuclearBomb extends LockableLootTileEntity {
         int returnValue = 0;
         if ((this.inventory.getStackInSlot(0).getItem() == ItemInit.URANIUM_BAR.get())
                 && (this.inventory.getStackInSlot(1).getItem() == ItemInit.URANIUM_DUAL_BAR.get())) {
-            returnValue = 63;
+            returnValue = 100;
         } else if ((this.inventory.getStackInSlot(0).getItem() == ItemInit.URANIUM_DUAL_BAR.get())
                 && (this.inventory.getStackInSlot(1).getItem() == ItemInit.URANIUM_QUAD_BAR.get())) {
-            returnValue = 84;
+            returnValue = 200;
         }
         return returnValue;
     }
