@@ -33,7 +33,8 @@ public class EntityTickEvent {
                     }
                 }
                 if (!flag) {
-                    entity.getPersistentData().putDouble("radioactive", 0);
+                    entity.getPersistentData().putDouble("radioactive",
+                            (entity.getPersistentData().getDouble("radioactive") - 1));
                 }
                 // Leader advancement
                 if (entity instanceof ServerPlayerEntity && RadioactivityFunction.isEntityWearingLeadArmor(entity)) {

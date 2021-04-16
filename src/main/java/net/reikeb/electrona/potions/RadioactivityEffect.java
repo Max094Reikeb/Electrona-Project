@@ -1,16 +1,14 @@
 package net.reikeb.electrona.potions;
 
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierManager;
 import net.minecraft.potion.*;
 import net.minecraft.util.ResourceLocation;
 
-import net.reikeb.electrona.init.PotionEffectInit;
 import net.reikeb.electrona.misc.vm.RadioactivityFunction;
 
-import java.util.Collection;
-
 public class RadioactivityEffect extends Effect {
+
+    private int wait = 0;
 
     public RadioactivityEffect() {
         super(EffectType.HARMFUL, -3355648);
@@ -49,16 +47,10 @@ public class RadioactivityEffect extends Effect {
 
     @Override
     public void applyEffectTick(LivingEntity entity, int amplifier) {
-        RadioactivityFunction.radioactivityEffect(entity, amplifier);
-    }
-
-    @Override
-    public void removeAttributeModifiers(LivingEntity entity, AttributeModifierManager attributeMapIn, int amplifier) {
-        Collection<EffectInstance> effects = entity.getActiveEffects();
-        for (EffectInstance effect : effects) {
-            if (effect.getEffect() == PotionEffectInit.RADIOACTIVITY.get()) {
-                entity.getPersistentData().putDouble("radioactive", 0);
-            }
+        wait++;
+        if (wait >= 20) {
+            RadioactivityFunction.radioactivityEffect(entity, amplifier);
+            wait = 0;
         }
     }
 
