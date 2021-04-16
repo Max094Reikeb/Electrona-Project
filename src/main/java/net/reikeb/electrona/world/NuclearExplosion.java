@@ -1,6 +1,7 @@
 package net.reikeb.electrona.world;
 
 import net.minecraft.block.*;
+import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.*;
 import net.minecraft.tags.*;
@@ -9,6 +10,9 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
 
+import net.minecraftforge.common.MinecraftForge;
+
+import net.reikeb.electrona.events.local.NuclearExplosionEvent;
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.utils.ElectronaUtils;
 
@@ -38,9 +42,11 @@ public class NuclearExplosion {
 
     public NuclearExplosion(World world, int x, int y, int z, int strength) {
         if (!world.isClientSide) {
-            createHole(world, x, y, z, strength);
-            pushAndHurtEntities(world, x, y, z, strength);
-            fixLag(world, x, y, z, strength);
+            if (!MinecraftForge.EVENT_BUS.post(new NuclearExplosionEvent.Start(world, this))) {
+                createHole(world, x, y, z, strength);
+                pushAndHurtEntities(world, x, y, z, strength);
+                fixLag(world, x, y, z, strength);
+            }
         }
     }
 
@@ -110,37 +116,41 @@ public class NuclearExplosion {
     }
 
     private void pushAndHurtEntities(World world, int x, int y, int z, int radius) {
-        int halfradius = radius / 2;
-        int onepointfiveradius = halfradius * 3;
+        int diameter = radius * 2;
+        int onepointfiveradius = (radius / 2) * 3;
         int var3 = MathHelper.floor(x - (double) onepointfiveradius - 1.0D);
         int var4 = MathHelper.floor(x + (double) onepointfiveradius + 1.0D);
         int var5 = MathHelper.floor(y - (double) onepointfiveradius - 1.0D);
         int var28 = MathHelper.floor(y + (double) onepointfiveradius + 1.0D);
         int var7 = MathHelper.floor(z - (double) onepointfiveradius - 1.0D);
         int var29 = MathHelper.floor(z + (double) onepointfiveradius + 1.0D);
-        List var9 = world.getEntities(null, AxisAlignedBB.of(new MutableBoundingBox(var3, var5, var7, var4, var28, var29)));
+        List<Entity> var9 = world.getEntities(null, AxisAlignedBB.of(new MutableBoundingBox(var3, var5, var7, var4, var28, var29)));
+        MinecraftForge.EVENT_BUS.post(new NuclearExplosionEvent.Detonate(world, this, var9));
         Vector3d var30 = new Vector3d(x, y, z);
 
-        for (Object o : var9) {
-            Entity var31 = (Entity) o;
-            double var13 = var31.distanceToSqr(x, y, z) / onepointfiveradius;
-
+        for (Entity entity : var9) {
+            double var13 = entity.distanceToSqr(x, y, z) / onepointfiveradius;
             if (var13 <= 1.0D) {
-                double var15 = var31.getX() - x;
-                double var17 = var31.getY() + var31.getEyeHeight() - y;
-                double var19 = var31.getZ() - z;
+                double var15 = entity.getX() - x;
+                double var17 = entity.getY() + entity.getEyeHeight() - y;
+                double var19 = entity.getZ() - z;
                 double var33 = MathHelper.sqrt(var15 * var15 + var17 * var17 + var19 * var19);
 
                 if (var33 != 0.0D) {
                     var15 /= var33;
                     var17 /= var33;
                     var19 /= var33;
-                    double var32 = Explosion.getSeenPercent(var30, var31);
+                    double var32 = Explosion.getSeenPercent(var30, entity);
                     double var34 = (1.0D - var13) * var32;
-                    if (var31 instanceof FallingBlockEntity) var31.remove();
-                    if (var31 instanceof ItemEntity) var31.remove();
-                    var31.hurt(new DamageSource("nuclear_blast"), (int) ((var34 * var34 + var34) / 2.0D * 8.0D * onepointfiveradius + 1.0D) * 4);
-                    var31.setDeltaMovement(new Vector3d(-var15 * var34 * 8, -var17 * var34 * 8, -var19 * var34 * 8));
+                    if (entity instanceof FallingBlockEntity) entity.remove();
+                    if (entity instanceof ItemEntity) entity.remove();
+                    entity.hurt(new DamageSource("nuclear_blast"), (float) (int) ((var34 * var34 + var34) / 2.0D * 8.0D * (double) diameter + 1.0D) * 8);
+                    double var35 = var34;
+                    if (entity instanceof LivingEntity) {
+                        var35 = ProtectionEnchantment.getExplosionKnockbackAfterDampener((LivingEntity) entity, var34);
+                    }
+
+                    entity.setDeltaMovement(entity.getDeltaMovement().add(var15 * var35 * 8, var17 * var35 * 8, var19 * var35 * 8));
                 }
             }
         }
