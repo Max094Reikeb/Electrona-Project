@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
 
 public class POIFixup {
 
-    private static final Method blockStatesInjector = ObfuscationReflectionHelper.findMethod(PointOfInterestType.class, "registerBlockStates",
+    private static final Method blockStatesInjector = ObfuscationReflectionHelper.findMethod(PointOfInterestType.class, "func_221052_a",
             PointOfInterestType.class);
 
     public static void fixup() {
