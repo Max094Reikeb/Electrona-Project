@@ -35,7 +35,8 @@ public class TileSolarPanelT2 extends TileEntity implements ITickableTileEntity 
         if (world != null) { // Avoid NullPointerExceptions
 
             // We generate the energy (this part is uncommon for all generators)
-            if ((world.canSeeSkyFromBelowWater(blockPos)) && (world.isDay())) {
+            if ((world.canSeeSky(new BlockPos(blockPos.getX(), (blockPos.getY() + 1), blockPos.getZ())))
+                    && (world.isDay())) {
                 if (electronicPower < 1996) {
                     if ((world.getLevelData().isRaining() || world.getLevelData().isThundering())) {
                         this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.2));
