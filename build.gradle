@@ -32,7 +32,7 @@ apply plugin: 'maven-publish'
 
 version = '2.0'
 group = 'net.reikeb.electrona'
-archivesBaseName = 'Electrona-1.16.5-e2.0'
+archivesBaseName = 'Electrona-1.16.5-b2.0'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8) // Mojang ships Java 8 to end users, so your mod should target Java 8.
 
@@ -133,9 +133,9 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.1.0'
 
     // Compile against the JEI API but do not include it at runtime
-    compileOnly fg.deobf("mezz.jei:jei-1.16.5:7.6.4.86:api")
+    compileOnly fg.deobf("mezz.jei:jei-1.16.5:7.6.4.88:api")
     // At runtime, use the full JEI jar
-    runtimeOnly fg.deobf("mezz.jei:jei-1.16.5:7.6.4.86")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.16.5:7.6.4.88")
 
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"
@@ -167,7 +167,8 @@ jar {
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"electronasareus",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            'Signing-Fingerprint'     : project.hasProperty('signSHA1') ? project.findProperty('signSHA1') : 'unsigned'
         ])
     }
 }
@@ -190,3 +191,24 @@ publishing {
         }
     }
 }
+
+// Jar signing
+import net.minecraftforge.gradle.common.task.SignJar
+
+task signJar(type: SignJar, dependsOn: jar) {
+    // Skips if the keyStore property is missing.
+    onlyIf {
+        project.hasProperty('keyStore')
+    }
+    // findProperty allows us to reference the property without it existing.
+    // Using project.propName would cause the script to fail validation if the property did not exist.
+    keyStore = project.findProperty('keyStore')
+    alias = project.findProperty('keyStoreAlias')
+    storePass = project.findProperty('keyStorePass')
+    keyPass = project.findProperty('keyStoreKeyPass')
+    inputFile = jar.archivePath
+    outputFile = jar.archivePath
+}
+
+// Runs the signJar task automatically when build is run.
+build.dependsOn signJar
