@@ -8,8 +8,6 @@ import net.reikeb.electrona.misc.vm.RadioactivityFunction;
 
 public class RadioactivityEffect extends Effect {
 
-    private int wait = 0;
-
     public RadioactivityEffect() {
         super(EffectType.HARMFUL, -3355648);
         ResourceLocation potionIcon = new ResourceLocation("electrona:textures/mob_effect/radioactivity.png");
@@ -47,11 +45,7 @@ public class RadioactivityEffect extends Effect {
 
     @Override
     public void applyEffectTick(LivingEntity entity, int amplifier) {
-        wait++;
-        if (wait >= 20) {
-            RadioactivityFunction.radioactivityEffect(entity, amplifier);
-            wait = 0;
-        }
+        RadioactivityFunction.radioactivityEffect(entity, amplifier);
     }
 
     @Override

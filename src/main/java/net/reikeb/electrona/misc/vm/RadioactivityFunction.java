@@ -96,8 +96,8 @@ public class RadioactivityFunction {
      * @param amplifier The amplifier of the effect
      */
     public static void radioactivityEffect(LivingEntity entity, int amplifier) {
-        double radioactivity = entity.getPersistentData().getDouble("radioactive");
-        entity.getPersistentData().putDouble("radioactive", (radioactivity + 1));
+        int radioactivity = entity.getPersistentData().getInt("radioactive");
+        entity.getPersistentData().putInt("radioactive", (radioactivity + 1));
         if (radioactivity > (1200 - (60 * amplifier))) {
             entity.addEffect(new EffectInstance(Effects.CONFUSION, 1400, 2));
             entity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 1400, 2));

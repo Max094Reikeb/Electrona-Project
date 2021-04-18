@@ -25,16 +25,13 @@ public class EntityTickEvent {
             LivingEntity entity = event.player;
             if (entity != null) {
                 // Reset radioactivity effect
-                boolean flag = false;
-                Collection<EffectInstance> effects = entity.getActiveEffects();
-                for (EffectInstance effect : effects) {
-                    if (effect.getEffect() == PotionEffectInit.RADIOACTIVITY.get()) {
-                        flag = true;
-                    }
-                }
-                if (!flag) {
-                    entity.getPersistentData().putDouble("radioactive",
-                            (entity.getPersistentData().getDouble("radioactive") - 1));
+                int radio = entity.getPersistentData().getInt("radioactive");
+                int nextRad = entity.getPersistentData().getInt("nextRad");
+                if (radio == nextRad) {
+                    entity.getPersistentData().putInt("radioactive", 0);
+                    entity.getPersistentData().putInt("nextRad", 0);
+                } else {
+                    entity.getPersistentData().putInt("nextRad", radio);
                 }
                 // Leader advancement
                 if (entity instanceof ServerPlayerEntity && RadioactivityFunction.isEntityWearingLeadArmor(entity)) {
