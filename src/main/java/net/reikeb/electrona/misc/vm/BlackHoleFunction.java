@@ -95,7 +95,7 @@ public class BlackHoleFunction {
         double particleAmount = 20;
         while (xRadius < 5) {
             particleAmount = xRadius * 20;
-            for (int i = 0; i < (int) ((particleAmount)); i++) {
+            for (int i = 0; i < (int) particleAmount; i++) {
                 double tempX = Math.cos((((Math.PI * 2) / (particleAmount)) * (loop)));
                 double tempZ = Math.sin((((Math.PI * 2) / (particleAmount)) * (loop)));
                 ((ServerWorld) world).sendParticles(ParticleInit.DARK_MATTER.get(), ((pos.getX() + 0.5) + ((tempX) * (xRadius))), pos.getY(),

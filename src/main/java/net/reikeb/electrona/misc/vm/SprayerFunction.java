@@ -44,7 +44,6 @@ public class SprayerFunction {
         tileSprayer.getTileData().putInt("radius", 5 + (boostCount * 3));
         if ((!(inv.getStackInSlot(0).isEmpty())) && (electronicPower >= 200)) {
             double radiusEffect = tileSprayer.getTileData().getInt("radius");
-            boolean flag = false;
             {
                 List<Entity> _entfound = world.getEntitiesOfClass(Entity.class,
                         new AxisAlignedBB(x - radiusEffect, y - radiusEffect, z - radiusEffect,
@@ -64,17 +63,16 @@ public class SprayerFunction {
                                     ((LivingEntity) entityiterator).addEffect(pairiterator.getFirst());
                                 }
                             }
-                            flag = true;
+                            inv.decrStackSize(0, 1);
                         } else if (inv.getStackInSlot(0).getItem() instanceof PotionItem) {
                             tileSprayer.getTileData().putDouble("ElectronicPower", (electronicPower - 200));
                             for (EffectInstance effectiterator : PotionUtils.getMobEffects(inv.getStackInSlot(0))) {
                                 ((LivingEntity) entityiterator).addEffect(new EffectInstance(effectiterator));
                             }
-                            flag = true;
+                            inv.decrStackSize(0, 1);
                         }
                     }
                 }
-                if (flag) inv.decrStackSize(0, 1);
             }
         }
     }
@@ -92,7 +90,7 @@ public class SprayerFunction {
         double loop = 0;
         double zRadius = tileSprayer.getTileData().getInt("radius");
         double particleAmount = (xRadius) * 4;
-        while (((loop) < (particleAmount))) {
+        while (loop < particleAmount) {
             if (world instanceof ServerWorld) {
                 ((ServerWorld) world).sendParticles(ParticleTypes.CLOUD, (pos.getX() + (Math.cos((((Math.PI * 2) / (particleAmount)) * (loop))) * (xRadius))),
                         pos.getY(), (pos.getZ() + (Math.sin((((Math.PI * 2) / (particleAmount)) * (loop))) * (zRadius))), 3, 0, 0, 0, 0.05);
