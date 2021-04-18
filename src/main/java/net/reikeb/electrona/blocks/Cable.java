@@ -2,6 +2,7 @@ package net.reikeb.electrona.blocks;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
@@ -9,7 +10,10 @@ import net.minecraft.tags.*;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.*;
 import net.minecraft.world.*;
+
+import net.minecraftforge.api.distmarker.*;
 
 import net.reikeb.electrona.tileentities.TileCable;
 
@@ -20,6 +24,13 @@ public class Cable extends AbstractCable {
 
     public Cable() {
         super("cable", Material.CLOTH_DECORATION, 1f, 6f, SoundType.WOOL, 4);
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void appendHoverText(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
+        super.appendHoverText(itemstack, world, list, flag);
+        list.add(new TranslationTextComponent("block.electrona.cable.desc"));
     }
 
     @Override
