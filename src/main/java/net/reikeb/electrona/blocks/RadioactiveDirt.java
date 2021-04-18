@@ -18,7 +18,7 @@ public class RadioactiveDirt extends Block {
 
     public RadioactiveDirt() {
         super(Properties.of(Material.DIRT)
-                .sound(SoundType.GRASS)
+                .sound(SoundType.GRAVEL)
                 .strength(5f, 2f)
                 .lightLevel(s -> 0)
                 .harvestLevel(0)
