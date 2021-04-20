@@ -8,7 +8,6 @@ import net.minecraft.entity.player.*;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.*;
 import net.minecraft.loot.LootContext;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.*;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -113,15 +112,7 @@ public class Teleporter extends AbstractWaterLoggableBlock {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
-        for (int l = 0; l < 4; ++l) {
-            double d0 = (pos.getX() + random.nextFloat());
-            double d1 = (pos.getY() + random.nextFloat());
-            double d2 = (pos.getZ() + random.nextFloat());
-            double d3 = (random.nextFloat() - 0.5D) * 0.5D;
-            double d4 = (random.nextFloat() - 0.5D) * 0.5D;
-            double d5 = (random.nextFloat() - 0.5D) * 0.5D;
-            world.addParticle(ParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5);
-        }
+        TeleporterFunction.teleportParticles(world, pos, 4);
     }
 
     @Override

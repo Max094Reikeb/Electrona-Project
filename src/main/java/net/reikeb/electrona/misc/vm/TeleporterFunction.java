@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.*;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -20,6 +21,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.reikeb.electrona.events.local.TeleporterUseEvent;
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.tileentities.*;
+import net.reikeb.electrona.utils.ElectronaUtils;
 
 import java.util.*;
 
@@ -146,27 +148,19 @@ public class TeleporterFunction {
         MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(world, teleportWorld, pos, teleportPos, entity));
         if (!world.isClientSide()) {
             tileEntity.getTileData().putDouble("ElectronicPower", (electronicPower - 1000));
-            world.sendBlockUpdated(pos, state, state, 3);
-            world.playSound(null, pos,
-                    Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"))),
-                    SoundCategory.NEUTRAL, (float) 5, (float) 5);
-            world.playSound(null, new BlockPos((int) (teleportXCo - 0.5), (int) teleportYCo, (int) (teleportZCo - 0.5)),
-                    Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"))),
-                    SoundCategory.NEUTRAL, (float) 5, (float) 5);
-        } else {
-            world.playLocalSound(pos.getX(), pos.getY(), pos.getZ(),
-                    Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"))),
-                    SoundCategory.NEUTRAL, (float) 5, (float) 5, false);
-            world.playLocalSound((teleportXCo - 0.5), teleportYCo, (teleportZCo - 0.5),
-                    Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"))),
-                    SoundCategory.NEUTRAL, (float) 5, (float) 5, false);
-        }
-        if (autoDeletion && !world.isClientSide()) {
-            tileEntity.getTileData().putDouble("teleportX", 0);
-            tileEntity.getTileData().putDouble("teleportY", 0);
-            tileEntity.getTileData().putDouble("teleportZ", 0);
+            if (autoDeletion) {
+                tileEntity.getTileData().putDouble("teleportX", 0);
+                tileEntity.getTileData().putDouble("teleportY", 0);
+                tileEntity.getTileData().putDouble("teleportZ", 0);
+            }
             world.sendBlockUpdated(pos, state, state, 3);
         }
+        ElectronaUtils.playSound(world, pos, ForgeRegistries.SOUND_EVENTS
+                .getValue(new ResourceLocation("entity.enderman.teleport")), SoundCategory.NEUTRAL);
+        teleportParticles(world, pos, 300);
+        ElectronaUtils.playSound(world, teleportPos, ForgeRegistries.SOUND_EVENTS
+                .getValue(new ResourceLocation("entity.enderman.teleport")), SoundCategory.NEUTRAL);
+        teleportParticles(world, teleportPos, 300);
     }
 
     /**
@@ -218,22 +212,13 @@ public class TeleporterFunction {
                         }
                     }
                     MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(worldIn, worldIn, pos, teleportPos, playerIn));
-                    stack.getOrCreateTag().putDouble("ElectronicPower", (electronicPower - 500));
-                    if (!worldIn.isClientSide()) {
-                        worldIn.playSound(null, pos,
-                                Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"))),
-                                SoundCategory.NEUTRAL, (float) 5, (float) 5);
-                        worldIn.playSound(null, new BlockPos((int) (teleportXCo - 0.5), (int) teleportYCo, (int) (teleportZCo - 0.5)),
-                                Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"))),
-                                SoundCategory.NEUTRAL, (float) 5, (float) 5);
-                    } else {
-                        worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(),
-                                Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"))),
-                                SoundCategory.NEUTRAL, (float) 5, (float) 5, false);
-                        worldIn.playLocalSound((teleportXCo - 0.5), teleportYCo, (teleportZCo - 0.5),
-                                Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"))),
-                                SoundCategory.NEUTRAL, (float) 5, (float) 5, false);
-                    }
+                    if (!playerIn.isCreative()) stack.getOrCreateTag().putDouble("ElectronicPower", (electronicPower - 500));
+                    ElectronaUtils.playSound(worldIn, pos, ForgeRegistries.SOUND_EVENTS
+                            .getValue(new ResourceLocation("entity.enderman.teleport")), SoundCategory.NEUTRAL);
+                    teleportParticles(worldIn, pos, 300);
+                    ElectronaUtils.playSound(worldIn, teleportPos, ForgeRegistries.SOUND_EVENTS
+                            .getValue(new ResourceLocation("entity.enderman.teleport")), SoundCategory.NEUTRAL);
+                    teleportParticles(worldIn, teleportPos, 300);
                     return true;
                 }
             } else {
@@ -247,5 +232,24 @@ public class TeleporterFunction {
             }
         }
         return false;
+    }
+
+    /**
+     * Method that handles particle spawning
+     *
+     * @param world  The world of the teleport
+     * @param pos    The position where to spawn particles
+     * @param number The number of particles to spawn
+     */
+    public static void teleportParticles(World world, BlockPos pos, int number) {
+        for (int l = 0; l < number; l++) {
+            double d0 = (pos.getX() + world.random.nextFloat());
+            double d1 = (pos.getY() + world.random.nextFloat());
+            double d2 = (pos.getZ() + world.random.nextFloat());
+            double d3 = (world.random.nextFloat() - 0.2D) * 0.5D;
+            double d4 = (world.random.nextFloat() - 0.2D) * 0.5D;
+            double d5 = (world.random.nextFloat() - 0.2D) * 0.5D;
+            world.addParticle(ParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5);
+        }
     }
 }

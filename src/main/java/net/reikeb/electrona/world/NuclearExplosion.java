@@ -105,6 +105,8 @@ public class NuclearExplosion {
                                     world.setBlockAndUpdate(new BlockPos(xx, yy, zz), Blocks.FIRE.defaultBlockState());
                                 } else if ((block == Blocks.GRASS_BLOCK) || (block == Blocks.DIRT)) {
                                     world.setBlockAndUpdate(new BlockPos(xx, yy, zz), BlockInit.RADIOACTIVE_DIRT.get().defaultBlockState());
+                                } else if (block == Blocks.GLASS_PANE) {
+                                    world.setBlockAndUpdate(new BlockPos(xx, yy, zz), Blocks.AIR.defaultBlockState());
                                 }
                             }
                         }
