@@ -22,7 +22,7 @@ import net.minecraftforge.items.*;
 import net.reikeb.electrona.containers.BiomassGeneratorContainer;
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
-import net.reikeb.electrona.utils.*;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import static net.reikeb.electrona.init.TileEntityInit.*;
 
@@ -99,7 +99,8 @@ public class TileBiomassGenerator extends LockableLootTileEntity implements ITic
                         this.getTileData().putDouble("ElectronicPower", 3000);
                     }
                     this.inventory.decrStackSize(0, 1);
-                    ElectronaUtils.playSound(world, this.getBlockPos(), SoundsInit.BIOMASS_GENERATOR_ACTIVE.get(), SoundCategory.BLOCKS);
+                    world.playSound(null, blockPos, SoundsInit.BIOMASS_GENERATOR_ACTIVE.get(),
+                            SoundCategory.BLOCKS, 0.6F, 1.0F);
                     wait = 0;
                 }
             } else {

@@ -23,7 +23,7 @@ import net.reikeb.electrona.blocks.NuclearGeneratorController;
 import net.reikeb.electrona.containers.NuclearGeneratorControllerContainer;
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.misc.vm.*;
-import net.reikeb.electrona.utils.*;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import static net.reikeb.electrona.init.TileEntityInit.*;
 
@@ -141,7 +141,8 @@ public class TileNuclearGeneratorController extends LockableLootTileEntity imple
         }
 
         if ((this.getTileData().getBoolean("alert")) && (this.level.getGameTime() % 20 == 0)) {
-            ElectronaUtils.playSound(world, this.getBlockPos(), SoundsInit.NUCLEAR_GENERATOR_CONTROLLER_ALERT.get(), SoundCategory.BLOCKS);
+            world.playSound(null, blockPos, SoundsInit.NUCLEAR_GENERATOR_CONTROLLER_ALERT.get(),
+                    SoundCategory.BLOCKS, 0.6F, 1.0F);
         }
 
         // Transfer energy

@@ -1,9 +1,7 @@
 package net.reikeb.electrona.utils;
 
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.*;
-import net.minecraft.world.World;
 
 public class ElectronaUtils {
 
@@ -26,21 +24,5 @@ public class ElectronaUtils {
         }
 
         return buffer[0];
-    }
-
-    /**
-     * Method that plays a sound on both client and server side
-     *
-     * @param world The world
-     * @param pos   The position of the entity/block
-     * @param sound The sound
-     */
-    public static void playSound(World world, BlockPos pos, SoundEvent sound, SoundCategory category) {
-        if (world.isClientSide) {
-            world.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), sound,
-                    category, 1F, 1F, false);
-        } else {
-            world.playSound(null, pos, sound, category, 1F, 1F);
-        }
     }
 }

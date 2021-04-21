@@ -27,7 +27,7 @@ import net.reikeb.electrona.containers.CompressorContainer;
 import net.reikeb.electrona.events.local.CompressionEvent;
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.recipes.CompressorRecipe;
-import net.reikeb.electrona.utils.*;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import static net.reikeb.electrona.init.TileEntityInit.*;
 
@@ -119,7 +119,8 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
                             this.inventory.insertItem(2, output.copy(), false);
                             this.inventory.decrStackSize(0, 1);
                             this.inventory.decrStackSize(1, 1);
-                            ElectronaUtils.playSound(world, this.getBlockPos(), SoundsInit.COMPRESSOR_END_COMPRESSION.get(), SoundCategory.BLOCKS);
+                            world.playSound(null, blockPos, SoundsInit.COMPRESSOR_END_COMPRESSION.get(),
+                                    SoundCategory.BLOCKS, 0.6F, 1.0F);
                         }
                     }
                     this.getTileData().putDouble("ElectronicPower", electronicPower);

@@ -14,7 +14,6 @@ import net.minecraftforge.common.MinecraftForge;
 
 import net.reikeb.electrona.events.local.NuclearExplosionEvent;
 import net.reikeb.electrona.init.*;
-import net.reikeb.electrona.utils.ElectronaUtils;
 
 import java.util.*;
 
@@ -114,7 +113,8 @@ public class NuclearExplosion {
                 }
             }
         }
-        ElectronaUtils.playSound(world, new BlockPos(x, y, z), SoundsInit.NUCLEAR_EXPLOSION.get(), SoundCategory.WEATHER);
+        world.playSound(null, new BlockPos(x, y, z), SoundsInit.NUCLEAR_EXPLOSION.get(),
+                SoundCategory.WEATHER, 0.6F, 1.0F);
     }
 
     private void pushAndHurtEntities(World world, int x, int y, int z, int radius) {

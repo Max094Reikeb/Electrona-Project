@@ -31,7 +31,7 @@ import net.reikeb.electrona.events.local.PurificationEvent;
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.misc.vm.FluidFunction;
 import net.reikeb.electrona.recipes.PurificatorRecipe;
-import net.reikeb.electrona.utils.*;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import static net.reikeb.electrona.init.TileEntityInit.*;
 
@@ -122,14 +122,17 @@ public class TilePurificator extends LockableLootTileEntity implements ITickable
                     if (this.currentPurifyingTime < (this.purifyingTime * 20)) {
                         this.currentPurifyingTime += 1;
                         FluidFunction.drainWater(this, (int) (waterPerSecond * 0.05));
-                        ElectronaUtils.playSound(world, blockPos, SoundsInit.PURIFICATOR_PURIFICATION.get(), SoundCategory.BLOCKS);
+                        world.playSound(null, blockPos, SoundsInit.PURIFICATOR_PURIFICATION.get(),
+                                SoundCategory.BLOCKS, 0.6F, 1.0F);
 
                     } else {
                         if (!MinecraftForge.EVENT_BUS.post(new PurificationEvent(world, blockPos, stackInSlot1, new ItemStack(output.copy().getItem(), this.getRecipe(stackInSlot1).getCountOutput()), this.purifyingTime, this.waterRequired))) {
                             this.currentPurifyingTime = 0;
                             this.inventory.insertItem(2, new ItemStack(output.copy().getItem(), this.getRecipe(stackInSlot1).getCountOutput()), false);
                             this.inventory.decrStackSize(1, this.getRecipe(stackInSlot1).getCountInput());
-                            ElectronaUtils.playSound(world, blockPos, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.brewing_stand.brew")), SoundCategory.BLOCKS);
+                            world.playSound(null, blockPos, ForgeRegistries.SOUND_EVENTS
+                                            .getValue(new ResourceLocation("block.brewing_stand.brew")),
+                                    SoundCategory.BLOCKS, 0.6F, 1.0F);
                         }
                     }
                 } else {

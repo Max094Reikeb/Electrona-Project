@@ -21,7 +21,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.reikeb.electrona.events.local.TeleporterUseEvent;
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.tileentities.*;
-import net.reikeb.electrona.utils.ElectronaUtils;
 
 import java.util.*;
 
@@ -155,11 +154,13 @@ public class TeleporterFunction {
             }
             world.sendBlockUpdated(pos, state, state, 3);
         }
-        ElectronaUtils.playSound(world, pos, ForgeRegistries.SOUND_EVENTS
-                .getValue(new ResourceLocation("entity.enderman.teleport")), SoundCategory.NEUTRAL);
+        world.playSound(null, pos, ForgeRegistries.SOUND_EVENTS
+                        .getValue(new ResourceLocation("entity.enderman.teleport")), SoundCategory.NEUTRAL,
+                0.6F, 1.0F);
         teleportParticles(world, pos, 300);
-        ElectronaUtils.playSound(world, teleportPos, ForgeRegistries.SOUND_EVENTS
-                .getValue(new ResourceLocation("entity.enderman.teleport")), SoundCategory.NEUTRAL);
+        world.playSound(null, teleportPos, ForgeRegistries.SOUND_EVENTS
+                        .getValue(new ResourceLocation("entity.enderman.teleport")), SoundCategory.NEUTRAL,
+                0.6F, 1.0F);
         teleportParticles(world, teleportPos, 300);
     }
 
@@ -212,12 +213,15 @@ public class TeleporterFunction {
                         }
                     }
                     MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(worldIn, worldIn, pos, teleportPos, playerIn));
-                    if (!playerIn.isCreative()) stack.getOrCreateTag().putDouble("ElectronicPower", (electronicPower - 500));
-                    ElectronaUtils.playSound(worldIn, pos, ForgeRegistries.SOUND_EVENTS
-                            .getValue(new ResourceLocation("entity.enderman.teleport")), SoundCategory.NEUTRAL);
+                    if (!playerIn.isCreative())
+                        stack.getOrCreateTag().putDouble("ElectronicPower", (electronicPower - 500));
+                    worldIn.playSound(null, pos, ForgeRegistries.SOUND_EVENTS
+                                    .getValue(new ResourceLocation("entity.enderman.teleport")), SoundCategory.NEUTRAL,
+                            0.6F, 1.0F);
                     teleportParticles(worldIn, pos, 300);
-                    ElectronaUtils.playSound(worldIn, teleportPos, ForgeRegistries.SOUND_EVENTS
-                            .getValue(new ResourceLocation("entity.enderman.teleport")), SoundCategory.NEUTRAL);
+                    worldIn.playSound(null, teleportPos, ForgeRegistries.SOUND_EVENTS
+                                    .getValue(new ResourceLocation("entity.enderman.teleport")), SoundCategory.NEUTRAL,
+                            0.6F, 1.0F);
                     teleportParticles(worldIn, teleportPos, 300);
                     return true;
                 }
