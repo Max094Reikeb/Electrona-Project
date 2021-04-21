@@ -209,5 +209,6 @@
   "subtitles.block.compressor.compression_end": "Compression",
   "subtitles.block.nuclear_generator_controller.alert": "Nuclear Generator Controller Alert",
   "subtitles.block.purificator.purification": "Purification",
+  "subtitles.block.water_pump.pump": "Pumping",
   "subtitles.common.nuclear_explosion": "Nuclear Explosion"
 }

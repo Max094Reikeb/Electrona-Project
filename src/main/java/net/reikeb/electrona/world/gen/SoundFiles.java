@@ -37,6 +37,7 @@ public class SoundFiles implements IDataProvider {
         this.addSound(SoundsInit.NUCLEAR_EXPLOSION.get(), "electrona/common.nuclear_explosion");
         this.addSound(SoundsInit.NUCLEAR_GENERATOR_CONTROLLER_ALERT.get(), "electrona/block.nuclear_generator_controller.alert");
         this.addSound(SoundsInit.PURIFICATOR_PURIFICATION.get(), "electrona/block.purificator.purification");
+        this.addSound(SoundsInit.WATER_PUMPING.get(), "electrona/block.water_pump.pump");
 
         //Save the json object to a file after we have added everything
         IDataProvider.save(GSON, cache, this.root, outputPath);

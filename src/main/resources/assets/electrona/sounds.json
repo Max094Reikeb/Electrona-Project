@@ -19,16 +19,6 @@
       }
     ]
   },
-  "common.nuclear_explosion": {
-    "category": "entity",
-    "subtitle": "subtitles.common.nuclear_explosion",
-    "sounds": [
-      {
-        "name": "electrona:common.nuclear_explosion",
-        "stream": false
-      }
-    ]
-  },
   "block.nuclear_generator_controller.alert": {
     "category": "block",
     "subtitle": "subtitles.block.nuclear_generator_controller.alert",
@@ -45,6 +35,26 @@
     "sounds": [
       {
         "name": "electrona:block.purificator.purification",
+        "stream": false
+      }
+    ]
+  },
+  "block.water_pump.pump": {
+    "category": "block",
+    "subtitle": "subtitles.block.water_pump.pump",
+    "sounds": [
+      {
+        "name": "electrona:block.water_pump.pump",
+        "stream": false
+      }
+    ]
+  },
+  "common.nuclear_explosion": {
+    "category": "entity",
+    "subtitle": "subtitles.common.nuclear_explosion",
+    "sounds": [
+      {
+        "name": "electrona:common.nuclear_explosion",
         "stream": false
       }
     ]

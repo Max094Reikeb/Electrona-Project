@@ -17,7 +17,6 @@ import net.minecraft.world.World;
 
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.*;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.*;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.*;
@@ -111,21 +110,25 @@ public class TileWaterPump extends LockableLootTileEntity implements ITickableTi
                     if (electronicPower >= 20
                             && Blocks.WATER == world.getBlockState(posUnder).getBlock()) {
                         if (tankCapacity.get() >= (waterLevel.get() + 100)) {
-                            fillWater(100);
+                            FluidFunction.fillWater(this, 100);
                             electronicPower -= 20;
                             world.setBlockAndUpdate(posUnder, Blocks.AIR.defaultBlockState());
+                            world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundCategory.BLOCKS, 0.6F, 1.0F);
                         } else if (tankCapacity.get() >= (waterLevel.get() + 50)) {
-                            fillWater(50);
+                            FluidFunction.fillWater(this, 50);
                             electronicPower -= 10;
                             world.setBlockAndUpdate(posUnder, Blocks.AIR.defaultBlockState());
+                            world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundCategory.BLOCKS, 0.6F, 1.0F);
                         } else if (tankCapacity.get() >= (waterLevel.get() + 10)) {
-                            fillWater(10);
+                            FluidFunction.fillWater(this, 10);
                             electronicPower -= 2;
                             world.setBlockAndUpdate(posUnder, Blocks.AIR.defaultBlockState());
+                            world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundCategory.BLOCKS, 0.6F, 1.0F);
                         } else if (tankCapacity.get() > waterLevel.get()) {
-                            fillWater(1);
+                            FluidFunction.fillWater(this, 1);
                             electronicPower -= 0.2;
                             world.setBlockAndUpdate(posUnder, Blocks.AIR.defaultBlockState());
+                            world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundCategory.BLOCKS, 0.6F, 1.0F);
                         } else {
                             isOn = false;
                         }
@@ -145,7 +148,7 @@ public class TileWaterPump extends LockableLootTileEntity implements ITickableTi
                     && (waterLevel.get() >= 1000)) {
                 this.inventory.decrStackSize(0, 1);
                 this.inventory.insertItem(0, new ItemStack(Items.WATER_BUCKET, 1), false);
-                drainWater(1000);
+                FluidFunction.drainWater(this, 1000);
             }
 
             // Output slot - Handling slots
@@ -158,16 +161,6 @@ public class TileWaterPump extends LockableLootTileEntity implements ITickableTi
             world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(),
                     Constants.BlockFlags.NOTIFY_NEIGHBORS);
         }
-    }
-
-    public void drainWater(int amount) {
-        this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
-                .ifPresent(cap -> cap.drain(amount, IFluidHandler.FluidAction.EXECUTE));
-    }
-
-    public void fillWater(int amount) {
-        this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
-                .ifPresent(cap -> cap.fill(new FluidStack(Fluids.WATER, amount), IFluidHandler.FluidAction.EXECUTE));
     }
 
     public final IItemHandlerModifiable getInventory() {

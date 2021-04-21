@@ -27,6 +27,9 @@ public class SoundsInit {
     public static final RegistryObject<SoundEvent> PURIFICATOR_PURIFICATION = SOUNDS
             .register("block.purificator.purification", () -> setupSound("block.purificator.purification"));
 
+    public static final RegistryObject<SoundEvent> WATER_PUMPING = SOUNDS
+            .register("block.water_pump.pump", () -> setupSound("block.water_pump.pump"));
+
     private static SoundEvent setupSound(String soundName) {
         return new SoundEvent(new ResourceLocation(Electrona.MODID, soundName));
     }

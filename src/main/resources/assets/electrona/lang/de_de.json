@@ -209,5 +209,6 @@
   "subtitles.block.compressor.compression_end": "Komprimierung",
   "subtitles.block.nuclear_generator_controller.alert": "Alarm für die Steuerung des Nukleargenerators",
   "subtitles.block.purificator.purification": "Reinigung",
+  "subtitles.block.water_pump.pump": "",
   "subtitles.common.nuclear_explosion": "Atomexplosion"
 }
