@@ -12,5 +12,6 @@ public class ParticleInit {
     public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES,
             Electrona.MODID);
 
-    public static final RegistryObject<BasicParticleType> DARK_MATTER = PARTICLES.register("dark_matter_particle", () -> new BasicParticleType(false));
+    public static final RegistryObject<BasicParticleType> DARK_MATTER = PARTICLES.register("dark_matter", () -> new BasicParticleType(false));
+    public static final RegistryObject<BasicParticleType> RADIOACTIVE_FALLOUT = PARTICLES.register("radioactive_fallout", () -> new BasicParticleType(false));
 }

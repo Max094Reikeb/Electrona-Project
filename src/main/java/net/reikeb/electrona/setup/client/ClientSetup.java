@@ -13,7 +13,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.guis.*;
 import net.reikeb.electrona.init.*;
-import net.reikeb.electrona.particles.DarkMatter;
+import net.reikeb.electrona.particles.*;
 
 import static net.reikeb.electrona.init.ContainerInit.*;
 
@@ -51,5 +51,6 @@ public class ClientSetup {
     @SubscribeEvent
     public static void registerParticles(ParticleFactoryRegisterEvent event) {
         Minecraft.getInstance().particleEngine.register(ParticleInit.DARK_MATTER.get(), DarkMatter.DarkMatterParticleFactory::new);
+        Minecraft.getInstance().particleEngine.register(ParticleInit.RADIOACTIVE_FALLOUT.get(), RadioactiveFallout.RadioactiveFalloutFactory::new);
     }
 }
