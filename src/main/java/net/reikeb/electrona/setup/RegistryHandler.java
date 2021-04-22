@@ -7,6 +7,7 @@ import net.reikeb.electrona.init.*;
 public class RegistryHandler {
 
     public static void init() {
+        BiomeInit.BIOMES.register(FMLJavaModLoadingContext.get().getModEventBus());
         BlockInit.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ContainerInit.CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
         PotionEffectInit.EFFECTS.register(FMLJavaModLoadingContext.get().getModEventBus());

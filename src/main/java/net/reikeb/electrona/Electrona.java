@@ -4,17 +4,24 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.*;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.FlatChunkGenerator;
+import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.world.gen.settings.*;
+import net.minecraft.world.server.ServerWorld;
 
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.*;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.event.world.*;
+import net.minecraftforge.eventbus.api.*;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.*;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.*;
 
 import net.reikeb.electrona.advancements.TTriggers;
 import net.reikeb.electrona.events.entity.PlayerDiesEvent;
@@ -26,15 +33,17 @@ import net.reikeb.electrona.setup.client.ClientSetup;
 import net.reikeb.electrona.setup.client.render.MechanicWingsLayer;
 import net.reikeb.electrona.villages.*;
 import net.reikeb.electrona.world.Gamerules;
-import net.reikeb.electrona.world.gen.ConfiguredFeatures;
+import net.reikeb.electrona.world.gen.*;
 
 import org.apache.logging.log4j.*;
+
+import java.util.*;
 
 @Mod(Electrona.MODID)
 public class Electrona {
 
     // Directly reference a log4j logger.
-    private static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger();
 
     // Register the modid
     public static final String MODID = "electrona";
@@ -56,13 +65,55 @@ public class Electrona {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientLoad);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, this::registerRecipeSerializers);
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Structure.class, this::onRegisterStructures);
         registerAllDeferredRegistryObjects(FMLJavaModLoadingContext.get().getModEventBus());
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(new PlayerDiesEvent());
         MinecraftForge.EVENT_BUS.register(new Gamerules());
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, this::addDimensionalSpacing);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, this::biomeModification);
         MinecraftForge.EVENT_BUS.addListener(this::setupEngineerHouses);
         MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    public void onRegisterStructures(final RegistryEvent.Register<Structure<?>> event) {
+        Structures.registerStructures(event);
+        ConfiguredStructures.registerConfiguredStructures();
+    }
+
+    /**
+     * This is the event you will use to add anything to any biome.
+     * This includes spawns, changing the biome's looks, messing with its surfacebuilders,
+     * adding carvers, spawning new features... etc
+     * <p>
+     * Here, we will use this to add our structure to all biomes.
+     */
+    public void biomeModification(final BiomeLoadingEvent event) {
+        if (event.getName().equals(new ResourceLocation("electrona", "nuclear"))) {
+            event.getGeneration().getStructures().add(() -> ConfiguredStructures.CONFIGURED_RUINS);
+        }
+    }
+
+    public void addDimensionalSpacing(final WorldEvent.Load event) {
+        if (event.getWorld() instanceof ServerWorld) {
+            ServerWorld serverWorld = (ServerWorld) event.getWorld();
+
+            if (serverWorld.getChunkSource().generator instanceof FlatChunkGenerator &&
+                    serverWorld.dimension().equals(World.OVERWORLD)) {
+                return;
+            }
+
+            Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(serverWorld.getChunkSource().generator.getSettings().structureConfig());
+            tempMap.put(Structures.RUINS, DimensionStructuresSettings.DEFAULTS.get(Structures.RUINS));
+            serverWorld.getChunkSource().generator.getSettings().structureConfig = tempMap;
+        }
+    }
+
+    public static <T extends IForgeRegistryEntry<T>> T register(IForgeRegistry<T> registry, T entry, String registryKey) {
+        entry.setRegistryName(new ResourceLocation(MODID, registryKey));
+        registry.register(entry);
+        return entry;
     }
 
     private void registerAllDeferredRegistryObjects(IEventBus modBus) {
@@ -80,6 +131,12 @@ public class Electrona {
     public void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(ConfiguredFeatures::registerConfiguredFeatures);
         POIFixup.fixup();
+
+        /**
+         * Register biomes
+         */
+        BiomeManager.addBiome(BiomeManager.BiomeType.DESERT, new BiomeManager.BiomeEntry(RegistryKey.create(Registry.BIOME_REGISTRY,
+                new ResourceLocation("electrona", "nuclear")), 5));
 
         /**
          * Custom potion recipes
