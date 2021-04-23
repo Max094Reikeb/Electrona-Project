@@ -169,4 +169,7 @@ public class ItemInit {
             new BlockItem(BlockInit.NUCLEAR_BOMB.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
 
     public static final RegistryObject<Item> RADIOACTIVE_DIRT_ITEM = ITEMS.register("radioactive_dirt", RadioactiveDirtItem::new);
+
+    public static final RegistryObject<Item> CHARDWOOD_LOG_ITEM = ITEMS.register("chardwood_log", () ->
+            new BlockItem(BlockInit.CHARDWOOD_LOG.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
 }

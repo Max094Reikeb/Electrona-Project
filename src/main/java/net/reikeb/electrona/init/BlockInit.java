@@ -56,4 +56,5 @@ public class BlockInit {
     public static final RegistryObject<Hole> HOLE = BLOCKS.register("hole", Hole::new);
     public static final RegistryObject<NuclearBomb> NUCLEAR_BOMB = BLOCKS.register("nuclear_bomb", NuclearBomb::new);
     public static final RegistryObject<RadioactiveDirt> RADIOACTIVE_DIRT = BLOCKS.register("radioactive_dirt", RadioactiveDirt::new);
+    public static final RegistryObject<ChardwoodLog> CHARDWOOD_LOG = BLOCKS.register("chardwood_log", ChardwoodLog::new);
 }
