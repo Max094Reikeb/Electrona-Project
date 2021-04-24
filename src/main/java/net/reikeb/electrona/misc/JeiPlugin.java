@@ -194,8 +194,8 @@ public class JeiPlugin implements IModPlugin {
         // ...
         public void draw(CompressorBlockJeiCategory.CompressorBlockRecipeWrapper recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
             FontRenderer fontRenderer = Minecraft.getInstance().font;
-            fontRenderer.draw(matrixStack, new TranslationTextComponent("electrona.compressor_gui.name"), 50, 6, -16777216);
-            fontRenderer.draw(matrixStack, new TranslationTextComponent("electrona.generic_gui.power"), 126, 6, -16777216);
+            fontRenderer.draw(matrixStack, new TranslationTextComponent("gui.electrona.compressor.name"), 50, 6, -16777216);
+            fontRenderer.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.power"), 126, 6, -16777216);
             ItemStack recipeOutput = (ItemStack) recipe.output.get(0);
             if (recipeOutput.getItem() == ItemInit.STEEL_INGOT.get()) {
                 fontRenderer.draw(matrixStack, "400 ELs", 126, 16, -3407821);
@@ -299,7 +299,7 @@ public class JeiPlugin implements IModPlugin {
         // ...
         public void draw(PurificatorBlockJeiCategory.PurificatorBlockRecipeWrapper recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
             FontRenderer fontRenderer = Minecraft.getInstance().font;
-            fontRenderer.draw(matrixStack, new TranslationTextComponent("electrona.purificator_gui.name"), 48, 6, -16777216);
+            fontRenderer.draw(matrixStack, new TranslationTextComponent("gui.electrona.purificator.name"), 48, 6, -16777216);
         }
 
         // ...
