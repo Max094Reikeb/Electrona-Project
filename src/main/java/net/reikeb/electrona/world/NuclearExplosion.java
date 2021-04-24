@@ -10,6 +10,8 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
 
+import static net.minecraft.block.FallingBlock.isFree;
+
 import net.minecraftforge.common.MinecraftForge;
 
 import net.reikeb.electrona.events.local.NuclearExplosionEvent;
@@ -51,9 +53,14 @@ public class NuclearExplosion {
 
     private void createHole(World world, int x, int y, int z, int radius) {
         ITagCollection<Block> tagCollection = BlockTags.getAllTags();
-        ITag<Block> logTag, plankTag;
+        ITag<Block> logTag, plankTag, stairsTag, slabsTag, doorTag, glassTag, panesTag;
         logTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft", "logs_that_burn"));
         plankTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft", "planks"));
+        stairsTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft", "wooden_stairs"));
+        slabsTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft", "wooden_slabs"));
+        doorTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft", "wooden_doors"));
+        glassTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft", "impermeable"));
+        panesTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "panes"));
 
         Random rand = new Random();
         int halfradius = radius / 2;
@@ -87,25 +94,37 @@ public class NuclearExplosion {
                                         block = Blocks.AIR;
                                     } else if (block == Blocks.STONE && rand.nextInt(randomness) < randomness / 2) {
                                         world.setBlockAndUpdate(new BlockPos(xx, yy, zz), Blocks.COBBLESTONE.defaultBlockState());
+                                        sendFly(world, block, xx, yy, zz);
                                         block = Blocks.COBBLESTONE;
                                     } else if ((block == Blocks.GRASS_BLOCK) || (block == Blocks.DIRT)) {
                                         world.setBlockAndUpdate(new BlockPos(xx, yy, zz), BlockInit.RADIOACTIVE_DIRT.get().defaultBlockState());
+                                        sendFly(world, block, xx, yy, zz);
                                     } else if ((rand.nextInt(varrand) == 0 || rand.nextInt(varrand / 2 + 1) == 0)) {
                                         world.setBlockAndUpdate(new BlockPos(xx, yy, zz), Blocks.AIR.defaultBlockState());
                                         block = Blocks.AIR;
+                                    } else {
+                                        sendFly(world, block, xx, yy, zz);
                                     }
                                 }
                             }
                             if (dist < onepointfiveradius && block != Blocks.AIR && block != Blocks.BEDROCK) {
-                                if (Y >= twoAOC || (dist < onepointfiveradius && Y >= AOC)) {
+                                if ((Y >= twoAOC) || (Y >= AOC) || (glassTag.contains(block)) || (panesTag.contains(block))
+                                        || (doorTag.contains(block)) || (block == Blocks.TORCH) || (block == Blocks.WATER)) {
                                     world.setBlockAndUpdate(new BlockPos(xx, yy, zz), Blocks.AIR.defaultBlockState());
-                                } else if (logTag.contains(world.getBlockState(new BlockPos(xx, yy - 1, zz)).getBlock())
-                                        || plankTag.contains(world.getBlockState(new BlockPos(xx, yy - 1, zz)).getBlock())) {
+                                } else if ((plankTag.contains(block)) || (stairsTag.contains(block)) || (slabsTag.contains(block))) {
                                     world.setBlockAndUpdate(new BlockPos(xx, yy, zz), Blocks.FIRE.defaultBlockState());
-                                } else if ((block == Blocks.GRASS_BLOCK) || (block == Blocks.DIRT)) {
+                                } else if (logTag.contains(block)) {
+                                    if (world.random.nextFloat() > 0.5) {
+                                        world.setBlockAndUpdate(new BlockPos(xx, yy, zz), Blocks.FIRE.defaultBlockState());
+                                    } else {
+                                        world.setBlockAndUpdate(new BlockPos(xx, yy, zz), BlockInit.CHARDWOOD_LOG.get().defaultBlockState());
+                                        sendFly(world, block, xx, yy, zz);
+                                    }
+                                } else if ((block == Blocks.GRASS_BLOCK) || (block == Blocks.DIRT) || (block == Blocks.GRASS_PATH)) {
                                     world.setBlockAndUpdate(new BlockPos(xx, yy, zz), BlockInit.RADIOACTIVE_DIRT.get().defaultBlockState());
-                                } else if (block == Blocks.GLASS_PANE) {
-                                    world.setBlockAndUpdate(new BlockPos(xx, yy, zz), Blocks.AIR.defaultBlockState());
+                                    sendFly(world, block, xx, yy, zz);
+                                } else {
+                                    sendFly(world, block, xx, yy, zz);
                                 }
                             }
                         }
@@ -115,6 +134,17 @@ public class NuclearExplosion {
         }
         world.playSound(null, new BlockPos(x, y, z), SoundsInit.NUCLEAR_EXPLOSION.get(),
                 SoundCategory.WEATHER, 0.6F, 1.0F);
+    }
+
+    private static void sendFly(World world, Block block, double xx, double yy, double zz) {
+        if ((block != Blocks.AIR) && (world.isEmptyBlock(new BlockPos(xx, yy, zz).below())
+                || isFree(world.getBlockState(new BlockPos(xx, yy, zz).below()))) && (yy > 0)) {
+            FallingBlockEntity fallingBlockEntity = new
+                    FallingBlockEntity(world, xx + 0.5D, yy, zz + 0.5D,
+                    world.getBlockState(new BlockPos(xx, yy, zz)));
+            world.setBlockAndUpdate(new BlockPos(xx, yy, zz), Blocks.AIR.defaultBlockState());
+            world.addFreshEntity(fallingBlockEntity);
+        }
     }
 
     private void pushAndHurtEntities(World world, int x, int y, int z, int radius) {
