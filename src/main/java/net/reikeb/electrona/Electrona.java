@@ -1,5 +1,7 @@
 package net.reikeb.electrona;
 
+import com.mojang.serialization.Codec;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.item.*;
@@ -7,7 +9,7 @@ import net.minecraft.item.crafting.*;
 import net.minecraft.util.*;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.FlatChunkGenerator;
+import net.minecraft.world.gen.*;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.settings.*;
 import net.minecraft.world.server.ServerWorld;
@@ -17,11 +19,10 @@ import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.*;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.event.lifecycle.*;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.*;
 
 import net.reikeb.electrona.advancements.TTriggers;
 import net.reikeb.electrona.events.entity.PlayerDiesEvent;
@@ -37,6 +38,7 @@ import net.reikeb.electrona.world.gen.*;
 
 import org.apache.logging.log4j.*;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 @Mod(Electrona.MODID)
@@ -65,7 +67,7 @@ public class Electrona {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientLoad);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, this::registerRecipeSerializers);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Structure.class, this::onRegisterStructures);
+        Structures.DEFERRED_REGISTRY_STRUCTURE.register(FMLJavaModLoadingContext.get().getModEventBus());
         registerAllDeferredRegistryObjects(FMLJavaModLoadingContext.get().getModEventBus());
 
         // Register ourselves for server and other game events we are interested in
@@ -75,11 +77,6 @@ public class Electrona {
         MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, this::biomeModification);
         MinecraftForge.EVENT_BUS.addListener(this::setupEngineerHouses);
         MinecraftForge.EVENT_BUS.register(this);
-    }
-
-    public void onRegisterStructures(final RegistryEvent.Register<Structure<?>> event) {
-        Structures.registerStructures(event);
-        ConfiguredStructures.registerConfiguredStructures();
     }
 
     /**
@@ -95,25 +92,30 @@ public class Electrona {
         }
     }
 
+    private static Method GETCODEC_METHOD;
+
     public void addDimensionalSpacing(final WorldEvent.Load event) {
         if (event.getWorld() instanceof ServerWorld) {
             ServerWorld serverWorld = (ServerWorld) event.getWorld();
 
-            if (serverWorld.getChunkSource().generator instanceof FlatChunkGenerator &&
+            try {
+                if (GETCODEC_METHOD == null)
+                    GETCODEC_METHOD = ObfuscationReflectionHelper.findMethod(ChunkGenerator.class, "codec");
+                ResourceLocation cgRL = Registry.CHUNK_GENERATOR.getKey((Codec<? extends ChunkGenerator>) GETCODEC_METHOD.invoke(serverWorld.getChunkSource().generator));
+                if (cgRL != null && cgRL.getNamespace().equals("terraforged")) return;
+            } catch (Exception e) {
+                Electrona.LOGGER.error("Was unable to check if " + serverWorld.dimension().location() + " is using Terraforged's ChunkGenerator.");
+            }
+
+            if (serverWorld.getChunkSource().getGenerator() instanceof FlatChunkGenerator &&
                     serverWorld.dimension().equals(World.OVERWORLD)) {
                 return;
             }
 
             Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(serverWorld.getChunkSource().generator.getSettings().structureConfig());
-            tempMap.put(Structures.RUINS, DimensionStructuresSettings.DEFAULTS.get(Structures.RUINS));
+            tempMap.putIfAbsent(Structures.RUINS.get(), DimensionStructuresSettings.DEFAULTS.get(Structures.RUINS.get()));
             serverWorld.getChunkSource().generator.getSettings().structureConfig = tempMap;
         }
-    }
-
-    public static <T extends IForgeRegistryEntry<T>> T register(IForgeRegistry<T> registry, T entry, String registryKey) {
-        entry.setRegistryName(new ResourceLocation(MODID, registryKey));
-        registry.register(entry);
-        return entry;
     }
 
     private void registerAllDeferredRegistryObjects(IEventBus modBus) {
@@ -147,6 +149,14 @@ public class Electrona {
         // Concentrated Uranium recipe
         BrewingRecipeRegistry.addRecipe(Ingredient.of(ItemInit.SUGAR_BOTTLE.get()), Ingredient.of(ItemInit.YELLOWCAKE.get()),
                 new ItemStack(ItemInit.CONCENTRATED_URANIUM.get()));
+
+        /**
+         * Register structures
+         */
+        event.enqueueWork(() -> {
+            Structures.setupStructures();
+            ConfiguredStructures.registerConfiguredStructures();
+        });
     }
 
     public void clientLoad(FMLClientSetupEvent event) {

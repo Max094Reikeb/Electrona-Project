@@ -2,41 +2,42 @@ package net.reikeb.electrona.world.gen;
 
 import com.google.common.collect.*;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.structure.*;
+import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.settings.*;
 
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.*;
 
 import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.world.structures.*;
+import net.reikeb.electrona.world.structures.RuinsStructure;
+
+import java.util.*;
 
 public class Structures {
 
-    public static Structure<NoFeatureConfig> RUINS = new RuinsStructure(NoFeatureConfig.CODEC);
-    public static IStructurePieceType RUINS_PIECES = RuinsPieces.Piece::new;
+    public static final DeferredRegister<Structure<?>> DEFERRED_REGISTRY_STRUCTURE = DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, Electrona.MODID);
 
-    public static void registerStructures(RegistryEvent.Register<Structure<?>> event) {
+    public static final RegistryObject<Structure<NoFeatureConfig>> RUINS = DEFERRED_REGISTRY_STRUCTURE.register("ruins", () -> (new RuinsStructure(NoFeatureConfig.CODEC)));
 
-        Electrona.register(event.getRegistry(), RUINS, "ruins");
-
-        registerStructure(
-                RUINS,
-                new StructureSeparationSettings(10,
-                        5,
-                        1234567890),
+    public static void setupStructures() {
+        setupMapSpacingAndLand(
+                RUINS.get(),
+                new StructureSeparationSettings(1 /* average distance apart in chunks between spawn attempts */,
+                        1 /* minimum distance apart in chunks between spawn attempts */,
+                        32034987),
                 true);
 
 
-        Structures.registerAllPieces();
+        // Add more structures here and so on
     }
 
-    public static <F extends Structure<?>> void registerStructure(
+    public static <F extends Structure<?>> void setupMapSpacingAndLand(
             F structure,
             StructureSeparationSettings structureSeparationSettings,
             boolean transformSurroundingLand) {
+
         Structure.STRUCTURES_REGISTRY.put(structure.getRegistryName().toString(), structure);
 
         if (transformSurroundingLand) {
@@ -52,13 +53,17 @@ public class Structures {
                         .putAll(DimensionStructuresSettings.DEFAULTS)
                         .put(structure, structureSeparationSettings)
                         .build();
-    }
 
-    public static void registerAllPieces() {
-        registerStructurePiece(RUINS_PIECES, new ResourceLocation(Electrona.MODID, "ruins_pieces"));
-    }
+        WorldGenRegistries.NOISE_GENERATOR_SETTINGS.entrySet().forEach(settings -> {
+            Map<Structure<?>, StructureSeparationSettings> structureMap = settings.getValue().structureSettings().structureConfig();
 
-    static void registerStructurePiece(IStructurePieceType structurePiece, ResourceLocation rl) {
-        Registry.register(Registry.STRUCTURE_PIECE, rl, structurePiece);
+            if (structureMap instanceof ImmutableMap) {
+                Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(structureMap);
+                tempMap.put(structure, structureSeparationSettings);
+                settings.getValue().structureSettings().structureConfig = tempMap;
+            } else {
+                structureMap.put(structure, structureSeparationSettings);
+            }
+        });
     }
 }

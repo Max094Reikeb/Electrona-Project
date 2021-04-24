@@ -9,12 +9,12 @@ import net.reikeb.electrona.Electrona;
 
 public class ConfiguredStructures {
 
-    public static StructureFeature<?, ?> CONFIGURED_RUINS = Structures.RUINS.configured(IFeatureConfig.NONE);
+    public static StructureFeature<?, ?> CONFIGURED_RUINS = Structures.RUINS.get().configured(IFeatureConfig.NONE);
 
     public static void registerConfiguredStructures() {
         Registry<StructureFeature<?, ?>> registry = WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE;
-        Registry.register(registry, new ResourceLocation(Electrona.MODID, "configured_run_down_house"), CONFIGURED_RUINS);
+        Registry.register(registry, new ResourceLocation(Electrona.MODID, "configured_ruins"), CONFIGURED_RUINS);
 
-        FlatGenerationSettings.STRUCTURE_FEATURES.put(Structures.RUINS, CONFIGURED_RUINS);
+        FlatGenerationSettings.STRUCTURE_FEATURES.put(Structures.RUINS.get(), CONFIGURED_RUINS);
     }
 }
