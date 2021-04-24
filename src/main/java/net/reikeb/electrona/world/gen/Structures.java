@@ -11,7 +11,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.*;
 
 import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.world.structures.RuinsStructure;
+import net.reikeb.electrona.world.structures.*;
 
 import java.util.*;
 
@@ -24,13 +24,10 @@ public class Structures {
     public static void setupStructures() {
         setupMapSpacingAndLand(
                 RUINS.get(),
-                new StructureSeparationSettings(1 /* average distance apart in chunks between spawn attempts */,
-                        1 /* minimum distance apart in chunks between spawn attempts */,
+                new StructureSeparationSettings(10 /* average distance apart in chunks between spawn attempts */,
+                        8 /* minimum distance apart in chunks between spawn attempts */,
                         32034987),
                 true);
-
-
-        // Add more structures here and so on
     }
 
     public static <F extends Structure<?>> void setupMapSpacingAndLand(

@@ -65,9 +65,8 @@ public class NuclearExplosion {
         Random rand = new Random();
         int halfradius = radius / 2;
         int onepointfiveradius = halfradius * 3;
-        int AOC = radius;
         int onepointfiveradiussqrd = onepointfiveradius * onepointfiveradius;
-        int twoAOC = AOC * 2;
+        int tworadius = radius * 2;
 
         for (int X = -onepointfiveradius; X <= onepointfiveradius; X++) {
             int xx = x + X;
@@ -108,7 +107,7 @@ public class NuclearExplosion {
                                 }
                             }
                             if (dist < onepointfiveradius && block != Blocks.AIR && block != Blocks.BEDROCK) {
-                                if ((Y >= twoAOC) || (Y >= AOC) || (glassTag.contains(block)) || (panesTag.contains(block))
+                                if ((Y >= tworadius) || (Y >= radius) || (glassTag.contains(block)) || (panesTag.contains(block))
                                         || (doorTag.contains(block)) || (block == Blocks.TORCH) || (block == Blocks.WATER)) {
                                     world.setBlockAndUpdate(new BlockPos(xx, yy, zz), Blocks.AIR.defaultBlockState());
                                 } else if ((plankTag.contains(block)) || (stairsTag.contains(block)) || (slabsTag.contains(block))) {

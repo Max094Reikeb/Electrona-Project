@@ -85,7 +85,7 @@ public class RuinsStructure extends Structure<NoFeatureConfig> {
                     dynamicRegistryManager,
                     new VillageConfig(() -> dynamicRegistryManager.registryOrThrow(
                             Registry.TEMPLATE_POOL_REGISTRY).get(new ResourceLocation(Electrona.MODID,
-                            "ruins/start_pool")), 10),
+                            "ruins/houses/start_pool")), 10),
                     AbstractVillagePiece::new,
                     chunkGenerator,
                     templateManagerIn,
@@ -112,18 +112,10 @@ public class RuinsStructure extends Structure<NoFeatureConfig> {
             //
             // By lifting the house up by 1 and lowering the bounding box, the land at bottom of house will now be
             // flush with the surrounding terrain without blocking off the doorstep.
-            /*
             this.pieces.forEach(piece -> piece.move(0, 1, 0));
             this.pieces.forEach(piece -> piece.getBoundingBox().y0 -= 1);
-             */
-
 
             this.calculateBoundingBox();
-
-            Electrona.LOGGER.log(Level.DEBUG, "Rundown House at " +
-                    this.pieces.get(0).getBoundingBox().x0 + " " +
-                    this.pieces.get(0).getBoundingBox().y0 + " " +
-                    this.pieces.get(0).getBoundingBox().z0);
         }
     }
 }

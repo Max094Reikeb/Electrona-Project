@@ -1,5 +1,5 @@
 {
-  "name": "electrona:ruins/start_pool",
+  "name": "electrona:ruins/houses/start_pool",
   "fallback": "minecraft:empty",
   "elements": [
     {
