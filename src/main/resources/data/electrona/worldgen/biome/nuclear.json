@@ -23,5 +23,9 @@
   "spawners": {},
   "spawn_costs": {},
   "carvers": {},
-  "features": []
+  "features": [
+    [
+      "electrona:patch_dead_vegetation_nuclear"
+    ]
+  ]
 }

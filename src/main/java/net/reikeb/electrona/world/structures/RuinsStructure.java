@@ -19,8 +19,6 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import net.reikeb.electrona.Electrona;
 
-import org.apache.logging.log4j.Level;
-
 import java.util.List;
 
 public class RuinsStructure extends Structure<NoFeatureConfig> {
@@ -85,7 +83,7 @@ public class RuinsStructure extends Structure<NoFeatureConfig> {
                     dynamicRegistryManager,
                     new VillageConfig(() -> dynamicRegistryManager.registryOrThrow(
                             Registry.TEMPLATE_POOL_REGISTRY).get(new ResourceLocation(Electrona.MODID,
-                            "ruins/houses/start_pool")), 10),
+                            "ruins/start_pool")), 10),
                     AbstractVillagePiece::new,
                     chunkGenerator,
                     templateManagerIn,
