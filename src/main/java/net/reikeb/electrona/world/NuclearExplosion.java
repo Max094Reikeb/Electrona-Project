@@ -173,9 +173,10 @@ public class NuclearExplosion {
                     var19 /= var33;
                     double var32 = Explosion.getSeenPercent(var30, entity);
                     double var34 = (1.0D - var13) * var32;
-                    if (entity instanceof FallingBlockEntity) entity.remove();
                     if (entity instanceof ItemEntity) entity.remove();
-                    entity.hurt(new DamageSource("nuclear_blast"), (float) (int) ((var34 * var34 + var34) / 2.0D * 8.0D * (double) diameter + 1.0D) * 8);
+                    if (!(entity instanceof FallingBlockEntity)) {
+                        entity.hurt(new DamageSource("nuclear_blast"), (float) (int) ((var34 * var34 + var34) / 2.0D * 8.0D * (double) diameter + 1.0D) * 8);
+                    }
                     double var35 = var34;
                     if (entity instanceof LivingEntity) {
                         var35 = ProtectionEnchantment.getExplosionKnockbackAfterDampener((LivingEntity) entity, var34);
