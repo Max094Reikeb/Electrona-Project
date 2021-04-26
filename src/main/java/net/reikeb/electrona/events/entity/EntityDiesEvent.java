@@ -1,9 +1,11 @@
 package net.reikeb.electrona.events.entity;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.*;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -11,16 +13,19 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.entity.RadioactiveZombie;
+import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.TotemPacket;
 
 @Mod.EventBusSubscriber(modid = Electrona.MODID)
-public class PlayerDiesEvent {
+public class EntityDiesEvent {
 
     @SubscribeEvent
-    public static void onPlayerDies(LivingDeathEvent event) {
-        if (event != null && event.getEntity() instanceof PlayerEntity) {
+    public static void onEntityDies(LivingDeathEvent event) {
+        if (event == null) return;
+
+        if (event.getEntity() instanceof PlayerEntity) {
             if (!event.getSource().isBypassInvul()) {
                 PlayerEntity player = (PlayerEntity) event.getEntity();
                 if (!(player.getMainHandItem().getItem().equals(ItemInit.ADVANCED_TOTEM_OF_UNDYING.get())
@@ -41,6 +46,10 @@ public class PlayerDiesEvent {
                 NetworkManager.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new TotemPacket());
                 event.setCanceled(true);
             }
+        } else if ((event.getEntity() instanceof ZombieEntity) || (event.getEntity() instanceof HuskEntity)
+                || (event.getSource().equals(new DamageSource("radioactivity")))) {
+            Entity entity = new RadioactiveZombie(EntityInit.RADIOACTIVE_ZOMBIE_TYPE, event.getEntity().level);
+            event.getEntity().level.addFreshEntity(entity);
         }
     }
 }

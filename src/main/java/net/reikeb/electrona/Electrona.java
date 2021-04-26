@@ -25,7 +25,7 @@ import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import net.reikeb.electrona.advancements.TTriggers;
-import net.reikeb.electrona.events.entity.PlayerDiesEvent;
+import net.reikeb.electrona.events.entity.EntityDiesEvent;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.recipes.*;
 import net.reikeb.electrona.recipes.types.*;
@@ -71,7 +71,7 @@ public class Electrona {
         registerAllDeferredRegistryObjects(FMLJavaModLoadingContext.get().getModEventBus());
 
         // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(new PlayerDiesEvent());
+        MinecraftForge.EVENT_BUS.register(new EntityDiesEvent());
         MinecraftForge.EVENT_BUS.register(new Gamerules());
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, this::addDimensionalSpacing);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, this::biomeModification);

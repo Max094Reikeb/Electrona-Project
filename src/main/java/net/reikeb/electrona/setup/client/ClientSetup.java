@@ -7,10 +7,12 @@ import net.minecraft.client.renderer.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import net.reikeb.electrona.Electrona;
+import net.reikeb.electrona.entity.*;
 import net.reikeb.electrona.guis.*;
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.particles.*;
@@ -36,6 +38,8 @@ public class ClientSetup {
         ScreenManager.register(STEEL_CRATE_CONTAINER.get(), SteelCrateWindow::new);
         ScreenManager.register(LEAD_CRATE_CONTAINER.get(), LeadCrateWindow::new);
         ScreenManager.register(NUCLEAR_BOMB_CONTAINER.get(), NuclearBombWindow::new);
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.RADIOACTIVE_ZOMBIE.get(), RadioactiveZombieRenderer::new);
 
         // Make this deferred because RenderTypeLookup is not thread safe
         event.enqueueWork(() -> {

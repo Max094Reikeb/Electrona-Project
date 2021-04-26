@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.util.registry.*;
@@ -18,6 +17,7 @@ import net.minecraft.world.gen.feature.structure.*;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import net.reikeb.electrona.Electrona;
+import net.reikeb.electrona.init.EntityInit;
 
 import java.util.List;
 
@@ -38,23 +38,12 @@ public class RuinsStructure extends Structure<NoFeatureConfig> {
     }
 
     private static final List<MobSpawnInfo.Spawners> STRUCTURE_MONSTERS = ImmutableList.of(
-            new MobSpawnInfo.Spawners(EntityType.ILLUSIONER, 100, 4, 9),
-            new MobSpawnInfo.Spawners(EntityType.VINDICATOR, 100, 4, 9)
+            new MobSpawnInfo.Spawners(EntityInit.RADIOACTIVE_ZOMBIE.get(), 100, 4, 9)
     );
 
     @Override
     public List<MobSpawnInfo.Spawners> getDefaultSpawnList() {
         return STRUCTURE_MONSTERS;
-    }
-
-    private static final List<MobSpawnInfo.Spawners> STRUCTURE_CREATURES = ImmutableList.of(
-            new MobSpawnInfo.Spawners(EntityType.SHEEP, 30, 10, 15),
-            new MobSpawnInfo.Spawners(EntityType.RABBIT, 100, 1, 2)
-    );
-
-    @Override
-    public List<MobSpawnInfo.Spawners> getDefaultCreatureSpawnList() {
-        return STRUCTURE_CREATURES;
     }
 
     @Override

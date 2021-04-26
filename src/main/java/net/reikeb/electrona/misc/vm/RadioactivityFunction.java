@@ -1,6 +1,7 @@
 package net.reikeb.electrona.misc.vm;
 
 import net.minecraft.entity.*;
+import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.potion.*;
@@ -8,6 +9,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 
+import net.reikeb.electrona.entity.RadioactiveZombie;
 import net.reikeb.electrona.init.*;
 
 import java.util.*;
@@ -62,7 +64,8 @@ public class RadioactivityFunction {
                         }
                     }.compareDistOf(entity.getX(), entity.getY(), entity.getZ())).collect(Collectors.toList());
             for (Entity entityiterator : _entfound) {
-                if (!(entityiterator instanceof LivingEntity)) return;
+                if ((!(entityiterator instanceof LivingEntity)) || (entityiterator instanceof SkeletonEntity)
+                        || (entityiterator instanceof RadioactiveZombie)) return;
                 if (entityiterator instanceof PlayerEntity) {
                     if (((PlayerEntity) entityiterator).isCreative()) return;
                 }
@@ -80,7 +83,8 @@ public class RadioactivityFunction {
      * @param entity The entity that steps on the radioactive block
      */
     public static void stepOnRadioactiveBlock(Entity entity) {
-        if (!(entity instanceof LivingEntity)) return;
+        if ((!(entity instanceof LivingEntity)) || (entity instanceof SkeletonEntity)
+                || (entity instanceof RadioactiveZombie)) return;
         if (entity instanceof PlayerEntity) {
             if (((PlayerEntity) entity).isCreative()) return;
         }
