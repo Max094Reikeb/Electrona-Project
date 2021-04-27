@@ -11,6 +11,7 @@ import net.minecraft.state.*;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
+import net.minecraft.util.math.shapes.*;
 import net.minecraft.util.text.*;
 import net.minecraft.world.*;
 
@@ -18,7 +19,9 @@ import net.minecraftforge.api.distmarker.*;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import net.reikeb.electrona.misc.vm.CustomShapes;
 import net.reikeb.electrona.tileentities.TilePurificator;
+import net.reikeb.electrona.utils.ElectronaUtils;
 
 import java.util.*;
 
@@ -46,6 +49,24 @@ public class Purificator extends AbstractWaterLoggableBlock {
     public void appendHoverText(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
         super.appendHoverText(itemstack, world, list, flag);
         list.add(new TranslationTextComponent("block.electrona.purificator.desc"));
+    }
+
+    VoxelShape shape = CustomShapes.Purificator;
+    VoxelShape southShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.SOUTH, shape);
+    VoxelShape eastShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.EAST, shape);
+    VoxelShape westShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.WEST, shape);
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+        Direction facing = state.getValue(FACING);
+        if (facing == Direction.SOUTH) {
+            return southShape;
+        } else if (facing == Direction.EAST) {
+            return eastShape;
+        } else if (facing == Direction.WEST) {
+            return westShape;
+        }
+        return shape;
     }
 
     @Override

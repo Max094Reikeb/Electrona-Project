@@ -108,6 +108,18 @@ public class CustomShapes {
     }).get();
 
     /**
+     * VoxelShape of the Purificator
+     */
+    public static VoxelShape Purificator = Stream.of(
+            Block.box(0, 12, 0, 16, 16, 16),
+            Block.box(0, 0, 0, 16, 4, 16),
+            Block.box(0, 4, 12, 16, 12, 16),
+            Block.box(2, 4, 2, 14, 12, 14)
+    ).reduce((v1, v2) -> {
+        return VoxelShapes.join(v1, v2, IBooleanFunction.OR);
+    }).get();
+
+    /**
      * VoxelShape of the Teleporter
      */
     public static VoxelShape Teleporter = VoxelShapes.join(
