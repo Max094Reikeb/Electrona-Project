@@ -1,11 +1,12 @@
 package net.reikeb.electrona.events.entity;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.*;
 import net.minecraft.util.*;
+import net.minecraft.world.server.ServerWorld;
 
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -15,6 +16,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.entity.RadioactiveZombie;
 import net.reikeb.electrona.init.*;
+import net.reikeb.electrona.misc.DamageSources;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.TotemPacket;
 
@@ -46,10 +48,10 @@ public class EntityDiesEvent {
                 NetworkManager.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new TotemPacket());
                 event.setCanceled(true);
             }
-        } else if ((event.getEntity() instanceof ZombieEntity) || (event.getEntity() instanceof HuskEntity)
-                || (event.getSource().equals(new DamageSource("radioactivity")))) {
-            Entity entity = new RadioactiveZombie(EntityInit.RADIOACTIVE_ZOMBIE_TYPE, event.getEntity().level);
-            event.getEntity().level.addFreshEntity(entity);
+        } else if ((event.getEntity() instanceof ZombieEntity || event.getEntity() instanceof HuskEntity)
+                && (event.getSource() == DamageSources.RADIOACTIVITY) && (event.getEntity().level instanceof ServerWorld)) {
+            RadioactiveZombie radioactiveZombie = ((ZombieEntity) event.getEntity()).convertTo(EntityInit.RADIOACTIVE_ZOMBIE_TYPE, true);
+            net.minecraftforge.event.ForgeEventFactory.onLivingConvert((LivingEntity) event.getEntity(), radioactiveZombie);
         }
     }
 }
