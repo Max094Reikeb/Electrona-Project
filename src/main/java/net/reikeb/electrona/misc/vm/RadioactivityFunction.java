@@ -5,12 +5,12 @@ import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.potion.*;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 
 import net.reikeb.electrona.entity.RadioactiveZombie;
 import net.reikeb.electrona.init.*;
+import net.reikeb.electrona.misc.DamageSources;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -107,18 +107,18 @@ public class RadioactivityFunction {
             entity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 1400, 2));
             entity.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, 1400, 2));
             entity.addEffect(new EffectInstance(Effects.WEAKNESS, 1400, 2));
-            entity.hurt(new DamageSource("radioactivity").bypassArmor(), (float) 10);
+            entity.hurt(DamageSources.RADIOACTIVITY.bypassArmor(), (float) 10);
             entity.setSecondsOnFire(10);
         } else if (radioactivity > (800 - (40 * amplifier))) {
             entity.addEffect(new EffectInstance(Effects.CONFUSION, 600, 1));
             entity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 600, 1));
             entity.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, 600, 1));
-            entity.hurt(new DamageSource("radioactivity").bypassArmor(), (float) 6);
+            entity.hurt(DamageSources.RADIOACTIVITY.bypassArmor(), (float) 6);
         } else if (radioactivity > (300 - (20 * amplifier))) {
             entity.addEffect(new EffectInstance(Effects.CONFUSION, 300, 0));
-            entity.hurt(new DamageSource("radioactivity").bypassArmor(), (float) 4);
+            entity.hurt(DamageSources.RADIOACTIVITY.bypassArmor(), (float) 4);
         } else if (radioactivity > (100 - (20 * amplifier))) {
-            entity.hurt(new DamageSource("radioactivity").bypassArmor(), (float) 1);
+            entity.hurt(DamageSources.RADIOACTIVITY.bypassArmor(), (float) 1);
         }
     }
 }

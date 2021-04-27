@@ -16,6 +16,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 import net.reikeb.electrona.events.local.NuclearExplosionEvent;
 import net.reikeb.electrona.init.*;
+import net.reikeb.electrona.misc.DamageSources;
 
 import java.util.*;
 
@@ -175,7 +176,7 @@ public class NuclearExplosion {
                     double var34 = (1.0D - var13) * var32;
                     if (entity instanceof ItemEntity) entity.remove();
                     if (!(entity instanceof FallingBlockEntity)) {
-                        entity.hurt(new DamageSource("nuclear_blast"), (float) (int) ((var34 * var34 + var34) / 2.0D * 8.0D * (double) diameter + 1.0D) * 8);
+                        entity.hurt(DamageSources.NUCLEAR_BLAST, (float) (int) ((var34 * var34 + var34) / 2.0D * 8.0D * (double) diameter + 1.0D) * 8);
                     }
                     double var35 = var34;
                     if (entity instanceof LivingEntity) {

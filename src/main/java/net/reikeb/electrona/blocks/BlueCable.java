@@ -15,6 +15,7 @@ import net.minecraft.world.*;
 
 import net.minecraftforge.api.distmarker.*;
 
+import net.reikeb.electrona.misc.DamageSources;
 import net.reikeb.electrona.tileentities.TileBlueCable;
 
 import javax.annotation.Nullable;
@@ -73,7 +74,7 @@ public class BlueCable extends AbstractCable {
             TileBlueCable tileBlueCable = (TileBlueCable) tile;
             if ((hasOpenEnd(stateIn)) && (entityIn instanceof LivingEntity) && (tileBlueCable.getTileData().getDouble("ElectronicPower") > 0)) {
                 double damage = Math.random() * 10;
-                if (damage > 0) entityIn.hurt(new DamageSource("electric_shock").bypassArmor(), (float) damage);
+                if (damage > 0) entityIn.hurt(DamageSources.ELECTRIC_SHOCK.bypassArmor(), (float) damage);
             }
         }
     }
