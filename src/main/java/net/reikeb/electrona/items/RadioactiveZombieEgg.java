@@ -21,8 +21,8 @@ public class RadioactiveZombieEgg extends SpawnEggItem {
 
     public RadioactiveZombieEgg() {
         super(EntityInit.RADIOACTIVE_ZOMBIE_TYPE,
-                0xFFCC00,
-                0xFCA800,
+                7958625,
+                7969893,
                 new Properties().stacksTo(1).tab(ItemGroup.TAB_MISC));
 
         DispenserBlock.registerBehavior(this,
