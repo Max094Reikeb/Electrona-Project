@@ -160,6 +160,7 @@
   "item.electrona.emitter": "Emitter",
   "item.electrona.empty_cell": "Empty Cell",
   "item.electrona.empty_cell.desc": "§7Right-clic on Water/Lava/Composter to fill it",
+  "item.electrona.geiger_pointer": "Geiger Pointer",
   "item.electrona.gold_powder": "Gold Powder",
   "item.electrona.hammer": "Hammer",
   "item.electrona.lava_cell": "Lava Cell",

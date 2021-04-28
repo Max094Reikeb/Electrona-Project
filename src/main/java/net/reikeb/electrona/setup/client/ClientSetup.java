@@ -3,6 +3,15 @@ package net.reikeb.electrona.setup.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.*;
+import net.minecraft.entity.item.*;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.*;
+import net.minecraft.nbt.NBTUtil;
+import net.minecraft.util.*;
+import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Vector3d;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
@@ -18,6 +27,8 @@ import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.particles.*;
 
 import static net.reikeb.electrona.init.ContainerInit.*;
+
+import javax.annotation.Nullable;
 
 @Mod.EventBusSubscriber(modid = Electrona.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientSetup {
@@ -49,6 +60,76 @@ public class ClientSetup {
 
             // Translucent
             RenderTypeLookup.setRenderLayer(BlockInit.HOLE.get(), RenderType.translucent());
+
+            // Item Properties
+            ItemModelsProperties.register(ItemInit.GEIGER_POINTER.get(), new ResourceLocation("angle"), new IItemPropertyGetter() {
+                private final ItemModelsProperties.Angle wobble = new ItemModelsProperties.Angle();
+                private final ItemModelsProperties.Angle wobbleRandom = new ItemModelsProperties.Angle();
+
+                public float call(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity livingEntity) {
+                    Entity entity = livingEntity != null ? livingEntity : stack.getEntityRepresentation();
+
+                    if (entity == null) {
+                        return 0.0F;
+                    } else {
+                        if (world == null && entity.level instanceof ClientWorld) {
+                            world = (ClientWorld) entity.level;
+                        }
+
+                        if (world == null) return 0.0F;
+                        BlockPos blockpos = NBTUtil.readBlockPos(stack.getOrCreateTag().getCompound("CounterPos"));
+                        long i = world.getGameTime();
+
+                        if (!(entity.position().distanceToSqr((double) blockpos.getX() + 0.5D, entity.position().y(), (double) blockpos.getZ() + 0.5D) < (double) 1.0E-5F)) {
+                            boolean flag = livingEntity instanceof PlayerEntity && ((PlayerEntity) livingEntity).isLocalPlayer();
+                            double d1 = 0.0D;
+
+                            if (flag) {
+                                d1 = livingEntity.yRot;
+                            } else if (entity instanceof ItemFrameEntity) {
+                                d1 = this.getFrameRotation((ItemFrameEntity) entity);
+                            } else if (entity instanceof ItemEntity) {
+                                d1 = 180.0F - ((ItemEntity) entity).getSpin(0.5F) / ((float) Math.PI * 2F) * 360.0F;
+                            } else if (livingEntity != null) {
+                                d1 = livingEntity.yBodyRot;
+                            }
+
+                            d1 = MathHelper.positiveModulo(d1 / 360.0D, 1.0D);
+                            double d2 = this.getAngleTo(Vector3d.atCenterOf(blockpos), entity) / (double) ((float) Math.PI * 2F);
+                            double d3;
+
+                            if (flag) {
+                                if (this.wobble.shouldUpdate(i)) {
+                                    this.wobble.update(i, 0.5D - (d1 - 0.25D));
+                                }
+                                d3 = d2 + this.wobble.rotation;
+                            } else {
+                                d3 = 0.5D - (d1 - 0.25D - d2);
+                            }
+
+                            return MathHelper.positiveModulo((float) d3, 1.0F);
+
+                        } else {
+                            if (this.wobbleRandom.shouldUpdate(i)) {
+                                this.wobbleRandom.update(i, Math.random());
+                            }
+
+                            double d0 = this.wobbleRandom.rotation + (double) ((float) stack.hashCode() / 2.14748365E9F);
+                            return MathHelper.positiveModulo((float) d0, 1.0F);
+                        }
+                    }
+                }
+
+                private double getFrameRotation(ItemFrameEntity frameEntity) {
+                    Direction direction = frameEntity.getDirection();
+                    int i = direction.getAxis().isVertical() ? 90 * direction.getAxisDirection().getStep() : 0;
+                    return MathHelper.wrapDegrees(180 + direction.get2DDataValue() * 90 + frameEntity.getRotation() * 45 + i);
+                }
+
+                private double getAngleTo(Vector3d vector3d, Entity entity) {
+                    return Math.atan2(vector3d.z() - entity.getZ(), vector3d.x() - entity.getX());
+                }
+            });
         });
     }
 

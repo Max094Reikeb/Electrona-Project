@@ -160,6 +160,7 @@
   "item.electrona.emitter": "Émetteur",
   "item.electrona.empty_cell": "Cellule vide",
   "item.electrona.empty_cell.desc": "§7Clic droit sur de l\u0027eau/de la lave/un composteur pour la remplir",
+  "item.electrona.geiger_pointer": "",
   "item.electrona.gold_powder": "Poudre d\u0027Or",
   "item.electrona.hammer": "Marteau",
   "item.electrona.lava_cell": "Cellule de lave",

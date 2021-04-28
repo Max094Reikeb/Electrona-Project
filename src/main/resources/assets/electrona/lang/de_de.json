@@ -160,6 +160,7 @@
   "item.electrona.emitter": "Sender",
   "item.electrona.empty_cell": "Leere Zelle",
   "item.electrona.empty_cell.desc": "Rechtsklick auf Wasser/Lava/Composter, um es zu füllen",
+  "item.electrona.geiger_pointer": "",
   "item.electrona.gold_powder": "Gold-Pulver",
   "item.electrona.hammer": "Hammer",
   "item.electrona.lava_cell": "Lava-Zelle",
