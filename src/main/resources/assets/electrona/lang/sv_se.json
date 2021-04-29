@@ -161,6 +161,7 @@
   "item.electrona.empty_cell": "Tom cell",
   "item.electrona.empty_cell.desc": "§7Högerklicka på en Vatten/Lava/komposter för att fylla den",
   "item.electrona.geiger_pointer": "",
+  "item.electrona.geiger_pointer.desc": "",
   "item.electrona.gold_powder": "Guldpulver",
   "item.electrona.hammer": "Hammare",
   "item.electrona.lava_cell": "Lavacell",
