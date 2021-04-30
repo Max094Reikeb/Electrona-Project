@@ -13,10 +13,14 @@ import net.minecraft.world.*;
 import static net.minecraft.block.FallingBlock.isFree;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import net.reikeb.electrona.events.local.NuclearExplosionEvent;
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.misc.DamageSources;
+import net.reikeb.electrona.network.NetworkManager;
+import net.reikeb.electrona.network.packets.BiomeUpdatePacket;
+import net.reikeb.electrona.utils.ElectronaUtils;
 
 import java.util.*;
 
@@ -41,6 +45,8 @@ public class NuclearExplosion {
             Blocks.COBBLESTONE,
             Blocks.DIRT,
     };
+
+    private final List<Block> affectedBlocks = new ArrayList<>();
 
     public NuclearExplosion(World world, int x, int y, int z, int strength) {
         if (!world.isClientSide) {
@@ -80,9 +86,12 @@ public class NuclearExplosion {
                     int yy = y + Y;
                     if (YY < onepointfiveradiussqrd) {
                         Block block = world.getBlockState(new BlockPos(xx, yy, zz)).getBlock();
-                        if (block != Blocks.AIR) {
+                        if (block != Blocks.AIR && block != Blocks.BEDROCK) {
                             int dist = (int) Math.sqrt(YY);
-                            if (dist < radius && block != Blocks.BEDROCK) {
+                            boolean flag = false;
+                            if (dist < radius) {
+                                flag = true;
+                                affectedBlocks.add(block);
                                 int varrand = 1 + dist - halfradius;
                                 if (dist < halfradius) {
                                     world.setBlockAndUpdate(new BlockPos(xx, yy, zz), Blocks.AIR.defaultBlockState());
@@ -107,7 +116,9 @@ public class NuclearExplosion {
                                     }
                                 }
                             }
-                            if (dist < onepointfiveradius && block != Blocks.AIR && block != Blocks.BEDROCK) {
+                            if (dist < onepointfiveradius) {
+                                flag = true;
+                                affectedBlocks.add(block);
                                 if ((Y >= tworadius) || (Y >= radius) || (glassTag.contains(block)) || (panesTag.contains(block))
                                         || (doorTag.contains(block)) || (block == Blocks.TORCH) || (block == Blocks.WATER)) {
                                     world.setBlockAndUpdate(new BlockPos(xx, yy, zz), Blocks.AIR.defaultBlockState());
@@ -127,6 +138,9 @@ public class NuclearExplosion {
                                     sendFly(world, block, xx, yy, zz);
                                 }
                             }
+                            if (flag) {
+                                ElectronaUtils.setBiomeAtPos(world, new BlockPos(xx, yy, zz), BiomeInit.NUCLEAR_BIOME_KEY);
+                            }
                         }
                     }
                 }
@@ -134,6 +148,7 @@ public class NuclearExplosion {
         }
         world.playSound(null, new BlockPos(x, y, z), SoundsInit.NUCLEAR_EXPLOSION.get(),
                 SoundCategory.WEATHER, 0.6F, 1.0F);
+        NetworkManager.INSTANCE.send(PacketDistributor.ALL.noArg(), new BiomeUpdatePacket(new BlockPos(x, y, z), BiomeInit.NUCLEAR_BIOME_KEY.location(), radius));
     }
 
     private static void sendFly(World world, Block block, double xx, double yy, double zz) {
@@ -157,7 +172,7 @@ public class NuclearExplosion {
         int var7 = MathHelper.floor(z - (double) onepointfiveradius - 1.0D);
         int var29 = MathHelper.floor(z + (double) onepointfiveradius + 1.0D);
         List<Entity> var9 = world.getEntities(null, AxisAlignedBB.of(new MutableBoundingBox(var3, var5, var7, var4, var28, var29)));
-        MinecraftForge.EVENT_BUS.post(new NuclearExplosionEvent.Detonate(world, this, var9));
+        MinecraftForge.EVENT_BUS.post(new NuclearExplosionEvent.Detonate(world, this, var9, affectedBlocks));
         Vector3d var30 = new Vector3d(x, y, z);
 
         for (Entity entity : var9) {

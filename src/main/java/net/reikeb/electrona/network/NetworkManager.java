@@ -37,5 +37,6 @@ public class NetworkManager {
         INSTANCE.registerMessage(index++, DimensionIDPacket.class, DimensionIDPacket::encode, DimensionIDPacket::decode, DimensionIDPacket::whenThisPacketIsReceived);
         INSTANCE.registerMessage(index++, SkyHighPacket.class, SkyHighPacket::encode, SkyHighPacket::decode, SkyHighPacket::whenThisPacketIsReceived);
         INSTANCE.registerMessage(index++, PurificationPacket.class, PurificationPacket::encode, PurificationPacket::decode, PurificationPacket::whenThisPacketIsReceived);
+        INSTANCE.registerMessage(index++, BiomeUpdatePacket.class, BiomeUpdatePacket::encode, BiomeUpdatePacket::decode, BiomeUpdatePacket::whenThisPacketIsReceived);
     }
 }

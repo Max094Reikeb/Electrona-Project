@@ -1,5 +1,6 @@
 package net.reikeb.electrona.events.local;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 
@@ -14,10 +15,10 @@ import java.util.List;
  * NuclearExplosionEvent triggers when a nuclear explosion happens in the world.<br>
  * <br>
  * NuclearExplosionEvent.Start is fired before the nuclear explosion actually occurs.<br>
- * NuclearExplosionEvent.Detonate is fired once the nuclear explosion has a list of affected entities.<br>
+ * NuclearExplosionEvent.Detonate is fired once the nuclear explosion has a list of affected blocks and entities.<br>
  * <br>
  * NuclearExplosionEvent.Start is {@link Cancelable}.<br>
- * NuclearExplosionEvent.Detonate can modify the affected entities.<br>
+ * NuclearExplosionEvent.Detonate can modify the affected blocks and entities.<br>
  * Children do not use {@link Event.HasResult}.<br>
  * Children of this event are fired on the {@link MinecraftForge#EVENT_BUS}.<br>
  */
@@ -54,7 +55,7 @@ public class NuclearExplosionEvent extends Event {
     }
 
     /**
-     * NuclearExplosionEvent.Detonate is fired once the nuclear explosion has a list of affected entities.  This list can be modified to change the outcome.<br>
+     * NuclearExplosionEvent.Detonate is fired once the nuclear explosion has a list of affected blocks and entities.  These lists can be modified to change the outcome.<br>
      * <br>
      * This event is not {@link Cancelable}.<br>
      * This event does not use {@link HasResult}.<br>
@@ -62,10 +63,12 @@ public class NuclearExplosionEvent extends Event {
      */
     public static class Detonate extends NuclearExplosionEvent {
         private final List<Entity> entityList;
+        private final List<Block> blockList;
 
-        public Detonate(World world, NuclearExplosion nuclearExplosion, List<Entity> entityList) {
+        public Detonate(World world, NuclearExplosion nuclearExplosion, List<Entity> entityList, List<Block> blockList) {
             super(world, nuclearExplosion);
             this.entityList = entityList;
+            this.blockList = blockList;
         }
 
         /**
@@ -73,6 +76,13 @@ public class NuclearExplosionEvent extends Event {
          */
         public List<Entity> getAffectedEntities() {
             return entityList;
+        }
+
+        /**
+         * Return the list of blocks affected by the explosion
+         */
+        public List<Block> getAffectedBlocks() {
+            return blockList;
         }
     }
 }
