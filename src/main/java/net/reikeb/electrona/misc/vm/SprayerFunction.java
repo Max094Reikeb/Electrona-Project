@@ -84,7 +84,7 @@ public class SprayerFunction {
      * @param tileSprayer The TileEntity of the Sprayer
      * @param pos         The position of the Sprayer
      */
-    public static void SprayerParticles(World world, TileSprayer tileSprayer, BlockPos pos) {
+    public static void sprayerParticles(World world, TileSprayer tileSprayer, BlockPos pos) {
         if (world.isClientSide) return;
         double xRadius = tileSprayer.getTileData().getInt("radius");
         double loop = 0;

@@ -91,7 +91,7 @@ public class TileSprayer extends LockableLootTileEntity implements ITickableTile
             wait++;
             if (wait >= 30) {
                 wait = 0;
-                SprayerFunction.SprayerParticles(world, this, blockPos);
+                SprayerFunction.sprayerParticles(world, this, blockPos);
             }
 
             this.setChanged();

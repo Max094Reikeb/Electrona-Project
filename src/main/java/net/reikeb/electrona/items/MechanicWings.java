@@ -41,14 +41,14 @@ public class MechanicWings extends Item {
     }
 
     @Override
-    public ActionResult<ItemStack> use(World p_77659_1_, PlayerEntity p_77659_2_, Hand p_77659_3_) {
-        ItemStack itemstack = p_77659_2_.getItemInHand(p_77659_3_);
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
         EquipmentSlotType equipmentslottype = MobEntity.getEquipmentSlotForItem(itemstack);
-        ItemStack itemstack1 = p_77659_2_.getItemBySlot(equipmentslottype);
+        ItemStack itemstack1 = player.getItemBySlot(equipmentslottype);
         if (itemstack1.isEmpty()) {
-            p_77659_2_.setItemSlot(equipmentslottype, itemstack.copy());
+            player.setItemSlot(equipmentslottype, itemstack.copy());
             itemstack.setCount(0);
-            return ActionResult.sidedSuccess(itemstack, p_77659_1_.isClientSide());
+            return ActionResult.sidedSuccess(itemstack, world.isClientSide());
         } else {
             return ActionResult.fail(itemstack);
         }
@@ -60,12 +60,12 @@ public class MechanicWings extends Item {
     }
 
     @Override
-    public boolean canElytraFly(ItemStack stack, net.minecraft.entity.LivingEntity entity) {
-        return ((stack.getDamageValue() < stack.getMaxDamage() - 1) && (entity.isSprinting()));
+    public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
+        return ((stack.getDamageValue() < stack.getMaxDamage() - 1));
     }
 
     @Override
-    public boolean elytraFlightTick(ItemStack stack, net.minecraft.entity.LivingEntity entity, int flightTicks) {
+    public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
         if (!entity.level.isClientSide && (flightTicks + 1) % 40 == 0) {
             stack.hurtAndBreak(1, entity, e -> e.broadcastBreakEvent(net.minecraft.inventory.EquipmentSlotType.CHEST));
         }
