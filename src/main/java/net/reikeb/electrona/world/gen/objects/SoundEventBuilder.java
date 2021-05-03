@@ -13,8 +13,8 @@ import java.util.*;
 public class SoundEventBuilder {
     private SoundCategory category = SoundCategory.BLOCKS;
     private String subtitleTranslationKey = "";
-    private List<SoundBuilder> sounds = new ArrayList<>();
-    private SoundEvent event;
+    private final List<SoundBuilder> sounds = new ArrayList<>();
+    private final SoundEvent event;
 
     public SoundEventBuilder(SoundEvent event) {
         this.event = event;
@@ -41,7 +41,7 @@ public class SoundEventBuilder {
     }
 
     public String getTranslationKey(SoundEvent sound) {
-        if (subtitleTranslationKey.isEmpty() || subtitleTranslationKey == null) {
+        if (subtitleTranslationKey == null || subtitleTranslationKey.isEmpty()) {
             this.subtitleTranslationKey = Util.makeDescriptionId("subtitle", sound.getRegistryName());
         }
         return this.subtitleTranslationKey;
