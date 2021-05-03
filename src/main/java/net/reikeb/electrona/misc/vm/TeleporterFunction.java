@@ -154,14 +154,14 @@ public class TeleporterFunction {
             }
             world.sendBlockUpdated(pos, state, state, 3);
         }
-        world.playSound(null, pos, ForgeRegistries.SOUND_EVENTS
-                        .getValue(new ResourceLocation("entity.enderman.teleport")), SoundCategory.NEUTRAL,
-                0.6F, 1.0F);
+        SoundEvent teleportSound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"));
         teleportParticles(world, pos, 300);
-        world.playSound(null, teleportPos, ForgeRegistries.SOUND_EVENTS
-                        .getValue(new ResourceLocation("entity.enderman.teleport")), SoundCategory.NEUTRAL,
-                0.6F, 1.0F);
         teleportParticles(world, teleportPos, 300);
+        if (teleportSound == null) return;
+        world.playSound(null, pos, teleportSound, SoundCategory.NEUTRAL,
+                0.6F, 1.0F);
+        world.playSound(null, teleportPos, teleportSound, SoundCategory.NEUTRAL,
+                0.6F, 1.0F);
     }
 
     /**
@@ -215,14 +215,14 @@ public class TeleporterFunction {
                     MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(worldIn, worldIn, pos, teleportPos, playerIn));
                     if (!playerIn.isCreative())
                         stack.getOrCreateTag().putDouble("ElectronicPower", (electronicPower - 500));
-                    worldIn.playSound(null, pos, ForgeRegistries.SOUND_EVENTS
-                                    .getValue(new ResourceLocation("entity.enderman.teleport")), SoundCategory.NEUTRAL,
-                            0.6F, 1.0F);
+                    SoundEvent teleportSound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"));
                     teleportParticles(worldIn, pos, 300);
-                    worldIn.playSound(null, teleportPos, ForgeRegistries.SOUND_EVENTS
-                                    .getValue(new ResourceLocation("entity.enderman.teleport")), SoundCategory.NEUTRAL,
-                            0.6F, 1.0F);
                     teleportParticles(worldIn, teleportPos, 300);
+                    if (teleportSound == null) return true;
+                    worldIn.playSound(null, pos, teleportSound, SoundCategory.NEUTRAL,
+                            0.6F, 1.0F);
+                    worldIn.playSound(null, teleportPos, teleportSound, SoundCategory.NEUTRAL,
+                            0.6F, 1.0F);
                     return true;
                 }
             } else {
