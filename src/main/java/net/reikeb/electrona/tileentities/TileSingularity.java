@@ -29,7 +29,7 @@ public class TileSingularity extends TileEntity implements ITickableTileEntity {
         int wait = this.getTileData().getInt("wait");
         wait += 1;
         if (wait >= 100) {
-            BlackHoleFunction.SingularityParticles(this.level, this.getBlockPos());
+            BlackHoleFunction.singularityParticles(this.level, this.getBlockPos());
             wait = 0;
         }
         this.getTileData().putInt("wait", wait);

@@ -47,47 +47,12 @@ public class BlackHoleFunction {
     }
 
     /**
-     * Method that handles Singularity's spawn
-     *
-     * @param world The world of the Singularity
-     * @param pos   The position of the Singularity
-     */
-    public static void SingularitySpawn(World world, BlockPos pos) {
-        if (world.isClientSide) return;
-        ITagCollection<Block> tagCollection = BlockTags.getAllTags();
-        ITag<Block> stopsHoleTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/stops_black_hole"));
-
-        if (world.getLevelData().getGameRules().getBoolean(Gamerules.DO_BLACK_HOLES_EXIST)) {
-            BlockPos closestPos = null;
-            BlockPos checkPos;
-            for (int n = 0; n < 4; n++) {
-                for (int x = pos.getX() - 100; x < pos.getX() + 100; x++) {
-                    for (int y = pos.getY() - 100; y < pos.getY() + 100; y++) {
-                        for (int z = pos.getZ() - 100; z < pos.getZ() + 100; z++) {
-                            checkPos = new BlockPos(x, y, z);
-                            if (!stopsHoleTag.contains(world.getBlockState(checkPos).getBlock())) {
-                                if (closestPos == null
-                                        || ((pos.getX() - checkPos.getX() < pos.getX() - closestPos.getX())
-                                        && (pos.getY() - checkPos.getY() < pos.getY() - closestPos.getY())
-                                        && (pos.getZ() - checkPos.getZ() < pos.getZ() - closestPos.getZ()))) {
-                                    closestPos = checkPos;
-                                }
-                            }
-                        }
-                    }
-                }
-                if (closestPos != null) world.setBlockAndUpdate(closestPos, BlockInit.HOLE.get().defaultBlockState());
-            }
-        }
-    }
-
-    /**
      * Method that handles Singularity's particles
      *
      * @param world The world of the Singularity
      * @param pos   The position of the Singularity
      */
-    public static void SingularityParticles(World world, BlockPos pos) {
+    public static void singularityParticles(World world, BlockPos pos) {
         if (world.isClientSide) return;
         double xRadius = 0.1;
         double loop = 0;

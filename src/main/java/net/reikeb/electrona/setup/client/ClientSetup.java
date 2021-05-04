@@ -16,7 +16,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.client.registry.*;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
@@ -25,6 +25,7 @@ import net.reikeb.electrona.entity.*;
 import net.reikeb.electrona.guis.*;
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.particles.*;
+import net.reikeb.electrona.tileentities.*;
 
 import static net.reikeb.electrona.init.ContainerInit.*;
 
@@ -34,6 +35,7 @@ import javax.annotation.Nullable;
 public class ClientSetup {
 
     public static void init(final FMLClientSetupEvent event) {
+        // Connect Containers and Windows
         ScreenManager.register(BIOMASS_GENERATOR_CONTAINER.get(), BiomassGeneratorWindow::new);
         ScreenManager.register(NUCLEAR_GENERATOR_CONTAINER.get(), NuclearGeneratorControllerWindow::new);
         ScreenManager.register(BATTERY_CONTAINER.get(), BatteryWindow::new);
@@ -50,9 +52,13 @@ public class ClientSetup {
         ScreenManager.register(LEAD_CRATE_CONTAINER.get(), LeadCrateWindow::new);
         ScreenManager.register(NUCLEAR_BOMB_CONTAINER.get(), NuclearBombWindow::new);
 
+        // Connect Entities and their renderer
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.RADIOACTIVE_ZOMBIE.get(), RadioactiveZombieRenderer::new);
 
-        // Make this deferred because RenderTypeLookup is not thread safe
+        // Connect TileEntities and their renderer
+        ClientRegistry.bindTileEntityRenderer(TileEntityInit.TILE_SINGULARITY.get(), TileSingularityRenderer::new);
+
+        // Make this deferred for unsafe threads
         event.enqueueWork(() -> {
             // Cutout
             RenderTypeLookup.setRenderLayer(BlockInit.SINGULARITY.get(), RenderType.cutout());
