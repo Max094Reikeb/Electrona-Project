@@ -10,8 +10,6 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
 
-import static net.minecraft.block.FallingBlock.isFree;
-
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.network.PacketDistributor;
 
@@ -103,16 +101,12 @@ public class NuclearExplosion {
                                         block = Blocks.AIR;
                                     } else if (block == Blocks.STONE && rand.nextInt(randomness) < randomness / 2) {
                                         world.setBlockAndUpdate(new BlockPos(xx, yy, zz), Blocks.COBBLESTONE.defaultBlockState());
-                                        sendFly(world, block, xx, yy, zz);
                                         block = Blocks.COBBLESTONE;
                                     } else if ((block == Blocks.GRASS_BLOCK) || (block == Blocks.DIRT)) {
                                         world.setBlockAndUpdate(new BlockPos(xx, yy, zz), BlockInit.RADIOACTIVE_DIRT.get().defaultBlockState());
-                                        sendFly(world, block, xx, yy, zz);
                                     } else if ((rand.nextInt(varrand) == 0 || rand.nextInt(varrand / 2 + 1) == 0)) {
                                         world.setBlockAndUpdate(new BlockPos(xx, yy, zz), Blocks.AIR.defaultBlockState());
                                         block = Blocks.AIR;
-                                    } else {
-                                        sendFly(world, block, xx, yy, zz);
                                     }
                                 }
                             }
@@ -129,13 +123,9 @@ public class NuclearExplosion {
                                         world.setBlockAndUpdate(new BlockPos(xx, yy, zz), Blocks.FIRE.defaultBlockState());
                                     } else {
                                         world.setBlockAndUpdate(new BlockPos(xx, yy, zz), BlockInit.CHARDWOOD_LOG.get().defaultBlockState());
-                                        sendFly(world, block, xx, yy, zz);
                                     }
                                 } else if ((block == Blocks.GRASS_BLOCK) || (block == Blocks.DIRT) || (block == Blocks.GRASS_PATH)) {
                                     world.setBlockAndUpdate(new BlockPos(xx, yy, zz), BlockInit.RADIOACTIVE_DIRT.get().defaultBlockState());
-                                    sendFly(world, block, xx, yy, zz);
-                                } else {
-                                    sendFly(world, block, xx, yy, zz);
                                 }
                             }
                             if (flag) {
@@ -149,17 +139,6 @@ public class NuclearExplosion {
         world.playSound(null, new BlockPos(x, y, z), SoundsInit.NUCLEAR_EXPLOSION.get(),
                 SoundCategory.WEATHER, 0.6F, 1.0F);
         NetworkManager.INSTANCE.send(PacketDistributor.ALL.noArg(), new BiomeUpdatePacket(new BlockPos(x, y, z), BiomeInit.NUCLEAR_BIOME_KEY.location(), radius));
-    }
-
-    private static void sendFly(World world, Block block, double xx, double yy, double zz) {
-        if ((block != Blocks.AIR) && (world.isEmptyBlock(new BlockPos(xx, yy, zz).below())
-                || isFree(world.getBlockState(new BlockPos(xx, yy, zz).below()))) && (yy > 0)) {
-            FallingBlockEntity fallingBlockEntity = new
-                    FallingBlockEntity(world, xx + 0.5D, yy, zz + 0.5D,
-                    world.getBlockState(new BlockPos(xx, yy, zz)));
-            world.setBlockAndUpdate(new BlockPos(xx, yy, zz), Blocks.AIR.defaultBlockState());
-            world.addFreshEntity(fallingBlockEntity);
-        }
     }
 
     private void pushAndHurtEntities(World world, int x, int y, int z, int radius) {
