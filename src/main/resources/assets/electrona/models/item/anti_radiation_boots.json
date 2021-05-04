@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "electrona:items/anti_radiation_armor_boots"
+    "layer0": "electrona:items/anti_radiation_boots"
   }
 }
