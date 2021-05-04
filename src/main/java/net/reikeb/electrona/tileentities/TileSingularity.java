@@ -13,6 +13,7 @@ import static net.reikeb.electrona.init.TileEntityInit.*;
 public class TileSingularity extends TileEntity implements ITickableTileEntity {
 
     private int wait;
+    private int delay;
 
     public TileSingularity() {
         super(TILE_SINGULARITY.get());
@@ -27,24 +28,33 @@ public class TileSingularity extends TileEntity implements ITickableTileEntity {
     public void tick() {
         if (this.level == null) return; // Avoid NullPointerExceptions
         int wait = this.getTileData().getInt("wait");
+        int delay = this.getTileData().getInt("delay");
         wait += 1;
+        delay += 1;
         if (wait >= 100) {
             BlackHoleFunction.singularityParticles(this.level, this.getBlockPos());
             wait = 0;
         }
+        if (delay >= 1000) {
+            BlackHoleFunction.singularityDelay(this.level, this.getBlockPos());
+            delay = 0;
+        }
         this.getTileData().putInt("wait", wait);
+        this.getTileData().putInt("delay", delay);
     }
 
     @Override
     public void load(BlockState blockState, CompoundNBT compound) {
         super.load(blockState, compound);
         this.wait = compound.getInt("wait");
+        this.delay = compound.getInt("delay");
     }
 
     @Override
     public CompoundNBT save(CompoundNBT compound) {
         super.save(compound);
         compound.putInt("wait", this.wait);
+        compound.putInt("delay", this.delay);
         return compound;
     }
 

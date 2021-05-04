@@ -45,6 +45,7 @@ public class ItemInit {
     public static final RegistryObject<Item> WIRELESS_BOOSTER = ITEMS.register("wireless_booster", WirelessBooster::new);
     public static final RegistryObject<SpawnEggItem> RADIOACTIVE_ZOMBIE_SPAWN_EGG = ITEMS.register("radioactive_zombie_spawn_egg", RadioactiveZombieEgg::new);
     public static final RegistryObject<Item> GEIGER_POINTER = ITEMS.register("geiger_pointer", GeigerPointer::new);
+    public static final RegistryObject<Item> COSMIC_GEM = ITEMS.register("cosmic_gem", CosmicGem::new);
 
     // Tools and armors
     public static final RegistryObject<Item> HAMMER = ITEMS.register("hammer", Hammer::new);

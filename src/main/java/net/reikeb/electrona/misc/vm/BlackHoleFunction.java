@@ -1,6 +1,8 @@
 package net.reikeb.electrona.misc.vm;
 
 import net.minecraft.block.*;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tags.*;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -8,6 +10,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import net.reikeb.electrona.init.*;
+import net.reikeb.electrona.utils.GemPower;
 import net.reikeb.electrona.world.Gamerules;
 
 public class BlackHoleFunction {
@@ -70,5 +73,21 @@ public class BlackHoleFunction {
             xRadius = xRadius + 0.1;
             zRadius = zRadius + 0.1;
         }
+    }
+
+    /**
+     * Method that handles Singularity's delay
+     *
+     * @param world The world of the Singularity
+     * @param pos   The position of the Singularity
+     */
+    public static void singularityDelay(World world, BlockPos pos) {
+        if (world.isClientSide) return;
+        ItemStack stack = new ItemStack(ItemInit.COSMIC_GEM.get(), 1);
+        stack.getOrCreateTag().putString("power", GemPower.randomPowerId());
+        ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+        itemEntity.setPickUpDelay(10);
+        world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+        world.addFreshEntity(itemEntity);
     }
 }

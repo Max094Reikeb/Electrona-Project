@@ -1,8 +1,10 @@
 package net.reikeb.electrona.utils;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.shapes.*;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.registry.*;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.*;
@@ -59,6 +61,22 @@ public class ElectronaUtils {
             }
         }
         chunk.setUnsaved(true);
+    }
+
+    /**
+     * Method that gets the RayTraceResult of where an entity looks at
+     *
+     * @param entity        The entity
+     * @param range         The range
+     * @param height        The speed
+     * @param includeFluids Defines if fluids count
+     * @return The RayTraceResult
+     */
+    public static RayTraceResult lookAt(Entity entity, double range, float height, boolean includeFluids) {
+        Vector3d vector3d = entity.getEyePosition(height);
+        Vector3d vector3d1 = entity.getViewVector(height);
+        Vector3d vector3d2 = vector3d.add(vector3d1.x * range, vector3d1.y * range, vector3d1.z * range);
+        return entity.level.clip(new RayTraceContext(vector3d, vector3d2, RayTraceContext.BlockMode.OUTLINE, includeFluids ? RayTraceContext.FluidMode.ANY : RayTraceContext.FluidMode.NONE, entity));
     }
 
     private static class BiomeUtil {
