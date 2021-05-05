@@ -57,7 +57,7 @@ public class TeleporterFunction {
                 String dimension = tileEntityBelow.getTileData().getString("dimensionID");
                 if (world instanceof ServerWorld) {
                     RegistryKey<World> key = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dimension));
-                    if ((key != null) && (!dimension.equals("")) && ((ServerWorld) world).getServer().getLevel(key) != null) {
+                    if ((!dimension.equals("")) && (((ServerWorld) world).getServer().getLevel(key) != null)) {
                         if ((BlockInit.TELEPORTER.get() == (((ServerWorld) world).getServer().getLevel(key)
                                 .getBlockState(new BlockPos((int) (teleportXCo - 0.5), (int) teleportYCo, (int) (teleportZCo - 0.5)))).getBlock())) {
                             isTeleporter = true;
@@ -71,19 +71,16 @@ public class TeleporterFunction {
                 }
                 if (isTeleporter) {
                     RegistryKey<World> newKey = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dimension));
-                    RegistryKey<World> defaultKey = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation("minecraft:overworld"));
                     ServerWorld _newWorld = ((ServerWorld) world).getServer().getLevel(newKey);
-                    IWorld _defaultWorld = ((ServerWorld) world).getServer().getLevel(defaultKey);
-                    if (!((world instanceof World ? world : _defaultWorld) == _newWorld)) {
+                    if (world != _newWorld) {
                         if (!MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Pre(world, _newWorld, pos, teleportPos, entity))) {
                             {
-                                ServerWorld nextWorld = _newWorld;
                                 if (!entity.level.isClientSide && entity instanceof ServerPlayerEntity) {
-                                    if (nextWorld != null) {
+                                    if (_newWorld != null) {
                                         ((ServerPlayerEntity) entity).connection
                                                 .send(new SChangeGameStatePacket(SChangeGameStatePacket.WIN_GAME, 0));
-                                        ((ServerPlayerEntity) entity).teleportTo(nextWorld, nextWorld.getSharedSpawnPos().getX(),
-                                                nextWorld.getSharedSpawnPos().getY() + 1, nextWorld.getSharedSpawnPos().getZ(), entity.yRot,
+                                        ((ServerPlayerEntity) entity).teleportTo(_newWorld, _newWorld.getSharedSpawnPos().getX(),
+                                                _newWorld.getSharedSpawnPos().getY() + 1, _newWorld.getSharedSpawnPos().getZ(), entity.yRot,
                                                 entity.xRot);
                                         ((ServerPlayerEntity) entity).connection
                                                 .send(new SPlayerAbilitiesPacket(((ServerPlayerEntity) entity).abilities));
@@ -95,7 +92,17 @@ public class TeleporterFunction {
                                     }
                                 }
                             }
-                            teleport(world, _newWorld, pos, teleportPos, state, tileEntity, entity, autoDeletion, electronicPower);
+                            teleport(world, pos, teleportPos, entity);
+                            MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(world, _newWorld, pos, teleportPos, entity));
+                            if (!world.isClientSide()) {
+                                tileEntity.getTileData().putDouble("ElectronicPower", (electronicPower - 1000));
+                                if (autoDeletion) {
+                                    tileEntity.getTileData().putDouble("teleportX", 0);
+                                    tileEntity.getTileData().putDouble("teleportY", 0);
+                                    tileEntity.getTileData().putDouble("teleportZ", 0);
+                                }
+                                world.sendBlockUpdated(pos, state, state, 3);
+                            }
                         }
                     }
                 } else {
@@ -106,7 +113,17 @@ public class TeleporterFunction {
             } else if ((BlockInit.TELEPORTER.get() == (world.getBlockState(new
                     BlockPos((int) (teleportXCo - 0.5), (int) teleportYCo, (int) (teleportZCo - 0.5)))).getBlock())) {
                 if (!MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Pre(world, world, pos, teleportPos, entity))) {
-                    teleport(world, world, pos, teleportPos, state, tileEntity, entity, autoDeletion, electronicPower);
+                    teleport(world, pos, teleportPos, entity);
+                    MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(world, world, pos, teleportPos, entity));
+                    if (!world.isClientSide()) {
+                        tileEntity.getTileData().putDouble("ElectronicPower", (electronicPower - 1000));
+                        if (autoDeletion) {
+                            tileEntity.getTileData().putDouble("teleportX", 0);
+                            tileEntity.getTileData().putDouble("teleportY", 0);
+                            tileEntity.getTileData().putDouble("teleportZ", 0);
+                        }
+                        world.sendBlockUpdated(pos, state, state, 3);
+                    }
                 }
             } else {
                 if (entity instanceof PlayerEntity && !entity.level.isClientSide) {
@@ -121,19 +138,14 @@ public class TeleporterFunction {
     }
 
     /**
-     * Method that teleports the player
+     * Method that teleports an entity
      *
-     * @param world           The departure world
-     * @param teleportWorld   The arrival world
-     * @param pos             The departure position
-     * @param teleportPos     The arrival position
-     * @param state           The state of the Teleporter
-     * @param tileEntity      The Tile Entity of the Teleporter
-     * @param entity          The entity that is teleported
-     * @param autoDeletion    Gets if the auto-deletion is activated or not
-     * @param electronicPower The energy of the Teleporter
+     * @param world       The departure world
+     * @param pos         The departure position
+     * @param teleportPos The arrival position
+     * @param entity      The entity that is teleported
      */
-    public static void teleport(World world, World teleportWorld, BlockPos pos, BlockPos teleportPos, BlockState state, TileTeleporter tileEntity, Entity entity, boolean autoDeletion, double electronicPower) {
+    public static void teleport(World world, BlockPos pos, BlockPos teleportPos, Entity entity) {
         double teleportXCo = teleportPos.getX();
         double teleportYCo = teleportPos.getY();
         double teleportZCo = teleportPos.getZ();
@@ -143,16 +155,6 @@ public class TeleporterFunction {
                 ((ServerPlayerEntity) entity).connection.teleport(teleportXCo, teleportYCo, teleportZCo, entity.yRot,
                         entity.xRot, Collections.emptySet());
             }
-        }
-        MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(world, teleportWorld, pos, teleportPos, entity));
-        if (!world.isClientSide()) {
-            tileEntity.getTileData().putDouble("ElectronicPower", (electronicPower - 1000));
-            if (autoDeletion) {
-                tileEntity.getTileData().putDouble("teleportX", 0);
-                tileEntity.getTileData().putDouble("teleportY", 0);
-                tileEntity.getTileData().putDouble("teleportZ", 0);
-            }
-            world.sendBlockUpdated(pos, state, state, 3);
         }
         SoundEvent teleportSound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"));
         teleportParticles(world, pos, 300);
@@ -188,51 +190,37 @@ public class TeleporterFunction {
     /**
      * Method that teleports the player with the Portable Teleporter
      *
-     * @param worldIn  The world of the player
-     * @param playerIn The player
-     * @param handIn   The hand of the player that holds the Portable Teleporter
+     * @param world  The world of the player
+     * @param player The player
+     * @param hand   The hand of the player that holds the Portable Teleporter
      * @return boolean indicates if everything went good
      */
-    public static boolean teleportPortable(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        ItemStack stack = playerIn.getItemInHand(handIn);
+    public static boolean teleportPortable(World world, PlayerEntity player, Hand hand) {
+        ItemStack stack = player.getItemInHand(hand);
         double electronicPower = stack.getOrCreateTag().getDouble("ElectronicPower");
         double teleportXCo = stack.getOrCreateTag().getDouble("teleportX");
         double teleportYCo = stack.getOrCreateTag().getDouble("teleportY");
         double teleportZCo = stack.getOrCreateTag().getDouble("teleportZ");
-        BlockPos pos = new BlockPos(playerIn.getX(), playerIn.getY(), playerIn.getZ());
+        BlockPos pos = new BlockPos(player.getX(), player.getY(), player.getZ());
         BlockPos teleportPos = new BlockPos(teleportXCo, teleportYCo, teleportZCo);
         if (electronicPower >= 500) {
-            if (BlockInit.TELEPORTER.get() == (worldIn.getBlockState(new
+            if (BlockInit.TELEPORTER.get() == (world.getBlockState(new
                     BlockPos((int) (teleportXCo - 0.5), (int) teleportYCo, (int) (teleportZCo - 0.5)))).getBlock()) {
-                if (!MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Pre(worldIn, worldIn, pos, teleportPos, playerIn))) {
-                    {
-                        playerIn.teleportTo(teleportXCo, teleportYCo, teleportZCo);
-                        if (playerIn instanceof ServerPlayerEntity) {
-                            ((ServerPlayerEntity) playerIn).connection.teleport(teleportXCo, teleportYCo, teleportZCo, playerIn.yRot,
-                                    playerIn.xRot, Collections.emptySet());
-                        }
-                    }
-                    MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(worldIn, worldIn, pos, teleportPos, playerIn));
-                    if (!playerIn.isCreative())
+                if (!MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Pre(world, world, pos, teleportPos, player))) {
+                    teleport(world, pos, teleportPos, player);
+                    MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(world, world, pos, teleportPos, player));
+                    if (!player.isCreative())
                         stack.getOrCreateTag().putDouble("ElectronicPower", (electronicPower - 500));
-                    SoundEvent teleportSound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"));
-                    teleportParticles(worldIn, pos, 300);
-                    teleportParticles(worldIn, teleportPos, 300);
-                    if (teleportSound == null) return true;
-                    worldIn.playSound(null, pos, teleportSound, SoundCategory.NEUTRAL,
-                            0.6F, 1.0F);
-                    worldIn.playSound(null, teleportPos, teleportSound, SoundCategory.NEUTRAL,
-                            0.6F, 1.0F);
                     return true;
                 }
             } else {
-                if (!playerIn.level.isClientSide) {
-                    playerIn.displayClientMessage(new TranslationTextComponent("message.electrona.no_coos_info"), true);
+                if (!player.level.isClientSide) {
+                    player.displayClientMessage(new TranslationTextComponent("message.electrona.no_coos_info"), true);
                 }
             }
         } else {
-            if (!playerIn.level.isClientSide) {
-                playerIn.displayClientMessage(new TranslationTextComponent("message.electrona.not_enough_power_info"), true);
+            if (!player.level.isClientSide) {
+                player.displayClientMessage(new TranslationTextComponent("message.electrona.not_enough_power_info"), true);
             }
         }
         return false;

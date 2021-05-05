@@ -8,6 +8,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 
+import net.reikeb.electrona.misc.vm.CosmicGemFunction;
 import net.reikeb.electrona.setup.ItemGroups;
 import net.reikeb.electrona.utils.GemPower;
 
@@ -49,8 +50,7 @@ public class CosmicGem extends Item {
 
     public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (player.isShiftKeyDown()) GemPower.set(stack, "teleportation");
-        boolean flag = GemPower.use(world, player, stack);
+        boolean flag = CosmicGemFunction.use(world, player, stack);
         if (flag) player.getCooldowns().addCooldown(this, GemPower.byCooldown(stack));
         return ActionResult.sidedSuccess(stack, world.isClientSide());
     }
