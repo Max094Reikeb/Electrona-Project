@@ -31,6 +31,10 @@ public class CosmicGem extends Item {
         if (!text.equals(new TranslationTextComponent("power.electrona."))) {
             list.add(text);
         }
+        if (itemstack.getOrCreateTag().getBoolean("dimensionTravel")) {
+            String dim = itemstack.getOrCreateTag().getString("dimension");
+            TranslationTextComponent dimension = new TranslationTextComponent("power.electrona." + power + "_" + dim);
+        }
     }
 
     @Override
@@ -53,5 +57,19 @@ public class CosmicGem extends Item {
         boolean flag = CosmicGemFunction.use(world, player, stack);
         if (flag) player.getCooldowns().addCooldown(this, GemPower.byCooldown(stack));
         return ActionResult.sidedSuccess(stack, world.isClientSide());
+    }
+
+    @Override
+    public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
+        ActionResultType action = super.onItemUseFirst(stack, context);
+        World world = context.getLevel();
+        BlockState state = world.getBlockState(context.getClickedPos());
+        PlayerEntity entity = context.getPlayer();
+
+        if (entity == null) return ActionResultType.FAIL;
+
+        boolean flag = CosmicGemFunction.useOn(world, state, entity, stack);
+        if (flag) entity.getCooldowns().addCooldown(this, GemPower.byCooldown(stack));
+        return action;
     }
 }
