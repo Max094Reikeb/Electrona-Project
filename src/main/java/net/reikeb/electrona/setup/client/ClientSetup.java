@@ -21,10 +21,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.entity.*;
 import net.reikeb.electrona.guis.*;
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.particles.*;
+import net.reikeb.electrona.setup.client.render.RadioactiveZombieRenderer;
 import net.reikeb.electrona.tileentities.*;
 
 import static net.reikeb.electrona.init.ContainerInit.*;

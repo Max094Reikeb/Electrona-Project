@@ -1,10 +1,11 @@
-package net.reikeb.electrona.entity;
+package net.reikeb.electrona.setup.client.render;
 
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.entity.model.ZombieModel;
 
 import net.minecraft.util.ResourceLocation;
 import net.reikeb.electrona.Electrona;
+import net.reikeb.electrona.entity.RadioactiveZombie;
 
 import javax.annotation.Nullable;
 
