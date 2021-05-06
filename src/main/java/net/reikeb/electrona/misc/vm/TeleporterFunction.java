@@ -92,7 +92,7 @@ public class TeleporterFunction {
                                     }
                                 }
                             }
-                            teleport(world, pos, teleportPos, entity);
+                            teleport(_newWorld, pos, teleportPos, entity);
                             MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(world, _newWorld, pos, teleportPos, entity));
                             if (!world.isClientSide()) {
                                 tileEntity.getTileData().putDouble("ElectronicPower", (electronicPower - 1000));

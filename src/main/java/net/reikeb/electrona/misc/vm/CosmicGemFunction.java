@@ -14,8 +14,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
-import net.reikeb.electrona.utils.ElectronaUtils;
-import net.reikeb.electrona.utils.GemPower;
+import net.reikeb.electrona.utils.*;
 
 public class CosmicGemFunction {
 
