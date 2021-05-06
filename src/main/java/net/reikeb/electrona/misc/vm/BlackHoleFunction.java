@@ -1,17 +1,21 @@
 package net.reikeb.electrona.misc.vm;
 
 import net.minecraft.block.*;
+import net.minecraft.entity.*;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.*;
 import net.minecraft.tags.*;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.utils.GemPower;
 import net.reikeb.electrona.world.Gamerules;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class BlackHoleFunction {
 
@@ -56,23 +60,35 @@ public class BlackHoleFunction {
      * @param pos   The position of the Singularity
      */
     public static void singularityParticles(World world, BlockPos pos) {
+        double x = pos.getX();
+        double y = pos.getY();
+        double z = pos.getZ();
         if (world.isClientSide) return;
-        double xRadius = 0.1;
-        double loop = 0;
-        double zRadius = 0.1;
-        double particleAmount = 20;
-        while (xRadius < 5) {
-            particleAmount = xRadius * 20;
-            for (int i = 0; i < (int) particleAmount; i++) {
-                double tempX = Math.cos((((Math.PI * 2) / (particleAmount)) * (loop)));
-                double tempZ = Math.sin((((Math.PI * 2) / (particleAmount)) * (loop)));
-                ((ServerWorld) world).sendParticles(ParticleInit.DARK_MATTER.get(), ((pos.getX() + 0.5) + ((tempX) * (xRadius))), pos.getY(),
-                        ((pos.getZ() + 0.5) + ((tempZ) * (zRadius))), 1, 0, 0, 0, 0.05);
-                loop = loop + 1;
+
+        AreaEffectCloudEntity areaEffectCloudEntity = new AreaEffectCloudEntity(world, x, y, z);
+        {
+            List<Entity> _entfound = world.getEntitiesOfClass(Entity.class,
+                    new AxisAlignedBB(x - 100, y - 100, z - 100,
+                            x + 100, y + 100, z + 100), null)
+                    .stream().sorted(new Object() {
+                        Comparator<Entity> compareDistOf(double _x, double _y, double _z) {
+                            return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(_x, _y, _z));
+                        }
+                    }.compareDistOf(x, y, z)).collect(Collectors.toList());
+            for (Entity entityiterator : _entfound) {
+                if (entityiterator instanceof LivingEntity) {
+                    areaEffectCloudEntity.setOwner((LivingEntity) entityiterator);
+                }
             }
-            xRadius = xRadius + 0.1;
-            zRadius = zRadius + 0.1;
         }
+        areaEffectCloudEntity.setParticle(ParticleInit.DARK_MATTER.get());
+        areaEffectCloudEntity.setRadius(5.0F);
+        areaEffectCloudEntity.setDuration(60);
+        areaEffectCloudEntity.setRadiusPerTick((7.0F - areaEffectCloudEntity.getRadius()) / (float) areaEffectCloudEntity.getDuration());
+        areaEffectCloudEntity.addEffect(new EffectInstance(Effects.HARM, 1, 1));
+
+        world.levelEvent(2006, pos, 1);
+        world.addFreshEntity(areaEffectCloudEntity);
     }
 
     /**
