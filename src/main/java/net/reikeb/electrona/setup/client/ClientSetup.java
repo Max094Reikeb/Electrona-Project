@@ -24,8 +24,7 @@ import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.guis.*;
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.particles.*;
-import net.reikeb.electrona.setup.client.render.RadioactiveZombieRenderer;
-import net.reikeb.electrona.tileentities.*;
+import net.reikeb.electrona.setup.client.render.*;
 
 import static net.reikeb.electrona.init.ContainerInit.*;
 

@@ -1,4 +1,4 @@
-package net.reikeb.electrona.tileentities;
+package net.reikeb.electrona.setup.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.tileentity.*;
 import net.minecraft.item.DyeColor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.reikeb.electrona.tileentities.TileSingularity;
 
 public class TileSingularityRenderer extends TileEntityRenderer<TileSingularity> {
 
