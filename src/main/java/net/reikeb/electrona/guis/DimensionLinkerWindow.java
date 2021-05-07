@@ -78,7 +78,7 @@ public class DimensionLinkerWindow extends ContainerScreen<DimensionLinkerContai
 
     public String getDimensionID() {
         String id = tileEntity.getTileData().getString("dimensionID");
-        return ((id.equals("") || id == null) ? "minecraft:overworld" : id);
+        return ((id.equals("")) ? "minecraft:overworld" : id);
     }
 
     @Override

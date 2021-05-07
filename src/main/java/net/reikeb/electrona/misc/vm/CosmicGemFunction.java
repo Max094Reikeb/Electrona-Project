@@ -49,6 +49,7 @@ public class CosmicGemFunction {
             double ty = location.y() + stepY;
             double tz = location.z() + stepZ;
             BlockPos teleportPos = new BlockPos(tx, ty, tz);
+            playerEntity.fallDistance = 0;
             TeleporterFunction.teleport(world, playerEntity.blockPosition(), teleportPos, playerEntity);
             return true;
         } else if (GemPower.YO_YO.equalsTo(getPower(stack))) {
@@ -67,6 +68,7 @@ public class CosmicGemFunction {
                     double posY = stack.getOrCreateTag().getDouble("powerYoYoY");
                     double posZ = stack.getOrCreateTag().getDouble("powerYoYoZ");
                     BlockPos teleportPos = new BlockPos(posX, posY, posZ);
+                    playerEntity.fallDistance = 0;
                     TeleporterFunction.teleport(world, playerEntity.blockPosition(), teleportPos, playerEntity);
                     return true;
                 } else {
@@ -94,6 +96,7 @@ public class CosmicGemFunction {
                         if (world == _defaultWorld) {
                             if (!playerEntity.level.isClientSide && playerEntity instanceof ServerPlayerEntity) {
                                 if (_newWorld != null) {
+                                    playerEntity.fallDistance = 0;
                                     {
                                         ((ServerPlayerEntity) playerEntity).connection
                                                 .send(new SChangeGameStatePacket(SChangeGameStatePacket.WIN_GAME, 0));
@@ -124,7 +127,18 @@ public class CosmicGemFunction {
                                                 || belowTpBlock == Blocks.MAGMA_BLOCK) {
                                             _newWorld.setBlockAndUpdate(teleportPos.below(), Blocks.NETHERRACK.defaultBlockState());
                                         }
-                                        return true;
+                                    }
+                                    if (stack.getOrCreateTag().getString("dimension").equals("end")) {
+                                        BlockPos endPos = _newWorld.getSharedSpawnPos().below();
+                                        _newWorld.setBlockAndUpdate(endPos, Blocks.OBSIDIAN.defaultBlockState());
+                                        _newWorld.setBlockAndUpdate(endPos.east(), Blocks.OBSIDIAN.defaultBlockState());
+                                        _newWorld.setBlockAndUpdate(endPos.north(), Blocks.OBSIDIAN.defaultBlockState());
+                                        _newWorld.setBlockAndUpdate(endPos.north().west(), Blocks.OBSIDIAN.defaultBlockState());
+                                        _newWorld.setBlockAndUpdate(endPos.north().east(), Blocks.OBSIDIAN.defaultBlockState());
+                                        _newWorld.setBlockAndUpdate(endPos.south(), Blocks.OBSIDIAN.defaultBlockState());
+                                        _newWorld.setBlockAndUpdate(endPos.south().west(), Blocks.OBSIDIAN.defaultBlockState());
+                                        _newWorld.setBlockAndUpdate(endPos.south().east(), Blocks.OBSIDIAN.defaultBlockState());
+                                        _newWorld.setBlockAndUpdate(endPos.west(), Blocks.OBSIDIAN.defaultBlockState());
                                     }
                                     return true;
                                 }
@@ -132,6 +146,7 @@ public class CosmicGemFunction {
                         } else if (world == _newWorld) {
                             if (!playerEntity.level.isClientSide && playerEntity instanceof ServerPlayerEntity) {
                                 if (_defaultWorld != null) {
+                                    playerEntity.fallDistance = 0;
                                     {
                                         ((ServerPlayerEntity) playerEntity).connection
                                                 .send(new SChangeGameStatePacket(SChangeGameStatePacket.WIN_GAME, 0));
