@@ -52,7 +52,8 @@ public class ClientSetup {
         ScreenManager.register(NUCLEAR_BOMB_CONTAINER.get(), NuclearBombWindow::new);
 
         // Connect Entities and their renderer
-        RenderingRegistry.registerEntityRenderingHandler(EntityInit.RADIOACTIVE_ZOMBIE.get(), RadioactiveZombieRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.RADIOACTIVE_ZOMBIE_TYPE, RadioactiveZombieRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.ENERGETIC_LIGHTNING_BOLT_TYPE, EnergeticLightningBoltRenderer::new);
 
         // Connect TileEntities and their renderer
         ClientRegistry.bindTileEntityRenderer(TileEntityInit.TILE_SINGULARITY.get(), TileSingularityRenderer::new);
