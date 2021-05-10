@@ -5,19 +5,18 @@ import com.google.common.collect.Lists;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.server.ChunkHolder;
-import net.minecraft.world.server.ServerChunkProvider;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.server.TicketManager;
+import net.minecraft.world.server.*;
 
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.entity.EnergeticLightningBolt;
 import net.reikeb.electrona.init.EntityInit;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 @Mod.EventBusSubscriber(modid = Electrona.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -38,8 +37,7 @@ public class WorldTickEvent {
                             if (optional1.isPresent()) {
                                 Chunk chunk = optional1.get();
                                 ChunkPos chunkpos = p_241099_7_.getPos();
-                                if (!chunkProvider.chunkMap.noPlayersCloseForSpawning(chunkpos) ||
-                                        chunkProvider.chunkMap.getDistanceManager().shouldForceTicks(chunkpos.toLong())) {
+                                if (!chunkProvider.chunkMap.noPlayersCloseForSpawning(chunkpos) || shouldForceTicks(chunkpos.toLong())) {
                                     lightnings((ServerWorld) event.world, chunk);
                                 }
                             }
@@ -52,10 +50,9 @@ public class WorldTickEvent {
 
     private static void lightnings(ServerWorld world, Chunk chunk) {
         ChunkPos chunkPos = chunk.getPos();
-        boolean flag = world.isRaining();
         int i = chunkPos.getMinBlockX();
         int j = chunkPos.getMinBlockZ();
-        if (flag && world.isThundering() && world.random.nextInt(100000) == 0) {
+        if (world.isRaining() && world.isThundering() && world.random.nextInt(100000) == 0) {
             BlockPos pos = world.findLightingTargetAround(world.getBlockRandomPos(i, 0, j, 15));
             if (world.isRainingAt(pos)) {
                 EnergeticLightningBolt energeticLightningBolt = EntityInit.ENERGETIC_LIGHTNING_BOLT_TYPE.create(world);
@@ -64,5 +61,16 @@ public class WorldTickEvent {
                 world.addFreshEntity(energeticLightningBolt);
             }
         }
+    }
+
+    public static boolean shouldForceTicks(long chunkPos) {
+        try {
+            Method shouldForceTickMethod = ObfuscationReflectionHelper.findMethod(TicketManager.class, "shouldForceTicks", boolean.class);
+            shouldForceTickMethod.setAccessible(true);
+            return (boolean) shouldForceTickMethod.invoke(null, chunkPos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
