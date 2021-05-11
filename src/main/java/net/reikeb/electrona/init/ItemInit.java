@@ -175,4 +175,7 @@ public class ItemInit {
 
     public static final RegistryObject<Item> CHARDWOOD_LOG_ITEM = ITEMS.register("chardwood_log", () ->
             new BlockItem(BlockInit.CHARDWOOD_LOG.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
+
+    public static final RegistryObject<Item> ENERGETIC_LIGHTNING_ROD_ITEM = ITEMS.register("energetic_lightning_rod", () ->
+            new BlockItem(BlockInit.ENERGETIC_LIGHTNING_ROD.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
 }

@@ -52,6 +52,7 @@
   "block.electrona.el_converter": "EL-konverterare",
   "block.electrona.el_converter.desc1": "§dKonverterar 3 till 6ELs/t",
   "block.electrona.el_converter.desc2": "§dKan lagra: §c10 000ELs/FE",
+  "block.electrona.energetic_lightning_rod": "",
   "block.electrona.heat_generator": "Värmegenerator",
   "block.electrona.heat_generator.desc1": "§dGenererar 3ELs/t",
   "block.electrona.heat_generator.desc2": "§dKan lagra : §c2 000ELs",

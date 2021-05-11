@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "electrona:block/energetic_lightning_rod",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "electrona:block/energetic_lightning_rod",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "electrona:block/energetic_lightning_rod",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "electrona:block/energetic_lightning_rod",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "electrona:block/energetic_lightning_rod"
+    },
+    "facing=west": {
+      "model": "electrona:block/energetic_lightning_rod",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

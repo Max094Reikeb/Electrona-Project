@@ -7,6 +7,7 @@
     "electrona:heat_generator",
     "electrona:biomass_generator",
     "electrona:nuclear_generator_controller",
-    "electrona:creative_generator"
+    "electrona:creative_generator",
+    "electrona:energetic_lightning_rod"
   ]
 }

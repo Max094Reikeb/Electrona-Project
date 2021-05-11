@@ -31,6 +31,9 @@ public class TileEntityInit {
     public static final RegistryObject<TileEntityType<TileNuclearGeneratorController>> TILE_NUCLEAR_GENERATOR_CONTROLLER = TILE_ENTITIES.register("nuclear_generator_controller", () ->
             TileEntityType.Builder.of(TileNuclearGeneratorController::new, BlockInit.NUCLEAR_GENERATOR_CONTROLLER.get()).build(null));
 
+    public static final RegistryObject<TileEntityType<TileEnergeticLightningRod>> TILE_ENERGETIC_LIGHTNING_ROD = TILE_ENTITIES.register("energetic_lightning_rod", () ->
+            TileEntityType.Builder.of(TileEnergeticLightningRod::new, BlockInit.ENERGETIC_LIGHTNING_ROD.get()).build(null));
+
     public static final RegistryObject<TileEntityType<TileCreativeGenerator>> TILE_CREATIVE_GENERATOR = TILE_ENTITIES.register("creative_generator", () ->
             TileEntityType.Builder.of(TileCreativeGenerator::new, BlockInit.CREATIVE_GENERATOR.get()).build(null));
 

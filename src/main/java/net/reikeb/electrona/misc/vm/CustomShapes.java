@@ -19,6 +19,24 @@ public class CustomShapes {
     }).get();
 
     /**
+     * VoxelShapes of the Energetic Lightning Rod
+     */
+    public static VoxelShape EnergeticLightningRodUp = VoxelShapes.join(
+            Block.box(6, 12, 6, 10, 16, 10),
+            Block.box(7, 0, 7, 9, 12, 9),
+            IBooleanFunction.OR);
+
+    public static VoxelShape EnergeticLightningRodDown = VoxelShapes.join(
+            Block.box(6, 0, 6, 10, 4, 10),
+            Block.box(7, 4, 7, 9, 16, 9),
+            IBooleanFunction.OR);
+
+    public static VoxelShape EnergeticLightningRod = VoxelShapes.join(
+            Block.box(6, 6, 0, 10, 10, 4),
+            Block.box(7, 7, 4, 9, 9, 16),
+            IBooleanFunction.OR);
+
+    /**
      * VoxelShape of the Nuclear Bomb
      */
     public static VoxelShape NuclearBomb = Stream.of(
