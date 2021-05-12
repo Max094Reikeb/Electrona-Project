@@ -25,7 +25,9 @@
   "carvers": {},
   "features": [
     [
-      "electrona:patch_dead_vegetation_nuclear"
+      "electrona:patch_dead_vegetation_nuclear",
+      "electrona:patch_radioactive_grass",
+      "electrona:patch_radioactive_tall_grass"
     ]
   ]
 }

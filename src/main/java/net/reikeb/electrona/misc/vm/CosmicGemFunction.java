@@ -2,6 +2,7 @@ package net.reikeb.electrona.misc.vm;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.*;
@@ -16,6 +17,9 @@ import net.minecraft.world.server.ServerWorld;
 
 import net.reikeb.electrona.utils.*;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 public class CosmicGemFunction {
 
     /**
@@ -24,6 +28,7 @@ public class CosmicGemFunction {
      * @param world        The world of the user
      * @param playerEntity The user of the Gem
      * @param stack        The Gem as ItemStack
+     * @return Returns true if the Gem was used with success
      */
     public static boolean use(World world, PlayerEntity playerEntity, ItemStack stack) {
         if (GemPower.INVISIBILITY.equalsTo(getPower(stack))) {
@@ -32,6 +37,7 @@ public class CosmicGemFunction {
         } else if (GemPower.STRENGTH.equalsTo(getPower(stack))) {
             playerEntity.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 600, 2, false, false, false));
             return true;
+
         } else if (GemPower.TELEPORTATION.equalsTo(getPower(stack))) {
             RayTraceResult rayTraceResult = ElectronaUtils.lookAt(playerEntity, 100D, 1F, false);
             Vector3d location = rayTraceResult.getLocation();
@@ -52,6 +58,7 @@ public class CosmicGemFunction {
             playerEntity.fallDistance = 0;
             TeleporterFunction.teleport(world, playerEntity.blockPosition(), teleportPos, playerEntity);
             return true;
+
         } else if (GemPower.YO_YO.equalsTo(getPower(stack))) {
             if (playerEntity.isShiftKeyDown()) {
                 stack.getOrCreateTag().putDouble("powerYoYoX", playerEntity.getX());
@@ -78,6 +85,7 @@ public class CosmicGemFunction {
                     return false;
                 }
             }
+
         } else if (GemPower.DIMENSION_TRAVEL.equalsTo(getPower(stack))) {
             if (stack.getOrCreateTag().getBoolean("dimensionTravel")) {
                 BlockPos playerPos = playerEntity.blockPosition();
@@ -195,10 +203,43 @@ public class CosmicGemFunction {
                 }
                 return false;
             }
+
+        } else if (GemPower.KNOCKBACK.equalsTo(getPower(stack)) && playerEntity.isShiftKeyDown()) {
+            int x = playerEntity.blockPosition().getX();
+            int y = playerEntity.blockPosition().getY();
+            int z = playerEntity.blockPosition().getZ();
+            boolean flag = false;
+            {
+                List<Entity> _entfound = world.getEntitiesOfClass(Entity.class,
+                        new AxisAlignedBB(x - 5, y - 5, z - 5,
+                                x + 5, y + 5, z + 5),
+                        null).stream().sorted(new Object() {
+                    Comparator<Entity> compareDistOf(double _x, double _y, double _z) {
+                        return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(_x, _y, _z));
+                    }
+                }.compareDistOf(x, y, z)).collect(Collectors.toList());
+                for (Entity entity : _entfound) {
+                    if ((entity instanceof LivingEntity) && (entity != playerEntity)) {
+                        flag = true;
+                        ((LivingEntity) entity).knockback(5F * 0.5F, MathHelper.sin(playerEntity.yRot * ((float) Math.PI / 180F)), -MathHelper.cos(playerEntity.yRot * ((float) Math.PI / 180F)));
+                        playerEntity.setDeltaMovement(playerEntity.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
+                    }
+                }
+                return flag;
+            }
         }
         return false;
     }
 
+    /**
+     * Uses the power of the Gem when clicked on a block
+     *
+     * @param world        The world of the user
+     * @param state        The BlockState of the clicked block
+     * @param playerEntity The user of the Gem
+     * @param stack        The Gem as ItemStack
+     * @return Returns true if the Gem was used with success
+     */
     public static boolean useOn(World world, BlockState state, PlayerEntity playerEntity, ItemStack stack) {
         if (GemPower.DIMENSION_TRAVEL.equalsTo(getPower(stack))) {
             if (state.is(Blocks.OBSIDIAN)) {
@@ -216,6 +257,9 @@ public class CosmicGemFunction {
                 }
                 return true;
             }
+            return false;
+        } else {
+            use(world, playerEntity, stack);
         }
         return false;
     }

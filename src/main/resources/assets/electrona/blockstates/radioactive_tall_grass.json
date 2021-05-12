@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=upper": {
+      "model": "electrona:block/radioactive_tall_grass"
+    },
+    "half=lower": {
+      "model": "electrona:block/radioactive_tall_grass_bottom"
+    }
+  }
+}

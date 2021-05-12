@@ -10,7 +10,8 @@ public enum GemPower {
     STRENGTH(1, "strength", 3600),
     TELEPORTATION(2, "teleportation", 80),
     YO_YO(3, "yo_yo", 400),
-    DIMENSION_TRAVEL(4, "dimension_travel", 400);
+    DIMENSION_TRAVEL(4, "dimension_travel", 400),
+    KNOCKBACK(5, "knockback", 600);
 
     private final int id;
     private final String name;
