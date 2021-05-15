@@ -13,5 +13,6 @@ public class ParticleInit {
             Electrona.MODID);
 
     public static final RegistryObject<BasicParticleType> DARK_MATTER = PARTICLES.register("dark_matter", () -> new BasicParticleType(false));
+    public static final RegistryObject<BasicParticleType> GRAVITORIUM = PARTICLES.register("gravitorium", () -> new BasicParticleType(false));
     public static final RegistryObject<BasicParticleType> RADIOACTIVE_FALLOUT = PARTICLES.register("radioactive_fallout", () -> new BasicParticleType(false));
 }

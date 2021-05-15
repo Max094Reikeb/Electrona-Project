@@ -99,4 +99,7 @@ public class TileEntityInit {
 
     public static final RegistryObject<TileEntityType<TileNuclearBomb>> TILE_NUCLEAR_BOMB = TILE_ENTITIES.register("nuclear_bomb", () ->
             TileEntityType.Builder.of(TileNuclearBomb::new, BlockInit.NUCLEAR_BOMB.get()).build(null));
+
+    public static final RegistryObject<TileEntityType<TileGravitor>> TILE_GRAVITOR = TILE_ENTITIES.register("gravitor", () ->
+            TileEntityType.Builder.of(TileGravitor::new, BlockInit.GRAVITOR.get()).build(null));
 }

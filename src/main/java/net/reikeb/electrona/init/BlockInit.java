@@ -60,5 +60,5 @@ public class BlockInit {
     public static final RegistryObject<ChardwoodLog> CHARDWOOD_LOG = BLOCKS.register("chardwood_log", ChardwoodLog::new);
     public static final RegistryObject<RadioactiveGrass> RADIOACTIVE_GRASS = BLOCKS.register("radioactive_grass", RadioactiveGrass::new);
     public static final RegistryObject<RadioactiveTallGrass> RADIOACTIVE_TALL_GRASS = BLOCKS.register("radioactive_tall_grass", RadioactiveTallGrass::new);
-    // public static final RegistryObject<Gravitor> GRAVITOR = BLOCKS.register("gravitor", Gravitor::new);
+    public static final RegistryObject<Gravitor> GRAVITOR = BLOCKS.register("gravitor", Gravitor::new);
 }

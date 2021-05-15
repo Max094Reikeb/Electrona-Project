@@ -53,6 +53,7 @@
   "block.electrona.el_converter.desc1": "§dConverts 3 to 6 ELs/t",
   "block.electrona.el_converter.desc2": "§dCan store : §c10 000ELs/FE",
   "block.electrona.energetic_lightning_rod": "Energetic Lightning Rod",
+  "block.electrona.gravitor": "Gravitor",
   "block.electrona.heat_generator": "Heat Generator",
   "block.electrona.heat_generator.desc1": "§dGenerates 3ELs/t",
   "block.electrona.heat_generator.desc2": "§dCan store : §c2 000ELs",

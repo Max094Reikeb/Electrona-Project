@@ -57,7 +57,7 @@ public class ClientSetup {
 
         // Connect TileEntities and their renderer
         ClientRegistry.bindTileEntityRenderer(TileEntityInit.TILE_SINGULARITY.get(), TileSingularityRenderer::new);
-        // ClientRegistry.bindTileEntityRenderer(TileEntityInit.TILE_GRAVITOR.get(), TileGravitorRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(TileEntityInit.TILE_GRAVITOR.get(), TileGravitorRenderer::new);
 
         // Make this deferred for unsafe threads
         event.enqueueWork(() -> {
@@ -66,7 +66,7 @@ public class ClientSetup {
             RenderTypeLookup.setRenderLayer(BlockInit.PURIFICATOR.get(), RenderType.cutout());
             RenderTypeLookup.setRenderLayer(BlockInit.RADIOACTIVE_GRASS.get(), RenderType.cutout());
             RenderTypeLookup.setRenderLayer(BlockInit.RADIOACTIVE_TALL_GRASS.get(), RenderType.cutout());
-            // RenderTypeLookup.setRenderLayer(BlockInit.GRAVITOR.get(), RenderType.cutout());
+            RenderTypeLookup.setRenderLayer(BlockInit.GRAVITOR.get(), RenderType.cutout());
 
             // Translucent
             RenderTypeLookup.setRenderLayer(BlockInit.HOLE.get(), RenderType.translucent());
@@ -146,6 +146,7 @@ public class ClientSetup {
     @SubscribeEvent
     public static void registerParticles(ParticleFactoryRegisterEvent event) {
         Minecraft.getInstance().particleEngine.register(ParticleInit.DARK_MATTER.get(), DarkMatter.DarkMatterParticleFactory::new);
+        Minecraft.getInstance().particleEngine.register(ParticleInit.GRAVITORIUM.get(), Gravitorium.GravitoriumParticleFactory::new);
         Minecraft.getInstance().particleEngine.register(ParticleInit.RADIOACTIVE_FALLOUT.get(), RadioactiveFallout.RadioactiveFalloutFactory::new);
     }
 }
