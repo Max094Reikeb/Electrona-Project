@@ -55,7 +55,7 @@ public class BiomeUpdatePacket {
                             int dist = (int) Math.sqrt(YY);
                             if (dist < radius || dist < onepointfiveradius) {
                                 newPos.set(xx, yy, zz);
-                                ElectronaUtils.setBiomeAtPos(world, newPos, BiomeInit.NUCLEAR_BIOME_KEY);
+                                ElectronaUtils.Biome.setBiomeAtPos(world, newPos, BiomeInit.NUCLEAR_BIOME_KEY);
                             }
                         }
                     }

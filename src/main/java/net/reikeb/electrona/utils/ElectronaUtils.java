@@ -1,6 +1,8 @@
 package net.reikeb.electrona.utils;
 
+import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.shapes.*;
@@ -38,32 +40,6 @@ public class ElectronaUtils {
     }
 
     /**
-     * Method that modifies the Biome at a BlockPos
-     *
-     * @param world    The World
-     * @param pos      The BlockPos
-     * @param biomeKey The RegistryKey of the Biome
-     */
-    public static void setBiomeAtPos(World world, BlockPos pos, RegistryKey<Biome> biomeKey) {
-        Optional<MutableRegistry<Biome>> biomeRegistry = world.registryAccess().registry(Registry.BIOME_REGISTRY);
-        if (!biomeRegistry.isPresent()) return;
-        Biome biome = biomeRegistry.get().get(biomeKey);
-        if (biome == null) return;
-        BiomeContainer bc = world.getChunk(pos).getBiomes();
-        IChunk chunk = world.getChunk(pos);
-        if (bc != null && bc.biomes != null) {
-            Biome[] biomeArray = bc.biomes;
-            int biomeIndex = BiomeUtil.getBiomeIndex(pos.getX(), pos.getY(), pos.getZ(), 0L);
-            if (biomeIndex < biomeArray.length) {
-                biomeArray[biomeIndex] = biome;
-            } else {
-                Electrona.LOGGER.error(String.format("Failed to set biome at pos: %s; to biome: %s", pos, biome));
-            }
-        }
-        chunk.setUnsaved(true);
-    }
-
-    /**
      * Method that gets the RayTraceResult of where an entity looks at
      *
      * @param entity        The entity
@@ -79,11 +55,99 @@ public class ElectronaUtils {
         return entity.level.clip(new RayTraceContext(vector3d, vector3d2, RayTraceContext.BlockMode.OUTLINE, includeFluids ? RayTraceContext.FluidMode.ANY : RayTraceContext.FluidMode.NONE, entity));
     }
 
-    private static class BiomeUtil {
+    public static class Gravity {
+
+        public static void applyGravity(World world, BlockPos pos) {
+            if (isGravityAffected(world, pos)) {
+                FallingBlockEntity fallingBlockEntity = new FallingBlockEntity(world, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, world.getBlockState(pos));
+                fallingBlockEntity.time = 1;
+                world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+                world.addFreshEntity(fallingBlockEntity);
+            }
+        }
+
+        public static boolean isGravityAffected(World world, BlockPos pos) {
+            if (world == null) return false;
+            Block block = world.getBlockState(pos).getBlock();
+            boolean flag1 = isAir(world, pos);
+            boolean flag2 = (block instanceof LeavesBlock) || (block instanceof TorchBlock) || (block instanceof LanternBlock) || (block instanceof LeverBlock) || (block == Blocks.BEDROCK) || (block instanceof FlowingFluidBlock);
+            boolean flag3 = world.isEmptyBlock(pos.below()) || FallingBlock.isFree(world.getBlockState(pos.below()));
+            boolean flag4 = isSupport(world, pos);
+            boolean flag5 = staysAttached(world, pos);
+            return ((!flag1) && (!flag2) && (pos.getY() > 0) && flag3 && (!flag4) && (!flag5));
+        }
+
+        private static boolean isSupport(World world, BlockPos pos) {
+            if (world == null) return false;
+            Block block = world.getBlockState(pos).getBlock();
+            if ((block instanceof StairsBlock) || (block instanceof SlabBlock)) {
+                return !isAir(world, pos.north()) || !isAir(world, pos.south())
+                        || !isAir(world, pos.east()) || !isAir(world, pos.west());
+            }
+            return false;
+        }
+
+        private static boolean staysAttached(World world, BlockPos pos) {
+            Block block = world.getBlockState(pos).getBlock();
+            if ((block instanceof FenceBlock) || (block instanceof FenceGateBlock)
+                    || (block instanceof ChainBlock) || (block instanceof PaneBlock)) {
+                return !isAir(world, pos.north()) || !isAir(world, pos.south())
+                        || !isAir(world, pos.east()) || !isAir(world, pos.west());
+            }
+            return false;
+        }
+
+        public static boolean isAir(World world, BlockPos pos) {
+            Block block = world.getBlockState(pos).getBlock();
+            return (block == Blocks.AIR) || (block == Blocks.VOID_AIR) || (block == Blocks.CAVE_AIR);
+        }
+
+        /*
+        private static boolean isAttachedToNormalBlock(World world, BlockPos pos, boolean checkNextBlock) {
+            for (Direction dir : Direction.values()) {
+                BlockPos otherPos = pos.relative(dir);
+                if ((!isSupport(world, otherPos)) && (!staysAttached(world, otherPos))) {
+                    return true;
+                } else {
+                    if (checkNextBlock) {
+                        if (!isAir(world, otherPos)) {
+                            if (isAttachedToNormalBlock(world, otherPos, false)) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+            return false;
+        }
+         */
+    }
+
+    public static class Biome {
 
         private static final int WIDTH_BITS = (int) Math.round(Math.log(16.0D) / Math.log(2.0D)) - 2;
 
-        public static int getBiomeIndex(int x, int y, int z, long seed) {
+        public static void setBiomeAtPos(World world, BlockPos pos, RegistryKey<net.minecraft.world.biome.Biome> biomeKey) {
+            Optional<MutableRegistry<net.minecraft.world.biome.Biome>> biomeRegistry = world.registryAccess().registry(Registry.BIOME_REGISTRY);
+            if (!biomeRegistry.isPresent()) return;
+            net.minecraft.world.biome.Biome biome = biomeRegistry.get().get(biomeKey);
+            if (biome == null) return;
+            BiomeContainer bc = world.getChunk(pos).getBiomes();
+            IChunk chunk = world.getChunk(pos);
+            if (bc != null && bc.biomes != null) {
+                net.minecraft.world.biome.Biome[] biomeArray = bc.biomes;
+                int biomeIndex = getBiomeIndex(pos.getX(), pos.getY(), pos.getZ(), 0L);
+                if (biomeIndex < biomeArray.length) {
+                    biomeArray[biomeIndex] = biome;
+                } else {
+                    Electrona.LOGGER.error(String.format("Failed to set biome at pos: %s; to biome: %s", pos, biome));
+                }
+            }
+            chunk.setUnsaved(true);
+        }
+
+        private static int getBiomeIndex(int x, int y, int z, long seed) {
             int i = x - 2;
             int j = y - 2;
             int k = z - 2;
