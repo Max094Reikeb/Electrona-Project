@@ -1,4 +1,4 @@
-# Creates releases on GH Packages based on a version tag
+# Creates releases on GH Packages when a new version is released
 name: Github Packages Release
 
 on:
