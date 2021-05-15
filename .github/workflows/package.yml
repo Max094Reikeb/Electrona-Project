@@ -1,0 +1,69 @@
+# Creates releases on GH Packages based on a version tag
+name: Github Packages Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  vars:
+    name: Get Variables
+    runs-on: ubuntu-20.04
+    outputs:
+      mc_version: ${{ steps.mc_version.outputs.value }}
+      mod_id: ${{ steps.mod_id.outputs.value }}
+      mod_version: ${{ steps.mod_version.outputs.value }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Minecraft Version
+        id: mc_version
+        uses: christian-draeger/read-properties@1.0.1
+        with:
+          path: './gradle.properties'
+          property: 'minecraft_version'
+
+      - name: Mod ID
+        id: mod_id
+        uses: christian-draeger/read-properties@1.0.1
+        with:
+          path: './gradle.properties'
+          property: 'mod_id'
+
+      - name: Mod Version
+        id: mod_version
+        uses: christian-draeger/read-properties@1.0.1
+        with:
+          path: './gradle.properties'
+          property: 'mod_version'
+
+  jar:
+    name: Publish JAR
+    runs-on: ubuntu-20.04
+    needs: [vars]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: "8.0.282"
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Publish JAR with Gradle
+        run: ./gradlew publish --max-workers 1
+        env:
+          GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: libs
+          path: |
+            build-out/${{ needs.vars.outputs.mod_id }}-${{ steps.mc_version.outputs.value }}-${{ needs.vars.outputs.mod_version }}.jar
+            build-out/${{ needs.vars.outputs.mod_id }}-${{ steps.mc_version.outputs.value }}-${{ needs.vars.outputs.mod_version }}-api.jar
