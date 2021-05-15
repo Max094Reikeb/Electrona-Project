@@ -65,5 +65,5 @@ jobs:
         with:
           name: libs
           path: |
-            build-out/${{ needs.vars.outputs.mod_id }}-${{ steps.mc_version.outputs.value }}-${{ needs.vars.outputs.mod_version }}.jar
-            build-out/${{ needs.vars.outputs.mod_id }}-${{ steps.mc_version.outputs.value }}-${{ needs.vars.outputs.mod_version }}-api.jar
+            build-out/${{ needs.vars.outputs.mod_id }}-${{ needs.vars.output.mc_version }}-${{ needs.vars.outputs.mod_version }}.jar
+            build-out/${{ needs.vars.outputs.mod_id }}-${{ needs.vars.output.mc_version }}-${{ needs.vars.outputs.mod_version }}-api.jar
