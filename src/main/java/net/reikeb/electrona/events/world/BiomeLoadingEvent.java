@@ -14,6 +14,9 @@ public class BiomeLoadingEvent {
 
     @SubscribeEvent
     public static void addFeatureToBiomes(net.minecraftforge.event.world.BiomeLoadingEvent event) {
+        if (event.getCategory().equals(Biome.Category.THEEND)) {
+            event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> ConfiguredFeatures.GRAVITONIUM_ORE_CONFIGURED_FEATURE);
+        }
         if (!event.getCategory().equals(Biome.Category.NETHER)
                 && !event.getCategory().equals(Biome.Category.THEEND)
                 && !event.getCategory().equals(Biome.Category.NONE)) {

@@ -1,0 +1,42 @@
+{
+  "group": "electrona",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "012",
+    "345",
+    "678"
+  ],
+  "key": {
+    "0": {
+      "item": "electrona:gravitonium"
+    },
+    "1": {
+      "item": "electrona:gravitonium"
+    },
+    "2": {
+      "item": "electrona:gravitonium"
+    },
+    "3": {
+      "item": "electrona:gravitonium"
+    },
+    "4": {
+      "item": "electrona:gravitonium"
+    },
+    "5": {
+      "item": "electrona:gravitonium"
+    },
+    "6": {
+      "item": "electrona:gravitonium"
+    },
+    "7": {
+      "item": "electrona:gravitonium"
+    },
+    "8": {
+      "item": "electrona:gravitonium"
+    }
+  },
+  "result": {
+    "item": "electrona:gravitonium_block",
+    "count": 1
+  }
+}

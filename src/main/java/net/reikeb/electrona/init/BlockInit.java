@@ -40,12 +40,14 @@ public class BlockInit {
     public static final RegistryObject<TinOre> TIN_ORE = BLOCKS.register("tin_ore", TinOre::new);
     public static final RegistryObject<LeadOre> LEAD_ORE = BLOCKS.register("lead_ore", LeadOre::new);
     public static final RegistryObject<UraniumOre> URANIUM_ORE = BLOCKS.register("uranium_ore", UraniumOre::new);
+    public static final RegistryObject<GravitoniumOre> GRAVITONIUM_ORE = BLOCKS.register("gravitonium_ore", GravitoniumOre::new);
     public static final RegistryObject<TinBlock> TIN_BLOCK = BLOCKS.register("tin_block", TinBlock::new);
     public static final RegistryObject<SteelBlock> STEEL_BLOCK = BLOCKS.register("steel_block", SteelBlock::new);
     public static final RegistryObject<SteelCrate> STEEL_CRATE = BLOCKS.register("steel_crate", SteelCrate::new);
     public static final RegistryObject<LeadBlock> LEAD_BLOCK = BLOCKS.register("lead_block", LeadBlock::new);
     public static final RegistryObject<LeadCrate> LEAD_CRATE = BLOCKS.register("lead_crate", LeadCrate::new);
     public static final RegistryObject<LeadDoor> LEAD_DOOR = BLOCKS.register("lead_door", LeadDoor::new);
+    public static final RegistryObject<GravitoniumBlock> GRAVITONIUM_BLOCK = BLOCKS.register("gravitonium_block", GravitoniumBlock::new);
     public static final RegistryObject<MachineCasing> MACHINE_CASING = BLOCKS.register("machine_casing", MachineCasing::new);
     public static final RegistryObject<Cable> CABLE = BLOCKS.register("cable", Cable::new);
     public static final RegistryObject<BlueCable> BLUE_CABLE = BLOCKS.register("blue_cable", BlueCable::new);

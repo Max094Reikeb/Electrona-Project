@@ -3,6 +3,7 @@
   "values": [
     "electrona:tin_ore",
     "electrona:uranium_ore",
-    "electrona:lead_ore"
+    "electrona:lead_ore",
+    "electrona:gravitonium_ore"
   ]
 }
