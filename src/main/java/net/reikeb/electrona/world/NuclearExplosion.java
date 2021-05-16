@@ -45,8 +45,10 @@ public class NuclearExplosion {
     };
 
     private final List<Block> affectedBlocks = new ArrayList<>();
+    private final Vector3d position;
 
     public NuclearExplosion(World world, int x, int y, int z, int strength) {
+        this.position = new Vector3d(x, y, z);
         if (!world.isClientSide) {
             if (!MinecraftForge.EVENT_BUS.post(new NuclearExplosionEvent.Start(world, this))) {
                 createHole(world, x, y, z, strength);
@@ -54,6 +56,10 @@ public class NuclearExplosion {
                 fixLag(world, x, y, z, strength);
             }
         }
+    }
+
+    public Vector3d getPosition() {
+        return this.position;
     }
 
     private void createHole(World world, int x, int y, int z, int radius) {

@@ -22,6 +22,7 @@ import net.reikeb.electrona.entity.EnergeticLightningBolt;
  * <br>
  * This event is fired on the {@link MinecraftForge#EVENT_BUS}.<br>
  **/
+@Cancelable
 public class EntityStruckByEnergeticLightningEvent extends EntityEvent {
 
     private final EnergeticLightningBolt lightning;
