@@ -137,7 +137,7 @@ public class NuclearExplosion {
                             }
                             if (flag) {
                                 ElectronaUtils.Gravity.applyGravity(world, blockPos);
-                                ElectronaUtils.Biome.setBiomeAtPos(world, blockPos, BiomeInit.NUCLEAR_BIOME_KEY);
+                                ElectronaUtils.Biome.setBiomeKeyAtPos(world, blockPos, BiomeInit.NUCLEAR_BIOME_KEY);
                             }
                         }
                     }
