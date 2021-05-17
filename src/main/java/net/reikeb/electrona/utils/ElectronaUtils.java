@@ -128,6 +128,11 @@ public class ElectronaUtils {
 
         private static final int WIDTH_BITS = (int) Math.round(Math.log(16.0D) / Math.log(2.0D)) - 2;
 
+        public static void setBiomeAtPos(World world, BlockPos pos, ResourceLocation biome) {
+            RegistryKey<net.minecraft.world.biome.Biome> biomeKey = RegistryKey.create(Registry.BIOME_REGISTRY, biome);
+            setBiomeAtPos(world, pos, biomeKey);
+        }
+
         public static void setBiomeAtPos(World world, BlockPos pos, RegistryKey<net.minecraft.world.biome.Biome> biomeKey) {
             Optional<MutableRegistry<net.minecraft.world.biome.Biome>> biomeRegistry = world.registryAccess().registry(Registry.BIOME_REGISTRY);
             if (!biomeRegistry.isPresent()) return;
