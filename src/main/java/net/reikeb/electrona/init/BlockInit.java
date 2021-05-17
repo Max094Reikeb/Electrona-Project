@@ -21,7 +21,6 @@ public class BlockInit {
     public static final RegistryObject<BiomassGenerator> BIOMASS_GENERATOR = BLOCKS.register("biomass_generator", BiomassGenerator::new);
     public static final RegistryObject<NuclearGeneratorController> NUCLEAR_GENERATOR_CONTROLLER = BLOCKS.register("nuclear_generator_controller", NuclearGeneratorController::new);
     public static final RegistryObject<CreativeGenerator> CREATIVE_GENERATOR = BLOCKS.register("creative_generator", CreativeGenerator::new);
-    public static final RegistryObject<EnergeticLightningRod> ENERGETIC_LIGHTNING_ROD = BLOCKS.register("energetic_lightning_rod", EnergeticLightningRod::new);
 
     // Machines
     public static final RegistryObject<Battery> BATTERY = BLOCKS.register("battery", Battery::new);
@@ -60,6 +59,7 @@ public class BlockInit {
     public static final RegistryObject<NuclearBomb> NUCLEAR_BOMB = BLOCKS.register("nuclear_bomb", NuclearBomb::new);
     public static final RegistryObject<RadioactiveDirt> RADIOACTIVE_DIRT = BLOCKS.register("radioactive_dirt", RadioactiveDirt::new);
     public static final RegistryObject<ChardwoodLog> CHARDWOOD_LOG = BLOCKS.register("chardwood_log", ChardwoodLog::new);
+    public static final RegistryObject<EnergeticLightningRod> ENERGETIC_LIGHTNING_ROD = BLOCKS.register("energetic_lightning_rod", EnergeticLightningRod::new);
     public static final RegistryObject<RadioactiveGrass> RADIOACTIVE_GRASS = BLOCKS.register("radioactive_grass", RadioactiveGrass::new);
     public static final RegistryObject<RadioactiveTallGrass> RADIOACTIVE_TALL_GRASS = BLOCKS.register("radioactive_tall_grass", RadioactiveTallGrass::new);
     public static final RegistryObject<Gravitor> GRAVITOR = BLOCKS.register("gravitor", Gravitor::new);
