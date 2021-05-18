@@ -2,10 +2,8 @@ package net.reikeb.electrona.items;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.item.*;
-import net.minecraft.util.ActionResultType;
 
 import net.reikeb.electrona.setup.ItemGroups;
-import net.reikeb.electrona.utils.ElectronaUtils;
 
 public class Gravitonium extends Item {
 
@@ -29,12 +27,5 @@ public class Gravitonium extends Item {
     @Override
     public float getDestroySpeed(ItemStack par1ItemStack, BlockState par2Block) {
         return 1F;
-    }
-
-    @Override
-    public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
-        ActionResultType action = super.onItemUseFirst(stack, context);
-        ElectronaUtils.Gravity.applyGravity(context.getLevel(), context.getClickedPos());
-        return action;
     }
 }
