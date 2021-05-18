@@ -111,6 +111,20 @@ public class VillagerTradesRegistration {
                     .build()
             );
             /**
+             * Price: 5 Gravitonium
+             * Price2: 27 Emeralds
+             * Sale: 1 Gravity Device
+             * Max trades: 7
+             * XP: 5
+             * Price multiplier: 0.05F
+             */
+            trades.get(4).add(new RandomTradeBuilder(7, 5, 0.05F)
+                    .setPrice(ItemInit.GRAVITONIUM.get(), 5, 5)
+                    .setPrice2(Items.EMERALD, 27, 27)
+                    .setForSale(ItemInit.GRAVITY_DEVICE.get(), 1, 1)
+                    .build()
+            );
+            /**
              * Price: 30 Emeralds
              * Price2: None
              * Sale: 1 Mechanic Wing
