@@ -2,7 +2,7 @@ package net.reikeb.electrona.events.entity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
@@ -23,10 +23,11 @@ public class KeyPressedEvent {
     @SubscribeEvent
     public static void onPlayerPressesKey(InputEvent.KeyInputEvent event) {
         if ((Minecraft.getInstance().screen instanceof ChatScreen) || (Minecraft.getInstance().screen != null)) return;
-        if (event.getKey() == Minecraft.getInstance().options.keyJump.getKey().getValue()) {
-            LivingEntity entity = Minecraft.getInstance().player;
-            IWorld world = Minecraft.getInstance().level;
-            if (entity == null || world == null) return;
+        PlayerEntity entity = Minecraft.getInstance().player;
+        IWorld world = Minecraft.getInstance().level;
+        if (entity == null || world == null) return;
+        int jumpKey = Minecraft.getInstance().options.keyJump.getKey().getValue();
+        if (event.getKey() == jumpKey) {
             ItemStack itemstack = entity.getItemBySlot(EquipmentSlotType.byTypeAndIndex(EquipmentSlotType.Group.ARMOR, 2));
             if ((itemstack.getItem() == ItemInit.MECHANIC_WINGS.get().asItem()) && (itemstack.getOrCreateTag().getDouble("ElectronicPower") >= 0.3)) {
                 entity.setDeltaMovement((entity.getDeltaMovement().x()), 0.3, (entity.getDeltaMovement().z()));
