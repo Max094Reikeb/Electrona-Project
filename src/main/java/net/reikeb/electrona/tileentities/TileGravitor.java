@@ -27,6 +27,9 @@ public class TileGravitor extends TileEntity implements ITickableTileEntity {
     private final List<BlockPos> effectBlocks = Lists.newArrayList();
     private long nextAmbientSoundActivation;
 
+    public double electronicPower;
+    private int maxStorage;
+
     public TileGravitor() {
         this(TileEntityInit.TILE_GRAVITOR.get());
     }
@@ -38,11 +41,17 @@ public class TileGravitor extends TileEntity implements ITickableTileEntity {
     public void tick() {
         if (this.level == null) return;
 
-        ++this.tickCount;
+        this.getTileData().putInt("MaxStorage", 50);
+        double electronicPower = this.getTileData().getDouble("ElectronicPower");
         long i = this.level.getGameTime();
+
+        ++this.tickCount;
+
         if (i % 40L == 0L) {
-            this.setActive(this.updateShape());
+            boolean flag = (this.updateShape()) && (electronicPower >= 10);
+            this.setActive(flag);
             if (!this.level.isClientSide && this.isActive()) {
+                this.getTileData().putDouble("ElectronicPower", (electronicPower - 10));
                 this.applyGravity();
             }
         }
@@ -86,7 +95,7 @@ public class TileGravitor extends TileEntity implements ITickableTileEntity {
                         BlockPos blockpos1 = this.worldPosition.offset(j1, k1, l1);
                         BlockState blockstate = this.level.getBlockState(blockpos1);
 
-                        if (blockstate.getBlock() == BlockInit.LEAD_BLOCK.get()) {
+                        if (blockstate.getBlock() == BlockInit.GRAVITONIUM_BLOCK.get()) {
                             this.effectBlocks.add(blockpos1);
                         }
                     }
@@ -159,10 +168,14 @@ public class TileGravitor extends TileEntity implements ITickableTileEntity {
 
     public void load(BlockState state, CompoundNBT nbt) {
         super.load(state, nbt);
+        this.electronicPower = nbt.getDouble("ElectronicPower");
+        this.maxStorage = nbt.getInt("MaxStorage");
     }
 
     public CompoundNBT save(CompoundNBT nbt) {
         super.save(nbt);
+        nbt.putDouble("ElectronicPower", this.electronicPower);
+        nbt.putInt("MaxStorage", this.maxStorage);
         return nbt;
     }
 

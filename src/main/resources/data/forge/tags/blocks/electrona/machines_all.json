@@ -9,6 +9,7 @@
     "electrona:water_pump",
     "electrona:sprayer",
     "electrona:mining_machine",
-    "electrona:conveyor"
+    "electrona:conveyor",
+    "electrona:gravitor"
   ]
 }
