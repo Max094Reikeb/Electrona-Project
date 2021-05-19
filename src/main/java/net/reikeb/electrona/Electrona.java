@@ -87,7 +87,7 @@ public class Electrona {
      * Here, we will use this to add our structure to all biomes.
      */
     public void biomeModification(final BiomeLoadingEvent event) {
-        if (event.getName().equals(new ResourceLocation("electrona", "nuclear"))) {
+        if (event.getName().equals(new ResourceLocation(MODID, "nuclear"))) {
             event.getGeneration().getStructures().add(() -> ConfiguredStructures.CONFIGURED_RUINS);
         }
     }
@@ -138,7 +138,7 @@ public class Electrona {
          * Register biomes
          */
         BiomeManager.addBiome(BiomeManager.BiomeType.DESERT, new BiomeManager.BiomeEntry(RegistryKey.create(Registry.BIOME_REGISTRY,
-                new ResourceLocation("electrona", "nuclear")), 5));
+                new ResourceLocation(MODID, "nuclear")), 5));
 
         /**
          * Custom potion recipes

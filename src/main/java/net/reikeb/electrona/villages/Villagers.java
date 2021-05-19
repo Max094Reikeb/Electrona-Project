@@ -9,21 +9,22 @@ import net.minecraft.village.PointOfInterestType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.*;
 
+import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.*;
 
 import java.util.function.Supplier;
 import java.util.Set;
 
 public class Villagers {
-    public static final DeferredRegister<PointOfInterestType> POI = DeferredRegister.create(ForgeRegistries.POI_TYPES, "electrona");
-    public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, "electrona");
+    public static final DeferredRegister<PointOfInterestType> POI = DeferredRegister.create(ForgeRegistries.POI_TYPES, Electrona.MODID);
+    public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, Electrona.MODID);
     public static final RegistryObject<PointOfInterestType> ENGINEER_POI = POI.register("engineer",
             () -> new PointOfInterestType("engineer", getAllStates(BlockInit.COMPRESSOR.get()), 1, 1));
     public static final RegistryObject<VillagerProfession> ENGINEER = registerProfession("engineer", Villagers.ENGINEER_POI);
 
     @SuppressWarnings("SameParameterValue")
     private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<PointOfInterestType> poiType) {
-        return PROFESSIONS.register(name, () -> new ElectronaVillagerProfessions("electrona" + ":" + name, poiType.get(), ImmutableSet.of(),
+        return PROFESSIONS.register(name, () -> new ElectronaVillagerProfessions(Electrona.MODID + ":" + name, poiType.get(), ImmutableSet.of(),
                 ImmutableSet.of(), SoundsInit.COMPRESSOR_END_COMPRESSION));
     }
 

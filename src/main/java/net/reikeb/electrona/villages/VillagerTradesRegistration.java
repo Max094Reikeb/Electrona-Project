@@ -9,12 +9,14 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 
+import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.*;
 
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = "electrona", bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = Electrona.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class VillagerTradesRegistration {
+
     @SubscribeEvent
     public static void registerTrades(VillagerTradesEvent event) {
         Int2ObjectMap<List<VillagerTrades.ITrade>> trades = event.getTrades();

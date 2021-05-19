@@ -13,15 +13,15 @@ import java.util.*;
 @Mod.EventBusSubscriber(modid = Electrona.MODID)
 public class StructureGen {
 
-    private static final ResourceLocation mainEngineerHouse = new ResourceLocation("electrona", "villages/engineer_house_plains");
+    private static final ResourceLocation mainEngineerHouse = new ResourceLocation(Electrona.MODID, "villages/engineer_house_plains");
 
     public static void setupVillageWorldGen(DynamicRegistries dynamicRegistries) {
         // Add Houses to Vanilla Villages.
         addEngineerHouseToVillageConfig(dynamicRegistries, "village/plains/houses", mainEngineerHouse, 2);
-        addEngineerHouseToVillageConfig(dynamicRegistries, "village/savanna/houses", new ResourceLocation("electrona", "villages/engineer_house_savanna"), 2);
-        addEngineerHouseToVillageConfig(dynamicRegistries, "village/desert/houses", new ResourceLocation("electrona", "villages/engineer_house_desert"), 2);
-        addEngineerHouseToVillageConfig(dynamicRegistries, "village/taiga/houses", new ResourceLocation("electrona", "villages/engineer_house_taiga"), 2);
-        addEngineerHouseToVillageConfig(dynamicRegistries, "village/snowy/houses", new ResourceLocation("electrona", "villages/engineer_house_snowy"), 2);
+        addEngineerHouseToVillageConfig(dynamicRegistries, "village/savanna/houses", new ResourceLocation(Electrona.MODID, "villages/engineer_house_savanna"), 2);
+        addEngineerHouseToVillageConfig(dynamicRegistries, "village/desert/houses", new ResourceLocation(Electrona.MODID, "villages/engineer_house_desert"), 2);
+        addEngineerHouseToVillageConfig(dynamicRegistries, "village/taiga/houses", new ResourceLocation(Electrona.MODID, "villages/engineer_house_taiga"), 2);
+        addEngineerHouseToVillageConfig(dynamicRegistries, "village/snowy/houses", new ResourceLocation(Electrona.MODID, "villages/engineer_house_snowy"), 2);
 
         // Add Houses to other mod's structures. (Make sure Houses piece Jigsaw Block's Name matches the other mod piece Jigsaw's Target Name.
         addEngineerHouseToVillageConfig(dynamicRegistries, "repurposed_structures:village/badlands/houses", mainEngineerHouse, 2);

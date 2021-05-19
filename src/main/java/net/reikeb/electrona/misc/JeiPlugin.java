@@ -19,6 +19,7 @@ import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 
+import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.*;
 
 import java.util.*;
@@ -29,7 +30,7 @@ public class JeiPlugin implements IModPlugin {
 
     @Override
     public ResourceLocation getPluginUid() {
-        return new ResourceLocation("electrona", "default");
+        return new ResourceLocation(Electrona.MODID, "default");
     }
 
     @Override
@@ -186,7 +187,7 @@ public class JeiPlugin implements IModPlugin {
     }
 
     public static class CompressorBlockJeiCategory implements IRecipeCategory<CompressorBlockJeiCategory.CompressorBlockRecipeWrapper> {
-        private static ResourceLocation Uid = new ResourceLocation("electrona", "compressorblockcategory");
+        private static ResourceLocation Uid = new ResourceLocation(Electrona.MODID, "compressorblockcategory");
         private static final int input1 = 0; // THE NUMBER = SLOTID
         private static final int input2 = 1; // The NUMBER = SLOTID
         private static final int output1 = 2; // THE NUMBER = SLOTID
@@ -224,7 +225,7 @@ public class JeiPlugin implements IModPlugin {
 
         public CompressorBlockJeiCategory(IGuiHelper guiHelper) {
             this.title = "Compressing";
-            this.background = guiHelper.createDrawable(new ResourceLocation("electrona", "textures/guis/compressor_gui.png"), 0, 0, 176, 65);
+            this.background = guiHelper.createDrawable(new ResourceLocation(Electrona.MODID, "textures/guis/compressor_gui.png"), 0, 0, 176, 65);
         }
 
         @Override
@@ -291,7 +292,7 @@ public class JeiPlugin implements IModPlugin {
     }
 
     public static class PurificatorBlockJeiCategory implements IRecipeCategory<PurificatorBlockJeiCategory.PurificatorBlockRecipeWrapper> {
-        private static ResourceLocation Uid = new ResourceLocation("electrona", "purificatorblockcategory");
+        private static ResourceLocation Uid = new ResourceLocation(Electrona.MODID, "purificatorblockcategory");
         private static final int input1 = 0; // THE NUMBER = SLOTID
         private static final int input2 = 1; // The NUMBER = SLOTID
         private static final int output1 = 2; // THE NUMBER = SLOTID
@@ -308,7 +309,7 @@ public class JeiPlugin implements IModPlugin {
 
         public PurificatorBlockJeiCategory(IGuiHelper guiHelper) {
             this.title = "Purifying";
-            this.background = guiHelper.createDrawable(new ResourceLocation("electrona", "textures/guis/purificator_gui.png"), 0, 0, 166, 73);
+            this.background = guiHelper.createDrawable(new ResourceLocation(Electrona.MODID, "textures/guis/purificator_gui.png"), 0, 0, 166, 73);
         }
 
         @Override
