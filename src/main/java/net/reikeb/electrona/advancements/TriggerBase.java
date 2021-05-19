@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.*;
 
-public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance>, ICriterionInstance {
+public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance> {
 
     private final ResourceLocation RL;
     private final Map<PlayerAdvancements, TriggerBase.Listeners> listeners = Maps.newHashMap();
@@ -111,18 +111,10 @@ public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance>, ICr
         }
     }
 
-    @Override
-    public ResourceLocation getCriterion() {
-        return null;
-    }
+    public static class Instance implements ICriterionInstance {
 
-    @Override
-    public JsonObject serializeToJson(ConditionArraySerializer conditions) {
-        return null;
-    }
-
-
-    public static class Instance extends CriterionInstance {
+        private final ResourceLocation criterion;
+        private final EntityPredicate.AndPredicate player;
 
         /**
          * Instantiates a new instance.
@@ -130,7 +122,8 @@ public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance>, ICr
          * @param parRL the par RL
          */
         public Instance(ResourceLocation parRL, EntityPredicate.AndPredicate playerCondition) {
-            super(parRL, playerCondition);
+            this.criterion = parRL;
+            this.player = playerCondition;
         }
 
         /**
@@ -142,7 +135,15 @@ public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance>, ICr
             return true;
         }
 
+        @Override
+        public ResourceLocation getCriterion() {
+            return null;
+        }
 
+        @Override
+        public JsonObject serializeToJson(ConditionArraySerializer conditions) {
+            return null;
+        }
     }
 
     static class Listeners {
