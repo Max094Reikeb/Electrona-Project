@@ -114,6 +114,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             artifactId = mod_id
+            version = package_version
             artifact jar
         }
     }

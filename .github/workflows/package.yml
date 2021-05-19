@@ -10,19 +10,11 @@ jobs:
     name: Get Variables
     runs-on: ubuntu-20.04
     outputs:
-      minecraft_version: ${{ steps.minecraft_version.outputs.value }}
       mod_id: ${{ steps.mod_id.outputs.value }}
       package_version: ${{ steps.package_version.outputs.value }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Minecraft Version
-        id: minecraft_version
-        uses: christian-draeger/read-properties@1.0.1
-        with:
-          path: './gradle.properties'
-          property: 'minecraft_version'
 
       - name: Mod ID
         id: mod_id
@@ -65,5 +57,5 @@ jobs:
         with:
           name: libs
           path: |
-            build-out/${{ needs.vars.outputs.mod_id }}-${{ needs.vars.outputs.minecraft_version }}-${{ needs.vars.outputs.package_version }}.jar
-            build-out/${{ needs.vars.outputs.mod_id }}-${{ needs.vars.outputs.minecraft_version }}-${{ needs.vars.outputs.package_version }}-api.jar
+            build-out/${{ needs.vars.outputs.mod_id }}-${{ needs.vars.outputs.package_version }}.jar
+            build-out/${{ needs.vars.outputs.mod_id }}-${{ needs.vars.outputs.package_version }}-api.jar
