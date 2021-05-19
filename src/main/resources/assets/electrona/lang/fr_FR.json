@@ -168,7 +168,7 @@
   "item.electrona.electronic_circuit": "Circuit Électronique",
   "item.electrona.emitter": "Émetteur",
   "item.electrona.empty_cell": "Cellule vide",
-  "item.electrona.empty_cell.desc": "§7Clic droit sur de l'eau/de la lave/un composteur pour la remplir",
+  "item.electrona.empty_cell.desc": "§7Right-click on Water/Lava/Composter to fill it",
   "item.electrona.geiger_pointer": "Pointeur Geiger",
   "item.electrona.geiger_pointer.desc": "§dClic droit pour mettre à jour",
   "item.electrona.gravitonium": "Gravitonium",
