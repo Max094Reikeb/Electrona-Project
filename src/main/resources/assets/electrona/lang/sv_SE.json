@@ -168,7 +168,7 @@
   "item.electrona.electronic_circuit": "Elektronisk krets",
   "item.electrona.emitter": "Sändare",
   "item.electrona.empty_cell": "Tom cell",
-  "item.electrona.empty_cell.desc": "§7Högerklicka på en Vatten/Lava/komposter för att fylla den",
+  "item.electrona.empty_cell.desc": "§7Right-click on Water/Lava/Composter to fill it",
   "item.electrona.geiger_pointer": "Geiger Pointer",
   "item.electrona.geiger_pointer.desc": "§dRight-click to update",
   "item.electrona.gravitonium": "Gravitonium",
