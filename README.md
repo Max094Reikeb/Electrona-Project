@@ -6,6 +6,8 @@ You want informations about the blocks/items/mechanics of the mod? <br />
 http://max-electrona.000webhostapp.com/ <br />
 You want to see more about the mod?<br />
 https://github.com/Max094Reikeb/Electrona-Project/wiki<br />
+You want to help translate the mod to another language?<br />
+https://crowdin.com/project/electrona<br />
 Want more help than the website can provide? <br />
 http://discord.gg/8As6xhKXd5
 
