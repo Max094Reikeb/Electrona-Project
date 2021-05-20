@@ -12,7 +12,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.*;
 import net.minecraft.world.chunk.IChunk;
 
+import net.minecraftforge.fml.network.PacketDistributor;
+
 import net.reikeb.electrona.Electrona;
+import net.reikeb.electrona.network.NetworkManager;
+import net.reikeb.electrona.network.packets.BiomeSingleUpdatePacket;
 
 import java.util.*;
 
@@ -129,8 +133,10 @@ public class ElectronaUtils {
         private static final int WIDTH_BITS = (int) Math.round(Math.log(16.0D) / Math.log(2.0D)) - 2;
 
         public static void setBiomeAtPos(World world, BlockPos pos, ResourceLocation biome) {
+            if (world.isClientSide) return;
             RegistryKey<net.minecraft.world.biome.Biome> biomeKey = RegistryKey.create(Registry.BIOME_REGISTRY, biome);
             setBiomeKeyAtPos(world, pos, biomeKey);
+            NetworkManager.INSTANCE.send(PacketDistributor.ALL.noArg(), new BiomeSingleUpdatePacket(pos, biome));
         }
 
         public static void setBiomeKeyAtPos(World world, BlockPos pos, RegistryKey<net.minecraft.world.biome.Biome> biomeKey) {
