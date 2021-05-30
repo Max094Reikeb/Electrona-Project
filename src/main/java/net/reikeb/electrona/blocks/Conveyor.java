@@ -116,13 +116,13 @@ public class Conveyor extends AbstractWaterLoggableBlock {
         Direction facing = tileConveyor.getBlockState().getValue(FACING);
         if ((electronicPower > 0) && ((entity instanceof ItemEntity) || (entity instanceof LivingEntity))) {
             if (facing == Direction.NORTH) {
-                entity.setDeltaMovement(0, 0, (-0.3));
-            } else if (facing == Direction.SOUTH) {
                 entity.setDeltaMovement(0, 0, 0.3);
+            } else if (facing == Direction.SOUTH) {
+                entity.setDeltaMovement(0, 0, (-0.3));
             } else if (facing == Direction.WEST) {
-                entity.setDeltaMovement((-0.3), 0, 0);
-            } else if (facing == Direction.EAST) {
                 entity.setDeltaMovement(0.3, 0, 0);
+            } else if (facing == Direction.EAST) {
+                entity.setDeltaMovement((-0.3), 0, 0);
             }
         }
     }
