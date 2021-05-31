@@ -1,4 +1,4 @@
-<img align="center" width="800" src="https://zupimages.net/up/21/16/b6nk.png">
+<img align="center" width="800" src="https://zupimages.net/up/21/22/5qhf.png">
 <p align="center"><b>New code-breaking update!</b></p>
 
 <b><u>The links!</u></b> <br />
@@ -25,5 +25,5 @@ WARNING : Patchouli Books have been dropped since r1.2 version, so use the websi
 ## Special Thanks
 People who helped me making this mod are below the description, but I wanted to make special thanks to :
 - Aixiis (alias super_cube4) for helping design the first GUIs that defined and still define Electrona.
-- BananOgato (alias Darklaime) for helping designing things for this mod and being a good texturer.
+- birb for helping designing things for this mod and being a good texturer.
 - Fredzik22 (alias Fredzik) who is also a good texturer of the mod.
