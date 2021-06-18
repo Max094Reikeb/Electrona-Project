@@ -28,7 +28,6 @@ import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.recipes.*;
 import net.reikeb.electrona.recipes.types.*;
 import net.reikeb.electrona.setup.RegistryHandler;
-import net.reikeb.electrona.setup.client.ClientSetup;
 import net.reikeb.electrona.villages.*;
 import net.reikeb.electrona.world.Gamerules;
 import net.reikeb.electrona.world.gen.*;
@@ -61,7 +60,6 @@ public class Electrona {
         TTriggers.init();
 
         // Registers an event with the mod specific event bus. This is needed to register new stuff.
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, this::registerRecipeSerializers);
         Structures.DEFERRED_REGISTRY_STRUCTURE.register(FMLJavaModLoadingContext.get().getModEventBus());

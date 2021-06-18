@@ -34,6 +34,7 @@ import javax.annotation.Nullable;
 @Mod.EventBusSubscriber(modid = Electrona.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientSetup {
 
+    @SubscribeEvent
     public static void init(final FMLClientSetupEvent event) {
         // This is where the wings layer is registered.
         // It can be put in any event listener of FMLClientSetupEvent if you want, like
