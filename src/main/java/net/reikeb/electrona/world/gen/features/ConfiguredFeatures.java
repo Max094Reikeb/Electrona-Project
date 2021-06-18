@@ -1,4 +1,4 @@
-package net.reikeb.electrona.world.gen;
+package net.reikeb.electrona.world.gen.features;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.tags.BlockTags;

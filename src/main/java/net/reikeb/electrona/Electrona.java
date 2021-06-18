@@ -2,8 +2,6 @@ package net.reikeb.electrona;
 
 import com.mojang.serialization.Codec;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.*;
 import net.minecraft.util.*;
@@ -31,10 +29,10 @@ import net.reikeb.electrona.recipes.*;
 import net.reikeb.electrona.recipes.types.*;
 import net.reikeb.electrona.setup.RegistryHandler;
 import net.reikeb.electrona.setup.client.ClientSetup;
-import net.reikeb.electrona.setup.client.render.MechanicWingsLayer;
 import net.reikeb.electrona.villages.*;
 import net.reikeb.electrona.world.Gamerules;
 import net.reikeb.electrona.world.gen.*;
+import net.reikeb.electrona.world.gen.features.*;
 
 import org.apache.logging.log4j.*;
 
@@ -65,7 +63,6 @@ public class Electrona {
         // Registers an event with the mod specific event bus. This is needed to register new stuff.
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientLoad);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, this::registerRecipeSerializers);
         Structures.DEFERRED_REGISTRY_STRUCTURE.register(FMLJavaModLoadingContext.get().getModEventBus());
         registerAllDeferredRegistryObjects(FMLJavaModLoadingContext.get().getModEventBus());
@@ -157,20 +154,6 @@ public class Electrona {
             Structures.setupStructures();
             ConfiguredStructures.registerConfiguredStructures();
         });
-    }
-
-    public void clientLoad(FMLClientSetupEvent event) {
-        // This is where the wings layer is registered.
-        // It can be put in any event listener of FMLClientSetupEvent if you want, like
-        // in the main mod class.
-        EntityRendererManager dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-        registerLayer(dispatcher, "default");
-        registerLayer(dispatcher, "slim");
-    }
-
-    private static void registerLayer(EntityRendererManager dispatcher, String type) {
-        PlayerRenderer playerRenderer = dispatcher.getSkinMap().get(type);
-        playerRenderer.addLayer(new MechanicWingsLayer<>(playerRenderer));
     }
 
     private void registerRecipeSerializers(RegistryEvent.Register<IRecipeSerializer<?>> event) {

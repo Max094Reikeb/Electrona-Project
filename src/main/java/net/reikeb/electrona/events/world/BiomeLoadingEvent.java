@@ -7,7 +7,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.world.gen.ConfiguredFeatures;
+import net.reikeb.electrona.world.gen.features.ConfiguredFeatures;
 
 @Mod.EventBusSubscriber(modid = Electrona.MODID)
 public class BiomeLoadingEvent {

@@ -3,6 +3,7 @@ package net.reikeb.electrona.setup.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.*;
@@ -34,6 +35,13 @@ import javax.annotation.Nullable;
 public class ClientSetup {
 
     public static void init(final FMLClientSetupEvent event) {
+        // This is where the wings layer is registered.
+        // It can be put in any event listener of FMLClientSetupEvent if you want, like
+        // in the main mod class.
+        EntityRendererManager dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
+        registerLayer(dispatcher, "default");
+        registerLayer(dispatcher, "slim");
+
         // Connect Containers and Windows
         ScreenManager.register(BIOMASS_GENERATOR_CONTAINER.get(), BiomassGeneratorWindow::new);
         ScreenManager.register(NUCLEAR_GENERATOR_CONTAINER.get(), NuclearGeneratorControllerWindow::new);
@@ -148,5 +156,10 @@ public class ClientSetup {
         Minecraft.getInstance().particleEngine.register(ParticleInit.DARK_MATTER.get(), DarkMatter.DarkMatterParticleFactory::new);
         Minecraft.getInstance().particleEngine.register(ParticleInit.GRAVITORIUM.get(), Gravitorium.GravitoriumParticleFactory::new);
         Minecraft.getInstance().particleEngine.register(ParticleInit.RADIOACTIVE_FALLOUT.get(), RadioactiveFallout.RadioactiveFalloutFactory::new);
+    }
+
+    private static void registerLayer(EntityRendererManager dispatcher, String type) {
+        PlayerRenderer playerRenderer = dispatcher.getSkinMap().get(type);
+        playerRenderer.addLayer(new MechanicWingsLayer<>(playerRenderer));
     }
 }
