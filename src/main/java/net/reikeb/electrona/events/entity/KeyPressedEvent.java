@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.world.IWorld;
 
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -17,7 +18,7 @@ import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.SkyHighPacket;
 
-@Mod.EventBusSubscriber(modid = Electrona.MODID)
+@Mod.EventBusSubscriber(modid = Electrona.MODID, value = Dist.CLIENT)
 public class KeyPressedEvent {
 
     @SubscribeEvent
