@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.*;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.*;
@@ -15,7 +16,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.*;
 import net.minecraftforge.fml.common.Mod;
@@ -157,6 +158,18 @@ public class ClientSetup {
         Minecraft.getInstance().particleEngine.register(ParticleInit.DARK_MATTER.get(), DarkMatter.DarkMatterParticleFactory::new);
         Minecraft.getInstance().particleEngine.register(ParticleInit.GRAVITORIUM.get(), Gravitorium.GravitoriumParticleFactory::new);
         Minecraft.getInstance().particleEngine.register(ParticleInit.RADIOACTIVE_FALLOUT.get(), RadioactiveFallout.RadioactiveFalloutFactory::new);
+    }
+
+    @SubscribeEvent
+    public static void textureSwitchEvent(TextureStitchEvent.Pre event) {
+        if (event.getMap().location().equals(AtlasTexture.LOCATION_BLOCKS)) {
+            event.addSprite(new ResourceLocation(Electrona.MODID, "entity/gravitor/base"));
+            event.addSprite(new ResourceLocation(Electrona.MODID, "entity/gravitor/cage"));
+            event.addSprite(new ResourceLocation(Electrona.MODID, "entity/gravitor/wind"));
+            event.addSprite(new ResourceLocation(Electrona.MODID, "entity/gravitor/wind_vertical"));
+            event.addSprite(new ResourceLocation(Electrona.MODID, "entity/gravitor/open_eye"));
+            event.addSprite(new ResourceLocation(Electrona.MODID, "entity/gravitor/closed_eye"));
+        }
     }
 
     private static void registerLayer(EntityRendererManager dispatcher, String type) {
