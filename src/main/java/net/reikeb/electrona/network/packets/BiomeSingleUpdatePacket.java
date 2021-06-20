@@ -8,6 +8,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import net.reikeb.electrona.utils.ElectronaUtils;
@@ -35,11 +37,28 @@ public class BiomeSingleUpdatePacket {
 
     public void whenThisPacketIsReceived(Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> {
-            ClientWorld world = Minecraft.getInstance().level;
-            if (world == null) return;
-            RegistryKey<Biome> biomeKey = RegistryKey.create(Registry.BIOME_REGISTRY, biome);
-            ElectronaUtils.Biome.setBiomeKeyAtPos(world, pos, biomeKey);
+            DistExecutor.safeCallWhenOn(Dist.CLIENT, () ->  new BiomeUpdate(pos, biome));
         });
         context.get().setPacketHandled(true);
+    }
+
+    static public class BiomeUpdate implements DistExecutor.SafeCallable {
+
+        private final BlockPos pos;
+        private final ResourceLocation biome;
+
+        public BiomeUpdate(BlockPos pos, ResourceLocation biome) {
+            this.pos = pos;
+            this.biome = biome;
+        }
+
+        @Override
+        public Object call() throws Exception {
+            ClientWorld world = Minecraft.getInstance().level;
+            if (world == null) return null;
+            RegistryKey<Biome> biomeKey = RegistryKey.create(Registry.BIOME_REGISTRY, biome);
+            ElectronaUtils.Biome.setBiomeKeyAtPos(world, pos, biomeKey);
+            return null;
+        }
     }
 }

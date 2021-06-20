@@ -6,6 +6,8 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import net.reikeb.electrona.init.BiomeInit;
@@ -37,8 +39,25 @@ public class BiomeUpdatePacket {
 
     public void whenThisPacketIsReceived(Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> {
+            DistExecutor.safeCallWhenOn(Dist.CLIENT, () ->  new BiomeUpdate(pos, radius));
+        });
+        context.get().setPacketHandled(true);
+    }
+
+    static public class BiomeUpdate implements DistExecutor.SafeCallable {
+
+        private final BlockPos pos;
+        private final int radius;
+
+        public BiomeUpdate(BlockPos pos, int radius) {
+            this.pos = pos;
+            this.radius = radius;
+        }
+
+        @Override
+        public Object call() throws Exception {
             ClientWorld world = Minecraft.getInstance().level;
-            if (world == null) return;
+            if (world == null) return null;
             int onepointfiveradius = (radius / 2) * 3;
             int onepointfiveradiussqrd = onepointfiveradius * onepointfiveradius;
             BlockPos.Mutable newPos = new BlockPos.Mutable().set(pos.getX(), pos.getY(), pos.getZ());
@@ -61,7 +80,7 @@ public class BiomeUpdatePacket {
                     }
                 }
             }
-        });
-        context.get().setPacketHandled(true);
+            return null;
+        }
     }
 }
