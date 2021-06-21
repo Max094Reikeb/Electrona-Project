@@ -227,6 +227,21 @@ public class CosmicGemFunction {
                 }
                 return flag;
             }
+        } else if (GemPower.FLYING.equalsTo(getPower(stack))) {
+            if (playerEntity.abilities.flying) {
+                playerEntity.abilities.flying = false;
+                playerEntity.onUpdateAbilities();
+                if (!world.isClientSide) {
+                    playerEntity.displayClientMessage(new TranslationTextComponent("message.electrona.flight_disabled"), true);
+                }
+            } else {
+                playerEntity.abilities.flying = true;
+                playerEntity.onUpdateAbilities();
+                if (!world.isClientSide) {
+                    playerEntity.displayClientMessage(new TranslationTextComponent("message.electrona.flight_enabled"), true);
+                }
+            }
+            return true;
         }
         return false;
     }
