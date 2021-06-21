@@ -158,8 +158,8 @@ public class PurificatorRecipe implements IRecipe<IInventory> {
             final ItemStack input = buffer.readItem();
             final ItemStack output = buffer.readItem();
             final boolean randomOutput = buffer.readBoolean();
-            final int purifyingTime = buffer.readVarInt();
-            final int waterRequired = buffer.readVarInt();
+            final int purifyingTime = buffer.readInt();
+            final int waterRequired = buffer.readInt();
 
             return new PurificatorRecipe(recipeId, input, output, randomOutput, purifyingTime, waterRequired);
         }

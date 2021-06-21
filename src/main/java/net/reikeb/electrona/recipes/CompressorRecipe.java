@@ -149,8 +149,8 @@ public class CompressorRecipe implements IRecipe<IInventory> {
             final Ingredient input = Ingredient.fromNetwork(buffer);
             final Ingredient input2 = Ingredient.fromNetwork(buffer);
             final ItemStack output = buffer.readItem();
-            final int compressingTime = buffer.readVarInt();
-            final int energyRequired = buffer.readVarInt();
+            final int compressingTime = buffer.readInt();
+            final int energyRequired = buffer.readInt();
 
             return new CompressorRecipe(recipeId, input, input2, output, compressingTime, energyRequired);
         }
