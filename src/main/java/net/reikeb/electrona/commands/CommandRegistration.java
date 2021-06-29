@@ -17,5 +17,6 @@ public class CommandRegistration {
     public static void onRegisterCommandEvent(RegisterCommandsEvent event) {
         CommandDispatcher<CommandSource> commandDispatcher = event.getDispatcher();
         ChargeCommand.register(commandDispatcher);
+        ExplodeCommand.register(commandDispatcher);
     }
 }
