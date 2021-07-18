@@ -7,6 +7,7 @@ import java.util.function.Function;
 import java.util.Random;
 
 public class RandomTradeBuilder {
+
     private Function<Random, ItemStack> price;
     private Function<Random, ItemStack> price2;
     private Function<Random, ItemStack> forSale;
@@ -49,32 +50,6 @@ public class RandomTradeBuilder {
     public RandomTradeBuilder setForSale(Item item, int min, int max) {
         return this.setForSale(RandomTradeBuilder.createFunction(item, min, max));
     }
-
-	/*public RandomTradeBuilder setEmeraldPrice(int emeralds) {
-		return this.setPrice((random) -> new ItemStack(Items.EMERALD, emeralds));
-	}
-
-	public RandomTradeBuilder setEmeraldPriceFor(int emeralds, Item item, int amt) {
-		this.setEmeraldPrice(emeralds);
-		return this.setForSale((random) -> new ItemStack(item, amt));
-	}
-
-	public RandomTradeBuilder setEmeraldPriceFor(int emeralds, Item item) {
-		return this.setEmeraldPriceFor(emeralds, item, 1);
-	}
-
-	public RandomTradeBuilder setEmeraldPrice(int min, int max) {
-		return this.setPrice(Items.EMERALD, min, max);
-	}
-
-	public RandomTradeBuilder setEmeraldPriceFor(int min, int max, Item item, int amt) {
-		this.setEmeraldPrice(min, max);
-		return this.setForSale((random) -> new ItemStack(item, amt));
-	}
-
-	public RandomTradeBuilder setEmeraldPriceFor(int min, int max, Item item) {
-		return this.setEmeraldPriceFor(min, max, item, 1);
-	}*/
 
     public boolean canBuild() {
         return this.price != null && this.forSale != null;
