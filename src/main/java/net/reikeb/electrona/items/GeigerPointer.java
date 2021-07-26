@@ -2,7 +2,6 @@ package net.reikeb.electrona.items;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
-import net.minecraft.core.WritableRegistry;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -18,6 +17,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
+
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.setup.ItemGroups;
 
@@ -71,13 +71,10 @@ public class GeigerPointer extends Item {
 
     @Nullable
     private BlockPos getBiomePosition(Level world, Entity entity) {
-        Optional<WritableRegistry<Biome>> biomeRegistry = world.registryAccess().registry(Registry.BIOME_REGISTRY);
+        Optional<Biome> biome = world.getServer().registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getOptional(new ResourceLocation(Electrona.MODID, "nuclear"));
 
-        if (biomeRegistry.isPresent()) {
-            Biome biome = biomeRegistry.get().get(new ResourceLocation(Electrona.MODID, "nuclear"));
-            if (biome != null && world.getServer() != null) {
-                return world.getServer().overworld().findNearestBiome(biome, entity.blockPosition(), 6400, 8);
-            }
+        if (biome.isPresent() && (world.getServer() != null)) {
+            return world.getServer().overworld().findNearestBiome(biome.get(), entity.blockPosition(), 6400, 8);
         }
 
         Electrona.LOGGER.error(new TranslatableComponent("commands.locatebiome.invalid"));

@@ -1,30 +1,18 @@
 package net.reikeb.electrona.utils;
 
-import net.minecraft.block.*;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.util.*;
-import net.minecraft.util.math.*;
-import net.minecraft.util.math.shapes.*;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.util.registry.*;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.biome.*;
 import net.minecraft.world.level.chunk.ChunkAccess;
-
-import net.minecraftforge.fml.network.PacketDistributor;
-
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.BiomeSingleUpdatePacket;
-
-import java.util.*;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
-import net.minecraft.core.WritableRegistry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ClipContext;
@@ -35,7 +23,6 @@ import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
-import net.minecraft.world.level.block.Lantern;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -167,9 +154,7 @@ public class ElectronaUtils {
         }
 
         public static void setBiomeKeyAtPos(Level world, BlockPos pos, ResourceKey<net.minecraft.world.level.biome.Biome> biomeKey) {
-            Optional<WritableRegistry<net.minecraft.world.level.biome.Biome>> biomeRegistry = world.registryAccess().registry(Registry.BIOME_REGISTRY);
-            if (!biomeRegistry.isPresent()) return;
-            net.minecraft.world.level.biome.Biome biome = biomeRegistry.get().get(biomeKey);
+            net.minecraft.world.level.biome.Biome biome = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).get(biomeKey);
             if (biome == null) return;
             ChunkBiomeContainer bc = world.getChunk(pos).getBiomes();
             ChunkAccess chunk = world.getChunk(pos);

@@ -9,10 +9,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -20,11 +17,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+
 import net.minecraftforge.event.ForgeEventFactory;
+
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.PlayerInventoryChangedPacket;
@@ -76,6 +73,11 @@ public class EmptyCell extends Item {
         if (worldIn.mayInteract(playerIn, blockpos) && playerIn.mayUseItemAt(blockpos1, direction, itemstack)) {
             BlockState blockstate1 = worldIn.getBlockState(blockpos);
             if (blockstate1.getBlock() instanceof BucketPickup) {
+                BucketPickup bucketPickup = (BucketPickup) blockstate1.getBlock();
+                ItemStack itemStack1 = bucketPickup.pickupBlock(worldIn, blockpos, blockstate1);
+                if (!itemStack1.isEmpty()) {
+                    ItemStack itemStack2 = ItemUtils.createFilledResult(itemstack, playerIn, itemStack1);
+                /*
                 Fluid fluid = ((BucketPickup) blockstate1.getBlock()).takeLiquid(worldIn, blockpos, blockstate1);
                 if ((fluid != Fluids.WATER) && (fluid != Fluids.LAVA)) return InteractionResultHolder.fail(itemstack);
                 worldIn.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 3);
@@ -88,6 +90,9 @@ public class EmptyCell extends Item {
                     playerIn.setItemInHand(handIn, new ItemStack((fluid == Fluids.WATER ? ItemInit.WATER_CELL.get() : ItemInit.LAVA_CELL.get()), 1));
                 }
                 return InteractionResultHolder.success(itemstack);
+                */
+                    return InteractionResultHolder.sidedSuccess(itemStack2, worldIn.isClientSide);
+                }
             }
         }
         return InteractionResultHolder.fail(itemstack);

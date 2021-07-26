@@ -1,20 +1,18 @@
 package net.reikeb.electrona.villages;
 
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.registry.*;
-import net.minecraft.world.gen.feature.jigsaw.*;
+import net.minecraft.world.level.levelgen.feature.structures.LegacySinglePoolElement;
+import net.minecraft.world.level.levelgen.feature.structures.StructurePoolElement;
+import net.minecraft.world.level.levelgen.feature.structures.StructureTemplatePool;
 
 import net.minecraftforge.fml.common.Mod;
 
 import net.reikeb.electrona.Electrona;
 
-import java.util.*;
-
-import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.world.level.levelgen.feature.structures.LegacySinglePoolElement;
-import net.minecraft.world.level.levelgen.feature.structures.StructurePoolElement;
-import net.minecraft.world.level.levelgen.feature.structures.StructureTemplatePool;
+import java.util.ArrayList;
+import java.util.List;
 
 @Mod.EventBusSubscriber(modid = Electrona.MODID)
 public class StructureGen {

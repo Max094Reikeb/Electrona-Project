@@ -16,6 +16,7 @@ import net.reikeb.electrona.Electrona;
  * <br> To be used in conjunction with {@linkplain SoundEventBuilder}
  */
 public class SoundBuilder {
+
     private boolean nonDefault = false;
 
     private final String path;

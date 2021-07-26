@@ -16,6 +16,7 @@ import java.util.List;
  * <br> A builder function that allows you to serialise a SoundEvent to json
  */
 public class SoundEventBuilder {
+
     private SoundSource category = SoundSource.BLOCKS;
     private String subtitleTranslationKey = "";
     private final List<SoundBuilder> sounds = new ArrayList<>();

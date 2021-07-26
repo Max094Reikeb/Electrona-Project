@@ -46,7 +46,6 @@ import net.reikeb.electrona.villages.Villagers;
 import net.reikeb.electrona.world.Gamerules;
 import net.reikeb.electrona.world.gen.ConfiguredStructures;
 import net.reikeb.electrona.world.gen.Structures;
-import net.reikeb.electrona.world.gen.features.ConfiguredFeatures;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -143,7 +142,6 @@ public class Electrona {
     }
 
     public void setup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(ConfiguredFeatures::registerConfiguredFeatures);
         POIFixup.fixup();
 
         /**
