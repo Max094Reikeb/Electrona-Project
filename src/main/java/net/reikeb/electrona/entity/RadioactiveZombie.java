@@ -1,23 +1,26 @@
 package net.reikeb.electrona.entity;
 
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.world.*;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import net.reikeb.electrona.init.PotionEffectInit;
 import net.reikeb.electrona.misc.vm.RadioactivityFunction;
 
-public class RadioactiveZombie extends ZombieEntity {
+public class RadioactiveZombie extends Zombie {
 
-    public RadioactiveZombie(EntityType<? extends ZombieEntity> entityType, World world) {
+    public RadioactiveZombie(EntityType<? extends Zombie> entityType, Level world) {
         super(entityType, world);
     }
 
-    public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return ZombieEntity.createMonsterAttributes()
+    public static AttributeSupplier.Builder createAttributes() {
+        return Zombie.createMonsterAttributes()
                 .add(Attributes.ARMOR, 2.5F)
                 .add(Attributes.ATTACK_DAMAGE, 3.0D)
                 .add(Attributes.FOLLOW_RANGE, 40.0D)
@@ -47,7 +50,7 @@ public class RadioactiveZombie extends ZombieEntity {
         if (flag && this.getMainHandItem().isEmpty() && entity instanceof LivingEntity) {
             float f = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
             if (!RadioactivityFunction.isEntityWearingAntiRadiationSuit((LivingEntity) entity)) {
-                ((LivingEntity) entity).addEffect(new EffectInstance(PotionEffectInit.RADIOACTIVITY.get(), (int) (140 * f)));
+                ((LivingEntity) entity).addEffect(new MobEffectInstance(PotionEffectInit.RADIOACTIVITY.get(), (int) (140 * f)));
             }
         }
         return flag;

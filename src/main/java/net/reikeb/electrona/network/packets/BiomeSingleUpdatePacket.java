@@ -1,16 +1,17 @@
 package net.reikeb.electrona.network.packets;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.biome.Biome;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import net.reikeb.electrona.utils.ElectronaUtils;
 
@@ -26,11 +27,11 @@ public class BiomeSingleUpdatePacket {
         this.pos = pos;
     }
 
-    public static BiomeSingleUpdatePacket decode(PacketBuffer buf) {
+    public static BiomeSingleUpdatePacket decode(FriendlyByteBuf buf) {
         return new BiomeSingleUpdatePacket(buf.readBlockPos(), buf.readResourceLocation());
     }
 
-    public void encode(PacketBuffer buf) {
+    public void encode(FriendlyByteBuf buf) {
         buf.writeBlockPos(pos);
         buf.writeResourceLocation(biome);
     }
@@ -54,9 +55,9 @@ public class BiomeSingleUpdatePacket {
 
         @Override
         public Object call() throws Exception {
-            ClientWorld world = Minecraft.getInstance().level;
+            ClientLevel world = Minecraft.getInstance().level;
             if (world == null) return null;
-            RegistryKey<Biome> biomeKey = RegistryKey.create(Registry.BIOME_REGISTRY, biome);
+            ResourceKey<Biome> biomeKey = ResourceKey.create(Registry.BIOME_REGISTRY, biome);
             ElectronaUtils.Biome.setBiomeKeyAtPos(world, pos, biomeKey);
             return null;
         }

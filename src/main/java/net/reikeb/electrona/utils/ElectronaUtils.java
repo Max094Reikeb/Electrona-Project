@@ -1,24 +1,51 @@
 package net.reikeb.electrona.utils;
 
 import net.minecraft.block.*;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.FallingBlockEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.shapes.*;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.util.registry.*;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.biome.*;
-import net.minecraft.world.chunk.IChunk;
+import net.minecraft.world.level.chunk.ChunkAccess;
 
 import net.minecraftforge.fml.network.PacketDistributor;
 
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.BiomeSingleUpdatePacket;
 
 import java.util.*;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
+import net.minecraft.core.WritableRegistry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChainBlock;
+import net.minecraft.world.level.block.FallingBlock;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.IronBarsBlock;
+import net.minecraft.world.level.block.Lantern;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.LeverBlock;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.TorchBlock;
+import net.minecraft.world.level.chunk.ChunkBiomeContainer;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ElectronaUtils {
 
@@ -31,13 +58,13 @@ public class ElectronaUtils {
      * @return The rotated VoxelShape
      */
     public static VoxelShape rotateShape(Direction from, Direction to, VoxelShape shape) {
-        VoxelShape[] buffer = new VoxelShape[]{shape, VoxelShapes.empty()};
+        VoxelShape[] buffer = new VoxelShape[]{shape, Shapes.empty()};
 
         int times = (to.get2DDataValue() - from.get2DDataValue() + 4) % 4;
         for (int i = 0; i < times; i++) {
-            buffer[0].forAllBoxes((minX, minY, minZ, maxX, maxY, maxZ) -> buffer[1] = VoxelShapes.or(buffer[1], VoxelShapes.box(1 - maxZ, minY, minX, 1 - minZ, maxY, maxX)));
+            buffer[0].forAllBoxes((minX, minY, minZ, maxX, maxY, maxZ) -> buffer[1] = Shapes.or(buffer[1], Shapes.box(1 - maxZ, minY, minX, 1 - minZ, maxY, maxX)));
             buffer[0] = buffer[1];
-            buffer[1] = VoxelShapes.empty();
+            buffer[1] = Shapes.empty();
         }
 
         return buffer[0];
@@ -52,16 +79,16 @@ public class ElectronaUtils {
      * @param includeFluids Defines if fluids count
      * @return The RayTraceResult
      */
-    public static RayTraceResult lookAt(Entity entity, double range, float height, boolean includeFluids) {
-        Vector3d vector3d = entity.getEyePosition(height);
-        Vector3d vector3d1 = entity.getViewVector(height);
-        Vector3d vector3d2 = vector3d.add(vector3d1.x * range, vector3d1.y * range, vector3d1.z * range);
-        return entity.level.clip(new RayTraceContext(vector3d, vector3d2, RayTraceContext.BlockMode.OUTLINE, includeFluids ? RayTraceContext.FluidMode.ANY : RayTraceContext.FluidMode.NONE, entity));
+    public static HitResult lookAt(Entity entity, double range, float height, boolean includeFluids) {
+        Vec3 vector3d = entity.getEyePosition(height);
+        Vec3 vector3d1 = entity.getViewVector(height);
+        Vec3 vector3d2 = vector3d.add(vector3d1.x * range, vector3d1.y * range, vector3d1.z * range);
+        return entity.level.clip(new ClipContext(vector3d, vector3d2, ClipContext.Block.OUTLINE, includeFluids ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, entity));
     }
 
     public static class Gravity {
 
-        public static void applyGravity(World world, BlockPos pos) {
+        public static void applyGravity(Level world, BlockPos pos) {
             if (isGravityAffected(world, pos)) {
                 FallingBlockEntity fallingBlockEntity = new FallingBlockEntity(world, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, world.getBlockState(pos));
                 fallingBlockEntity.time = 1;
@@ -70,38 +97,38 @@ public class ElectronaUtils {
             }
         }
 
-        public static boolean isGravityAffected(World world, BlockPos pos) {
+        public static boolean isGravityAffected(Level world, BlockPos pos) {
             if (world == null) return false;
             Block block = world.getBlockState(pos).getBlock();
             boolean flag1 = isAir(world, pos);
-            boolean flag2 = (block instanceof LeavesBlock) || (block instanceof TorchBlock) || (block instanceof LanternBlock) || (block instanceof LeverBlock) || (block == Blocks.BEDROCK) || (block instanceof FlowingFluidBlock);
+            boolean flag2 = (block instanceof LeavesBlock) || (block instanceof TorchBlock) || (block instanceof LeverBlock) || (block == Blocks.BEDROCK) || (block instanceof LiquidBlock);
             boolean flag3 = world.isEmptyBlock(pos.below()) || FallingBlock.isFree(world.getBlockState(pos.below()));
             boolean flag4 = isSupport(world, pos);
             boolean flag5 = staysAttached(world, pos);
             return ((!flag1) && (!flag2) && (pos.getY() > 0) && flag3 && (!flag4) && (!flag5));
         }
 
-        private static boolean isSupport(World world, BlockPos pos) {
+        private static boolean isSupport(Level world, BlockPos pos) {
             if (world == null) return false;
             Block block = world.getBlockState(pos).getBlock();
-            if ((block instanceof StairsBlock) || (block instanceof SlabBlock)) {
+            if ((block instanceof StairBlock) || (block instanceof SlabBlock)) {
                 return !isAir(world, pos.north()) || !isAir(world, pos.south())
                         || !isAir(world, pos.east()) || !isAir(world, pos.west());
             }
             return false;
         }
 
-        private static boolean staysAttached(World world, BlockPos pos) {
+        private static boolean staysAttached(Level world, BlockPos pos) {
             Block block = world.getBlockState(pos).getBlock();
             if ((block instanceof FenceBlock) || (block instanceof FenceGateBlock)
-                    || (block instanceof ChainBlock) || (block instanceof PaneBlock)) {
+                    || (block instanceof ChainBlock) || (block instanceof IronBarsBlock)) {
                 return !isAir(world, pos.north()) || !isAir(world, pos.south())
                         || !isAir(world, pos.east()) || !isAir(world, pos.west());
             }
             return false;
         }
 
-        public static boolean isAir(World world, BlockPos pos) {
+        public static boolean isAir(Level world, BlockPos pos) {
             Block block = world.getBlockState(pos).getBlock();
             return (block == Blocks.AIR) || (block == Blocks.VOID_AIR) || (block == Blocks.CAVE_AIR);
         }
@@ -132,22 +159,22 @@ public class ElectronaUtils {
 
         private static final int WIDTH_BITS = (int) Math.round(Math.log(16.0D) / Math.log(2.0D)) - 2;
 
-        public static void setBiomeAtPos(World world, BlockPos pos, ResourceLocation biome) {
+        public static void setBiomeAtPos(Level world, BlockPos pos, ResourceLocation biome) {
             if (world.isClientSide) return;
-            RegistryKey<net.minecraft.world.biome.Biome> biomeKey = RegistryKey.create(Registry.BIOME_REGISTRY, biome);
+            ResourceKey<net.minecraft.world.level.biome.Biome> biomeKey = ResourceKey.create(Registry.BIOME_REGISTRY, biome);
             setBiomeKeyAtPos(world, pos, biomeKey);
             NetworkManager.INSTANCE.send(PacketDistributor.ALL.noArg(), new BiomeSingleUpdatePacket(pos, biome));
         }
 
-        public static void setBiomeKeyAtPos(World world, BlockPos pos, RegistryKey<net.minecraft.world.biome.Biome> biomeKey) {
-            Optional<MutableRegistry<net.minecraft.world.biome.Biome>> biomeRegistry = world.registryAccess().registry(Registry.BIOME_REGISTRY);
+        public static void setBiomeKeyAtPos(Level world, BlockPos pos, ResourceKey<net.minecraft.world.level.biome.Biome> biomeKey) {
+            Optional<WritableRegistry<net.minecraft.world.level.biome.Biome>> biomeRegistry = world.registryAccess().registry(Registry.BIOME_REGISTRY);
             if (!biomeRegistry.isPresent()) return;
-            net.minecraft.world.biome.Biome biome = biomeRegistry.get().get(biomeKey);
+            net.minecraft.world.level.biome.Biome biome = biomeRegistry.get().get(biomeKey);
             if (biome == null) return;
-            BiomeContainer bc = world.getChunk(pos).getBiomes();
-            IChunk chunk = world.getChunk(pos);
+            ChunkBiomeContainer bc = world.getChunk(pos).getBiomes();
+            ChunkAccess chunk = world.getChunk(pos);
             if (bc != null && bc.biomes != null) {
-                net.minecraft.world.biome.Biome[] biomeArray = bc.biomes;
+                net.minecraft.world.level.biome.Biome[] biomeArray = bc.biomes;
                 int biomeIndex = getBiomeIndex(pos.getX(), pos.getY(), pos.getZ(), 0L);
                 if (biomeIndex < biomeArray.length) {
                     biomeArray[biomeIndex] = biome;
@@ -197,22 +224,22 @@ public class ElectronaUtils {
             int j3 = (k2 & 2) == 0 ? i1 : i1 + 1;
             int k3 = (k2 & 1) == 0 ? j1 : j1 + 1;
 
-            int arrayIndex = i3 & BiomeContainer.HORIZONTAL_MASK;
-            arrayIndex |= (k3 & BiomeContainer.HORIZONTAL_MASK) << WIDTH_BITS;
-            return arrayIndex | MathHelper.clamp(j3, 0, BiomeContainer.VERTICAL_MASK) << WIDTH_BITS + WIDTH_BITS;
+            int arrayIndex = i3 & ChunkBiomeContainer.HORIZONTAL_MASK;
+            arrayIndex |= (k3 & ChunkBiomeContainer.HORIZONTAL_MASK) << WIDTH_BITS;
+            return arrayIndex | Mth.clamp(j3, 0, ChunkBiomeContainer.VERTICAL_MASK) << WIDTH_BITS + WIDTH_BITS;
         }
 
         private static double func_226845_a_(long p_226845_0_, int p_226845_2_, int p_226845_3_, int p_226845_4_, double p_226845_5_, double p_226845_7_, double p_226845_9_) {
-            long lvt_11_1_ = FastRandom.next(p_226845_0_, p_226845_2_);
-            lvt_11_1_ = FastRandom.next(lvt_11_1_, p_226845_3_);
-            lvt_11_1_ = FastRandom.next(lvt_11_1_, p_226845_4_);
-            lvt_11_1_ = FastRandom.next(lvt_11_1_, p_226845_2_);
-            lvt_11_1_ = FastRandom.next(lvt_11_1_, p_226845_3_);
-            lvt_11_1_ = FastRandom.next(lvt_11_1_, p_226845_4_);
+            long lvt_11_1_ = LinearCongruentialGenerator.next(p_226845_0_, p_226845_2_);
+            lvt_11_1_ = LinearCongruentialGenerator.next(lvt_11_1_, p_226845_3_);
+            lvt_11_1_ = LinearCongruentialGenerator.next(lvt_11_1_, p_226845_4_);
+            lvt_11_1_ = LinearCongruentialGenerator.next(lvt_11_1_, p_226845_2_);
+            lvt_11_1_ = LinearCongruentialGenerator.next(lvt_11_1_, p_226845_3_);
+            lvt_11_1_ = LinearCongruentialGenerator.next(lvt_11_1_, p_226845_4_);
             double d0 = func_226844_a_(lvt_11_1_);
-            lvt_11_1_ = FastRandom.next(lvt_11_1_, p_226845_0_);
+            lvt_11_1_ = LinearCongruentialGenerator.next(lvt_11_1_, p_226845_0_);
             double d1 = func_226844_a_(lvt_11_1_);
-            lvt_11_1_ = FastRandom.next(lvt_11_1_, p_226845_0_);
+            lvt_11_1_ = LinearCongruentialGenerator.next(lvt_11_1_, p_226845_0_);
             double d2 = func_226844_a_(lvt_11_1_);
             return func_226843_a_(p_226845_9_ + d2) + func_226843_a_(p_226845_7_ + d1) + func_226843_a_(p_226845_5_ + d0);
         }

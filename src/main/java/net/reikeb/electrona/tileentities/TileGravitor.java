@@ -3,12 +3,12 @@ package net.reikeb.electrona.tileentities;
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.*;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.phys.Vec3;
 
 import net.minecraftforge.api.distmarker.*;
 
@@ -18,7 +18,17 @@ import net.reikeb.electrona.utils.ElectronaUtils;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class TileGravitor extends TileEntity implements ITickableTileEntity {
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+
+public class TileGravitor extends BlockEntity implements TickableBlockEntity {
 
     public int tickCount;
     private float activeRotation;
@@ -34,7 +44,7 @@ public class TileGravitor extends TileEntity implements ITickableTileEntity {
         this(TileEntityInit.TILE_GRAVITOR.get());
     }
 
-    public TileGravitor(TileEntityType<?> tileEntityType) {
+    public TileGravitor(BlockEntityType<?> tileEntityType) {
         super(tileEntityType);
     }
 
@@ -114,7 +124,7 @@ public class TileGravitor extends TileEntity implements ITickableTileEntity {
         int k = this.worldPosition.getX();
         int l = this.worldPosition.getY();
         int i1 = this.worldPosition.getZ();
-        AxisAlignedBB axisalignedbb = (new AxisAlignedBB(k, l, i1, k + 1, l + 1, i1 + 1)).inflate(j);
+        AABB axisalignedbb = (new AABB(k, l, i1, k + 1, l + 1, i1 + 1)).inflate(j);
         BlockPos minPos = new BlockPos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ);
         BlockPos maxPos = new BlockPos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ);
         Iterable<BlockPos> posList = BlockPos.betweenClosed(minPos, maxPos);
@@ -127,9 +137,9 @@ public class TileGravitor extends TileEntity implements ITickableTileEntity {
     private void animationTick() {
         if (this.level == null) return;
         Random random = this.level.random;
-        double d0 = MathHelper.sin((float) (this.tickCount + 35) * 0.1F) / 2.0F + 0.5F;
+        double d0 = Mth.sin((float) (this.tickCount + 35) * 0.1F) / 2.0F + 0.5F;
         d0 = (d0 * d0 + d0) * (double) 0.3F;
-        Vector3d vector3d = new Vector3d((double) this.worldPosition.getX() + 0.5D, (double) this.worldPosition.getY() + 1.5D + d0, (double) this.worldPosition.getZ() + 0.5D);
+        Vec3 vector3d = new Vec3((double) this.worldPosition.getX() + 0.5D, (double) this.worldPosition.getY() + 1.5D + d0, (double) this.worldPosition.getZ() + 0.5D);
 
         for (BlockPos blockpos : this.effectBlocks) {
             if (random.nextInt(50) == 0) {
@@ -137,7 +147,7 @@ public class TileGravitor extends TileEntity implements ITickableTileEntity {
                 float f1 = -2.0F + random.nextFloat();
                 float f2 = -0.5F + random.nextFloat();
                 BlockPos blockpos1 = blockpos.subtract(this.worldPosition);
-                Vector3d vector3d1 = (new Vector3d(f, f1, f2)).add(blockpos1.getX(), blockpos1.getY(), blockpos1.getZ());
+                Vec3 vector3d1 = (new Vec3(f, f1, f2)).add(blockpos1.getX(), blockpos1.getY(), blockpos1.getZ());
                 this.level.addParticle(ParticleInit.GRAVITORIUM.get(), vector3d.x, vector3d.y, vector3d.z, vector3d1.x, vector3d1.y, vector3d1.z);
             }
         }
@@ -163,16 +173,16 @@ public class TileGravitor extends TileEntity implements ITickableTileEntity {
 
     public void playSound(SoundEvent sound) {
         if (this.level == null) return;
-        this.level.playSound(null, this.worldPosition, sound, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        this.level.playSound(null, this.worldPosition, sound, SoundSource.BLOCKS, 1.0F, 1.0F);
     }
 
-    public void load(BlockState state, CompoundNBT nbt) {
+    public void load(BlockState state, CompoundTag nbt) {
         super.load(state, nbt);
         this.electronicPower = nbt.getDouble("ElectronicPower");
         this.maxStorage = nbt.getInt("MaxStorage");
     }
 
-    public CompoundNBT save(CompoundNBT nbt) {
+    public CompoundTag save(CompoundTag nbt) {
         super.save(nbt);
         nbt.putDouble("ElectronicPower", this.electronicPower);
         nbt.putInt("MaxStorage", this.maxStorage);
@@ -180,11 +190,11 @@ public class TileGravitor extends TileEntity implements ITickableTileEntity {
     }
 
     @Nullable
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.worldPosition, 5, this.getUpdateTag());
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return new ClientboundBlockEntityDataPacket(this.worldPosition, 5, this.getUpdateTag());
     }
 
-    public CompoundNBT getUpdateTag() {
-        return this.save(new CompoundNBT());
+    public CompoundTag getUpdateTag() {
+        return this.save(new CompoundTag());
     }
 }

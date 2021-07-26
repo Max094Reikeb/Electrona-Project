@@ -1,8 +1,8 @@
 package net.reikeb.electrona.init;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.*;
 
 import net.reikeb.electrona.Electrona;

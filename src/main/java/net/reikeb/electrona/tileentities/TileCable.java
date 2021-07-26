@@ -1,17 +1,20 @@
 package net.reikeb.electrona.tileentities;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.tileentity.*;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
 
 import net.reikeb.electrona.misc.vm.CableFunction;
 
 import static net.reikeb.electrona.init.TileEntityInit.*;
 
-public class TileCable extends TileEntity implements ITickableTileEntity {
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+
+public class TileCable extends BlockEntity implements TickableBlockEntity {
 
     private double electronicPower;
     private boolean cableLogic;
@@ -35,7 +38,7 @@ public class TileCable extends TileEntity implements ITickableTileEntity {
     }
 
     @Override
-    public void load(BlockState blockState, CompoundNBT compound) {
+    public void load(BlockState blockState, CompoundTag compound) {
         super.load(blockState, compound);
         this.electronicPower = compound.getDouble("ElectronicPower");
         this.cableLogic = compound.getBoolean("logic");
@@ -43,7 +46,7 @@ public class TileCable extends TileEntity implements ITickableTileEntity {
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
         compound = super.save(compound);
         compound.putDouble("ElectronicPower", this.electronicPower);
         compound.putBoolean("logic", this.cableLogic);
@@ -52,17 +55,17 @@ public class TileCable extends TileEntity implements ITickableTileEntity {
     }
 
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.worldPosition, 0, this.getUpdateTag());
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return new ClientboundBlockEntityDataPacket(this.worldPosition, 0, this.getUpdateTag());
     }
 
     @Override
-    public CompoundNBT getUpdateTag() {
-        return this.save(new CompoundNBT());
+    public CompoundTag getUpdateTag() {
+        return this.save(new CompoundTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         this.load(this.getBlockState(), pkt.getTag());
     }
 }

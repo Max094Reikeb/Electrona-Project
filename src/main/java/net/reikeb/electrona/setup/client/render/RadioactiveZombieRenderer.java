@@ -1,9 +1,9 @@
 package net.reikeb.electrona.setup.client.render;
 
 import net.minecraft.client.renderer.entity.*;
-import net.minecraft.client.renderer.entity.model.ZombieModel;
+import net.minecraft.client.model.ZombieModel;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.entity.RadioactiveZombie;
 
@@ -13,8 +13,8 @@ public class RadioactiveZombieRenderer extends AbstractZombieRenderer<Radioactiv
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(Electrona.MODID, "textures/entity/radioactive_zombie.png");
 
-    public RadioactiveZombieRenderer(EntityRendererManager rendererManager) {
-        super(rendererManager, new ZombieModel<>(0.0F, false), new ZombieModel<>(0.5F, true), new ZombieModel<>(1.0F, true));
+    public RadioactiveZombieRenderer(EntityRenderDispatcher rendererManager) {
+        super(rendererManager, new ZombieModel<RadioactiveZombie>(0.0F, false), new ZombieModel<>(0.5F, true), new ZombieModel<>(1.0F, true));
     }
 
     @Nullable

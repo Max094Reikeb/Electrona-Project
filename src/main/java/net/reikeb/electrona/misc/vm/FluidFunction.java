@@ -1,15 +1,19 @@
 package net.reikeb.electrona.misc.vm;
 
-import net.minecraft.block.Block;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.tags.*;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagCollection;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.material.Fluids;
 
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.*;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -25,18 +29,18 @@ public class FluidFunction {
      * @param generatorLevel    The current fluid amount of the generator
      * @param transferPerSecond The amount of fluid transfered per second
      */
-    public static void generatorTransferFluid(World world, BlockPos pos, Direction[] directions, TileEntity generatorTE, int generatorLevel, int transferPerSecond) {
+    public static void generatorTransferFluid(Level world, BlockPos pos, Direction[] directions, BlockEntity generatorTE, int generatorLevel, int transferPerSecond) {
         double transferPerTick = transferPerSecond * 0.05;
 
-        ITagCollection<Block> tagCollection = BlockTags.getAllTags();
-        ITag<Block> machineTag, cableTag;
+        TagCollection<Block> tagCollection = BlockTags.getAllTags();
+        Tag<Block> machineTag, cableTag;
         machineTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/has_water_tank"));
         cableTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/water_cable"));
 
         for (Direction dir : directions) {
             if (generatorLevel <= 0) return; // we have no more fluid
 
-            TileEntity tileEntity = world.getBlockEntity(pos.relative(dir));
+            BlockEntity tileEntity = world.getBlockEntity(pos.relative(dir));
             if (tileEntity == null) continue;
             Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
             if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
@@ -60,7 +64,7 @@ public class FluidFunction {
      * @param te     The TileEntity we drain water from
      * @param amount The amount of water drained
      */
-    public static void drainWater(TileEntity te, int amount) {
+    public static void drainWater(BlockEntity te, int amount) {
         te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
                 .ifPresent(cap -> cap.drain(amount, IFluidHandler.FluidAction.EXECUTE));
     }
@@ -71,7 +75,7 @@ public class FluidFunction {
      * @param te     The TileEntity we give water to
      * @param amount The amount of water given
      */
-    public static void fillWater(TileEntity te, int amount) {
+    public static void fillWater(BlockEntity te, int amount) {
         te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
                 .ifPresent(cap -> cap.fill(new FluidStack(Fluids.WATER, amount), IFluidHandler.FluidAction.EXECUTE));
     }

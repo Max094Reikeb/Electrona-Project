@@ -1,11 +1,12 @@
 package net.reikeb.electrona.events.local;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.*;
+import net.minecraftforge.eventbus.api.Cancelable;
+import net.minecraftforge.eventbus.api.Event;
 
 import net.reikeb.electrona.world.NuclearExplosion;
 
@@ -24,15 +25,15 @@ import java.util.List;
  */
 public class NuclearExplosionEvent extends Event {
 
-    private final World world;
+    private final Level world;
     private final NuclearExplosion nuclearExplosion;
 
-    public NuclearExplosionEvent(World world, NuclearExplosion nuclearExplosion) {
+    public NuclearExplosionEvent(Level world, NuclearExplosion nuclearExplosion) {
         this.world = world;
         this.nuclearExplosion = nuclearExplosion;
     }
 
-    public World getWorld() {
+    public Level getWorld() {
         return world;
     }
 
@@ -49,7 +50,7 @@ public class NuclearExplosionEvent extends Event {
      */
     @Cancelable
     public static class Start extends NuclearExplosionEvent {
-        public Start(World world, NuclearExplosion nuclearExplosion) {
+        public Start(Level world, NuclearExplosion nuclearExplosion) {
             super(world, nuclearExplosion);
         }
     }
@@ -65,7 +66,7 @@ public class NuclearExplosionEvent extends Event {
         private final List<Entity> entityList;
         private final List<Block> blockList;
 
-        public Detonate(World world, NuclearExplosion nuclearExplosion, List<Entity> entityList, List<Block> blockList) {
+        public Detonate(Level world, NuclearExplosion nuclearExplosion, List<Entity> entityList, List<Block> blockList) {
             super(world, nuclearExplosion);
             this.entityList = entityList;
             this.blockList = blockList;

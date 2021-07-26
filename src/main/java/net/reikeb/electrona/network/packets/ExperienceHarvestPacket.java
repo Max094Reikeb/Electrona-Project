@@ -1,11 +1,12 @@
 package net.reikeb.electrona.network.packets;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.text.*;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import net.reikeb.electrona.containers.XPGeneratorContainer;
 
@@ -16,28 +17,28 @@ public class ExperienceHarvestPacket {
     public ExperienceHarvestPacket() {
     }
 
-    public static ExperienceHarvestPacket decode(PacketBuffer buf) {
+    public static ExperienceHarvestPacket decode(FriendlyByteBuf buf) {
         return new ExperienceHarvestPacket();
     }
 
-    public void encode(PacketBuffer buf) {
+    public void encode(FriendlyByteBuf buf) {
     }
 
     public void whenThisPacketIsReceived(Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> {
-            PlayerEntity playerEntity = context.get().getSender();
+            Player playerEntity = context.get().getSender();
             if ((playerEntity == null) || (!(playerEntity.containerMenu instanceof XPGeneratorContainer))) return;
-            TileEntity tileEntity = ((XPGeneratorContainer) playerEntity.containerMenu).getTileEntity();
+            BlockEntity tileEntity = ((XPGeneratorContainer) playerEntity.containerMenu).getTileEntity();
             int xpLevels = tileEntity.getTileData().getInt("XPLevels");
             if (xpLevels > 0) {
                 playerEntity.closeContainer();
-                playerEntity.displayClientMessage(new StringTextComponent((xpLevels + "" +
-                        (new TranslationTextComponent("message.electrona.levels_harvested_success_info").getString()))), false);
+                playerEntity.displayClientMessage(new TextComponent((xpLevels + "" +
+                        (new TranslatableComponent("message.electrona.levels_harvested_success_info").getString()))), false);
                 playerEntity.giveExperienceLevels(xpLevels);
                 tileEntity.getTileData().putInt("XPLevels", 0);
             } else {
-                playerEntity.displayClientMessage(new StringTextComponent(
-                        (new TranslationTextComponent("message.electrona.levels_none_to_harvest_info").getString())), false);
+                playerEntity.displayClientMessage(new TextComponent(
+                        (new TranslatableComponent("message.electrona.levels_none_to_harvest_info").getString())), false);
             }
         });
         context.get().setPacketHandled(true);

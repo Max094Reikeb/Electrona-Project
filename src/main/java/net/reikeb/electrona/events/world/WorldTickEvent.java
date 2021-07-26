@@ -2,23 +2,28 @@ package net.reikeb.electrona.events.world;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.util.math.*;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ChunkHolder;
+import net.minecraft.server.level.DistanceManager;
+import net.minecraft.server.level.ServerChunkCache;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.server.*;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.phys.Vec3;
 
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.entity.EnergeticLightningBolt;
 import net.reikeb.electrona.init.EntityInit;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = Electrona.MODID)
 public class WorldTickEvent {
@@ -26,20 +31,20 @@ public class WorldTickEvent {
     @SubscribeEvent
     public static void worldTick(TickEvent.WorldTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
-            if (event.world instanceof ServerWorld) {
-                ServerChunkProvider chunkProvider = ((ServerWorld) event.world).getChunkSource();
+            if (event.world instanceof ServerLevel) {
+                ServerChunkCache chunkProvider = ((ServerLevel) event.world).getChunkSource();
                 boolean flag = chunkProvider.level.isDebug();
                 if (!flag) {
                     List<ChunkHolder> list = Lists.newArrayList(chunkProvider.chunkMap.getChunks());
                     list.forEach((p_241099_7_) -> {
-                        Optional<Chunk> optional = p_241099_7_.getTickingChunkFuture().getNow(ChunkHolder.UNLOADED_LEVEL_CHUNK).left();
+                        Optional<LevelChunk> optional = p_241099_7_.getTickingChunkFuture().getNow(ChunkHolder.UNLOADED_LEVEL_CHUNK).left();
                         if (optional.isPresent()) {
-                            Optional<Chunk> optional1 = p_241099_7_.getEntityTickingChunkFuture().getNow(ChunkHolder.UNLOADED_LEVEL_CHUNK).left();
+                            Optional<LevelChunk> optional1 = p_241099_7_.getEntityTickingChunkFuture().getNow(ChunkHolder.UNLOADED_LEVEL_CHUNK).left();
                             if (optional1.isPresent()) {
-                                Chunk chunk = optional1.get();
+                                LevelChunk chunk = optional1.get();
                                 ChunkPos chunkpos = p_241099_7_.getPos();
                                 if (!chunkProvider.chunkMap.noPlayersCloseForSpawning(chunkpos) || shouldForceTicks(chunkProvider, chunkpos.toLong())) {
-                                    lightnings((ServerWorld) event.world, chunk);
+                                    lightnings((ServerLevel) event.world, chunk);
                                 }
                             }
                         }
@@ -49,7 +54,7 @@ public class WorldTickEvent {
         }
     }
 
-    private static void lightnings(ServerWorld world, Chunk chunk) {
+    private static void lightnings(ServerLevel world, LevelChunk chunk) {
         ChunkPos chunkPos = chunk.getPos();
         int i = chunkPos.getMinBlockX();
         int j = chunkPos.getMinBlockZ();
@@ -64,19 +69,19 @@ public class WorldTickEvent {
             delay = 1000000;
         }
         if (world.isRaining() && world.isThundering() && world.random.nextInt(delay) == 0) {
-            BlockPos pos = world.findLightingTargetAround(world.getBlockRandomPos(i, 0, j, 15));
+            BlockPos pos = world.findLightningTargetAround(world.getBlockRandomPos(i, 0, j, 15));
             if (world.isRainingAt(pos)) {
                 EnergeticLightningBolt energeticLightningBolt = EntityInit.ENERGETIC_LIGHTNING_BOLT_TYPE.create(world);
                 if (energeticLightningBolt == null) return;
-                energeticLightningBolt.moveTo(Vector3d.atBottomCenterOf(pos));
+                energeticLightningBolt.moveTo(Vec3.atBottomCenterOf(pos));
                 world.addFreshEntity(energeticLightningBolt);
             }
         }
     }
 
-    public static boolean shouldForceTicks(ServerChunkProvider chunkProvider, long chunkPos) {
+    public static boolean shouldForceTicks(ServerChunkCache chunkProvider, long chunkPos) {
         try {
-            Method shouldForceTickMethod = ObfuscationReflectionHelper.findMethod(TicketManager.class, "shouldForceTicks", long.class);
+            Method shouldForceTickMethod = ObfuscationReflectionHelper.findMethod(DistanceManager.class, "shouldForceTicks", long.class);
             shouldForceTickMethod.setAccessible(true);
             return (boolean) shouldForceTickMethod.invoke(chunkProvider.chunkMap.getDistanceManager(), chunkPos);
         } catch (Exception e) {

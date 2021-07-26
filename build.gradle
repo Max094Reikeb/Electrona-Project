@@ -29,16 +29,17 @@ repositories {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
+apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
 
 version = "${mod_version}"
 group = 'net.reikeb'
 archivesBaseName = mod_id
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'official', version: '1.16.5'
+    mappings channel: 'official', version: '1.17.1'
     
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -88,9 +89,9 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     // Compile against the JEI API but do not include it at runtime
-    compileOnly fg.deobf("mezz.jei:jei-${jei_mc_version}:${jei_version}:api")
+    // compileOnly fg.deobf("mezz.jei:jei-${jei_mc_version}:${jei_version}:api")
     // At runtime, use the full JEI jar
-    runtimeOnly fg.deobf("mezz.jei:jei-${jei_mc_version}:${jei_version}")
+    // runtimeOnly fg.deobf("mezz.jei:jei-${jei_mc_version}:${jei_version}")
 }
 
 jar {

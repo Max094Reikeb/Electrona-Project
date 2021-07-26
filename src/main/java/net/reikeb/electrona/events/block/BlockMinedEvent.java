@@ -1,9 +1,11 @@
 package net.reikeb.electrona.events.block;
 
-import net.minecraft.advancements.*;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.*;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.block.Block;
 
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -18,7 +20,7 @@ public class BlockMinedEvent {
 
     @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
-        ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
+        ServerPlayer player = (ServerPlayer) event.getPlayer();
         Block eventBlock = event.getState().getBlock();
 
         if (eventBlock == BlockInit.TIN_ORE.get()) {

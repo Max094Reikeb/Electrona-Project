@@ -1,9 +1,9 @@
 package net.reikeb.electrona.init;
 
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.*;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.*;
 
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.*;
 
 import net.reikeb.electrona.Electrona;
@@ -57,14 +57,14 @@ public class ItemInit {
     public static final RegistryObject<Item> STEEL_AXE = ITEMS.register("steel_axe", SteelAxe::new);
     public static final RegistryObject<Item> STEEL_SHOVEL = ITEMS.register("steel_shovel", SteelShovel::new);
     public static final RegistryObject<Item> STEEL_HOE = ITEMS.register("steel_hoe", SteelHoe::new);
-    public static final RegistryObject<Item> ANTI_RADIATION_HELMET = ITEMS.register("anti_radiation_helmet", () -> new AntiRadiationSuit(EquipmentSlotType.HEAD));
-    public static final RegistryObject<Item> ANTI_RADIATION_CHESTPLATE = ITEMS.register("anti_radiation_chestplate", () -> new AntiRadiationSuit(EquipmentSlotType.CHEST));
-    public static final RegistryObject<Item> ANTI_RADIATION_LEGGINGS = ITEMS.register("anti_radiation_leggings", () -> new AntiRadiationSuit(EquipmentSlotType.LEGS));
-    public static final RegistryObject<Item> ANTI_RADIATION_BOOTS = ITEMS.register("anti_radiation_boots", () -> new AntiRadiationSuit(EquipmentSlotType.FEET));
-    public static final RegistryObject<Item> LEAD_HELMET = ITEMS.register("lead_helmet", () -> new LeadArmor(EquipmentSlotType.HEAD));
-    public static final RegistryObject<Item> LEAD_CHESTPLATE = ITEMS.register("lead_chestplate", () -> new LeadArmor(EquipmentSlotType.CHEST));
-    public static final RegistryObject<Item> LEAD_LEGGINGS = ITEMS.register("lead_leggings", () -> new LeadArmor(EquipmentSlotType.LEGS));
-    public static final RegistryObject<Item> LEAD_BOOTS = ITEMS.register("lead_boots", () -> new LeadArmor(EquipmentSlotType.FEET));
+    public static final RegistryObject<Item> ANTI_RADIATION_HELMET = ITEMS.register("anti_radiation_helmet", () -> new AntiRadiationSuit(EquipmentSlot.HEAD));
+    public static final RegistryObject<Item> ANTI_RADIATION_CHESTPLATE = ITEMS.register("anti_radiation_chestplate", () -> new AntiRadiationSuit(EquipmentSlot.CHEST));
+    public static final RegistryObject<Item> ANTI_RADIATION_LEGGINGS = ITEMS.register("anti_radiation_leggings", () -> new AntiRadiationSuit(EquipmentSlot.LEGS));
+    public static final RegistryObject<Item> ANTI_RADIATION_BOOTS = ITEMS.register("anti_radiation_boots", () -> new AntiRadiationSuit(EquipmentSlot.FEET));
+    public static final RegistryObject<Item> LEAD_HELMET = ITEMS.register("lead_helmet", () -> new LeadArmor(EquipmentSlot.HEAD));
+    public static final RegistryObject<Item> LEAD_CHESTPLATE = ITEMS.register("lead_chestplate", () -> new LeadArmor(EquipmentSlot.CHEST));
+    public static final RegistryObject<Item> LEAD_LEGGINGS = ITEMS.register("lead_leggings", () -> new LeadArmor(EquipmentSlot.LEGS));
+    public static final RegistryObject<Item> LEAD_BOOTS = ITEMS.register("lead_boots", () -> new LeadArmor(EquipmentSlot.FEET));
     public static final RegistryObject<Item> MECHANIC_WINGS = ITEMS.register("mechanic_wings", MechanicWings::new);
 
     // Generators & Machines - BlockItems
@@ -189,7 +189,7 @@ public class ItemInit {
             new BlockItem(BlockInit.ENERGETIC_LIGHTNING_ROD.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
 
     public static final RegistryObject<Item> RADIOACTIVE_GRASS_ITEM = ITEMS.register("radioactive_grass", () ->
-            new TallBlockItem(BlockInit.RADIOACTIVE_GRASS.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
+            new DoubleHighBlockItem(BlockInit.RADIOACTIVE_GRASS.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
 
     public static final RegistryObject<Item> RADIOACTIVE_TALL_GRASS_ITEM = ITEMS.register("radioactive_tall_grass", () ->
             new BlockItem(BlockInit.RADIOACTIVE_TALL_GRASS.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));

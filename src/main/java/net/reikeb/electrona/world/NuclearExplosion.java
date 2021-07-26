@@ -1,26 +1,40 @@
 package net.reikeb.electrona.world;
 
-import net.minecraft.block.*;
-import net.minecraft.enchantment.ProtectionEnchantment;
-import net.minecraft.entity.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.tags.*;
-import net.minecraft.util.*;
-import net.minecraft.util.math.*;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagCollection;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.enchantment.ProtectionEnchantment;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 import net.reikeb.electrona.events.local.NuclearExplosionEvent;
-import net.reikeb.electrona.init.*;
+import net.reikeb.electrona.init.BiomeInit;
+import net.reikeb.electrona.init.BlockInit;
+import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.misc.DamageSources;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.BiomeUpdatePacket;
 import net.reikeb.electrona.utils.ElectronaUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Credits: rodolphito
@@ -45,10 +59,10 @@ public class NuclearExplosion {
     };
 
     private final List<Block> affectedBlocks = new ArrayList<>();
-    private final Vector3d position;
+    private final Vec3 position;
 
-    public NuclearExplosion(World world, int x, int y, int z, int strength) {
-        this.position = new Vector3d(x, y, z);
+    public NuclearExplosion(Level world, int x, int y, int z, int strength) {
+        this.position = new Vec3(x, y, z);
         if (!world.isClientSide) {
             if (!MinecraftForge.EVENT_BUS.post(new NuclearExplosionEvent.Start(world, this))) {
                 createHole(world, x, y, z, strength);
@@ -58,13 +72,13 @@ public class NuclearExplosion {
         }
     }
 
-    public Vector3d getPosition() {
+    public Vec3 getPosition() {
         return this.position;
     }
 
-    private void createHole(World world, int x, int y, int z, int radius) {
-        ITagCollection<Block> tagCollection = BlockTags.getAllTags();
-        ITag<Block> logTag, plankTag, stairsTag, slabsTag, doorTag, glassTag, panesTag;
+    private void createHole(Level world, int x, int y, int z, int radius) {
+        TagCollection<Block> tagCollection = BlockTags.getAllTags();
+        Tag<Block> logTag, plankTag, stairsTag, slabsTag, doorTag, glassTag, panesTag;
         logTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft", "logs_that_burn"));
         plankTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft", "planks"));
         stairsTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft", "wooden_stairs"));
@@ -131,7 +145,7 @@ public class NuclearExplosion {
                                     } else {
                                         world.setBlockAndUpdate(blockPos, BlockInit.CHARDWOOD_LOG.get().defaultBlockState());
                                     }
-                                } else if ((block == Blocks.GRASS_BLOCK) || (block == Blocks.DIRT) || (block == Blocks.GRASS_PATH)) {
+                                } else if ((block == Blocks.GRASS_BLOCK) || (block == Blocks.DIRT) || (block == Blocks.DIRT_PATH)) {
                                     world.setBlockAndUpdate(blockPos, BlockInit.RADIOACTIVE_DIRT.get().defaultBlockState());
                                 }
                             }
@@ -145,22 +159,22 @@ public class NuclearExplosion {
             }
         }
         world.playSound(null, new BlockPos(x, y, z), SoundsInit.NUCLEAR_EXPLOSION.get(),
-                SoundCategory.WEATHER, 0.6F, 1.0F);
+                SoundSource.WEATHER, 0.6F, 1.0F);
         NetworkManager.INSTANCE.send(PacketDistributor.ALL.noArg(), new BiomeUpdatePacket(new BlockPos(x, y, z), BiomeInit.NUCLEAR_BIOME_KEY.location(), radius));
     }
 
-    private void pushAndHurtEntities(World world, int x, int y, int z, int radius) {
+    private void pushAndHurtEntities(Level world, int x, int y, int z, int radius) {
         int diameter = radius * 2;
         int onepointfiveradius = (radius / 2) * 3;
-        int var3 = MathHelper.floor(x - (double) onepointfiveradius - 1.0D);
-        int var4 = MathHelper.floor(x + (double) onepointfiveradius + 1.0D);
-        int var5 = MathHelper.floor(y - (double) onepointfiveradius - 1.0D);
-        int var28 = MathHelper.floor(y + (double) onepointfiveradius + 1.0D);
-        int var7 = MathHelper.floor(z - (double) onepointfiveradius - 1.0D);
-        int var29 = MathHelper.floor(z + (double) onepointfiveradius + 1.0D);
-        List<Entity> var9 = world.getEntities(null, AxisAlignedBB.of(new MutableBoundingBox(var3, var5, var7, var4, var28, var29)));
+        int var3 = Mth.floor(x - (double) onepointfiveradius - 1.0D);
+        int var4 = Mth.floor(x + (double) onepointfiveradius + 1.0D);
+        int var5 = Mth.floor(y - (double) onepointfiveradius - 1.0D);
+        int var28 = Mth.floor(y + (double) onepointfiveradius + 1.0D);
+        int var7 = Mth.floor(z - (double) onepointfiveradius - 1.0D);
+        int var29 = Mth.floor(z + (double) onepointfiveradius + 1.0D);
+        List<Entity> var9 = world.getEntities(null, AABB.of(new BoundingBox(var3, var5, var7, var4, var28, var29)));
         MinecraftForge.EVENT_BUS.post(new NuclearExplosionEvent.Detonate(world, this, var9, affectedBlocks));
-        Vector3d var30 = new Vector3d(x, y, z);
+        Vec3 var30 = new Vec3(x, y, z);
 
         for (Entity entity : var9) {
             double var13 = entity.distanceToSqr(x, y, z) / onepointfiveradius;
@@ -168,7 +182,7 @@ public class NuclearExplosion {
                 double var15 = entity.getX() - x;
                 double var17 = entity.getY() + entity.getEyeHeight() - y;
                 double var19 = entity.getZ() - z;
-                double var33 = MathHelper.sqrt(var15 * var15 + var17 * var17 + var19 * var19);
+                double var33 = Mth.sqrt((float) (var15 * var15 + var17 * var17 + var19 * var19));
 
                 if (var33 != 0.0D) {
                     var15 /= var33;
@@ -176,7 +190,7 @@ public class NuclearExplosion {
                     var19 /= var33;
                     double var32 = Explosion.getSeenPercent(var30, entity);
                     double var34 = (1.0D - var13) * var32;
-                    if (entity instanceof ItemEntity) entity.remove();
+                    if (entity instanceof ItemEntity) entity.discard();
                     if (!(entity instanceof FallingBlockEntity)) {
                         entity.hurt(DamageSources.NUCLEAR_BLAST, (float) (int) ((var34 * var34 + var34) / 2.0D * 8.0D * (double) diameter + 1.0D) * 8);
                     }
@@ -191,7 +205,7 @@ public class NuclearExplosion {
         }
     }
 
-    private void fixLag(World world, int x, int y, int z, int strength) {
+    private void fixLag(Level world, int x, int y, int z, int strength) {
         for (int X = -strength; X <= strength; X++) {
             int xx = x + X;
             for (int Y = -strength; Y <= strength; Y++) {

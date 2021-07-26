@@ -1,13 +1,18 @@
 package net.reikeb.electrona.world.gen;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
-import net.minecraft.data.*;
-import net.minecraft.util.*;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.DataProvider;
+import net.minecraft.data.HashCache;
+import net.minecraft.sounds.SoundEvent;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.SoundsInit;
-import net.reikeb.electrona.world.gen.objects.*;
+import net.reikeb.electrona.world.gen.objects.SoundBuilder;
+import net.reikeb.electrona.world.gen.objects.SoundEventBuilder;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -16,7 +21,7 @@ import java.nio.file.Path;
  * Credits: 50ap5ud5
  * <br> A Data generator that allows us to automatically add new objects to the sounds.json without needing manual work
  */
-public class SoundFiles implements IDataProvider {
+public class SoundFiles implements DataProvider {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private final DataGenerator generator;
@@ -27,7 +32,7 @@ public class SoundFiles implements IDataProvider {
     }
 
     @Override
-    public void run(DirectoryCache cache) throws IOException {
+    public void run(HashCache cache) throws IOException {
 
         final Path path = this.generator.getOutputFolder();
         final Path outputPath = getPath(path, Electrona.MODID);
@@ -40,7 +45,7 @@ public class SoundFiles implements IDataProvider {
         this.addSound(SoundsInit.WATER_PUMPING.get(), "electrona/block.water_pump.pump");
 
         //Save the json object to a file after we have added everything
-        IDataProvider.save(GSON, cache, this.root, outputPath);
+        DataProvider.save(GSON, cache, this.root, outputPath);
 
     }
 

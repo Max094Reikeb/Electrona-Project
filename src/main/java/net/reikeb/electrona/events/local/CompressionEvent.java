@@ -1,11 +1,12 @@
 package net.reikeb.electrona.events.local;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.*;
+import net.minecraftforge.eventbus.api.Cancelable;
+import net.minecraftforge.eventbus.api.Event;
 
 /**
  * CompressionEvent triggers when a compression is done with the Compressor.<br>
@@ -17,7 +18,7 @@ import net.minecraftforge.eventbus.api.*;
 @Cancelable
 public class CompressionEvent extends Event {
 
-    private final World world;
+    private final Level world;
     private final BlockPos pos;
     private final ItemStack input1;
     private final ItemStack input2;
@@ -25,7 +26,7 @@ public class CompressionEvent extends Event {
     private final int compressingTime;
     private final int energyRequired;
 
-    public CompressionEvent(World world, BlockPos pos, ItemStack input1, ItemStack input2, ItemStack output,
+    public CompressionEvent(Level world, BlockPos pos, ItemStack input1, ItemStack input2, ItemStack output,
                             int compressingTime, int energyRequired) {
         this.world = world;
         this.pos = pos;
@@ -36,7 +37,7 @@ public class CompressionEvent extends Event {
         this.energyRequired = energyRequired;
     }
 
-    public World getWorld() {
+    public Level getWorld() {
         return this.world;
     }
 

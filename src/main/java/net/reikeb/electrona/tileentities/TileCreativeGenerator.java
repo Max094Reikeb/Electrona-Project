@@ -1,13 +1,13 @@
 package net.reikeb.electrona.tileentities;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.tileentity.*;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -17,7 +17,10 @@ import net.reikeb.electrona.misc.vm.EnergyFunction;
 
 import static net.reikeb.electrona.init.TileEntityInit.*;
 
-public class TileCreativeGenerator extends TileEntity implements ITickableTileEntity {
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+
+public class TileCreativeGenerator extends BlockEntity implements TickableBlockEntity {
 
     private double electronicPower;
     private int maxStorage;
@@ -29,7 +32,7 @@ public class TileCreativeGenerator extends TileEntity implements ITickableTileEn
     @Override
     public void tick() {
         // We get the variables
-        World world = this.level;
+        Level world = this.level;
         BlockPos blockPos = this.getBlockPos();
 
         // We get the NBT Tags
@@ -48,7 +51,7 @@ public class TileCreativeGenerator extends TileEntity implements ITickableTileEn
     }
 
     @Override
-    public void load(BlockState blockState, CompoundNBT compound) {
+    public void load(BlockState blockState, CompoundTag compound) {
         super.load(blockState, compound);
         this.electronicPower = compound.getDouble("ElectronicPower");
         this.maxStorage = compound.getInt("MaxStorage");
@@ -58,7 +61,7 @@ public class TileCreativeGenerator extends TileEntity implements ITickableTileEn
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
         compound = super.save(compound);
         compound.putDouble("ElectronicPower", this.electronicPower);
         compound.putInt("MaxStorage", this.maxStorage);
@@ -96,17 +99,17 @@ public class TileCreativeGenerator extends TileEntity implements ITickableTileEn
     }
 
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.worldPosition, 0, this.getUpdateTag());
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return new ClientboundBlockEntityDataPacket(this.worldPosition, 0, this.getUpdateTag());
     }
 
     @Override
-    public CompoundNBT getUpdateTag() {
-        return this.save(new CompoundNBT());
+    public CompoundTag getUpdateTag() {
+        return this.save(new CompoundTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         this.load(this.getBlockState(), pkt.getTag());
     }
 }

@@ -2,18 +2,18 @@ package net.reikeb.electrona.tileentities;
 
 import net.minecraft.block.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.container.Container;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.Containers;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.text.*;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.*;
@@ -31,7 +31,22 @@ import static net.reikeb.electrona.init.TileEntityInit.*;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class TileWaterPump extends LockableLootTileEntity implements ITickableTileEntity {
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+
+public class TileWaterPump extends RandomizableContainerBlockEntity implements TickableBlockEntity {
 
     private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(2, ItemStack.EMPTY);
     private final ItemHandler inventory;
@@ -48,13 +63,13 @@ public class TileWaterPump extends LockableLootTileEntity implements ITickableTi
     }
 
     @Override
-    public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("gui.electrona.water_pump.name");
+    public Component getDisplayName() {
+        return new TranslatableComponent("gui.electrona.water_pump.name");
     }
 
     @Override
-    protected ITextComponent getDefaultName() {
-        return new StringTextComponent("water_pump");
+    protected Component getDefaultName() {
+        return new TextComponent("water_pump");
     }
 
     @Override
@@ -68,12 +83,12 @@ public class TileWaterPump extends LockableLootTileEntity implements ITickableTi
     }
 
     @Override
-    public Container createMenu(final int windowID, final PlayerInventory playerInv, final PlayerEntity playerIn) {
+    public AbstractContainerMenu createMenu(final int windowID, final Inventory playerInv, final Player playerIn) {
         return new WaterPumpContainer(windowID, playerInv, this);
     }
 
     @Override
-    public Container createMenu(int id, PlayerInventory player) {
+    public AbstractContainerMenu createMenu(int id, Inventory player) {
         return new WaterPumpContainer(ContainerInit.WATER_PUMP_CONTAINER.get(), id);
     }
 
@@ -85,7 +100,7 @@ public class TileWaterPump extends LockableLootTileEntity implements ITickableTi
     @Override
     public void tick() {
         // We get the variables
-        World world = this.level;
+        Level world = this.level;
         BlockPos blockPos = this.getBlockPos();
         BlockPos posUnder = new BlockPos(blockPos.getX(), (blockPos.getY() - 1), blockPos.getZ());
 
@@ -113,22 +128,22 @@ public class TileWaterPump extends LockableLootTileEntity implements ITickableTi
                             FluidFunction.fillWater(this, 100);
                             electronicPower -= 20;
                             world.setBlockAndUpdate(posUnder, Blocks.AIR.defaultBlockState());
-                            world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundCategory.BLOCKS, 0.6F, 1.0F);
+                            world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                         } else if (tankCapacity.get() >= (waterLevel.get() + 50)) {
                             FluidFunction.fillWater(this, 50);
                             electronicPower -= 10;
                             world.setBlockAndUpdate(posUnder, Blocks.AIR.defaultBlockState());
-                            world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundCategory.BLOCKS, 0.6F, 1.0F);
+                            world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                         } else if (tankCapacity.get() >= (waterLevel.get() + 10)) {
                             FluidFunction.fillWater(this, 10);
                             electronicPower -= 2;
                             world.setBlockAndUpdate(posUnder, Blocks.AIR.defaultBlockState());
-                            world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundCategory.BLOCKS, 0.6F, 1.0F);
+                            world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                         } else if (tankCapacity.get() > waterLevel.get()) {
                             FluidFunction.fillWater(this, 1);
                             electronicPower -= 0.2;
                             world.setBlockAndUpdate(posUnder, Blocks.AIR.defaultBlockState());
-                            world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundCategory.BLOCKS, 0.6F, 1.0F);
+                            world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                         } else {
                             isOn = false;
                         }
@@ -168,21 +183,21 @@ public class TileWaterPump extends LockableLootTileEntity implements ITickableTi
     }
 
     @Override
-    public void load(BlockState blockState, CompoundNBT compound) {
+    public void load(BlockState blockState, CompoundTag compound) {
         super.load(blockState, compound);
         this.electronicPower = compound.getDouble("ElectronicPower");
         this.maxStorage = compound.getInt("MaxStorage");
         this.isOn = compound.getBoolean("isOn");
         this.wait = compound.getInt("wait");
         if (compound.contains("Inventory")) {
-            inventory.deserializeNBT((CompoundNBT) compound.get("Inventory"));
+            inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
         }
         if (compound.get("fluidTank") != null)
             CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.readNBT(fluidTank, null, compound.get("fluidTank"));
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
         super.save(compound);
         compound.putDouble("ElectronicPower", this.electronicPower);
         compound.putInt("MaxStorage", this.maxStorage);
@@ -213,25 +228,25 @@ public class TileWaterPump extends LockableLootTileEntity implements ITickableTi
         return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(cap, LazyOptional.of(() -> this.inventory));
     }
 
-    public void dropItems(World world, BlockPos pos) {
+    public void dropItems(Level world, BlockPos pos) {
         for (int i = 0; i < 2; i++)
             if (!inventory.getStackInSlot(i).isEmpty()) {
-                InventoryHelper.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(i));
+                Containers.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(i));
             }
     }
 
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.worldPosition, 0, this.getUpdateTag());
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return new ClientboundBlockEntityDataPacket(this.worldPosition, 0, this.getUpdateTag());
     }
 
     @Override
-    public CompoundNBT getUpdateTag() {
-        return this.save(new CompoundNBT());
+    public CompoundTag getUpdateTag() {
+        return this.save(new CompoundTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         this.load(this.getBlockState(), pkt.getTag());
     }
 

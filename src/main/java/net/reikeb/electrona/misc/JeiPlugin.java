@@ -1,6 +1,6 @@
 package net.reikeb.electrona.misc;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -12,17 +12,20 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.registration.*;
 
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Font;
 import net.minecraft.item.*;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.*;
 
 import java.util.*;
+
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 @mezz.jei.api.JeiPlugin
 public class JeiPlugin implements IModPlugin {
@@ -193,10 +196,10 @@ public class JeiPlugin implements IModPlugin {
         private static final int output1 = 2; // THE NUMBER = SLOTID
 
         // ...
-        public void draw(CompressorBlockJeiCategory.CompressorBlockRecipeWrapper recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
-            FontRenderer fontRenderer = Minecraft.getInstance().font;
-            fontRenderer.draw(matrixStack, new TranslationTextComponent("gui.electrona.compressor.name"), 50, 6, -16777216);
-            fontRenderer.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.power"), 126, 6, -16777216);
+        public void draw(CompressorBlockJeiCategory.CompressorBlockRecipeWrapper recipe, PoseStack matrixStack, double mouseX, double mouseY) {
+            Font fontRenderer = Minecraft.getInstance().font;
+            fontRenderer.draw(matrixStack, new TranslatableComponent("gui.electrona.compressor.name"), 50, 6, -16777216);
+            fontRenderer.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.power"), 126, 6, -16777216);
             ItemStack recipeOutput = (ItemStack) recipe.output.get(0);
             if (recipeOutput.getItem() == ItemInit.STEEL_INGOT.get()) {
                 fontRenderer.draw(matrixStack, "400 ELs", 126, 16, -3407821);
@@ -298,9 +301,9 @@ public class JeiPlugin implements IModPlugin {
         private static final int output1 = 2; // THE NUMBER = SLOTID
 
         // ...
-        public void draw(PurificatorBlockJeiCategory.PurificatorBlockRecipeWrapper recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
-            FontRenderer fontRenderer = Minecraft.getInstance().font;
-            fontRenderer.draw(matrixStack, new TranslationTextComponent("gui.electrona.purificator.name"), 48, 6, -16777216);
+        public void draw(PurificatorBlockJeiCategory.PurificatorBlockRecipeWrapper recipe, PoseStack matrixStack, double mouseX, double mouseY) {
+            Font fontRenderer = Minecraft.getInstance().font;
+            fontRenderer.draw(matrixStack, new TranslatableComponent("gui.electrona.purificator.name"), 48, 6, -16777216);
         }
 
         // ...

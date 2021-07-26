@@ -1,38 +1,42 @@
 package net.reikeb.electrona.containers;
 
-import net.minecraft.entity.player.*;
-import net.minecraft.inventory.container.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
-import net.minecraftforge.items.*;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.tileentities.TileSprayer;
 
-import static net.reikeb.electrona.init.ContainerInit.*;
+import static net.reikeb.electrona.init.ContainerInit.SPRAYER_CONTAINER;
 
-public class SprayerContainer extends Container {
+public class SprayerContainer extends AbstractContainerMenu {
 
     public TileSprayer tileEntity;
 
-    public SprayerContainer(ContainerType<?> type, int id) {
+    public SprayerContainer(MenuType<?> type, int id) {
         super(type, id);
     }
 
     // Client
-    public SprayerContainer(int id, PlayerInventory inv, PacketBuffer buf) {
+    public SprayerContainer(int id, Inventory inv, FriendlyByteBuf buf) {
         super(SPRAYER_CONTAINER.get(), id);
         this.init(inv, this.tileEntity = (TileSprayer) inv.player.level.getBlockEntity(buf.readBlockPos()));
     }
 
     // Server
-    public SprayerContainer(int id, PlayerInventory inv, TileSprayer tile) {
+    public SprayerContainer(int id, Inventory inv, TileSprayer tile) {
         super(SPRAYER_CONTAINER.get(), id);
         this.init(inv, this.tileEntity = tile);
     }
 
-    public void init(PlayerInventory playerInv, TileSprayer tile) {
+    public void init(Inventory playerInv, TileSprayer tile) {
 
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
@@ -61,7 +65,7 @@ public class SprayerContainer extends Container {
         return this.tileEntity;
     }
 
-    private void layoutPlayerInventorySlots(PlayerInventory playerInv) {
+    private void layoutPlayerInventorySlots(Inventory playerInv) {
         int si;
         int sj;
         for (si = 0; si < 3; ++si)
@@ -72,12 +76,12 @@ public class SprayerContainer extends Container {
     }
 
     @Override
-    public boolean stillValid(PlayerEntity playerEntity) {
+    public boolean stillValid(Player playerEntity) {
         return true;
     }
 
     @Override
-    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(Player playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if (slot != null && slot.hasItem()) {

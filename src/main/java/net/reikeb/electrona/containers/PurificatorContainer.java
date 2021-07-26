@@ -1,11 +1,16 @@
 package net.reikeb.electrona.containers;
 
-import net.minecraft.entity.player.*;
-import net.minecraft.inventory.container.*;
-import net.minecraft.item.*;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
-import net.minecraftforge.items.*;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.network.NetworkManager;
@@ -14,29 +19,29 @@ import net.reikeb.electrona.tileentities.TilePurificator;
 
 import javax.annotation.Nonnull;
 
-import static net.reikeb.electrona.init.ContainerInit.*;
+import static net.reikeb.electrona.init.ContainerInit.PURIFICATOR_CONTAINER;
 
-public class PurificatorContainer extends Container {
+public class PurificatorContainer extends AbstractContainerMenu {
 
     public TilePurificator tileEntity;
 
-    public PurificatorContainer(ContainerType<?> type, int id) {
+    public PurificatorContainer(MenuType<?> type, int id) {
         super(type, id);
     }
 
     // Client
-    public PurificatorContainer(int id, PlayerInventory inv, PacketBuffer buf) {
+    public PurificatorContainer(int id, Inventory inv, FriendlyByteBuf buf) {
         super(PURIFICATOR_CONTAINER.get(), id);
         this.init(inv, this.tileEntity = (TilePurificator) inv.player.level.getBlockEntity(buf.readBlockPos()));
     }
 
     // Server
-    public PurificatorContainer(int id, PlayerInventory inv, TilePurificator tile) {
+    public PurificatorContainer(int id, Inventory inv, TilePurificator tile) {
         super(PURIFICATOR_CONTAINER.get(), id);
         this.init(inv, this.tileEntity = tile);
     }
 
-    public void init(PlayerInventory playerInv, TilePurificator tile) {
+    public void init(Inventory playerInv, TilePurificator tile) {
 
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
@@ -56,13 +61,11 @@ public class PurificatorContainer extends Container {
                         return false;
                     }
 
-                    public ItemStack onTake(PlayerEntity playerEntity, ItemStack stack) {
+                    public void onTake(Player playerEntity, ItemStack stack) {
                         if (stack.getItem() == ItemInit.GOLD_POWDER.get()) {
                             // Trigger Advancement
                             NetworkManager.INSTANCE.sendToServer(new PurificationPacket());
-                            return stack;
                         }
-                        return stack;
                     }
                 });
             });
@@ -74,7 +77,7 @@ public class PurificatorContainer extends Container {
         return this.tileEntity;
     }
 
-    private void layoutPlayerInventorySlots(PlayerInventory playerInv) {
+    private void layoutPlayerInventorySlots(Inventory playerInv) {
         int si;
         int sj;
         for (si = 0; si < 3; ++si)
@@ -85,12 +88,12 @@ public class PurificatorContainer extends Container {
     }
 
     @Override
-    public boolean stillValid(PlayerEntity playerEntity) {
+    public boolean stillValid(Player playerEntity) {
         return true;
     }
 
     @Override
-    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(Player playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = (Slot) this.slots.get(index);
         if (slot != null && slot.hasItem()) {

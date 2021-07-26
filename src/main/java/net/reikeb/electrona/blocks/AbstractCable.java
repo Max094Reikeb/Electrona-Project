@@ -1,17 +1,18 @@
 package net.reikeb.electrona.blocks;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.fluid.*;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.*;
-import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.core.*;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.*;
-import net.minecraft.world.*;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.*;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.*;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.*;
+import net.minecraft.world.level.material.*;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.shapes.*;
 
-public abstract class AbstractCable extends Block implements IWaterLoggable {
+public abstract class AbstractCable extends Block implements SimpleWaterloggedBlock {
 
     public static final BooleanProperty NORTH = BooleanProperty.create("north");
     public static final BooleanProperty SOUTH = BooleanProperty.create("south");
@@ -43,21 +44,21 @@ public abstract class AbstractCable extends Block implements IWaterLoggable {
         this.S_EAST = Block.box(8 + halfSize, 0, 8 - halfSize, 16, halfSize * 2, 8 + halfSize);
         this.S_UP = Block.box(8 - halfSize, size, 8 - halfSize, 8 + halfSize, 16, 8 + halfSize);
         this.S_MIDDLE = Block.box(8 - halfSize, 0, 8 - halfSize, 8 + halfSize, size, 8 + halfSize);
-        this.SHAPES = new VoxelShape[]{VoxelShapes.empty(), S_UP, S_NORTH, S_SOUTH, S_WEST, S_EAST};
+        this.SHAPES = new VoxelShape[]{Shapes.empty(), S_UP, S_NORTH, S_SOUTH, S_WEST, S_EAST};
     }
 
     @Override
     public FluidState getFluidState(BlockState state) {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.defaultFluidState().getFluidState() : Fluids.EMPTY.defaultFluidState();
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.defaultFluidState() : Fluids.EMPTY.defaultFluidState();
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(NORTH, SOUTH, EAST, WEST, UP, DOWN, MIDDLE, WATERLOGGED);
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState state = updateState(this.defaultBlockState(), context.getLevel(), context.getClickedPos());
 
         BlockState replaceState = context.getLevel().getBlockState(context.getClickedPos());
@@ -65,12 +66,12 @@ public abstract class AbstractCable extends Block implements IWaterLoggable {
     }
 
     @Override
-    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+    public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
         BlockState newState = updateState(state, worldIn, pos);
         if (!newState.equals(state)) worldIn.setBlockAndUpdate(pos, newState);
     }
 
-    public BlockState updateState(BlockState state, World worldIn, BlockPos pos) {
+    public BlockState updateState(BlockState state, Level worldIn, BlockPos pos) {
         for (Direction side : Direction.values()) {
             BooleanProperty prop = CONNECTIONS[side.get3DDataValue()];
             boolean mustConnect = canConnectTo(state, worldIn, pos, pos.relative(side), side.getOpposite());
@@ -91,19 +92,19 @@ public abstract class AbstractCable extends Block implements IWaterLoggable {
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        VoxelShape shape = state.getValue(MIDDLE) != MiddleState.NONE ? S_MIDDLE : VoxelShapes.empty();
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+        VoxelShape shape = state.getValue(MIDDLE) != MiddleState.NONE ? S_MIDDLE : Shapes.empty();
         for (Direction direction : Direction.values()) {
             if (state.getValue(CONNECTIONS[direction.get3DDataValue()])) {
-                shape = VoxelShapes.or(shape, SHAPES[direction.get3DDataValue()]);
+                shape = Shapes.or(shape, SHAPES[direction.get3DDataValue()]);
             }
         }
         return shape;
     }
 
     @Override
-    public BlockRenderType getRenderShape(BlockState state) {
-        return BlockRenderType.MODEL;
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
     }
 
     public boolean hasOpenEnd(BlockState state) {
@@ -118,9 +119,9 @@ public abstract class AbstractCable extends Block implements IWaterLoggable {
         return connections;
     }
 
-    public abstract boolean canConnectTo(BlockState wireState, World worldIn, BlockPos wirePos, BlockPos connectPos, Direction direction);
+    public abstract boolean canConnectTo(BlockState wireState, Level worldIn, BlockPos wirePos, BlockPos connectPos, Direction direction);
 
-    public static enum MiddleState implements IStringSerializable {
+    public static enum MiddleState implements StringRepresentable {
         CLOSE("close"), OPEN("open"), NONE("none");
         private String name;
 

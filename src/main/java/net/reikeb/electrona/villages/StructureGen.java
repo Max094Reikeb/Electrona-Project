@@ -1,6 +1,6 @@
 package net.reikeb.electrona.villages;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.registry.*;
 import net.minecraft.world.gen.feature.jigsaw.*;
 
@@ -10,12 +10,18 @@ import net.reikeb.electrona.Electrona;
 
 import java.util.*;
 
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.world.level.levelgen.feature.structures.LegacySinglePoolElement;
+import net.minecraft.world.level.levelgen.feature.structures.StructurePoolElement;
+import net.minecraft.world.level.levelgen.feature.structures.StructureTemplatePool;
+
 @Mod.EventBusSubscriber(modid = Electrona.MODID)
 public class StructureGen {
 
     private static final ResourceLocation mainEngineerHouse = new ResourceLocation(Electrona.MODID, "villages/engineer_house_plains");
 
-    public static void setupVillageWorldGen(DynamicRegistries dynamicRegistries) {
+    public static void setupVillageWorldGen(RegistryAccess dynamicRegistries) {
         // Add Houses to Vanilla Villages.
         addEngineerHouseToVillageConfig(dynamicRegistries, "village/plains/houses", mainEngineerHouse, 2);
         addEngineerHouseToVillageConfig(dynamicRegistries, "village/savanna/houses", new ResourceLocation(Electrona.MODID, "villages/engineer_house_savanna"), 2);
@@ -33,12 +39,12 @@ public class StructureGen {
         addEngineerHouseToVillageConfig(dynamicRegistries, "repurposed_structures:village/swamp/houses", mainEngineerHouse, 2);
     }
 
-    private static void addEngineerHouseToVillageConfig(DynamicRegistries dynamicRegistries, String villagePiece, ResourceLocation waystoneStructure, int weight) {
-        LegacySingleJigsawPiece piece = JigsawPiece.legacy(waystoneStructure.toString()).apply(JigsawPattern.PlacementBehaviour.RIGID);
-        JigsawPattern pool = dynamicRegistries.registryOrThrow(Registry.TEMPLATE_POOL_REGISTRY).getOptional(new ResourceLocation(villagePiece)).orElse(null);
+    private static void addEngineerHouseToVillageConfig(RegistryAccess dynamicRegistries, String villagePiece, ResourceLocation waystoneStructure, int weight) {
+        LegacySinglePoolElement piece = StructurePoolElement.legacy(waystoneStructure.toString()).apply(StructureTemplatePool.Projection.RIGID);
+        StructureTemplatePool pool = dynamicRegistries.registryOrThrow(Registry.TEMPLATE_POOL_REGISTRY).getOptional(new ResourceLocation(villagePiece)).orElse(null);
         if (pool != null) {
             // Pretty sure this can be an immutable list (when datapacked) so gotta make a copy to be safe.
-            List<JigsawPiece> listOfPieces = new ArrayList<>(pool.templates);
+            List<StructurePoolElement> listOfPieces = new ArrayList<>(pool.templates);
             for (int i = 0; i < weight; i++) {
                 listOfPieces.add(piece);
             }

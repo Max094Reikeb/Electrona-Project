@@ -1,8 +1,8 @@
 package net.reikeb.electrona.events.local;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.*;
@@ -19,13 +19,13 @@ import net.minecraftforge.eventbus.api.*;
  */
 public class TeleporterUseEvent extends Event {
 
-    private final World world;
-    private final World destinationWorld;
+    private final Level world;
+    private final Level destinationWorld;
     private final BlockPos pos;
     private final BlockPos destinationPos;
     private final Entity entity;
 
-    public TeleporterUseEvent(World world, World destinationWorld, BlockPos pos, BlockPos destinationPos,
+    public TeleporterUseEvent(Level world, Level destinationWorld, BlockPos pos, BlockPos destinationPos,
                               Entity entity) {
         this.world = world;
         this.destinationWorld = destinationWorld;
@@ -34,11 +34,11 @@ public class TeleporterUseEvent extends Event {
         this.entity = entity;
     }
 
-    public World getWorld() {
+    public Level getWorld() {
         return world;
     }
 
-    public World getDestinationWorld() {
+    public Level getDestinationWorld() {
         return destinationWorld;
     }
 
@@ -63,7 +63,7 @@ public class TeleporterUseEvent extends Event {
      */
     @Cancelable
     public static class Pre extends TeleporterUseEvent {
-        public Pre(World world, World destinationWorld, BlockPos pos, BlockPos destinationPos, Entity entity) {
+        public Pre(Level world, Level destinationWorld, BlockPos pos, BlockPos destinationPos, Entity entity) {
             super(world, destinationWorld, pos, destinationPos, entity);
         }
     }
@@ -76,7 +76,7 @@ public class TeleporterUseEvent extends Event {
      * This event is fired on the {@link MinecraftForge#EVENT_BUS}.<br>
      */
     public static class Post extends TeleporterUseEvent {
-        public Post(World world, World destinationWorld, BlockPos pos, BlockPos destinationPos, Entity entity) {
+        public Post(Level world, Level destinationWorld, BlockPos pos, BlockPos destinationPos, Entity entity) {
             super(world, destinationWorld, pos, destinationPos, entity);
         }
     }

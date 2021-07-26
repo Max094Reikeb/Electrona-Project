@@ -1,7 +1,9 @@
 package net.reikeb.electrona.misc.vm;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.math.shapes.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.stream.Stream;
 
@@ -15,26 +17,26 @@ public class CustomShapes {
             Block.box(15, 2, 0, 16, 4, 16),
             Block.box(0, 2, 0, 1, 4, 16)
     ).reduce((v1, v2) -> {
-        return VoxelShapes.join(v1, v2, IBooleanFunction.OR);
+        return Shapes.join(v1, v2, BooleanOp.OR);
     }).get();
 
     /**
      * VoxelShapes of the Energetic Lightning Rod
      */
-    public static VoxelShape EnergeticLightningRodUp = VoxelShapes.join(
+    public static VoxelShape EnergeticLightningRodUp = Shapes.join(
             Block.box(6, 12, 6, 10, 16, 10),
             Block.box(7, 0, 7, 9, 12, 9),
-            IBooleanFunction.OR);
+            BooleanOp.OR);
 
-    public static VoxelShape EnergeticLightningRodDown = VoxelShapes.join(
+    public static VoxelShape EnergeticLightningRodDown = Shapes.join(
             Block.box(6, 0, 6, 10, 4, 10),
             Block.box(7, 4, 7, 9, 16, 9),
-            IBooleanFunction.OR);
+            BooleanOp.OR);
 
-    public static VoxelShape EnergeticLightningRod = VoxelShapes.join(
+    public static VoxelShape EnergeticLightningRod = Shapes.join(
             Block.box(6, 6, 0, 10, 10, 4),
             Block.box(7, 7, 4, 9, 9, 16),
-            IBooleanFunction.OR);
+            BooleanOp.OR);
 
     /**
      * VoxelShape of the Nuclear Bomb
@@ -47,7 +49,7 @@ public class CustomShapes {
             Block.box(16, 2, 5, 17, 8, 11),
             Block.box(17, 3, 6, 18, 7, 10)
     ).reduce((v1, v2) -> {
-        return VoxelShapes.join(v1, v2, IBooleanFunction.OR);
+        return Shapes.join(v1, v2, BooleanOp.OR);
     }).get();
 
     /**
@@ -122,7 +124,7 @@ public class CustomShapes {
             Block.box(0.5, 1, 0.5, 1, 2, 1.5),
             Block.box(0.5, 1, 15, 1.5, 2, 15.5)
     ).reduce((v1, v2) -> {
-        return VoxelShapes.join(v1, v2, IBooleanFunction.OR);
+        return Shapes.join(v1, v2, BooleanOp.OR);
     }).get();
 
     /**
@@ -134,16 +136,16 @@ public class CustomShapes {
             Block.box(0, 4, 12, 16, 12, 16),
             Block.box(2, 4, 2, 14, 12, 14)
     ).reduce((v1, v2) -> {
-        return VoxelShapes.join(v1, v2, IBooleanFunction.OR);
+        return Shapes.join(v1, v2, BooleanOp.OR);
     }).get();
 
     /**
      * VoxelShape of the Teleporter
      */
-    public static VoxelShape Teleporter = VoxelShapes.join(
+    public static VoxelShape Teleporter = Shapes.join(
             Block.box(-2, 0, -2, 18, 3, 18),
             Block.box(0, 3, 0, 16, 6, 16),
-            IBooleanFunction.OR);
+            BooleanOp.OR);
 
     /**
      * VoxelShape of the Water Turbine
@@ -155,6 +157,6 @@ public class CustomShapes {
             Block.box(4, 0, 14, 12, 4, 16),
             Block.box(4, 12, 14, 12, 16, 16)
     ).reduce((v1, v2) -> {
-        return VoxelShapes.join(v1, v2, IBooleanFunction.OR);
+        return Shapes.join(v1, v2, BooleanOp.OR);
     }).get();
 }

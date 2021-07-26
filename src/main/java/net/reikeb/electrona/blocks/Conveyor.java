@@ -1,33 +1,43 @@
 package net.reikeb.electrona.blocks;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.*;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.*;
-import net.minecraft.loot.LootContext;
-import net.minecraft.state.*;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.*;
-import net.minecraft.util.text.*;
-import net.minecraft.world.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.minecraftforge.api.distmarker.*;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 
 import net.reikeb.electrona.misc.vm.CustomShapes;
 import net.reikeb.electrona.tileentities.TileConveyor;
 import net.reikeb.electrona.utils.ElectronaUtils;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
-public class Conveyor extends AbstractWaterLoggableBlock {
+public class Conveyor extends AbstractWaterLoggableBlock implements EntityBlock {
 
-    public static final DirectionProperty FACING = HorizontalBlock.FACING;
+    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty ACTIVATED = BooleanProperty.create("activated");
 
     public Conveyor() {
@@ -48,14 +58,14 @@ public class Conveyor extends AbstractWaterLoggableBlock {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
+    public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, world, list, flag);
-        list.add(new TranslationTextComponent("block.electrona.conveyor.desc1"));
-        list.add(new TranslationTextComponent("block.electrona.conveyor.desc2"));
+        list.add(new TranslatableComponent("block.electrona.conveyor.desc1"));
+        list.add(new TranslatableComponent("block.electrona.conveyor.desc2"));
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+    public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
         return true;
     }
 
@@ -65,7 +75,7 @@ public class Conveyor extends AbstractWaterLoggableBlock {
     VoxelShape eastShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.WEST, shape);
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         Direction facing = state.getValue(FACING);
         if (facing == Direction.NORTH) {
             return northShape;
@@ -86,7 +96,7 @@ public class Conveyor extends AbstractWaterLoggableBlock {
     }
 
     @Override
-    public void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    public void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, ACTIVATED, WATERLOGGED);
     }
 
@@ -99,7 +109,7 @@ public class Conveyor extends AbstractWaterLoggableBlock {
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState replaceState = context.getLevel().getBlockState(context.getClickedPos());
         return this.defaultBlockState()
                 .setValue(FACING, context.getHorizontalDirection().getOpposite())
@@ -107,9 +117,9 @@ public class Conveyor extends AbstractWaterLoggableBlock {
     }
 
     @Override
-    public void stepOn(World world, BlockPos pos, Entity entity) {
-        super.stepOn(world, pos, entity);
-        TileEntity tile = world.getBlockEntity(pos);
+    public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
+        super.stepOn(world, pos, state, entity);
+        BlockEntity tile = world.getBlockEntity(pos);
         if (!(tile instanceof TileConveyor)) return;
         TileConveyor tileConveyor = (TileConveyor) tile;
         double electronicPower = tileConveyor.getTileData().getDouble("ElectronicPower");
@@ -128,25 +138,20 @@ public class Conveyor extends AbstractWaterLoggableBlock {
     }
 
     @Override
-    public INamedContainerProvider getMenuProvider(BlockState state, World worldIn, BlockPos pos) {
-        TileEntity tileEntity = worldIn.getBlockEntity(pos);
-        return tileEntity instanceof INamedContainerProvider ? (INamedContainerProvider) tileEntity : null;
+    public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
+        BlockEntity tileEntity = worldIn.getBlockEntity(pos);
+        return tileEntity instanceof MenuProvider ? (MenuProvider) tileEntity : null;
     }
 
     @Override
-    public boolean hasTileEntity(BlockState state) {
-        return true;
-    }
-
-    @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new TileConveyor();
     }
 
     @Override
-    public boolean triggerEvent(BlockState state, World world, BlockPos pos, int eventID, int eventParam) {
+    public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
         super.triggerEvent(state, world, pos, eventID, eventParam);
-        TileEntity tileentity = world.getBlockEntity(pos);
+        BlockEntity tileentity = world.getBlockEntity(pos);
         return tileentity != null && tileentity.triggerEvent(eventID, eventParam);
     }
 }

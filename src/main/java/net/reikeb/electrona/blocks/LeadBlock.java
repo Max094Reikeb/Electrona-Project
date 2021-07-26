@@ -1,13 +1,16 @@
 package net.reikeb.electrona.blocks;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.storage.loot.LootContext;
 
 import net.minecraftforge.common.ToolType;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 public class LeadBlock extends Block {
 

@@ -1,16 +1,22 @@
 package net.reikeb.electrona.blocks;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.state.properties.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.storage.loot.LootContext;
 
 import net.reikeb.electrona.init.BlockInit;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 public class RadioactiveTallGrass extends DoublePlantBlock {
 
@@ -32,13 +38,13 @@ public class RadioactiveTallGrass extends DoublePlantBlock {
     }
 
     @Override
-    public boolean mayPlaceOn(BlockState state, IBlockReader world, BlockPos pos) {
+    public boolean mayPlaceOn(BlockState state, BlockGetter world, BlockPos pos) {
         Block block = state.getBlock();
         return (block == BlockInit.RADIOACTIVE_DIRT.get());
     }
 
     @Override
-    public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
         BlockPos blockpos = pos.below();
         BlockState blockstate = world.getBlockState(blockpos);
         if (state.getValue(HALF) == DoubleBlockHalf.UPPER)

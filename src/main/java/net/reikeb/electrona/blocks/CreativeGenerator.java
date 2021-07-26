@@ -1,22 +1,30 @@
 package net.reikeb.electrona.blocks;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.text.*;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.storage.loot.LootContext;
 
-import net.minecraftforge.api.distmarker.*;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import net.reikeb.electrona.tileentities.TileCreativeGenerator;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
-public class CreativeGenerator extends Block {
+public class CreativeGenerator extends Block implements EntityBlock {
 
     public CreativeGenerator() {
         super(Properties.of(Material.DECORATION)
@@ -29,10 +37,10 @@ public class CreativeGenerator extends Block {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
+    public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, world, list, flag);
-        list.add(new TranslationTextComponent("block.electrona.creative_generator.desc1"));
-        list.add(new TranslationTextComponent("block.electrona.creative_generator.desc2"));
+        list.add(new TranslatableComponent("block.electrona.creative_generator.desc1"));
+        list.add(new TranslatableComponent("block.electrona.creative_generator.desc2"));
     }
 
     @Override
@@ -43,14 +51,9 @@ public class CreativeGenerator extends Block {
         return Collections.singletonList(new ItemStack(Blocks.AIR, 1));
     }
 
-    @Override
-    public boolean hasTileEntity(BlockState state) {
-        return true;
-    }
-
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new TileCreativeGenerator();
     }
 }

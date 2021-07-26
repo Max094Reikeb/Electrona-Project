@@ -2,15 +2,16 @@ package net.reikeb.electrona.villages;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 
-import net.minecraft.entity.merchant.villager.VillagerTrades;
-import net.minecraft.item.Items;
+import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.item.Items;
 
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.init.*;
+import net.reikeb.electrona.init.BlockInit;
+import net.reikeb.electrona.init.ItemInit;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class VillagerTradesRegistration {
 
     @SubscribeEvent
     public static void registerTrades(VillagerTradesEvent event) {
-        Int2ObjectMap<List<VillagerTrades.ITrade>> trades = event.getTrades();
+        Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
         if (event.getType() != Villagers.ENGINEER.get()) return;
         /**
          * Price: 8 Tin Ingots

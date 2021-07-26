@@ -1,9 +1,11 @@
 package net.reikeb.electrona.items;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.*;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.misc.vm.RadioactivityFunction;
 import net.reikeb.electrona.setup.ItemGroups;
@@ -33,7 +35,7 @@ public class UraniumDualBar extends Item {
     }
 
     @Override
-    public void inventoryTick(ItemStack itemstack, World world, Entity entity, int slot, boolean selected) {
+    public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
         RadioactivityFunction.radioactiveItemInInventory(world, entity, 400, 3);
     }
 }

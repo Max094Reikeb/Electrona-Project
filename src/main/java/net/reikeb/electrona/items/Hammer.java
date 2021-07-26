@@ -1,14 +1,19 @@
 package net.reikeb.electrona.items;
 
-import com.google.common.collect.*;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.*;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.setup.ItemGroups;
 
@@ -38,8 +43,8 @@ public class Hammer extends Item {
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlotType equipmentSlot) {
-        if (equipmentSlot == EquipmentSlotType.MAINHAND) {
+    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
+        if (equipmentSlot == EquipmentSlot.MAINHAND) {
             ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
             builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
             builder.put(Attributes.ATTACK_DAMAGE,
@@ -63,13 +68,13 @@ public class Hammer extends Item {
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.hurtAndBreak(1, attacker, i -> i.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
+        stack.hurtAndBreak(1, attacker, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
         return true;
     }
 
     @Override
-    public boolean mineBlock(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-        stack.hurtAndBreak(1, entityLiving, i -> i.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
+    public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+        stack.hurtAndBreak(1, entityLiving, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
         return true;
     }
 

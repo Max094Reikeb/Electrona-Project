@@ -1,15 +1,17 @@
 package net.reikeb.electrona.recipes;
 
-import com.google.gson.*;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.*;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
@@ -21,7 +23,7 @@ import net.reikeb.electrona.utils.SingletonInventory;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class CompressorRecipe implements IRecipe<IInventory> {
+public class CompressorRecipe implements Recipe<Container> {
 
     public static final Serializer SERIALIZER = new Serializer();
 
@@ -60,21 +62,21 @@ public class CompressorRecipe implements IRecipe<IInventory> {
         return this.energyRequired;
     }
 
-    public static Optional<CompressorRecipe> getRecipe(World world, @Nullable BlockPos pos, ItemStack stack) {
-        return getRecipe(world, new CompressingContext(new SingletonInventory(stack), null, pos != null ? () -> Vector3d.atCenterOf(pos) : null, null));
+    public static Optional<CompressorRecipe> getRecipe(Level world, @Nullable BlockPos pos, ItemStack stack) {
+        return getRecipe(world, new CompressingContext(new SingletonInventory(stack), null, pos != null ? () -> Vec3.atCenterOf(pos) : null, null));
     }
 
-    public static Optional<CompressorRecipe> getRecipe(World world, CompressingContext ctx) {
+    public static Optional<CompressorRecipe> getRecipe(Level world, CompressingContext ctx) {
         return world.getRecipeManager().getRecipeFor(Electrona.COMPRESSING, ctx, world);
     }
 
     @Override
-    public boolean matches(IInventory inv, World worldIn) {
+    public boolean matches(Container inv, Level worldIn) {
         return (this.input.test(inv.getItem(0)) && (this.input2.test(inv.getItem(1))));
     }
 
     @Override
-    public ItemStack assemble(IInventory inv) {
+    public ItemStack assemble(Container inv) {
 
         // This method is ignored by our custom recipe system. getRecipeOutput().copy() is used instead.
         return this.output.copy();
@@ -98,12 +100,12 @@ public class CompressorRecipe implements IRecipe<IInventory> {
     }
 
     @Override
-    public IRecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return SERIALIZER;
     }
 
     @Override
-    public IRecipeType<?> getType() {
+    public RecipeType<?> getType() {
         return Electrona.COMPRESSING;
     }
 
@@ -112,7 +114,7 @@ public class CompressorRecipe implements IRecipe<IInventory> {
         return new ItemStack(BlockInit.COMPRESSOR.get());
     }
 
-    private static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<CompressorRecipe> {
+    private static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<CompressorRecipe> {
         Serializer() {
 
             // This registry name is what people will specify in their json files.
@@ -126,24 +128,24 @@ public class CompressorRecipe implements IRecipe<IInventory> {
 
             // Reads the inputs. Accepts items, tags, and anything else that
             // Ingredient.deserialize can understand.
-            final JsonElement inputElement = JSONUtils.isArrayNode(json, "input") ? JSONUtils.getAsJsonArray(json, "input") : JSONUtils.getAsJsonObject(json, "input");
+            final JsonElement inputElement = GsonHelper.isArrayNode(json, "input") ? GsonHelper.getAsJsonArray(json, "input") : GsonHelper.getAsJsonObject(json, "input");
             final Ingredient input = Ingredient.fromJson(inputElement);
 
-            final JsonElement inputElement2 = JSONUtils.isArrayNode(json, "input2") ? JSONUtils.getAsJsonArray(json, "input2") : JSONUtils.getAsJsonObject(json, "input2");
+            final JsonElement inputElement2 = GsonHelper.isArrayNode(json, "input2") ? GsonHelper.getAsJsonArray(json, "input2") : GsonHelper.getAsJsonObject(json, "input2");
             final Ingredient input2 = Ingredient.fromJson(inputElement2);
 
             // Reads the output. The common utility method in ShapedRecipe is what all vanilla
             // recipe classes use for this.
-            final ItemStack output = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "output"));
+            final ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));
 
-            final int compressingTime = JSONUtils.getAsInt(json, "time", 20);
-            final int energyRequired = JSONUtils.getAsInt(json, "energy", 20);
+            final int compressingTime = GsonHelper.getAsInt(json, "time", 20);
+            final int energyRequired = GsonHelper.getAsInt(json, "energy", 20);
 
             return new CompressorRecipe(recipeId, input, input2, output, compressingTime, energyRequired);
         }
 
         @Override
-        public CompressorRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
+        public CompressorRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
 
             // Reads a recipe from a packet buffer. This code is called on the client.
             final Ingredient input = Ingredient.fromNetwork(buffer);
@@ -156,7 +158,7 @@ public class CompressorRecipe implements IRecipe<IInventory> {
         }
 
         @Override
-        public void toNetwork(PacketBuffer buffer, CompressorRecipe recipe) {
+        public void toNetwork(FriendlyByteBuf buffer, CompressorRecipe recipe) {
 
             // Writes the recipe to a packet buffer. This is called on the server when a player
             // connects or when /reload is used.

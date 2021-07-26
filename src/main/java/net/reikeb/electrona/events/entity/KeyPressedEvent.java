@@ -1,12 +1,12 @@
 package net.reikeb.electrona.events.entity;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.ChatScreen;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.world.IWorld;
+import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.LevelAccessor;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
@@ -24,12 +24,12 @@ public class KeyPressedEvent {
     @SubscribeEvent
     public static void onPlayerPressesKey(InputEvent.KeyInputEvent event) {
         if ((Minecraft.getInstance().screen instanceof ChatScreen) || (Minecraft.getInstance().screen != null)) return;
-        PlayerEntity entity = Minecraft.getInstance().player;
-        IWorld world = Minecraft.getInstance().level;
+        Player entity = Minecraft.getInstance().player;
+        LevelAccessor world = Minecraft.getInstance().level;
         if (entity == null || world == null) return;
         int jumpKey = Minecraft.getInstance().options.keyJump.getKey().getValue();
         if (event.getKey() == jumpKey) {
-            ItemStack itemstack = entity.getItemBySlot(EquipmentSlotType.byTypeAndIndex(EquipmentSlotType.Group.ARMOR, 2));
+            ItemStack itemstack = entity.getItemBySlot(EquipmentSlot.byTypeAndIndex(EquipmentSlot.Type.ARMOR, 2));
             if ((itemstack.getItem() == ItemInit.MECHANIC_WINGS.get().asItem()) && (itemstack.getOrCreateTag().getDouble("ElectronicPower") >= 0.3)) {
                 entity.setDeltaMovement((entity.getDeltaMovement().x()), 0.3, (entity.getDeltaMovement().z()));
                 for (int i = 0; i < 9; i++) {

@@ -1,7 +1,10 @@
 package net.reikeb.electrona.items;
 
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.setup.ItemGroups;
@@ -9,7 +12,7 @@ import net.reikeb.electrona.setup.ItemGroups;
 public class SteelAxe extends AxeItem {
 
     public SteelAxe() {
-        super(new IItemTier() {
+        super(new Tier() {
             @Override
             public int getUses() {
                 return 604;

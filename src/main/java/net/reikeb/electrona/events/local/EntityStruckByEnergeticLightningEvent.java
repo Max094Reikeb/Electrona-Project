@@ -1,10 +1,11 @@
 package net.reikeb.electrona.events.local;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.eventbus.api.*;
+import net.minecraftforge.eventbus.api.Cancelable;
+import net.minecraftforge.eventbus.api.Event;
 
 import net.reikeb.electrona.entity.EnergeticLightningBolt;
 

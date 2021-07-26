@@ -1,24 +1,29 @@
 package net.reikeb.electrona.items;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.*;
-import net.minecraft.util.text.*;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.server.ServerWorld;
-
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.core.WritableRegistry;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.setup.ItemGroups;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 public class GeigerPointer extends Item {
 
@@ -49,24 +54,24 @@ public class GeigerPointer extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+    public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, world, list, flag);
-        list.add(new TranslationTextComponent("item.electrona.geiger_pointer.desc"));
+        list.add(new TranslatableComponent("item.electrona.geiger_pointer.desc"));
     }
 
     @Override
-    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (!(world instanceof ServerWorld)) return ActionResult.fail(stack);
+        if (!(world instanceof ServerLevel)) return InteractionResultHolder.fail(stack);
         BlockPos pos = getBiomePosition(world, player);
-        if (pos == null) return ActionResult.fail(stack);
-        stack.getOrCreateTag().put("CounterPos", NBTUtil.writeBlockPos(pos));
-        return ActionResult.success(stack);
+        if (pos == null) return InteractionResultHolder.fail(stack);
+        stack.getOrCreateTag().put("CounterPos", NbtUtils.writeBlockPos(pos));
+        return InteractionResultHolder.success(stack);
     }
 
     @Nullable
-    private BlockPos getBiomePosition(World world, Entity entity) {
-        Optional<MutableRegistry<Biome>> biomeRegistry = world.registryAccess().registry(Registry.BIOME_REGISTRY);
+    private BlockPos getBiomePosition(Level world, Entity entity) {
+        Optional<WritableRegistry<Biome>> biomeRegistry = world.registryAccess().registry(Registry.BIOME_REGISTRY);
 
         if (biomeRegistry.isPresent()) {
             Biome biome = biomeRegistry.get().get(new ResourceLocation(Electrona.MODID, "nuclear"));
@@ -75,7 +80,7 @@ public class GeigerPointer extends Item {
             }
         }
 
-        Electrona.LOGGER.error(new TranslationTextComponent("commands.locatebiome.invalid"));
+        Electrona.LOGGER.error(new TranslatableComponent("commands.locatebiome.invalid"));
         return null;
     }
 }

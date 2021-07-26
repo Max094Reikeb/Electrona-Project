@@ -1,13 +1,15 @@
 package net.reikeb.electrona.setup.client.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix4f;
 
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.entity.*;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.resources.ResourceLocation;
 
 import net.reikeb.electrona.entity.EnergeticLightningBolt;
 
@@ -15,11 +17,11 @@ import java.util.Random;
 
 public class EnergeticLightningBoltRenderer extends EntityRenderer<EnergeticLightningBolt> {
 
-    public EnergeticLightningBoltRenderer(EntityRendererManager rendererManager) {
+    public EnergeticLightningBoltRenderer(EntityRendererProvider.Context rendererManager) {
         super(rendererManager);
     }
 
-    public void render(EnergeticLightningBolt energeticLightningBolt, float n, float m, MatrixStack matrixStack, IRenderTypeBuffer buffer, int x) {
+    public void render(EnergeticLightningBolt energeticLightningBolt, float n, float m, PoseStack matrixStack, MultiBufferSource buffer, int x) {
         float[] afloat = new float[8];
         float[] afloat1 = new float[8];
         float f = 0.0F;
@@ -33,7 +35,7 @@ public class EnergeticLightningBoltRenderer extends EntityRenderer<EnergeticLigh
             f1 += (float) (random.nextInt(11) - 5);
         }
 
-        IVertexBuilder ivertexbuilder = buffer.getBuffer(RenderType.lightning());
+        VertexConsumer ivertexbuilder = buffer.getBuffer(RenderType.lightning());
         Matrix4f matrix4f = matrixStack.last().pose();
 
         for(int j = 0; j < 4; ++j) {
@@ -84,7 +86,7 @@ public class EnergeticLightningBoltRenderer extends EntityRenderer<EnergeticLigh
 
     }
 
-    private static void quad(Matrix4f p_229116_0_, IVertexBuilder p_229116_1_, float p_229116_2_, float p_229116_3_, int p_229116_4_, float p_229116_5_, float p_229116_6_, int p_229116_7_, int p_229116_8_, int p_229116_9_, float p_229116_10_, float p_229116_11_, boolean p_229116_12_, boolean p_229116_13_, boolean p_229116_14_, boolean p_229116_15_) {
+    private static void quad(Matrix4f p_229116_0_, VertexConsumer p_229116_1_, float p_229116_2_, float p_229116_3_, int p_229116_4_, float p_229116_5_, float p_229116_6_, int p_229116_7_, int p_229116_8_, int p_229116_9_, float p_229116_10_, float p_229116_11_, boolean p_229116_12_, boolean p_229116_13_, boolean p_229116_14_, boolean p_229116_15_) {
         p_229116_1_.vertex(p_229116_0_, p_229116_2_ + (p_229116_12_ ? p_229116_11_ : -p_229116_11_), (float) (p_229116_4_ * 16), p_229116_3_ + (p_229116_13_ ? p_229116_11_ : -p_229116_11_)).color(p_229116_7_, p_229116_8_, p_229116_9_, 128).endVertex();
         p_229116_1_.vertex(p_229116_0_, p_229116_5_ + (p_229116_12_ ? p_229116_10_ : -p_229116_10_), (float) ((p_229116_4_ + 1) * 16), p_229116_6_ + (p_229116_13_ ? p_229116_10_ : -p_229116_10_)).color(p_229116_7_, p_229116_8_, p_229116_9_, 128).endVertex();
         p_229116_1_.vertex(p_229116_0_, p_229116_5_ + (p_229116_14_ ? p_229116_10_ : -p_229116_10_), (float) ((p_229116_4_ + 1) * 16), p_229116_6_ + (p_229116_15_ ? p_229116_10_ : -p_229116_10_)).color(p_229116_7_, p_229116_8_, p_229116_9_, 128).endVertex();
@@ -92,6 +94,6 @@ public class EnergeticLightningBoltRenderer extends EntityRenderer<EnergeticLigh
     }
 
     public ResourceLocation getTextureLocation(EnergeticLightningBolt energeticLightningBolt) {
-        return AtlasTexture.LOCATION_BLOCKS;
+        return TextureAtlas.LOCATION_BLOCKS;
     }
 }

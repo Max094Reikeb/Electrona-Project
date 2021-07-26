@@ -1,15 +1,16 @@
 package net.reikeb.electrona.potions;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.*;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.LivingEntity;
 
 import net.reikeb.electrona.misc.vm.RadioactivityFunction;
 
-public class RadioactivityEffect extends Effect {
+public class RadioactivityEffect extends MobEffect {
 
     public RadioactivityEffect() {
-        super(EffectType.HARMFUL, -3355648);
+        super(MobEffectCategory.HARMFUL, -3355648);
         ResourceLocation potionIcon = new ResourceLocation("electrona:textures/mob_effect/radioactivity.png");
     }
 
@@ -26,21 +27,6 @@ public class RadioactivityEffect extends Effect {
     @Override
     public boolean isInstantenous() {
         return false;
-    }
-
-    @Override
-    public boolean shouldRenderInvText(EffectInstance effect) {
-        return true;
-    }
-
-    @Override
-    public boolean shouldRender(EffectInstance effect) {
-        return true;
-    }
-
-    @Override
-    public boolean shouldRenderHUD(EffectInstance effect) {
-        return true;
     }
 
     @Override

@@ -1,33 +1,36 @@
 package net.reikeb.electrona.guis;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.*;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.NuclearGeneratorControllerContainer;
 import net.reikeb.electrona.network.NetworkManager;
-import net.reikeb.electrona.network.packets.*;
-import net.reikeb.electrona.tileentities.*;
+import net.reikeb.electrona.network.packets.NuclearActivatePacket;
+import net.reikeb.electrona.network.packets.NuclearBarStatusPacket;
+import net.reikeb.electrona.tileentities.TileCooler;
+import net.reikeb.electrona.tileentities.TileNuclearGeneratorController;
 
 import org.lwjgl.opengl.GL11;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class NuclearGeneratorControllerWindow extends ContainerScreen<NuclearGeneratorControllerContainer> {
+public class NuclearGeneratorControllerWindow extends AbstractContainerScreen<NuclearGeneratorControllerContainer> {
 
     private static final ResourceLocation NUCLEAR_GENERATOR_CONTROLLER_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/nuclear_generator_controller_gui.png");
     public TileNuclearGeneratorController tileEntity;
-    public TileEntity underTileEntity;
+    public BlockEntity underTileEntity;
 
     /**
      * Texture position of water
@@ -69,7 +72,7 @@ public class NuclearGeneratorControllerWindow extends ContainerScreen<NuclearGen
     final static int POWER_WIDTH = 7;
     final static int POWER_HEIGHT = 40;
 
-    public NuclearGeneratorControllerWindow(NuclearGeneratorControllerContainer container, PlayerInventory inv, ITextComponent title) {
+    public NuclearGeneratorControllerWindow(NuclearGeneratorControllerContainer container, Inventory inv, Component title) {
         super(container, inv, title);
         this.tileEntity = container.getTileEntity();
         this.underTileEntity = inv.player.level.getBlockEntity(new BlockPos(tileEntity.getBlockPos().getX(),
@@ -79,7 +82,7 @@ public class NuclearGeneratorControllerWindow extends ContainerScreen<NuclearGen
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(matrixStack, mouseX, mouseY);
@@ -108,29 +111,29 @@ public class NuclearGeneratorControllerWindow extends ContainerScreen<NuclearGen
         int YposTempT2 = topPos + 45;
         String temperature = ("Temp.: " + currentTemp + " °C");
         if (mouseX > XposTempT1 && mouseX < XposTempT2 && mouseY > YposTempT1 && mouseY < YposTempT2) {
-            renderTooltip(matrixStack, ITextComponent.nullToEmpty(temperature), mouseX, mouseY);
+            renderTooltip(matrixStack, Component.nullToEmpty(temperature), mouseX, mouseY);
         } else if (mouseX > XposWaterT1 && mouseX < XposWaterT2 && mouseY > YposWaterT1 && mouseY < YposWaterT2) {
-            renderTooltip(matrixStack, ITextComponent.nullToEmpty(waterLevel), mouseX, mouseY);
+            renderTooltip(matrixStack, Component.nullToEmpty(waterLevel), mouseX, mouseY);
         } else if (mouseX > XposPowerT1 && mouseX < XposPowerT2 && mouseY > YposPowerT1 && mouseY < YposPowerT2) {
-            renderTooltip(matrixStack, ITextComponent.nullToEmpty(power), mouseX, mouseY);
+            renderTooltip(matrixStack, Component.nullToEmpty(power), mouseX, mouseY);
         }
     }
 
     @Override
-    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         boolean isPowered = tileEntity.getTileData().getBoolean("powered");
         boolean isIn = tileEntity.getTileData().getBoolean("UBIn");
-        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.nuclear_generator_controller.name"), 70, 8, -16777216);
-        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.state"), 79, 24, -16777216);
+        this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.nuclear_generator_controller.name"), 70, 8, -16777216);
+        this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.state"), 79, 24, -16777216);
         this.font.draw(matrixStack, (isPowered ? "ON" : "OFF"), 115, 24, -3407821);
-        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.bars"), 79, 34, -16777216);
+        this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.bars"), 79, 34, -16777216);
         this.font.draw(matrixStack, (isIn ? "IN" : "OUT"), 115, 34, -3407821);
     }
 
     @Override
-    protected void renderBg(MatrixStack matrixStack, float par1, int par2, int par3) {
+    protected void renderBg(PoseStack matrixStack, float par1, int par2, int par3) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        Minecraft.getInstance().getTextureManager().bind(NUCLEAR_GENERATOR_CONTROLLER_GUI);
+        RenderSystem.setShaderTexture(0, NUCLEAR_GENERATOR_CONTROLLER_GUI);
         int k = (this.width - this.imageWidth) / 2;
         int l = (this.height - this.imageHeight) / 2;
         this.blit(matrixStack, k, l, 0, 0, this.imageWidth, this.imageHeight);
@@ -143,7 +146,7 @@ public class NuclearGeneratorControllerWindow extends ContainerScreen<NuclearGen
         double waterProgress = (currentWater.get() / 10000.0);
         int yOffsetWater = (int) ((1.0 - waterProgress) * WATER_HEIGHT);
         // draw water bar
-        Minecraft.getInstance().getTextureManager().bind(NUCLEAR_GENERATOR_CONTROLLER_GUI);
+        RenderSystem.setShaderTexture(0, NUCLEAR_GENERATOR_CONTROLLER_GUI);
         if (currentWater.get() > 0) {
             this.blit(matrixStack, this.leftPos + WATER_XPOS, this.topPos + WATER_YPOS + yOffsetWater, WATER_ICON_U, WATER_ICON_V + yOffsetWater,
                     WATER_WIDTH, (int) (WATER_HEIGHT - yOffsetWater));
@@ -151,7 +154,7 @@ public class NuclearGeneratorControllerWindow extends ContainerScreen<NuclearGen
         // get alert status
         boolean isAlerted = tileEntity.getTileData().getBoolean("alert");
         // draw alert sign
-        Minecraft.getInstance().getTextureManager().bind(NUCLEAR_GENERATOR_CONTROLLER_GUI);
+        RenderSystem.setShaderTexture(0, NUCLEAR_GENERATOR_CONTROLLER_GUI);
         if (isAlerted) {
             this.blit(matrixStack, this.leftPos + WARNING_XPOS, this.topPos + WARNING_YPOS, WARNING_ICON_U, WARNING_ICON_V, WARNING_WIDTH,
                     WARNING_HEIGHT);
@@ -162,7 +165,7 @@ public class NuclearGeneratorControllerWindow extends ContainerScreen<NuclearGen
         double powerProgress = (currentPower / 10000.0);
         int yOffsetPower = (int) ((1.0 - powerProgress) * POWER_HEIGHT);
         // draw power bar
-        Minecraft.getInstance().getTextureManager().bind(NUCLEAR_GENERATOR_CONTROLLER_GUI);
+        RenderSystem.setShaderTexture(0, NUCLEAR_GENERATOR_CONTROLLER_GUI);
         if (currentPower > 0) {
             this.blit(matrixStack, this.leftPos + POWER_XPOS, this.topPos + POWER_YPOS + yOffsetPower, POWER_ICON_U, POWER_ICON_V + yOffsetPower,
                     POWER_WIDTH, POWER_HEIGHT - yOffsetPower);
@@ -173,7 +176,7 @@ public class NuclearGeneratorControllerWindow extends ContainerScreen<NuclearGen
         double tempProgress = (currentTemp / 3000.0);
         int yOffsetTemp = (int) ((1.0 - tempProgress) * TEMPERATURE_HEIGHT);
         // draw temperature bar
-        Minecraft.getInstance().getTextureManager().bind(NUCLEAR_GENERATOR_CONTROLLER_GUI);
+        RenderSystem.setShaderTexture(0, NUCLEAR_GENERATOR_CONTROLLER_GUI);
         if (currentTemp > 0) {
             this.blit(matrixStack, this.leftPos + TEMPERATURE_XPOS, this.topPos + TEMPERATURE_YPOS + yOffsetTemp, TEMPERATURE_ICON_U,
                     TEMPERATURE_ICON_V + yOffsetTemp, TEMPERATURE_WIDTH, TEMPERATURE_HEIGHT - yOffsetTemp);
@@ -190,25 +193,20 @@ public class NuclearGeneratorControllerWindow extends ContainerScreen<NuclearGen
     }
 
     @Override
-    public void tick() {
-        super.tick();
-    }
-
-    @Override
     public void removed() {
         super.removed();
         this.minecraft.keyboardHandler.setSendRepeatsToGui(false);
     }
 
     @Override
-    public void init(Minecraft minecraft, int width, int height) {
+    public void init() {
         super.init(minecraft, width, height);
-        this.addButton(new Button(this.leftPos + 43, this.topPos + 60, 60, 20,
-                ITextComponent.nullToEmpty("In/Out"), e -> {
+        this.addRenderableWidget(new Button(this.leftPos + 43, this.topPos + 60, 60, 20,
+                Component.nullToEmpty("In/Out"), e -> {
             NetworkManager.INSTANCE.sendToServer(new NuclearBarStatusPacket());
         }));
-        this.addButton(new Button(this.leftPos + 109, this.topPos + 60, 60, 20,
-                ITextComponent.nullToEmpty("On/Off"), e -> {
+        this.addRenderableWidget(new Button(this.leftPos + 109, this.topPos + 60, 60, 20,
+                Component.nullToEmpty("On/Off"), e -> {
             NetworkManager.INSTANCE.sendToServer(new NuclearActivatePacket());
         }));
     }

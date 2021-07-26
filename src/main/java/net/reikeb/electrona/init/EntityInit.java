@@ -1,8 +1,8 @@
 package net.reikeb.electrona.init;
 
-import net.minecraft.entity.*;
+import net.minecraft.world.entity.*;
 
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.*;
 
 import net.reikeb.electrona.Electrona;
@@ -14,12 +14,12 @@ public class EntityInit {
             Electrona.MODID);
 
     public static final EntityType<RadioactiveZombie> RADIOACTIVE_ZOMBIE_TYPE = EntityType.Builder
-            .of(RadioactiveZombie::new, EntityClassification.MONSTER)
+            .of(RadioactiveZombie::new, MobCategory.MONSTER)
             .sized(0.7F, 1.8F)
             .build("radioactive_zombie");
 
     public static final EntityType<EnergeticLightningBolt> ENERGETIC_LIGHTNING_BOLT_TYPE = EntityType.Builder
-            .of(EnergeticLightningBolt::new, EntityClassification.MISC)
+            .of(EnergeticLightningBolt::new, MobCategory.MISC)
             .noSave()
             .sized(0.0F, 0.0F)
             .clientTrackingRange(16)

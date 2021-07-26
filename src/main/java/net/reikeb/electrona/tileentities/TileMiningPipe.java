@@ -1,13 +1,16 @@
 package net.reikeb.electrona.tileentities;
 
 import net.minecraft.tileentity.*;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 
 import net.reikeb.electrona.init.BlockInit;
 
 import static net.reikeb.electrona.init.TileEntityInit.*;
 
-public class TileMiningPipe extends TileEntity implements ITickableTileEntity {
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+
+public class TileMiningPipe extends BlockEntity implements TickableBlockEntity {
 
     public TileMiningPipe() {
         super(TILE_MINING_PIPE.get());

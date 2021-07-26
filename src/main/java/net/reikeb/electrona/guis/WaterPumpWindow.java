@@ -1,13 +1,14 @@
 package net.reikeb.electrona.guis;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.*;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
@@ -21,7 +22,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class WaterPumpWindow extends ContainerScreen<WaterPumpContainer> {
+public class WaterPumpWindow extends AbstractContainerScreen<WaterPumpContainer> {
 
     private static final ResourceLocation WATER_PUMP_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/water_pump_gui.png");
     public TileWaterPump tileEntity;
@@ -36,7 +37,7 @@ public class WaterPumpWindow extends ContainerScreen<WaterPumpContainer> {
     final static int WATER_WIDTH = 16;
     final static int WATER_HEIGHT = 52;
 
-    public WaterPumpWindow(WaterPumpContainer container, PlayerInventory inv, ITextComponent title) {
+    public WaterPumpWindow(WaterPumpContainer container, Inventory inv, Component title) {
         super(container, inv, title);
         this.tileEntity = container.getTileEntity();
         this.imageWidth = 176;
@@ -44,7 +45,7 @@ public class WaterPumpWindow extends ContainerScreen<WaterPumpContainer> {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(matrixStack, mouseX, mouseY);
@@ -57,25 +58,25 @@ public class WaterPumpWindow extends ContainerScreen<WaterPumpContainer> {
         int YposT2 = topPos + 59;
         String string = (currentWater.get() + " mb");
         if (mouseX > XposT1 && mouseX < XposT2 && mouseY > YposT1 && mouseY < YposT2) {
-            renderTooltip(matrixStack, ITextComponent.nullToEmpty(string), mouseX, mouseY);
+            renderTooltip(matrixStack, Component.nullToEmpty(string), mouseX, mouseY);
         }
     }
 
     @Override
-    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
-        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.water_pump.name"), 51, 8, -16777216);
-        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.storage"), 125, 6, -16777216);
+    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
+        this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.water_pump.name"), 51, 8, -16777216);
+        this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.storage"), 125, 6, -16777216);
         this.font.draw(matrixStack, "" + ((int) tileEntity.getTileData().getDouble("ElectronicPower")) + " EL", 125, 16, -3407821);
-        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.state"), 62, 24, -16777216);
+        this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.state"), 62, 24, -16777216);
         boolean isPowered = tileEntity.getTileData().getBoolean("isOn");
         this.font.draw(matrixStack, (isPowered ? "ON" : "OFF"), 99, 24, -3407821);
-        this.font.draw(matrixStack, new TranslationTextComponent("gui.electrona.generic.input"), 132, 47, -16777216);
+        this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.input"), 132, 47, -16777216);
     }
 
     @Override
-    protected void renderBg(MatrixStack matrixStack, float par1, int par2, int par3) {
+    protected void renderBg(PoseStack matrixStack, float par1, int par2, int par3) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        Minecraft.getInstance().getTextureManager().bind(WATER_PUMP_GUI);
+        RenderSystem.setShaderTexture(0, WATER_PUMP_GUI);
         int k = (this.width - this.imageWidth) / 2;
         int l = (this.height - this.imageHeight) / 2;
         this.blit(matrixStack, k, l, 0, 0, this.imageWidth, this.imageHeight);
@@ -87,7 +88,7 @@ public class WaterPumpWindow extends ContainerScreen<WaterPumpContainer> {
         double waterProgress = ((currentWater.get()) / 10000.0);
         int yOffsetWater = (int) ((1.0 - waterProgress) * WATER_HEIGHT);
         // Draw water bar
-        Minecraft.getInstance().getTextureManager().bind(new ResourceLocation("electrona:textures/guis/purificator_gui.png"));
+        RenderSystem.setShaderTexture(0, new ResourceLocation("electrona:textures/guis/purificator_gui.png"));
         if (currentWater.get() > 0) {
             this.blit(matrixStack, this.leftPos + WATER_XPOS, this.topPos + WATER_YPOS + yOffsetWater, WATER_ICON_U, WATER_ICON_V + yOffsetWater,
                     WATER_WIDTH, WATER_HEIGHT - yOffsetWater);
@@ -104,21 +105,15 @@ public class WaterPumpWindow extends ContainerScreen<WaterPumpContainer> {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-    }
-
-    @Override
     public void removed() {
         super.removed();
         this.minecraft.keyboardHandler.setSendRepeatsToGui(false);
     }
 
     @Override
-    public void init(Minecraft minecraft, int width, int height) {
-        super.init(minecraft, width, height);
-        this.addButton(new Button(this.leftPos + 65, this.topPos + 39, 50, 20,
-                ITextComponent.nullToEmpty("On/Off"), e -> {
+    public void init() {
+        this.addRenderableWidget(new Button(this.leftPos + 65, this.topPos + 39, 50, 20,
+                Component.nullToEmpty("On/Off"), e -> {
             NetworkManager.INSTANCE.sendToServer(new WaterPumpActivationPacket());
         }));
     }

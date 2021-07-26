@@ -1,26 +1,37 @@
 package net.reikeb.electrona.blocks;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.tags.*;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.*;
-import net.minecraft.world.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagCollection;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.storage.loot.LootContext;
 
-import net.minecraftforge.api.distmarker.*;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.tileentities.TileWaterCable;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
-public class WaterCable extends AbstractCable {
+public class WaterCable extends AbstractCable implements EntityBlock {
 
     public WaterCable() {
         super("water_cable", Material.CLOTH_DECORATION, 1f, 6f, SoundType.WOOL, 4);
@@ -28,17 +39,17 @@ public class WaterCable extends AbstractCable {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
+    public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, world, list, flag);
-        list.add(new TranslationTextComponent("block.electrona.water_cable.desc"));
+        list.add(new TranslatableComponent("block.electrona.water_cable.desc"));
     }
 
     @Override
-    public boolean canConnectTo(BlockState wireState, World worldIn, BlockPos wirePos, BlockPos connectPos, Direction direction) {
+    public boolean canConnectTo(BlockState wireState, Level worldIn, BlockPos wirePos, BlockPos connectPos, Direction direction) {
         BlockState otherState = worldIn.getBlockState(connectPos);
 
-        ITagCollection<Block> tagCollection = BlockTags.getAllTags();
-        ITag<Block> machineTag, cableTag;
+        TagCollection<Block> tagCollection = BlockTags.getAllTags();
+        Tag<Block> machineTag, cableTag;
         machineTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/has_water_tank"));
         cableTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/water_cable"));
 
@@ -47,7 +58,7 @@ public class WaterCable extends AbstractCable {
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+    public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
         return true;
     }
 
@@ -64,14 +75,9 @@ public class WaterCable extends AbstractCable {
         return Collections.singletonList(new ItemStack(this, 1));
     }
 
-    @Override
-    public boolean hasTileEntity(BlockState state) {
-        return true;
-    }
-
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new TileWaterCable();
     }
 }

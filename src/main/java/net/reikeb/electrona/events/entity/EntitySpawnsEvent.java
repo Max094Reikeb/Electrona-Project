@@ -1,9 +1,9 @@
 package net.reikeb.electrona.events.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,7 +22,7 @@ public class EntitySpawnsEvent {
         if (event == null) return;
 
         Entity entity = event.getEntity();
-        World world = event.getWorld();
+        Level world = event.getWorld();
 
         if (event.getEntity() instanceof EnergeticLightningBolt) {
             EnergeticLightningBolt lightning = (EnergeticLightningBolt) entity;
@@ -35,7 +35,7 @@ public class EntitySpawnsEvent {
                     for (int cz = -32; cz < 32; cz++) {
                         if (world.getBlockState(new BlockPos(x + cx, y + cy, z + cz)).getBlock() == BlockInit.ENERGETIC_LIGHTNING_ROD.get()) {
                             lightning.teleportTo(x + cx, y + cy, z + cz);
-                            TileEntity tile = world.getBlockEntity(new BlockPos(x + cx, y + cy, z + cz));
+                            BlockEntity tile = world.getBlockEntity(new BlockPos(x + cx, y + cy, z + cz));
                             if (tile instanceof TileEnergeticLightningRod) {
                                 ((TileEnergeticLightningRod) tile).struckByLightning();
                             }

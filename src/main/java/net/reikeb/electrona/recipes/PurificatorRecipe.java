@@ -2,14 +2,18 @@ package net.reikeb.electrona.recipes;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.*;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
@@ -19,10 +23,9 @@ import net.reikeb.electrona.recipes.contexts.PurifyingContext;
 import net.reikeb.electrona.utils.SingletonInventory;
 
 import javax.annotation.Nullable;
-
 import java.util.Optional;
 
-public class PurificatorRecipe implements IRecipe<IInventory> {
+public class PurificatorRecipe implements Recipe<Container> {
 
     public static final PurificatorRecipe.Serializer SERIALIZER = new PurificatorRecipe.Serializer();
 
@@ -70,21 +73,21 @@ public class PurificatorRecipe implements IRecipe<IInventory> {
         return this.randomOutput ? (Math.random() < 0.5 ? count : (count - 1)) : count;
     }
 
-    public static Optional<PurificatorRecipe> getRecipe(World world, @Nullable BlockPos pos, ItemStack stack) {
-        return getRecipe(world, new PurifyingContext(new SingletonInventory(stack), null, pos != null ? () -> Vector3d.atCenterOf(pos) : null, null));
+    public static Optional<PurificatorRecipe> getRecipe(Level world, @Nullable BlockPos pos, ItemStack stack) {
+        return getRecipe(world, new PurifyingContext(new SingletonInventory(stack), null, pos != null ? () -> Vec3.atCenterOf(pos) : null, null));
     }
 
-    public static Optional<PurificatorRecipe> getRecipe(World world, PurifyingContext ctx) {
+    public static Optional<PurificatorRecipe> getRecipe(Level world, PurifyingContext ctx) {
         return world.getRecipeManager().getRecipeFor(Electrona.PURIFYING, ctx, world);
     }
 
     @Override
-    public boolean matches(IInventory inv, World worldIn) {
+    public boolean matches(Container inv, Level worldIn) {
         return ItemStack.matches(this.input, inv.getItem(1));
     }
 
     @Override
-    public ItemStack assemble(IInventory inv) {
+    public ItemStack assemble(Container inv) {
 
         // This method is ignored by our custom recipe system. getRecipeOutput().copy() is used instead.
         return this.output.copy();
@@ -108,12 +111,12 @@ public class PurificatorRecipe implements IRecipe<IInventory> {
     }
 
     @Override
-    public IRecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return SERIALIZER;
     }
 
     @Override
-    public IRecipeType<?> getType() {
+    public RecipeType<?> getType() {
         return Electrona.PURIFYING;
     }
 
@@ -122,7 +125,7 @@ public class PurificatorRecipe implements IRecipe<IInventory> {
         return new ItemStack(BlockInit.PURIFICATOR.get());
     }
 
-    private static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<PurificatorRecipe> {
+    private static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<PurificatorRecipe> {
         Serializer() {
 
             // This registry name is what people will specify in their json files.
@@ -136,23 +139,23 @@ public class PurificatorRecipe implements IRecipe<IInventory> {
 
             // Reads the inputs. The common utility method in ShapedRecipe is what all vanilla
             // recipe classes use for this.
-            final ItemStack input = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "input"));
+            final ItemStack input = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "input"));
 
 
             // Reads the output. The common utility method in ShapedRecipe is what all vanilla
             // recipe classes use for this.
-            final ItemStack output = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "output"));
+            final ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));
 
-            final boolean randomOutput = JSONUtils.getAsBoolean(json, "random_output", false);
+            final boolean randomOutput = GsonHelper.getAsBoolean(json, "random_output", false);
 
-            final int purifyingTime = JSONUtils.getAsInt(json, "time", 20);
-            final int waterRequired = JSONUtils.getAsInt(json, "water", 20);
+            final int purifyingTime = GsonHelper.getAsInt(json, "time", 20);
+            final int waterRequired = GsonHelper.getAsInt(json, "water", 20);
 
             return new PurificatorRecipe(recipeId, input, output, randomOutput, purifyingTime, waterRequired);
         }
 
         @Override
-        public PurificatorRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
+        public PurificatorRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
 
             // Reads a recipe from a packet buffer. This code is called on the client.
             final ItemStack input = buffer.readItem();
@@ -165,7 +168,7 @@ public class PurificatorRecipe implements IRecipe<IInventory> {
         }
 
         @Override
-        public void toNetwork(PacketBuffer buffer, PurificatorRecipe recipe) {
+        public void toNetwork(FriendlyByteBuf buffer, PurificatorRecipe recipe) {
 
             // Writes the recipe to a packet buffer. This is called on the server when a player
             // connects or when /reload is used.

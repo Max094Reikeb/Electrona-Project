@@ -1,17 +1,17 @@
 package net.reikeb.electrona.blocks;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
+import net.minecraft.core.*;
+import net.minecraft.network.chat.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.*;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.*;
-import net.minecraft.world.*;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.*;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.*;
+import net.minecraft.world.level.storage.loot.LootContext;
 
 import net.minecraftforge.api.distmarker.*;
 
@@ -21,7 +21,7 @@ import net.reikeb.electrona.tileentities.TileBlueCable;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class BlueCable extends AbstractCable {
+public class BlueCable extends AbstractCable implements EntityBlock {
 
     public BlueCable() {
         super("cable", Material.CLOTH_DECORATION, 1f, 6f, SoundType.WOOL, 4);
@@ -29,17 +29,17 @@ public class BlueCable extends AbstractCable {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
+    public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, world, list, flag);
-        list.add(new TranslationTextComponent("block.electrona.blue_cable.desc"));
+        list.add(new TranslatableComponent("block.electrona.blue_cable.desc"));
     }
 
     @Override
-    public boolean canConnectTo(BlockState wireState, World worldIn, BlockPos wirePos, BlockPos connectPos, Direction direction) {
+    public boolean canConnectTo(BlockState wireState, Level worldIn, BlockPos wirePos, BlockPos connectPos, Direction direction) {
         BlockState otherState = worldIn.getBlockState(connectPos);
 
-        ITagCollection<Block> tagCollection = BlockTags.getAllTags();
-        ITag<Block> generatorTag, machineTag, cableTag;
+        TagCollection<Block> tagCollection = BlockTags.getAllTags();
+        Tag<Block> generatorTag, machineTag, cableTag;
         generatorTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/generators"));
         machineTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/machines_all"));
         cableTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/blue_cable"));
@@ -49,7 +49,7 @@ public class BlueCable extends AbstractCable {
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+    public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
         return true;
     }
 
@@ -67,9 +67,9 @@ public class BlueCable extends AbstractCable {
     }
 
     @Override
-    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
         BlockState stateIn = worldIn.getBlockState(pos);
-        TileEntity tile = worldIn.getBlockEntity(pos);
+        BlockEntity tile = worldIn.getBlockEntity(pos);
         if (tile instanceof TileBlueCable) {
             TileBlueCable tileBlueCable = (TileBlueCable) tile;
             if ((hasOpenEnd(stateIn)) && (entityIn instanceof LivingEntity) && (tileBlueCable.getTileData().getDouble("ElectronicPower") > 0)) {
@@ -79,14 +79,9 @@ public class BlueCable extends AbstractCable {
         }
     }
 
-    @Override
-    public boolean hasTileEntity(BlockState state) {
-        return true;
-    }
-
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new TileBlueCable();
     }
 }

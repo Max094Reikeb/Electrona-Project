@@ -1,23 +1,39 @@
 package net.reikeb.electrona.misc.vm;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.*;
-import net.minecraft.potion.*;
-import net.minecraft.util.*;
-import net.minecraft.util.math.*;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
+import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
+import net.minecraft.network.protocol.game.ClientboundPlayerAbilitiesPacket;
+import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
-import net.reikeb.electrona.utils.*;
+import net.reikeb.electrona.utils.ElectronaUtils;
+import net.reikeb.electrona.utils.GemPower;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class CosmicGemFunction {
@@ -30,23 +46,23 @@ public class CosmicGemFunction {
      * @param stack        The Gem as ItemStack
      * @return Returns true if the Gem was used with success
      */
-    public static boolean use(World world, PlayerEntity playerEntity, ItemStack stack) {
+    public static boolean use(Level world, Player playerEntity, ItemStack stack) {
         if (GemPower.INVISIBILITY.equalsTo(getPower(stack))) {
-            playerEntity.addEffect(new EffectInstance(Effects.INVISIBILITY, 600, 0, false, false, false));
+            playerEntity.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 600, 0, false, false, false));
             return true;
         } else if (GemPower.STRENGTH.equalsTo(getPower(stack))) {
-            playerEntity.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 600, 2, false, false, false));
+            playerEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 600, 2, false, false, false));
             return true;
 
         } else if (GemPower.TELEPORTATION.equalsTo(getPower(stack))) {
-            RayTraceResult rayTraceResult = ElectronaUtils.lookAt(playerEntity, 100D, 1F, false);
-            Vector3d location = rayTraceResult.getLocation();
+            HitResult rayTraceResult = ElectronaUtils.lookAt(playerEntity, 100D, 1F, false);
+            Vec3 location = rayTraceResult.getLocation();
             int stepX = 0;
             int stepY = 1;
             int stepZ = 0;
-            if ((rayTraceResult instanceof BlockRayTraceResult)
+            if ((rayTraceResult instanceof BlockHitResult)
                     && (!(world.getBlockState(new BlockPos(location).above()).getMaterial() == Material.AIR))) {
-                Direction rayTraceDirection = ((BlockRayTraceResult) rayTraceResult).getDirection();
+                Direction rayTraceDirection = ((BlockHitResult) rayTraceResult).getDirection();
                 stepX = rayTraceDirection.getStepX();
                 stepY = rayTraceDirection.getStepY();
                 stepZ = rayTraceDirection.getStepZ();
@@ -66,7 +82,7 @@ public class CosmicGemFunction {
                 stack.getOrCreateTag().putDouble("powerYoYoZ", playerEntity.getZ());
                 stack.getOrCreateTag().putBoolean("powerYoYo", true);
                 if (!world.isClientSide) {
-                    playerEntity.displayClientMessage(new TranslationTextComponent("message.electrona.yoyo_location_saved"), true);
+                    playerEntity.displayClientMessage(new TranslatableComponent("message.electrona.yoyo_location_saved"), true);
                 }
                 return true;
             } else {
@@ -80,7 +96,7 @@ public class CosmicGemFunction {
                     return true;
                 } else {
                     if (!world.isClientSide) {
-                        playerEntity.displayClientMessage(new TranslationTextComponent("message.electrona.yoyo_not_setup"), true);
+                        playerEntity.displayClientMessage(new TranslatableComponent("message.electrona.yoyo_not_setup"), true);
                     }
                     return false;
                 }
@@ -95,29 +111,29 @@ public class CosmicGemFunction {
                 } else if (stack.getOrCreateTag().getString("dimension").equals("end")) {
                     dimension = "minecraft:the_end";
                 }
-                if (world instanceof ServerWorld) {
-                    RegistryKey<World> key = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dimension));
-                    if ((!dimension.equals("")) && (((ServerWorld) world).getServer().getLevel(key) != null)) {
-                        RegistryKey<World> newKey = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation("minecraft:overworld"));
-                        ServerWorld _newWorld = ((ServerWorld) world).getServer().getLevel(key);
-                        ServerWorld _defaultWorld = ((ServerWorld) world).getServer().getLevel(newKey);
+                if (world instanceof ServerLevel) {
+                    ResourceKey<Level> key = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dimension));
+                    if ((!dimension.equals("")) && (((ServerLevel) world).getServer().getLevel(key) != null)) {
+                        ResourceKey<Level> newKey = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation("minecraft:overworld"));
+                        ServerLevel _newWorld = ((ServerLevel) world).getServer().getLevel(key);
+                        ServerLevel _defaultWorld = ((ServerLevel) world).getServer().getLevel(newKey);
                         if (world == _defaultWorld) {
-                            if (!playerEntity.level.isClientSide && playerEntity instanceof ServerPlayerEntity) {
+                            if (!playerEntity.level.isClientSide && playerEntity instanceof ServerPlayer) {
                                 if (_newWorld != null) {
                                     playerEntity.fallDistance = 0;
                                     {
-                                        ((ServerPlayerEntity) playerEntity).connection
-                                                .send(new SChangeGameStatePacket(SChangeGameStatePacket.WIN_GAME, 0));
-                                        ((ServerPlayerEntity) playerEntity).teleportTo(_newWorld, _newWorld.getSharedSpawnPos().getX(),
+                                        ((ServerPlayer) playerEntity).connection
+                                                .send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
+                                        ((ServerPlayer) playerEntity).teleportTo(_newWorld, _newWorld.getSharedSpawnPos().getX(),
                                                 _newWorld.getSharedSpawnPos().getY() + 1, _newWorld.getSharedSpawnPos().getZ(), playerEntity.yRot,
                                                 playerEntity.xRot);
-                                        ((ServerPlayerEntity) playerEntity).connection
-                                                .send(new SPlayerAbilitiesPacket(playerEntity.abilities));
-                                        for (EffectInstance effectinstance : playerEntity.getActiveEffects()) {
-                                            ((ServerPlayerEntity) playerEntity).connection
-                                                    .send(new SPlayEntityEffectPacket(playerEntity.getId(), effectinstance));
+                                        ((ServerPlayer) playerEntity).connection
+                                                .send(new ClientboundPlayerAbilitiesPacket(playerEntity.abilities));
+                                        for (MobEffectInstance effectinstance : playerEntity.getActiveEffects()) {
+                                            ((ServerPlayer) playerEntity).connection
+                                                    .send(new ClientboundUpdateMobEffectPacket(playerEntity.getId(), effectinstance));
                                         }
-                                        ((ServerPlayerEntity) playerEntity).connection.send(new SPlaySoundEventPacket(1032, BlockPos.ZERO, 0, false));
+                                        ((ServerPlayer) playerEntity).connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
                                     }
                                     if (stack.getOrCreateTag().getString("dimension").equals("nether")) {
                                         BlockPos teleportPos = new BlockPos(playerPos.getX() / 8, 50, playerPos.getZ() / 8);
@@ -152,22 +168,22 @@ public class CosmicGemFunction {
                                 }
                             }
                         } else if (world == _newWorld) {
-                            if (!playerEntity.level.isClientSide && playerEntity instanceof ServerPlayerEntity) {
+                            if (!playerEntity.level.isClientSide && playerEntity instanceof ServerPlayer) {
                                 if (_defaultWorld != null) {
                                     playerEntity.fallDistance = 0;
                                     {
-                                        ((ServerPlayerEntity) playerEntity).connection
-                                                .send(new SChangeGameStatePacket(SChangeGameStatePacket.WIN_GAME, 0));
-                                        ((ServerPlayerEntity) playerEntity).teleportTo(_defaultWorld, _defaultWorld.getSharedSpawnPos().getX(),
+                                        ((ServerPlayer) playerEntity).connection
+                                                .send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
+                                        ((ServerPlayer) playerEntity).teleportTo(_defaultWorld, _defaultWorld.getSharedSpawnPos().getX(),
                                                 _defaultWorld.getSharedSpawnPos().getY() + 1, _defaultWorld.getSharedSpawnPos().getZ(), playerEntity.yRot,
                                                 playerEntity.xRot);
-                                        ((ServerPlayerEntity) playerEntity).connection
-                                                .send(new SPlayerAbilitiesPacket(playerEntity.abilities));
-                                        for (EffectInstance effectinstance : playerEntity.getActiveEffects()) {
-                                            ((ServerPlayerEntity) playerEntity).connection
-                                                    .send(new SPlayEntityEffectPacket(playerEntity.getId(), effectinstance));
+                                        ((ServerPlayer) playerEntity).connection
+                                                .send(new ClientboundPlayerAbilitiesPacket(playerEntity.abilities));
+                                        for (MobEffectInstance effectinstance : playerEntity.getActiveEffects()) {
+                                            ((ServerPlayer) playerEntity).connection
+                                                    .send(new ClientboundUpdateMobEffectPacket(playerEntity.getId(), effectinstance));
                                         }
-                                        ((ServerPlayerEntity) playerEntity).connection.send(new SPlaySoundEventPacket(1032, BlockPos.ZERO, 0, false));
+                                        ((ServerPlayer) playerEntity).connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
                                     }
                                     if (stack.getOrCreateTag().getString("dimension").equals("nether")) {
                                         BlockPos teleportPos = new BlockPos(playerPos.getX() * 8, 50, playerPos.getZ() * 8);
@@ -192,14 +208,14 @@ public class CosmicGemFunction {
                         }
                     } else {
                         if (!world.isClientSide) {
-                            playerEntity.displayClientMessage(new TranslationTextComponent("message.electrona.no_dimension_info"), true);
+                            playerEntity.displayClientMessage(new TranslatableComponent("message.electrona.no_dimension_info"), true);
                         }
                         return false;
                     }
                 }
             } else {
                 if (!world.isClientSide) {
-                    playerEntity.displayClientMessage(new TranslationTextComponent("message.electrona.dimension_travel_not_setup"), true);
+                    playerEntity.displayClientMessage(new TranslatableComponent("message.electrona.dimension_travel_not_setup"), true);
                 }
                 return false;
             }
@@ -211,7 +227,7 @@ public class CosmicGemFunction {
             boolean flag = false;
             {
                 List<Entity> _entfound = world.getEntitiesOfClass(Entity.class,
-                        new AxisAlignedBB(x - 5, y - 5, z - 5,
+                        new AABB(x - 5, y - 5, z - 5,
                                 x + 5, y + 5, z + 5),
                         null).stream().sorted(new Object() {
                     Comparator<Entity> compareDistOf(double _x, double _y, double _z) {
@@ -221,7 +237,7 @@ public class CosmicGemFunction {
                 for (Entity entity : _entfound) {
                     if ((entity instanceof LivingEntity) && (entity != playerEntity)) {
                         flag = true;
-                        ((LivingEntity) entity).knockback(5F * 0.5F, MathHelper.sin(playerEntity.yRot * ((float) Math.PI / 180F)), -MathHelper.cos(playerEntity.yRot * ((float) Math.PI / 180F)));
+                        ((LivingEntity) entity).knockback(5F * 0.5F, Mth.sin(playerEntity.yRot * ((float) Math.PI / 180F)), -Mth.cos(playerEntity.yRot * ((float) Math.PI / 180F)));
                         playerEntity.setDeltaMovement(playerEntity.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
                     }
                 }
@@ -232,13 +248,13 @@ public class CosmicGemFunction {
                 playerEntity.abilities.flying = false;
                 playerEntity.onUpdateAbilities();
                 if (!world.isClientSide) {
-                    playerEntity.displayClientMessage(new TranslationTextComponent("message.electrona.flight_disabled"), true);
+                    playerEntity.displayClientMessage(new TranslatableComponent("message.electrona.flight_disabled"), true);
                 }
             } else {
                 playerEntity.abilities.flying = true;
                 playerEntity.onUpdateAbilities();
                 if (!world.isClientSide) {
-                    playerEntity.displayClientMessage(new TranslationTextComponent("message.electrona.flight_enabled"), true);
+                    playerEntity.displayClientMessage(new TranslatableComponent("message.electrona.flight_enabled"), true);
                 }
             }
             return true;
@@ -255,20 +271,20 @@ public class CosmicGemFunction {
      * @param stack        The Gem as ItemStack
      * @return Returns true if the Gem was used with success
      */
-    public static boolean useOn(World world, BlockState state, PlayerEntity playerEntity, ItemStack stack) {
+    public static boolean useOn(Level world, BlockState state, Player playerEntity, ItemStack stack) {
         if (GemPower.DIMENSION_TRAVEL.equalsTo(getPower(stack))) {
             if (state.is(Blocks.OBSIDIAN)) {
                 stack.getOrCreateTag().putBoolean("dimensionTravel", true);
                 stack.getOrCreateTag().putString("dimension", "nether");
                 if (!world.isClientSide) {
-                    playerEntity.displayClientMessage(new TranslationTextComponent("message.electrona.dimension_travel_saved_nether"), true);
+                    playerEntity.displayClientMessage(new TranslatableComponent("message.electrona.dimension_travel_saved_nether"), true);
                 }
                 return true;
             } else if (state.is(Blocks.END_STONE)) {
                 stack.getOrCreateTag().putBoolean("dimensionTravel", true);
                 stack.getOrCreateTag().putString("dimension", "end");
                 if (!world.isClientSide) {
-                    playerEntity.displayClientMessage(new TranslationTextComponent("message.electrona.dimension_travel_saved_end"), true);
+                    playerEntity.displayClientMessage(new TranslatableComponent("message.electrona.dimension_travel_saved_end"), true);
                 }
                 return true;
             }

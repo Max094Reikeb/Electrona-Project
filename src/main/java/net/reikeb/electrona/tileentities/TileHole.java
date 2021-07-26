@@ -1,17 +1,20 @@
 package net.reikeb.electrona.tileentities;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.tileentity.*;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
 
 import net.reikeb.electrona.misc.vm.BlackHoleFunction;
 
 import static net.reikeb.electrona.init.TileEntityInit.*;
 
-public class TileHole extends TileEntity implements ITickableTileEntity {
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+
+public class TileHole extends BlockEntity implements TickableBlockEntity {
 
     private int wait;
 
@@ -37,30 +40,30 @@ public class TileHole extends TileEntity implements ITickableTileEntity {
     }
 
     @Override
-    public void load(BlockState blockState, CompoundNBT compound) {
+    public void load(BlockState blockState, CompoundTag compound) {
         super.load(blockState, compound);
         this.wait = compound.getInt("wait");
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
         super.save(compound);
         compound.putInt("wait", this.wait);
         return compound;
     }
 
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.worldPosition, 0, this.getUpdateTag());
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return new ClientboundBlockEntityDataPacket(this.worldPosition, 0, this.getUpdateTag());
     }
 
     @Override
-    public CompoundNBT getUpdateTag() {
-        return this.save(new CompoundNBT());
+    public CompoundTag getUpdateTag() {
+        return this.save(new CompoundTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         this.load(this.getBlockState(), pkt.getTag());
     }
 }

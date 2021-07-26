@@ -1,12 +1,15 @@
 package net.reikeb.electrona.misc.vm;
 
-import net.minecraft.block.Block;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tags.*;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagCollection;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
@@ -26,17 +29,17 @@ public class CableFunction {
      * @param transferPerSecond The amount of energy transfered each second
      * @param isBlue            Defines if the Cable is a normal Cable or a Blue Cable
      */
-    public static void cableTransferEnergy(World world, BlockPos pos, Direction[] directions, CompoundNBT cableNBT, double cablePower, int transferPerSecond, Boolean isBlue) {
+    public static void cableTransferEnergy(Level world, BlockPos pos, Direction[] directions, CompoundTag cableNBT, double cablePower, int transferPerSecond, Boolean isBlue) {
         double transferPerTick = transferPerSecond * 0.05;
 
-        ITagCollection<Block> tagCollection = BlockTags.getAllTags();
-        ITag<Block> machineTag, cableTag;
+        TagCollection<Block> tagCollection = BlockTags.getAllTags();
+        Tag<Block> machineTag, cableTag;
         machineTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", (isBlue ? "electrona/machines" : "electrona/machines_all")));
         cableTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", (isBlue ? "electrona/blue_cable" : "electrona/cable")));
 
         for (Direction dir : directions) {
             if (cablePower > 0) {
-                TileEntity tileEntity = world.getBlockEntity(pos.relative(dir));
+                BlockEntity tileEntity = world.getBlockEntity(pos.relative(dir));
                 if (tileEntity == null) continue;
                 Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
                 if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
@@ -77,17 +80,17 @@ public class CableFunction {
      * @param cableFLuid        The amount of fluid in the Cable
      * @param transferPerSecond The amount of fluid transfered each second by the Cable
      */
-    public static void cableTransferFluid(World world, BlockPos pos, Direction[] directions, TileWaterCable cable, double cableFLuid, int transferPerSecond) {
+    public static void cableTransferFluid(Level world, BlockPos pos, Direction[] directions, TileWaterCable cable, double cableFLuid, int transferPerSecond) {
         double transferPerTick = transferPerSecond * 0.05;
 
-        ITagCollection<Block> tagCollection = BlockTags.getAllTags();
-        ITag<Block> machineTag, cableTag;
+        TagCollection<Block> tagCollection = BlockTags.getAllTags();
+        Tag<Block> machineTag, cableTag;
         machineTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/has_water_tank"));
         cableTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/water_cable"));
 
         for (Direction dir : directions) {
             if (cableFLuid > 0) {
-                TileEntity tileEntity = world.getBlockEntity(pos.relative(dir));
+                BlockEntity tileEntity = world.getBlockEntity(pos.relative(dir));
                 if (tileEntity == null) continue;
                 Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
                 if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;

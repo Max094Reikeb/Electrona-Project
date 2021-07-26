@@ -1,37 +1,42 @@
 package net.reikeb.electrona.containers;
 
-import net.minecraft.entity.player.*;
-import net.minecraft.inventory.container.*;
-import net.minecraft.item.*;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
-import net.minecraftforge.items.*;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
 import net.reikeb.electrona.tileentities.TileWaterPump;
 
-import static net.reikeb.electrona.init.ContainerInit.*;
+import static net.reikeb.electrona.init.ContainerInit.WATER_PUMP_CONTAINER;
 
-public class WaterPumpContainer extends Container {
+public class WaterPumpContainer extends AbstractContainerMenu {
 
     public TileWaterPump tileEntity;
 
-    public WaterPumpContainer(ContainerType<?> type, int id) {
+    public WaterPumpContainer(MenuType<?> type, int id) {
         super(type, id);
     }
 
     // Client
-    public WaterPumpContainer(int id, PlayerInventory inv, PacketBuffer buf) {
+    public WaterPumpContainer(int id, Inventory inv, FriendlyByteBuf buf) {
         super(WATER_PUMP_CONTAINER.get(), id);
         this.init(inv, this.tileEntity = (TileWaterPump) inv.player.level.getBlockEntity(buf.readBlockPos()));
     }
 
     // Server
-    public WaterPumpContainer(int id, PlayerInventory inv, TileWaterPump tile) {
+    public WaterPumpContainer(int id, Inventory inv, TileWaterPump tile) {
         super(WATER_PUMP_CONTAINER.get(), id);
         this.init(inv, this.tileEntity = tile);
     }
 
-    public void init(PlayerInventory playerInv, TileWaterPump tile) {
+    public void init(Inventory playerInv, TileWaterPump tile) {
 
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
@@ -62,7 +67,7 @@ public class WaterPumpContainer extends Container {
         return this.tileEntity;
     }
 
-    private void layoutPlayerInventorySlots(PlayerInventory playerInv) {
+    private void layoutPlayerInventorySlots(Inventory playerInv) {
         int si;
         int sj;
         for (si = 0; si < 3; ++si)
@@ -73,12 +78,12 @@ public class WaterPumpContainer extends Container {
     }
 
     @Override
-    public boolean stillValid(PlayerEntity playerEntity) {
+    public boolean stillValid(Player playerEntity) {
         return true;
     }
 
     @Override
-    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(Player playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if (slot != null && slot.hasItem()) {

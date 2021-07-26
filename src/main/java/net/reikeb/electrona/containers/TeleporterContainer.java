@@ -1,38 +1,42 @@
 package net.reikeb.electrona.containers;
 
-import net.minecraft.entity.player.*;
-import net.minecraft.inventory.container.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
-import net.minecraftforge.items.*;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.tileentities.TileTeleporter;
 
-import static net.reikeb.electrona.init.ContainerInit.*;
+import static net.reikeb.electrona.init.ContainerInit.TELEPORTER_CONTAINER;
 
-public class TeleporterContainer extends Container {
+public class TeleporterContainer extends AbstractContainerMenu {
 
     public TileTeleporter tileEntity;
 
-    public TeleporterContainer(ContainerType<?> type, int id) {
+    public TeleporterContainer(MenuType<?> type, int id) {
         super(type, id);
     }
 
     // Client
-    public TeleporterContainer(int id, PlayerInventory inv, PacketBuffer buf) {
+    public TeleporterContainer(int id, Inventory inv, FriendlyByteBuf buf) {
         super(TELEPORTER_CONTAINER.get(), id);
         this.init(inv, this.tileEntity = (TileTeleporter) inv.player.level.getBlockEntity(buf.readBlockPos()));
     }
 
     // Server
-    public TeleporterContainer(int id, PlayerInventory inv, TileTeleporter tile) {
+    public TeleporterContainer(int id, Inventory inv, TileTeleporter tile) {
         super(TELEPORTER_CONTAINER.get(), id);
         this.init(inv, this.tileEntity = tile);
     }
 
-    public void init(PlayerInventory playerInv, TileTeleporter tile) {
+    public void init(Inventory playerInv, TileTeleporter tile) {
 
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
@@ -52,7 +56,7 @@ public class TeleporterContainer extends Container {
         return this.tileEntity;
     }
 
-    private void layoutPlayerInventorySlots(PlayerInventory playerInv) {
+    private void layoutPlayerInventorySlots(Inventory playerInv) {
         int si;
         int sj;
         for (si = 0; si < 3; ++si)
@@ -63,12 +67,12 @@ public class TeleporterContainer extends Container {
     }
 
     @Override
-    public boolean stillValid(PlayerEntity playerEntity) {
+    public boolean stillValid(Player playerEntity) {
         return true;
     }
 
     @Override
-    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(Player playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = (Slot) this.slots.get(index);
         if (slot != null && slot.hasItem()) {

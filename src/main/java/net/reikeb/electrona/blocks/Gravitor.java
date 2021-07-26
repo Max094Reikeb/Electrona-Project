@@ -1,25 +1,33 @@
 package net.reikeb.electrona.blocks;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.fluid.*;
-import net.minecraft.item.*;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.state.*;
-import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.*;
-import net.minecraft.world.*;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BeaconBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.reikeb.electrona.tileentities.TileGravitor;
 
 import javax.annotation.Nullable;
 
-public class Gravitor extends ContainerBlock implements IWaterLoggable {
+public class Gravitor extends BaseEntityBlock implements SimpleWaterloggedBlock {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     protected static final VoxelShape SHAPE = Block.box(5.0D, 5.0D, 5.0D, 11.0D, 11.0D, 11.0D);
@@ -34,17 +42,17 @@ public class Gravitor extends ContainerBlock implements IWaterLoggable {
     }
 
     @Override
-    public boolean isPathfindable(BlockState state, IBlockReader blockReader, BlockPos pos, PathType pathType) {
+    public boolean isPathfindable(BlockState state, BlockGetter blockReader, BlockPos pos, PathComputationType pathType) {
         return false;
     }
 
     @Override
-    public BlockRenderType getRenderShape(BlockState state) {
-        return BlockRenderType.ENTITYBLOCK_ANIMATED;
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState state2, IWorld world, BlockPos pos, BlockPos pos2) {
+    public BlockState updateShape(BlockState state, Direction direction, BlockState state2, LevelAccessor world, BlockPos pos, BlockPos pos2) {
         if (state.getValue(WATERLOGGED)) {
             world.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         }
@@ -53,19 +61,19 @@ public class Gravitor extends ContainerBlock implements IWaterLoggable {
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader blockReader, BlockPos pos, ISelectionContext selectionContext) {
+    public VoxelShape getShape(BlockState state, BlockGetter blockReader, BlockPos pos, CollisionContext selectionContext) {
         return SHAPE;
     }
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
         return this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(fluidstate.is(FluidTags.WATER) && fluidstate.getAmount() == 8));
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> stateBuilder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateBuilder) {
         stateBuilder.add(WATERLOGGED);
     }
 
@@ -75,18 +83,18 @@ public class Gravitor extends ContainerBlock implements IWaterLoggable {
     }
 
     @Override
-    public void setPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
+    public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
         if (stack.hasCustomHoverName()) {
-            TileEntity tileentity = world.getBlockEntity(pos);
-            if (tileentity instanceof BeaconTileEntity) {
-                ((BeaconTileEntity) tileentity).setCustomName(stack.getHoverName());
+            BlockEntity tileentity = world.getBlockEntity(pos);
+            if (tileentity instanceof BeaconBlockEntity) {
+                ((BeaconBlockEntity) tileentity).setCustomName(stack.getHoverName());
             }
         }
 
     }
 
     @Override
-    public TileEntity newBlockEntity(IBlockReader blockReader) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new TileGravitor();
     }
 }

@@ -1,18 +1,24 @@
 package net.reikeb.electrona.blocks;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.state.properties.*;
-import net.minecraft.util.*;
-import net.minecraft.util.math.*;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.phys.BlockHitResult;
 
 import net.minecraftforge.common.ToolType;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 public class LeadDoor extends DoorBlock {
 
@@ -47,10 +53,10 @@ public class LeadDoor extends DoorBlock {
     }
 
     @Override
-    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity playerEntity, Hand hand, BlockRayTraceResult hit) {
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player playerEntity, InteractionHand hand, BlockHitResult hit) {
         state = state.cycle(OPEN);
         world.setBlock(pos, state, 10);
         world.levelEvent(playerEntity, state.getValue(OPEN) ? this.getOpenSound() : this.getCloseSound(), pos, 0);
-        return ActionResultType.sidedSuccess(world.isClientSide);
+        return InteractionResult.sidedSuccess(world.isClientSide);
     }
 }

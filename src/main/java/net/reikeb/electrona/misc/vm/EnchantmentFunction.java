@@ -1,20 +1,28 @@
 package net.reikeb.electrona.misc.vm;
 
-import net.minecraft.block.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.tags.*;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagCollection;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
 
 import net.reikeb.electrona.init.EnchantmentInit;
 
@@ -28,9 +36,9 @@ public class EnchantmentFunction {
      * @param pos        The position of the broken block
      * @param directions The directions to get neighbour blocks
      */
-    public static void lumberjackMain(ServerPlayerEntity player, World world, BlockPos pos, Direction[] directions) {
-        ITagCollection<Block> tagCollection = BlockTags.getAllTags();
-        ITag<Block> logTag;
+    public static void lumberjackMain(ServerPlayer player, Level world, BlockPos pos, Direction[] directions) {
+        TagCollection<Block> tagCollection = BlockTags.getAllTags();
+        Tag<Block> logTag;
         logTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft:logs"));
         if (EnchantmentHelper.getItemEnchantmentLevel(EnchantmentInit.LUMBERJACK.get(), player.getMainHandItem()) > 0) {
             for (Direction dir : directions) {
@@ -51,9 +59,9 @@ public class EnchantmentFunction {
      * @param pos        The position of the neighbour blocks
      * @param directions The directions to get the neighbour blocks
      */
-    public static void lumberjackDef(World world, BlockPos pos, Direction[] directions) {
-        ITagCollection<Block> tagCollection = BlockTags.getAllTags();
-        ITag<Block> logTag;
+    public static void lumberjackDef(Level world, BlockPos pos, Direction[] directions) {
+        TagCollection<Block> tagCollection = BlockTags.getAllTags();
+        Tag<Block> logTag;
         logTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft:logs"));
 
         for (Direction dir : directions) {
@@ -74,9 +82,9 @@ public class EnchantmentFunction {
      * @param pos        The position of the broken block
      * @param directions The directions to get neighbour blocks
      */
-    public static void veinminerMain(ServerPlayerEntity player, World world, BlockPos pos, Direction[] directions) {
-        ITagCollection<Block> tagCollection = BlockTags.getAllTags();
-        ITag<Block> mcOreTag, fgOreTag, elOreTag;
+    public static void veinminerMain(ServerPlayer player, Level world, BlockPos pos, Direction[] directions) {
+        TagCollection<Block> tagCollection = BlockTags.getAllTags();
+        Tag<Block> mcOreTag, fgOreTag, elOreTag;
         mcOreTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft:ores"));
         fgOreTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge:ores"));
         elOreTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge:electrona/ores"));
@@ -102,9 +110,9 @@ public class EnchantmentFunction {
      * @param pos        The position of the neighbour blocks
      * @param directions The directions to get the neighbour blocks
      */
-    public static void veinminerDef(World world, BlockPos pos, Direction[] directions) {
-        ITagCollection<Block> tagCollection = BlockTags.getAllTags();
-        ITag<Block> mcOreTag, fgOreTag, elOreTag;
+    public static void veinminerDef(Level world, BlockPos pos, Direction[] directions) {
+        TagCollection<Block> tagCollection = BlockTags.getAllTags();
+        Tag<Block> mcOreTag, fgOreTag, elOreTag;
         mcOreTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft:ores"));
         fgOreTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge:ores"));
         elOreTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge:electrona/ores"));
@@ -129,19 +137,19 @@ public class EnchantmentFunction {
      * @param player The player who clicks on the block
      * @param handIn The hand of the player
      */
-    public static void thundering(World world, BlockPos pos, PlayerEntity player, Hand handIn) {
-        ItemStack stack = handIn == Hand.MAIN_HAND ? player.getMainHandItem() : player.getOffhandItem();
+    public static void thundering(Level world, BlockPos pos, Player player, InteractionHand handIn) {
+        ItemStack stack = handIn == InteractionHand.MAIN_HAND ? player.getMainHandItem() : player.getOffhandItem();
         if (EnchantmentHelper.getItemEnchantmentLevel(EnchantmentInit.THUNDERING.get(), stack) > 0) {
-            if (world instanceof ServerWorld) {
-                LightningBoltEntity lightning = EntityType.LIGHTNING_BOLT.create(world);
+            if (world instanceof ServerLevel) {
+                LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(world);
                 int unbreakingLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, stack);
                 int damageValue = ((9 - (3 * unbreakingLevel)) + (unbreakingLevel == 0 ? 0 : 3));
                 if (lightning == null) return;
-                lightning.moveTo(Vector3d.atBottomCenterOf(pos));
+                lightning.moveTo(Vec3.atBottomCenterOf(pos));
                 lightning.setVisualOnly(false);
                 world.addFreshEntity(lightning);
                 if (!player.isCreative()) stack.hurtAndBreak(damageValue, player, (entity) ->
-                        entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
+                        entity.broadcastBreakEvent(EquipmentSlot.MAINHAND));
             }
         }
     }
@@ -155,16 +163,16 @@ public class EnchantmentFunction {
      * @param player The player who mines the block
      * @param handIn The hand with the used item
      */
-    public static void smelting(World world, BlockPos pos, Block block, PlayerEntity player, Hand handIn) {
-        ItemStack stack = handIn == Hand.MAIN_HAND ? player.getMainHandItem() : player.getOffhandItem();
-        ItemStack result = world.getRecipeManager().getRecipeFor(IRecipeType.SMELTING, new Inventory(new ItemStack(block)), world).isPresent() ?
-                world.getRecipeManager().getRecipeFor(IRecipeType.SMELTING, new Inventory(new ItemStack(block)), world).get().getResultItem().copy() :
+    public static void smelting(Level world, BlockPos pos, Block block, Player player, InteractionHand handIn) {
+        ItemStack stack = handIn == InteractionHand.MAIN_HAND ? player.getMainHandItem() : player.getOffhandItem();
+        ItemStack result = world.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(new ItemStack(block)), world).isPresent() ?
+                world.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(new ItemStack(block)), world).get().getResultItem().copy() :
                 ItemStack.EMPTY;
         if (result == ItemStack.EMPTY || result.equals(new ItemStack(Blocks.AIR, 1))) return;
 
         if (EnchantmentHelper.getItemEnchantmentLevel(EnchantmentInit.SMELTING.get(), stack) > 0) {
             world.destroyBlock(pos, false);
-            if (world instanceof ServerWorld) {
+            if (world instanceof ServerLevel) {
                 ItemEntity entityToSpawn = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), result);
                 entityToSpawn.setPickUpDelay(10);
                 world.addFreshEntity(entityToSpawn);
@@ -172,7 +180,7 @@ public class EnchantmentFunction {
             int unbreakingLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, stack);
             int damageValue = ((9 - (3 * unbreakingLevel)) + (unbreakingLevel == 0 ? 0 : 3));
             if (!player.isCreative()) stack.hurtAndBreak(damageValue, player, (entity) ->
-                    entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
+                    entity.broadcastBreakEvent(EquipmentSlot.MAINHAND));
         }
     }
 }

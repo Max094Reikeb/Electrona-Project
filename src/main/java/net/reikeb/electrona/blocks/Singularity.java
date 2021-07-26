@@ -1,27 +1,41 @@
 package net.reikeb.electrona.blocks;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.entity.*;
-import net.minecraft.item.*;
-import net.minecraft.loot.LootContext;
-import net.minecraft.state.StateContainer;
-import net.minecraft.tags.*;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.*;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagCollection;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.tileentities.TileSingularity;
 import net.reikeb.electrona.world.Gamerules;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
-public class Singularity extends AbstractWaterLoggableBlock {
+public class Singularity extends AbstractWaterLoggableBlock implements EntityBlock {
 
     public Singularity() {
         super(Properties.of(Material.STONE)
@@ -44,23 +58,23 @@ public class Singularity extends AbstractWaterLoggableBlock {
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+    public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
         return true;
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
-        Vector3d offset = state.getOffset(world, pos);
-        return VoxelShapes.or(box(1, 1, 1, 15, 15, 15)).move(offset.x, offset.y, offset.z);
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        Vec3 offset = state.getOffset(world, pos);
+        return Shapes.or(box(1, 1, 1, 15, 15, 15)).move(offset.x, offset.y, offset.z);
     }
 
     @Override
-    public void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    public void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(WATERLOGGED);
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState replaceState = context.getLevel().getBlockState(context.getClickedPos());
         return this.defaultBlockState()
                 .setValue(WATERLOGGED, replaceState.getBlock() == Blocks.WATER);
@@ -77,19 +91,19 @@ public class Singularity extends AbstractWaterLoggableBlock {
     }
 
     @Override
-    public void onPlace(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moving) {
+    public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean moving) {
         singularitySpawn(world, pos);
     }
 
     @Override
-    public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack itemstack) {
+    public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack itemstack) {
         singularitySpawn(world, pos);
     }
 
-    public static void singularitySpawn(World world, BlockPos pos) {
+    public static void singularitySpawn(Level world, BlockPos pos) {
         if (world.isClientSide) return;
-        ITagCollection<Block> tagCollection = BlockTags.getAllTags();
-        ITag<Block> stopsHoleTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/stops_black_hole"));
+        TagCollection<Block> tagCollection = BlockTags.getAllTags();
+        Tag<Block> stopsHoleTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/stops_black_hole"));
 
         if (world.getLevelData().getGameRules().getBoolean(Gamerules.DO_BLACK_HOLES_EXIST)) {
 
@@ -102,14 +116,9 @@ public class Singularity extends AbstractWaterLoggableBlock {
         }
     }
 
-    @Override
-    public boolean hasTileEntity(BlockState state) {
-        return true;
-    }
-
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new TileSingularity();
     }
 }

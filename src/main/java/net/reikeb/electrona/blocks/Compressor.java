@@ -1,30 +1,33 @@
 package net.reikeb.electrona.blocks;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.*;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.*;
-import net.minecraft.loot.LootContext;
-import net.minecraft.state.*;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.*;
-import net.minecraft.util.text.*;
+import net.minecraft.core.*;
+import net.minecraft.network.chat.*;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.*;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.*;
+import net.minecraft.world.level.block.state.properties.*;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.phys.BlockHitResult;
 
 import net.minecraftforge.api.distmarker.*;
 import net.minecraftforge.common.ToolType;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import net.reikeb.electrona.tileentities.TileCompressor;
 
 import java.util.*;
 
-public class Compressor extends Block {
+public class Compressor extends Block implements EntityBlock {
 
-    public static final DirectionProperty FACING = HorizontalBlock.FACING;
+    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty COMPRESSING = BooleanProperty.create("compressing");
 
     public Compressor() {
@@ -41,16 +44,16 @@ public class Compressor extends Block {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
+    public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, world, list, flag);
-        list.add(new TranslationTextComponent("block.electrona.compressor.desc1"));
-        list.add(new TranslationTextComponent("block.electrona.compressor.desc2"));
+        list.add(new TranslatableComponent("block.electrona.compressor.desc1"));
+        list.add(new TranslatableComponent("block.electrona.compressor.desc2"));
     }
 
     @Override
-    public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            TileEntity tileentity = world.getBlockEntity(pos);
+            BlockEntity tileentity = world.getBlockEntity(pos);
             if (tileentity instanceof TileCompressor) {
                 ((TileCompressor) tileentity).dropItems(world, pos);
                 world.updateNeighbourForOutputSignal(pos, this);
@@ -68,7 +71,7 @@ public class Compressor extends Block {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, COMPRESSING);
     }
 
@@ -81,47 +84,37 @@ public class Compressor extends Block {
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
-    public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-        return true;
-    }
-
-    @Override
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (!worldIn.isClientSide) {
-            TileEntity tile = worldIn.getBlockEntity(pos);
+            BlockEntity tile = worldIn.getBlockEntity(pos);
             if (tile instanceof TileCompressor) {
-                NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tile, pos);
-                return ActionResultType.SUCCESS;
+                NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) tile, pos);
+                return InteractionResult.SUCCESS;
             }
         }
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     @Override
-    public INamedContainerProvider getMenuProvider(BlockState state, World worldIn, BlockPos pos) {
-        TileEntity tileEntity = worldIn.getBlockEntity(pos);
-        return tileEntity instanceof INamedContainerProvider ? (INamedContainerProvider) tileEntity : null;
+    public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
+        BlockEntity tileEntity = worldIn.getBlockEntity(pos);
+        return tileEntity instanceof MenuProvider ? (MenuProvider) tileEntity : null;
     }
 
     @Override
-    public boolean hasTileEntity(BlockState state) {
-        return true;
-    }
-
-    @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new TileCompressor();
     }
 
     @Override
-    public boolean triggerEvent(BlockState state, World world, BlockPos pos, int eventID, int eventParam) {
+    public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
         super.triggerEvent(state, world, pos, eventID, eventParam);
-        TileEntity tileentity = world.getBlockEntity(pos);
+        BlockEntity tileentity = world.getBlockEntity(pos);
         return tileentity != null && tileentity.triggerEvent(eventID, eventParam);
     }
 }

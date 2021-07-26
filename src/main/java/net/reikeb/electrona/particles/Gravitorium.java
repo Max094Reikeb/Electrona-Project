@@ -1,18 +1,19 @@
 package net.reikeb.electrona.particles;
 
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particles.BasicParticleType;
+import net.minecraft.core.particles.SimpleParticleType;
 
-import net.minecraftforge.api.distmarker.*;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class Gravitorium extends SpriteTexturedParticle {
+public class Gravitorium extends TextureSheetParticle {
 
     private final double xStart;
     private final double yStart;
     private final double zStart;
 
-    private Gravitorium(ClientWorld world, double x, double y, double z, double vx, double vy, double vz) {
+    private Gravitorium(ClientLevel world, double x, double y, double z, double vx, double vy, double vz) {
         super(world, x, y, z);
         this.xd = vx;
         this.yd = vy;
@@ -35,8 +36,8 @@ public class Gravitorium extends SpriteTexturedParticle {
         this.lifetime = (int) (Math.random() * 10.0D) + 30;
     }
 
-    public IParticleRenderType getRenderType() {
-        return IParticleRenderType.PARTICLE_SHEET_OPAQUE;
+    public ParticleRenderType getRenderType() {
+        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
     }
 
     public void move(double x, double y, double z) {
@@ -78,14 +79,14 @@ public class Gravitorium extends SpriteTexturedParticle {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static class GravitoriumParticleFactory implements IParticleFactory<BasicParticleType> {
-        private final IAnimatedSprite sprite;
+    public static class GravitoriumParticleFactory implements ParticleProvider<SimpleParticleType> {
+        private final SpriteSet sprite;
 
-        public GravitoriumParticleFactory(IAnimatedSprite sprite) {
+        public GravitoriumParticleFactory(SpriteSet sprite) {
             this.sprite = sprite;
         }
 
-        public Particle createParticle(BasicParticleType type, ClientWorld world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(SimpleParticleType type, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             Gravitorium gravitorium = new Gravitorium(world, x, y, z, xSpeed, ySpeed, zSpeed);
             gravitorium.pickSprite(this.sprite);
             return gravitorium;

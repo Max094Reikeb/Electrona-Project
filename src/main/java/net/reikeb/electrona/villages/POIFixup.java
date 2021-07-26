@@ -1,16 +1,16 @@
 package net.reikeb.electrona.villages;
 
-import net.minecraft.village.PointOfInterestType;
+import net.minecraft.world.entity.ai.village.poi.PoiType;
 
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class POIFixup {
 
-    private static final Method blockStatesInjector = ObfuscationReflectionHelper.findMethod(PointOfInterestType.class, "func_221052_a",
-            PointOfInterestType.class);
+    private static final Method blockStatesInjector = ObfuscationReflectionHelper.findMethod(PoiType.class, "m_27367_",
+            PoiType.class);
 
     public static void fixup() {
         try {

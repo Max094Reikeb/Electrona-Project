@@ -1,18 +1,22 @@
 package net.reikeb.electrona.misc.vm;
 
-import net.minecraft.entity.*;
-import net.minecraft.entity.monster.SkeletonEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.potion.*;
-import net.minecraft.util.math.*;
-import net.minecraft.world.World;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 
 import net.reikeb.electrona.entity.RadioactiveZombie;
-import net.reikeb.electrona.init.*;
+import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.init.PotionEffectInit;
 import net.reikeb.electrona.misc.DamageSources;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class RadioactivityFunction {
@@ -24,10 +28,10 @@ public class RadioactivityFunction {
      * @return boolean If the entity is wearing the full suit
      */
     public static boolean isEntityWearingAntiRadiationSuit(LivingEntity entity) {
-        return ((entity.getItemBySlot(EquipmentSlotType.HEAD).getItem() == ItemInit.ANTI_RADIATION_HELMET.get())
-                && (entity.getItemBySlot(EquipmentSlotType.CHEST).getItem() == ItemInit.ANTI_RADIATION_CHESTPLATE.get())
-                && (entity.getItemBySlot(EquipmentSlotType.LEGS).getItem() == ItemInit.ANTI_RADIATION_LEGGINGS.get())
-                && (entity.getItemBySlot(EquipmentSlotType.FEET).getItem() == ItemInit.ANTI_RADIATION_BOOTS.get()));
+        return ((entity.getItemBySlot(EquipmentSlot.HEAD).getItem() == ItemInit.ANTI_RADIATION_HELMET.get())
+                && (entity.getItemBySlot(EquipmentSlot.CHEST).getItem() == ItemInit.ANTI_RADIATION_CHESTPLATE.get())
+                && (entity.getItemBySlot(EquipmentSlot.LEGS).getItem() == ItemInit.ANTI_RADIATION_LEGGINGS.get())
+                && (entity.getItemBySlot(EquipmentSlot.FEET).getItem() == ItemInit.ANTI_RADIATION_BOOTS.get()));
     }
 
     /**
@@ -37,10 +41,10 @@ public class RadioactivityFunction {
      * @return boolean If the entity is wearing the full armor
      */
     public static boolean isEntityWearingLeadArmor(LivingEntity entity) {
-        return ((entity.getItemBySlot(EquipmentSlotType.HEAD).getItem() == ItemInit.LEAD_HELMET.get())
-                && (entity.getItemBySlot(EquipmentSlotType.CHEST).getItem() == ItemInit.LEAD_CHESTPLATE.get())
-                && (entity.getItemBySlot(EquipmentSlotType.LEGS).getItem() == ItemInit.LEAD_LEGGINGS.get())
-                && (entity.getItemBySlot(EquipmentSlotType.FEET).getItem() == ItemInit.LEAD_BOOTS.get()));
+        return ((entity.getItemBySlot(EquipmentSlot.HEAD).getItem() == ItemInit.LEAD_HELMET.get())
+                && (entity.getItemBySlot(EquipmentSlot.CHEST).getItem() == ItemInit.LEAD_CHESTPLATE.get())
+                && (entity.getItemBySlot(EquipmentSlot.LEGS).getItem() == ItemInit.LEAD_LEGGINGS.get())
+                && (entity.getItemBySlot(EquipmentSlot.FEET).getItem() == ItemInit.LEAD_BOOTS.get()));
     }
 
     /**
@@ -51,10 +55,10 @@ public class RadioactivityFunction {
      * @param duration The duration of the given effect
      * @param power    The power of the give effect
      */
-    public static void radioactiveItemInInventory(World world, Entity entity, int duration, int power) {
+    public static void radioactiveItemInInventory(Level world, Entity entity, int duration, int power) {
         {
             List<Entity> _entfound = world.getEntitiesOfClass(Entity.class,
-                    new AxisAlignedBB(entity.getX() - (10 / 2d),
+                    new AABB(entity.getX() - (10 / 2d),
                             entity.getY() - (10 / 2d), entity.getZ() - (10 / 2d),
                             entity.getX() + (10 / 2d), entity.getY() + (10 / 2d),
                             entity.getZ() + (10 / 2d)), null)
@@ -64,14 +68,14 @@ public class RadioactivityFunction {
                         }
                     }.compareDistOf(entity.getX(), entity.getY(), entity.getZ())).collect(Collectors.toList());
             for (Entity entityiterator : _entfound) {
-                if ((!(entityiterator instanceof LivingEntity)) || (entityiterator instanceof SkeletonEntity)
+                if ((!(entityiterator instanceof LivingEntity)) || (entityiterator instanceof Skeleton)
                         || (entityiterator instanceof RadioactiveZombie)) return;
-                if (entityiterator instanceof PlayerEntity) {
-                    if (((PlayerEntity) entityiterator).isCreative()) return;
+                if (entityiterator instanceof Player) {
+                    if (((Player) entityiterator).isCreative()) return;
                 }
                 if (!isEntityWearingAntiRadiationSuit((LivingEntity) entity)) {
                     boolean entityWearsLeadArmor = isEntityWearingLeadArmor((LivingEntity) entity);
-                    ((LivingEntity) (entityWearsLeadArmor ? entity : entityiterator)).addEffect(new EffectInstance(PotionEffectInit.RADIOACTIVITY.get(), duration, power));
+                    ((LivingEntity) (entityWearsLeadArmor ? entity : entityiterator)).addEffect(new MobEffectInstance(PotionEffectInit.RADIOACTIVITY.get(), duration, power));
                 }
             }
         }
@@ -83,13 +87,13 @@ public class RadioactivityFunction {
      * @param entity The entity that steps on the radioactive block
      */
     public static void stepOnRadioactiveBlock(Entity entity) {
-        if ((!(entity instanceof LivingEntity)) || (entity instanceof SkeletonEntity)
+        if ((!(entity instanceof LivingEntity)) || (entity instanceof Skeleton)
                 || (entity instanceof RadioactiveZombie)) return;
-        if (entity instanceof PlayerEntity) {
-            if (((PlayerEntity) entity).isCreative()) return;
+        if (entity instanceof Player) {
+            if (((Player) entity).isCreative()) return;
         }
         if (!isEntityWearingAntiRadiationSuit((LivingEntity) entity)) {
-            ((LivingEntity) entity).addEffect(new EffectInstance(PotionEffectInit.RADIOACTIVITY.get(), 200, 2));
+            ((LivingEntity) entity).addEffect(new MobEffectInstance(PotionEffectInit.RADIOACTIVITY.get(), 200, 2));
         }
     }
 
@@ -103,19 +107,19 @@ public class RadioactivityFunction {
         int radioactivity = entity.getPersistentData().getInt("radioactive");
         entity.getPersistentData().putInt("radioactive", (radioactivity + 1));
         if (radioactivity > (1200 - (60 * amplifier))) {
-            entity.addEffect(new EffectInstance(Effects.CONFUSION, 1400, 2));
-            entity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 1400, 2));
-            entity.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, 1400, 2));
-            entity.addEffect(new EffectInstance(Effects.WEAKNESS, 1400, 2));
+            entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 1400, 2));
+            entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 1400, 2));
+            entity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 1400, 2));
+            entity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 1400, 2));
             entity.hurt(DamageSources.RADIOACTIVITY.bypassArmor(), (float) 10);
             entity.setSecondsOnFire(10);
         } else if (radioactivity > (800 - (40 * amplifier))) {
-            entity.addEffect(new EffectInstance(Effects.CONFUSION, 600, 1));
-            entity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 600, 1));
-            entity.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, 600, 1));
+            entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 600, 1));
+            entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 600, 1));
+            entity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 600, 1));
             entity.hurt(DamageSources.RADIOACTIVITY.bypassArmor(), (float) 6);
         } else if (radioactivity > (300 - (20 * amplifier))) {
-            entity.addEffect(new EffectInstance(Effects.CONFUSION, 300, 0));
+            entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 300, 0));
             entity.hurt(DamageSources.RADIOACTIVITY.bypassArmor(), (float) 4);
         } else if (radioactivity > (100 - (20 * amplifier))) {
             entity.hurt(DamageSources.RADIOACTIVITY.bypassArmor(), (float) 1);

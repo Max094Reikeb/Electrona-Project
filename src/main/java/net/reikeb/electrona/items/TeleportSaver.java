@@ -1,12 +1,16 @@
 package net.reikeb.electrona.items;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.*;
-import net.minecraft.util.text.*;
-import net.minecraft.world.World;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
-import net.minecraftforge.api.distmarker.*;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import net.reikeb.electrona.setup.ItemGroups;
 
@@ -42,11 +46,11 @@ public class TeleportSaver extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+    public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, world, list, flag);
         if ((itemstack).getOrCreateTag().getBoolean("linked")) {
-            list.add(new TranslationTextComponent("item.electrona.teleport_saver.desc"));
-            list.add(new StringTextComponent("\u00A77" + (itemstack).getOrCreateTag().getDouble("teleportX") + " "
+            list.add(new TranslatableComponent("item.electrona.teleport_saver.desc"));
+            list.add(new TextComponent("\u00A77" + (itemstack).getOrCreateTag().getDouble("teleportX") + " "
                     + (itemstack).getOrCreateTag().getDouble("teleportY") + " " + (itemstack).getOrCreateTag().getDouble("teleportZ")));
         }
     }

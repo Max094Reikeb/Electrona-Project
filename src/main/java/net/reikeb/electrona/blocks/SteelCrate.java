@@ -1,25 +1,33 @@
 package net.reikeb.electrona.blocks;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.*;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.*;
-import net.minecraft.loot.LootContext;
-import net.minecraft.state.*;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.*;
-import net.minecraft.world.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.phys.BlockHitResult;
 
 import net.minecraftforge.common.ToolType;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import net.reikeb.electrona.tileentities.TileSteelCrate;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
-public class SteelCrate extends Block {
+public class SteelCrate extends Block implements EntityBlock {
 
     public static final DirectionProperty FACING = DirectionalBlock.FACING;
 
@@ -35,7 +43,7 @@ public class SteelCrate extends Block {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING);
     }
 
@@ -48,15 +56,15 @@ public class SteelCrate extends Block {
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         ;
         return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite());
     }
 
     @Override
-    public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            TileEntity tileentity = world.getBlockEntity(pos);
+            BlockEntity tileentity = world.getBlockEntity(pos);
             if (tileentity instanceof TileSteelCrate) {
                 ((TileSteelCrate) tileentity).dropItems(world, pos);
                 world.updateNeighbourForOutputSignal(pos, this);
@@ -74,37 +82,32 @@ public class SteelCrate extends Block {
     }
 
     @Override
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (!worldIn.isClientSide) {
-            TileEntity tile = worldIn.getBlockEntity(pos);
+            BlockEntity tile = worldIn.getBlockEntity(pos);
             if (tile instanceof TileSteelCrate) {
-                NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tile, pos);
-                return ActionResultType.SUCCESS;
+                NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) tile, pos);
+                return InteractionResult.SUCCESS;
             }
         }
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     @Override
-    public INamedContainerProvider getMenuProvider(BlockState state, World worldIn, BlockPos pos) {
-        TileEntity tileEntity = worldIn.getBlockEntity(pos);
-        return tileEntity instanceof INamedContainerProvider ? (INamedContainerProvider) tileEntity : null;
+    public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
+        BlockEntity tileEntity = worldIn.getBlockEntity(pos);
+        return tileEntity instanceof MenuProvider ? (MenuProvider) tileEntity : null;
     }
 
     @Override
-    public boolean hasTileEntity(BlockState state) {
-        return true;
-    }
-
-    @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new TileSteelCrate();
     }
 
     @Override
-    public boolean triggerEvent(BlockState state, World world, BlockPos pos, int eventID, int eventParam) {
+    public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
         super.triggerEvent(state, world, pos, eventID, eventParam);
-        TileEntity tileentity = world.getBlockEntity(pos);
+        BlockEntity tileentity = world.getBlockEntity(pos);
         return tileentity != null && tileentity.triggerEvent(eventID, eventParam);
     }
 }

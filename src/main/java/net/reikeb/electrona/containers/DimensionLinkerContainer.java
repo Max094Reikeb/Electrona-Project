@@ -1,38 +1,41 @@
 package net.reikeb.electrona.containers;
 
-import net.minecraft.entity.player.*;
-import net.minecraft.inventory.container.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 import net.reikeb.electrona.tileentities.TileDimensionLinker;
 
-import static net.reikeb.electrona.init.ContainerInit.*;
-
 import java.util.HashMap;
 
-public class DimensionLinkerContainer extends Container {
+import static net.reikeb.electrona.init.ContainerInit.DIMENSION_LINKER_CONTAINER;
+
+public class DimensionLinkerContainer extends AbstractContainerMenu {
 
     public TileDimensionLinker tileEntity;
     public static HashMap textFieldWidget = new HashMap();
 
-    public DimensionLinkerContainer(ContainerType<?> type, int id) {
+    public DimensionLinkerContainer(MenuType<?> type, int id) {
         super(type, id);
     }
 
     // Client
-    public DimensionLinkerContainer(int id, PlayerInventory inv, PacketBuffer buf) {
+    public DimensionLinkerContainer(int id, Inventory inv, FriendlyByteBuf buf) {
         super(DIMENSION_LINKER_CONTAINER.get(), id);
         this.init(inv, this.tileEntity = (TileDimensionLinker) inv.player.level.getBlockEntity(buf.readBlockPos()));
     }
 
     // Server
-    public DimensionLinkerContainer(int id, PlayerInventory inv, TileDimensionLinker tile) {
+    public DimensionLinkerContainer(int id, Inventory inv, TileDimensionLinker tile) {
         super(DIMENSION_LINKER_CONTAINER.get(), id);
         this.init(inv, this.tileEntity = tile);
     }
 
-    public void init(PlayerInventory playerInv, TileDimensionLinker tile) {
+    public void init(Inventory playerInv, TileDimensionLinker tile) {
 
         layoutPlayerInventorySlots(playerInv);
     }
@@ -45,7 +48,7 @@ public class DimensionLinkerContainer extends Container {
         return textFieldWidget;
     }
 
-    private void layoutPlayerInventorySlots(PlayerInventory playerInv) {
+    private void layoutPlayerInventorySlots(Inventory playerInv) {
         int si;
         int sj;
         for (si = 0; si < 3; ++si)
@@ -56,12 +59,12 @@ public class DimensionLinkerContainer extends Container {
     }
 
     @Override
-    public boolean stillValid(PlayerEntity playerEntity) {
+    public boolean stillValid(Player playerEntity) {
         return true;
     }
 
     @Override
-    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(Player playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if (slot != null && slot.hasItem()) {

@@ -1,13 +1,17 @@
 package net.reikeb.electrona.misc.vm;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tags.*;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagCollection;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import net.reikeb.electrona.utils.ItemHandler;
 
@@ -25,18 +29,18 @@ public class EnergyFunction {
      * @param generatorPower    The amount of energy the Generator/Machine has
      * @param isGenerator       Defines if the method is used by a Generator or a Machine
      */
-    public static void generatorTransferEnergy(World world, BlockPos pos, Direction[] directions, CompoundNBT generatorNBT, int transferPerSecond, double generatorPower, Boolean isGenerator) {
+    public static void generatorTransferEnergy(Level world, BlockPos pos, Direction[] directions, CompoundTag generatorNBT, int transferPerSecond, double generatorPower, Boolean isGenerator) {
         double transferPerTick = transferPerSecond * 0.05;
 
-        ITagCollection<Block> tagCollection = BlockTags.getAllTags();
-        ITag<Block> machineTag, cableTag;
+        TagCollection<Block> tagCollection = BlockTags.getAllTags();
+        Tag<Block> machineTag, cableTag;
         machineTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", (isGenerator ? "electrona/machines_all" : "electrona/machines")));
         cableTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", (isGenerator ? "electrona/cable" : "electrona/blue_cable")));
 
         for (Direction dir : directions) {
             if (generatorPower <= 0) return; // we have no more power
 
-            TileEntity tileEntity = world.getBlockEntity(pos.relative(dir));
+            BlockEntity tileEntity = world.getBlockEntity(pos.relative(dir));
             if (tileEntity == null) continue;
             Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
             if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
@@ -63,7 +67,7 @@ public class EnergyFunction {
      * @param slot              The slot the item must be in
      * @param transferPerSecond The amount of energy transfered each second
      */
-    public static void transferEnergyWithItemSlot(CompoundNBT generatorNBT, Item requiredItem, ItemHandler inventory, Boolean fromGenerator, double generatorPower, int slot, double transferPerSecond) {
+    public static void transferEnergyWithItemSlot(CompoundTag generatorNBT, Item requiredItem, ItemHandler inventory, Boolean fromGenerator, double generatorPower, int slot, double transferPerSecond) {
         double transferPerTick = transferPerSecond * 0.05;
         ItemStack stackInSlot = inventory.getStackInSlot(slot);
 

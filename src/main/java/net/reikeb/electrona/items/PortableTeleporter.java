@@ -1,12 +1,19 @@
 package net.reikeb.electrona.items;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
-import net.minecraft.util.*;
-import net.minecraft.util.text.*;
-import net.minecraft.world.World;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.misc.vm.TeleporterFunction;
 import net.reikeb.electrona.setup.ItemGroups;
@@ -22,16 +29,16 @@ public class PortableTeleporter extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+    public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
         int EL = 0;
         super.appendHoverText(itemstack, world, list, flag);
-        list.add(new TranslationTextComponent("item.electrona.portable_teleporter.desc1"));
-        list.add(new TranslationTextComponent("item.electrona.portable_teleporter.desc2",
+        list.add(new TranslatableComponent("item.electrona.portable_teleporter.desc1"));
+        list.add(new TranslatableComponent("item.electrona.portable_teleporter.desc2",
                 (itemstack).getOrCreateTag().getDouble("teleportX"),
                 (itemstack).getOrCreateTag().getDouble("teleportY"),
-                (itemstack).getOrCreateTag().getDouble("teleportZ")).withStyle(TextFormatting.GRAY));
+                (itemstack).getOrCreateTag().getDouble("teleportZ")).withStyle(ChatFormatting.GRAY));
         EL = (itemstack).getOrCreateTag().getInt("ElectronicPower");
-        list.add(new StringTextComponent(EL + " EL").withStyle(TextFormatting.GRAY));
+        list.add(new TextComponent(EL + " EL").withStyle(ChatFormatting.GRAY));
     }
 
     @Override
@@ -50,20 +57,20 @@ public class PortableTeleporter extends Item {
     }
 
     @Override
-    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack stack = playerIn.getItemInHand(handIn);
         return TeleporterFunction.teleportPortable(worldIn, playerIn, handIn)
-                ? ActionResult.success(stack) : ActionResult.fail(stack);
+                ? InteractionResultHolder.success(stack) : InteractionResultHolder.fail(stack);
     }
 
     @Override
-    public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
-        ActionResultType action = super.onItemUseFirst(stack, context);
-        World world = context.getLevel();
-        PlayerEntity entity = context.getPlayer();
-        Hand hand = context.getHand();
+    public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
+        InteractionResult action = super.onItemUseFirst(stack, context);
+        Level world = context.getLevel();
+        Player entity = context.getPlayer();
+        InteractionHand hand = context.getHand();
 
-        if (entity == null) return ActionResultType.FAIL;
+        if (entity == null) return InteractionResult.FAIL;
 
         return TeleporterFunction.teleportPortable(world, entity, hand) ? action : action;
     }

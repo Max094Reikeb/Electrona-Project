@@ -1,10 +1,10 @@
 package net.reikeb.electrona.network.packets;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import net.reikeb.electrona.containers.NuclearGeneratorControllerContainer;
 
@@ -15,19 +15,19 @@ public class NuclearActivatePacket {
     public NuclearActivatePacket() {
     }
 
-    public static NuclearActivatePacket decode(PacketBuffer buf) {
+    public static NuclearActivatePacket decode(FriendlyByteBuf buf) {
         return new NuclearActivatePacket();
     }
 
-    public void encode(PacketBuffer buf) {
+    public void encode(FriendlyByteBuf buf) {
     }
 
     public void whenThisPacketIsReceived(Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> {
-            PlayerEntity playerEntity = context.get().getSender();
+            Player playerEntity = context.get().getSender();
             if ((playerEntity == null) || (!(playerEntity.containerMenu instanceof NuclearGeneratorControllerContainer)))
                 return;
-            TileEntity tileEntity = ((NuclearGeneratorControllerContainer) playerEntity.containerMenu).getTileEntity();
+            BlockEntity tileEntity = ((NuclearGeneratorControllerContainer) playerEntity.containerMenu).getTileEntity();
             if (tileEntity.getTileData().getBoolean("powered")) {
                 if (!tileEntity.getTileData().getBoolean("UBIn")) {
                     tileEntity.getTileData().putBoolean("powered", false);

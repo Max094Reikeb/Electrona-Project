@@ -1,16 +1,20 @@
 package net.reikeb.electrona.blocks;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.*;
-import net.minecraft.loot.LootContext;
-import net.minecraft.state.*;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.*;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.minecraftforge.common.ToolType;
 
@@ -19,9 +23,10 @@ import net.reikeb.electrona.tileentities.TileEnergeticLightningRod;
 import net.reikeb.electrona.utils.ElectronaUtils;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
-public class EnergeticLightningRod extends AbstractWaterLoggableBlock {
+public class EnergeticLightningRod extends AbstractWaterLoggableBlock implements EntityBlock {
 
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
@@ -53,7 +58,7 @@ public class EnergeticLightningRod extends AbstractWaterLoggableBlock {
     VoxelShape southShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.SOUTH, northShape);
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         Direction facing = state.getValue(FACING);
         if (facing == Direction.DOWN) {
             return downShape;
@@ -70,12 +75,12 @@ public class EnergeticLightningRod extends AbstractWaterLoggableBlock {
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+    public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
         return true;
     }
 
     @Override
-    public void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    public void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, WATERLOGGED);
     }
 
@@ -88,7 +93,7 @@ public class EnergeticLightningRod extends AbstractWaterLoggableBlock {
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         Direction direction = context.getClickedFace();
         BlockState blockState = context.getLevel().getBlockState(context.getClickedPos().relative(direction.getOpposite()));
         BlockState replaceState = context.getLevel().getBlockState(context.getClickedPos());
@@ -98,14 +103,9 @@ public class EnergeticLightningRod extends AbstractWaterLoggableBlock {
                 .setValue(WATERLOGGED, replaceState.getBlock() == Blocks.WATER);
     }
 
-    @Override
-    public boolean hasTileEntity(BlockState state) {
-        return true;
-    }
-
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new TileEnergeticLightningRod();
     }
 }

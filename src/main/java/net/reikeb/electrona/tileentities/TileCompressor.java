@@ -1,19 +1,19 @@
 package net.reikeb.electrona.tileentities;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.entity.player.*;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.Containers;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.text.*;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -36,7 +36,20 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class TileCompressor extends LockableLootTileEntity implements ITickableTileEntity {
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+
+public class TileCompressor extends RandomizableContainerBlockEntity implements TickableBlockEntity {
 
     private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(3, ItemStack.EMPTY);
     private final ItemHandler inventory;
@@ -57,13 +70,13 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
     }
 
     @Override
-    public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("gui.electrona.compressor.name");
+    public Component getDisplayName() {
+        return new TranslatableComponent("gui.electrona.compressor.name");
     }
 
     @Override
-    protected ITextComponent getDefaultName() {
-        return new StringTextComponent("compressor");
+    protected Component getDefaultName() {
+        return new TextComponent("compressor");
     }
 
     @Override
@@ -77,12 +90,12 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
     }
 
     @Override
-    public Container createMenu(final int windowID, final PlayerInventory playerInv, final PlayerEntity playerIn) {
+    public AbstractContainerMenu createMenu(final int windowID, final Inventory playerInv, final Player playerIn) {
         return new CompressorContainer(windowID, playerInv, this);
     }
 
     @Override
-    public Container createMenu(int id, PlayerInventory player) {
+    public AbstractContainerMenu createMenu(int id, Inventory player) {
         return new CompressorContainer(ContainerInit.COMPRESSOR_CONTAINER.get(), id);
     }
 
@@ -93,7 +106,7 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
 
     @Override
     public void tick() {
-        World world = this.level;
+        Level world = this.level;
         BlockPos blockPos = this.getBlockPos();
         ItemStack stackInSlot0 = this.inventory.getStackInSlot(0);
         ItemStack stackInSlot1 = this.inventory.getStackInSlot(1);
@@ -120,7 +133,7 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
                             this.inventory.decrStackSize(0, 1);
                             this.inventory.decrStackSize(1, 1);
                             world.playSound(null, blockPos, SoundsInit.COMPRESSOR_END_COMPRESSION.get(),
-                                    SoundCategory.BLOCKS, 0.6F, 1.0F);
+                                    SoundSource.BLOCKS, 0.6F, 1.0F);
                         }
                     }
                     this.getTileData().putDouble("ElectronicPower", electronicPower);
@@ -144,7 +157,7 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
         }
     }
 
-    protected void canCompress(@Nullable IRecipe<?> recipe) {
+    protected void canCompress(@Nullable Recipe<?> recipe) {
         if (!this.inventory.getStackInSlot(0).isEmpty() && recipe != null) {
             ItemStack resultItem = recipe.getResultItem();
             if (resultItem.isEmpty()) {
@@ -184,8 +197,8 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
     private CompressorRecipe getRecipe(ItemStack stack, ItemStack stack2) {
         if (stack == null || stack2 == null) return null;
 
-        Set<IRecipe<?>> recipes = findRecipesByType(Electrona.COMPRESSING, this.level);
-        for (IRecipe<?> iRecipe : recipes) {
+        Set<Recipe<?>> recipes = findRecipesByType(Electrona.COMPRESSING, this.level);
+        for (Recipe<?> iRecipe : recipes) {
             CompressorRecipe recipe = (CompressorRecipe) iRecipe;
             if (recipe.matches(new RecipeWrapper(this.inventory), this.level)) {
                 canCompress(recipe);
@@ -195,13 +208,13 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
         return null;
     }
 
-    public static Set<IRecipe<?>> findRecipesByType(IRecipeType<?> typeIn, World world) {
+    public static Set<Recipe<?>> findRecipesByType(RecipeType<?> typeIn, Level world) {
         return world != null ? world.getRecipeManager().getRecipes().stream()
                 .filter(recipe -> recipe.getType() == typeIn).collect(Collectors.toSet()) : Collections.emptySet();
     }
 
     @Override
-    public void load(BlockState blockState, CompoundNBT compound) {
+    public void load(BlockState blockState, CompoundTag compound) {
         super.load(blockState, compound);
         this.electronicPower = compound.getDouble("ElectronicPower");
         this.maxStorage = compound.getInt("MaxStorage");
@@ -209,12 +222,12 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
         this.currentCompressingTime = compound.getInt("CurrentCompressingTime");
         this.energyRequired = compound.getInt("EnergyRequired");
         if (compound.contains("Inventory")) {
-            inventory.deserializeNBT((CompoundNBT) compound.get("Inventory"));
+            inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
         }
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
         super.save(compound);
         compound.putDouble("ElectronicPower", this.electronicPower);
         compound.putInt("MaxStorage", this.maxStorage);
@@ -230,25 +243,25 @@ public class TileCompressor extends LockableLootTileEntity implements ITickableT
         return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(cap, LazyOptional.of(() -> this.inventory));
     }
 
-    public void dropItems(World world, BlockPos pos) {
+    public void dropItems(Level world, BlockPos pos) {
         for (int i = 0; i < 3; i++)
             if (!inventory.getStackInSlot(i).isEmpty()) {
-                InventoryHelper.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(i));
+                Containers.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(i));
             }
     }
 
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.worldPosition, 0, this.getUpdateTag());
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return new ClientboundBlockEntityDataPacket(this.worldPosition, 0, this.getUpdateTag());
     }
 
     @Override
-    public CompoundNBT getUpdateTag() {
-        return this.save(new CompoundNBT());
+    public CompoundTag getUpdateTag() {
+        return this.save(new CompoundTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         this.load(this.getBlockState(), pkt.getTag());
     }
 

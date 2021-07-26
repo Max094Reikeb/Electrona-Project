@@ -1,12 +1,15 @@
 package net.reikeb.electrona.items;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
-import net.minecraftforge.api.distmarker.*;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.reikeb.electrona.Electrona;
@@ -16,24 +19,24 @@ public class AntiRadiationSuit extends ArmorItem {
 
     public static final AntiRadiationMaterial antiRadiationMaterial = new AntiRadiationMaterial();
 
-    public AntiRadiationSuit(EquipmentSlotType slot) {
+    public AntiRadiationSuit(EquipmentSlot slot) {
         super(antiRadiationMaterial, slot, new Properties().tab(ItemGroups.ELECTRONA_TOOLS));
     }
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-        return Electrona.MODID + ":textures/models/armor/anti_radiation_armor_layer_" + (slot == EquipmentSlotType.LEGS ? "2" : "1") + ".png";
+    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+        return Electrona.MODID + ":textures/models/armor/anti_radiation_armor_layer_" + (slot == EquipmentSlot.LEGS ? "2" : "1") + ".png";
     }
 
-    public static class AntiRadiationMaterial implements IArmorMaterial {
+    public static class AntiRadiationMaterial implements ArmorMaterial {
 
         @Override
-        public int getDurabilityForSlot(EquipmentSlotType slot) {
+        public int getDurabilityForSlot(EquipmentSlot slot) {
             return new int[]{13, 15, 16, 11}[slot.getIndex()] * 4;
         }
 
         @Override
-        public int getDefenseForSlot(EquipmentSlotType slot) {
+        public int getDefenseForSlot(EquipmentSlot slot) {
             return new int[]{1, 1, 1, 1}[slot.getIndex()];
         }
 
@@ -43,7 +46,7 @@ public class AntiRadiationSuit extends ArmorItem {
         }
 
         @Override
-        public net.minecraft.util.SoundEvent getEquipSound() {
+        public net.minecraft.sounds.SoundEvent getEquipSound() {
             return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(""));
         }
 

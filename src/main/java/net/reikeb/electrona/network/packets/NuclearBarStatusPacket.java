@@ -1,13 +1,13 @@
 package net.reikeb.electrona.network.packets;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.reikeb.electrona.containers.NuclearGeneratorControllerContainer;
@@ -22,23 +22,23 @@ public class NuclearBarStatusPacket {
     public NuclearBarStatusPacket() {
     }
 
-    public static NuclearBarStatusPacket decode(PacketBuffer buf) {
+    public static NuclearBarStatusPacket decode(FriendlyByteBuf buf) {
         return new NuclearBarStatusPacket();
     }
 
-    public void encode(PacketBuffer buf) {
+    public void encode(FriendlyByteBuf buf) {
     }
 
     public void whenThisPacketIsReceived(Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> {
-            PlayerEntity playerEntity = context.get().getSender();
+            Player playerEntity = context.get().getSender();
             if ((playerEntity == null) || (!(playerEntity.containerMenu instanceof NuclearGeneratorControllerContainer)))
                 return;
-            TileEntity tileEntity = ((NuclearGeneratorControllerContainer) playerEntity.containerMenu).getTileEntity();
+            BlockEntity tileEntity = ((NuclearGeneratorControllerContainer) playerEntity.containerMenu).getTileEntity();
             BlockPos posUnder = new BlockPos(tileEntity.getBlockPos().getX(),
                     (tileEntity.getBlockPos().getY() - 1), tileEntity.getBlockPos().getZ());
             Block blockUnder = (tileEntity.getLevel().getBlockState(posUnder)).getBlock();
-            TileEntity tileUnder = playerEntity.level.getBlockEntity(posUnder);
+            BlockEntity tileUnder = playerEntity.level.getBlockEntity(posUnder);
             if (!(tileUnder instanceof TileCooler)) return;
             AtomicReference<ItemStack> stackInSlot1 = new AtomicReference<>();
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {

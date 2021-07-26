@@ -1,19 +1,19 @@
 package net.reikeb.electrona.blocks;
 
-import net.minecraft.block.*;
-import net.minecraft.fluid.*;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.*;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.*;
+import net.minecraft.core.*;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.*;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.*;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.*;
 
-public abstract class AbstractWaterLoggableBlock extends Block implements IWaterLoggable {
+public abstract class AbstractWaterLoggableBlock extends Block implements SimpleWaterloggedBlock {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public AbstractWaterLoggableBlock(AbstractBlock.Properties properties) {
+    public AbstractWaterLoggableBlock(BlockBehaviour.Properties properties) {
         super(properties);
     }
 
@@ -21,7 +21,7 @@ public abstract class AbstractWaterLoggableBlock extends Block implements IWater
      * Handles ticking the water if waterlogged. Call "super.neighborChanged()" first.
      */
     @Override
-    public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+    public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
         if (!world.isClientSide)
             if (state.getValue(WATERLOGGED))
                 world.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
@@ -31,7 +31,7 @@ public abstract class AbstractWaterLoggableBlock extends Block implements IWater
      * Handles the "waterlogged" state for you. Substitute "this.getDefaultState().with(...)" with "super.getStateForPlacement().with(...)"
      */
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState().setValue(WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
     }
 
@@ -49,7 +49,7 @@ public abstract class AbstractWaterLoggableBlock extends Block implements IWater
      */
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
         if (state.getValue(WATERLOGGED))
             world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 
@@ -60,7 +60,7 @@ public abstract class AbstractWaterLoggableBlock extends Block implements IWater
      * Handles ticking the water if waterlogged. Call "super.onBlockAdded()" first.
      */
     @Override
-    public void onPlace(BlockState state, World world, BlockPos pos, BlockState oldState, boolean isMoving) {
+    public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean isMoving) {
         world.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
     }
 
@@ -68,7 +68,7 @@ public abstract class AbstractWaterLoggableBlock extends Block implements IWater
      * Adds the "waterlogged" state. Call "super.fillStateContainer()" first.
      */
     @Override
-    public void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    public void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(WATERLOGGED);
     }
 }

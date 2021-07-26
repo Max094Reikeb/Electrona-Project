@@ -1,18 +1,30 @@
 package net.reikeb.electrona.items;
 
-import net.minecraft.block.*;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.*;
-import net.minecraft.fluid.*;
-import net.minecraft.item.*;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.*;
-import net.minecraft.util.math.*;
-import net.minecraft.util.text.*;
-import net.minecraft.world.World;
-
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BucketPickup;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.event.ForgeEventFactory;
-
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.PlayerInventoryChangedPacket;
@@ -45,27 +57,27 @@ public class EmptyCell extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+    public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, world, list, flag);
-        list.add(new TranslationTextComponent("item.electrona.empty_cell.desc"));
+        list.add(new TranslatableComponent("item.electrona.empty_cell.desc"));
     }
 
     @Override
-    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack itemstack = playerIn.getItemInHand(handIn);
-        BlockRayTraceResult raytraceresult = getPlayerPOVHitResult(worldIn, playerIn, RayTraceContext.FluidMode.SOURCE_ONLY);
-        ActionResult<ItemStack> ret = ForgeEventFactory.onBucketUse(playerIn, worldIn, itemstack, raytraceresult);
+        BlockHitResult raytraceresult = getPlayerPOVHitResult(worldIn, playerIn, ClipContext.Fluid.SOURCE_ONLY);
+        InteractionResultHolder<ItemStack> ret = ForgeEventFactory.onBucketUse(playerIn, worldIn, itemstack, raytraceresult);
         if (ret != null) return ret;
-        if (raytraceresult.getType() == RayTraceResult.Type.MISS) return ActionResult.pass(itemstack);
-        if (raytraceresult.getType() != RayTraceResult.Type.BLOCK) return ActionResult.pass(itemstack);
+        if (raytraceresult.getType() == HitResult.Type.MISS) return InteractionResultHolder.pass(itemstack);
+        if (raytraceresult.getType() != HitResult.Type.BLOCK) return InteractionResultHolder.pass(itemstack);
         BlockPos blockpos = raytraceresult.getBlockPos();
         Direction direction = raytraceresult.getDirection();
         BlockPos blockpos1 = blockpos.relative(direction);
         if (worldIn.mayInteract(playerIn, blockpos) && playerIn.mayUseItemAt(blockpos1, direction, itemstack)) {
             BlockState blockstate1 = worldIn.getBlockState(blockpos);
-            if (blockstate1.getBlock() instanceof IBucketPickupHandler) {
-                Fluid fluid = ((IBucketPickupHandler) blockstate1.getBlock()).takeLiquid(worldIn, blockpos, blockstate1);
-                if ((fluid != Fluids.WATER) && (fluid != Fluids.LAVA)) return ActionResult.fail(itemstack);
+            if (blockstate1.getBlock() instanceof BucketPickup) {
+                Fluid fluid = ((BucketPickup) blockstate1.getBlock()).takeLiquid(worldIn, blockpos, blockstate1);
+                if ((fluid != Fluids.WATER) && (fluid != Fluids.LAVA)) return InteractionResultHolder.fail(itemstack);
                 worldIn.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 3);
                 if (playerIn.isCreative()) {
                     if (!((fluid == Fluids.WATER && playerIn.inventory.contains(new ItemStack(ItemInit.WATER_CELL.get(), 1)))
@@ -75,20 +87,20 @@ public class EmptyCell extends Item {
                 } else {
                     playerIn.setItemInHand(handIn, new ItemStack((fluid == Fluids.WATER ? ItemInit.WATER_CELL.get() : ItemInit.LAVA_CELL.get()), 1));
                 }
-                return ActionResult.success(itemstack);
+                return InteractionResultHolder.success(itemstack);
             }
         }
-        return ActionResult.fail(itemstack);
+        return InteractionResultHolder.fail(itemstack);
     }
 
     @Override
-    public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
-        ActionResultType action = super.onItemUseFirst(stack, context);
-        World world = context.getLevel();
+    public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
+        InteractionResult action = super.onItemUseFirst(stack, context);
+        Level world = context.getLevel();
         BlockState state = world.getBlockState(context.getClickedPos());
-        PlayerEntity entity = context.getPlayer();
+        Player entity = context.getPlayer();
 
-        if (entity == null) return ActionResultType.FAIL;
+        if (entity == null) return InteractionResult.FAIL;
 
         if (state.is(Blocks.COMPOSTER)) {
             int level = state.getValue(BlockStateProperties.LEVEL_COMPOSTER);
@@ -101,7 +113,7 @@ public class EmptyCell extends Item {
                     entity.setItemInHand(context.getHand(), new ItemStack(ItemInit.BIOMASS_CELL.get(), 1));
                 }
                 world.setBlock(context.getClickedPos(), state.setValue(BlockStateProperties.LEVEL_COMPOSTER, (level - 4)), 3);
-                if (entity instanceof ServerPlayerEntity) {
+                if (entity instanceof ServerPlayer) {
                     entity.inventory.setChanged();
                 } else {
                     NetworkManager.INSTANCE.sendToServer(new PlayerInventoryChangedPacket());

@@ -2,81 +2,88 @@ package net.reikeb.electrona.world.structures;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
-
-import net.minecraft.block.BlockState;
-import net.minecraft.util.*;
-import net.minecraft.util.math.*;
-import net.minecraft.util.registry.*;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.gen.*;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.jigsaw.JigsawManager;
-import net.minecraft.world.gen.feature.structure.*;
-import net.minecraft.world.gen.feature.template.TemplateManager;
-
+import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.structures.JigsawPlacement;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.EntityInit;
-
 import java.util.List;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.JigsawConfiguration;
+import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 
-public class RuinsStructure extends Structure<NoFeatureConfig> {
+public class RuinsStructure extends StructureFeature<NoneFeatureConfiguration> {
 
-    public RuinsStructure(Codec<NoFeatureConfig> codec) {
+    public RuinsStructure(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public IStartFactory<NoFeatureConfig> getStartFactory() {
+    public StructureStartFactory<NoneFeatureConfiguration> getStartFactory() {
         return RuinsStructure.Start::new;
     }
 
     @Override
-    public GenerationStage.Decoration step() {
-        return GenerationStage.Decoration.SURFACE_STRUCTURES;
+    public GenerationStep.Decoration step() {
+        return GenerationStep.Decoration.SURFACE_STRUCTURES;
     }
 
-    private static final List<MobSpawnInfo.Spawners> STRUCTURE_MONSTERS = ImmutableList.of(
-            new MobSpawnInfo.Spawners(EntityInit.RADIOACTIVE_ZOMBIE.get(), 100, 4, 9)
+    private static final List<MobSpawnSettings.SpawnerData> STRUCTURE_MONSTERS = ImmutableList.of(
+            new MobSpawnSettings.SpawnerData(EntityInit.RADIOACTIVE_ZOMBIE.get(), 100, 4, 9)
     );
 
     @Override
-    public List<MobSpawnInfo.Spawners> getDefaultSpawnList() {
+    public List<MobSpawnSettings.SpawnerData> getDefaultSpawnList() {
         return STRUCTURE_MONSTERS;
     }
 
     @Override
-    protected boolean isFeatureChunk(ChunkGenerator chunkGenerator, BiomeProvider biomeSource, long seed, SharedSeedRandom chunkRandom, int chunkX, int chunkZ, Biome biome, ChunkPos chunkPos, NoFeatureConfig featureConfig) {
+    protected boolean isFeatureChunk(ChunkGenerator chunkGenerator, BiomeSource biomeSource, long seed, WorldgenRandom chunkRandom, int chunkX, int chunkZ, Biome biome, ChunkPos chunkPos, NoneFeatureConfiguration featureConfig) {
         BlockPos centerOfChunk = new BlockPos((chunkX << 4) + 7, 0, (chunkZ << 4) + 7);
-        int landHeight = chunkGenerator.getFirstOccupiedHeight(centerOfChunk.getX(), centerOfChunk.getZ(), Heightmap.Type.WORLD_SURFACE_WG);
-        IBlockReader columnOfBlocks = chunkGenerator.getBaseColumn(centerOfChunk.getX(), centerOfChunk.getZ());
+        int landHeight = chunkGenerator.getFirstOccupiedHeight(centerOfChunk.getX(), centerOfChunk.getZ(), Heightmap.Types.WORLD_SURFACE_WG);
+        BlockGetter columnOfBlocks = chunkGenerator.getBaseColumn(centerOfChunk.getX(), centerOfChunk.getZ());
         BlockState topBlock = columnOfBlocks.getBlockState(centerOfChunk.above(landHeight));
         return topBlock.getFluidState().isEmpty();
     }
 
-    public static class Start extends StructureStart<NoFeatureConfig> {
+    public static class Start extends StructureStart<NoneFeatureConfiguration> {
 
-        public Start(Structure<NoFeatureConfig> structureIn, int chunkX, int chunkZ, MutableBoundingBox mutableBoundingBox, int referenceIn, long seedIn) {
-            super(structureIn, chunkX, chunkZ, mutableBoundingBox, referenceIn, seedIn);
+        public Start(StructureFeature<NoneFeatureConfiguration> structureIn, ChunkPos chunkPos, int referenceIn, long seedIn) {
+            super(structureIn, chunkPos, referenceIn, seedIn);
         }
 
         @Override
-        public void generatePieces(DynamicRegistries dynamicRegistryManager, ChunkGenerator chunkGenerator, TemplateManager templateManagerIn, int chunkX, int chunkZ, Biome biomeIn, NoFeatureConfig config) {
-            int x = (chunkX << 4) + 7;
-            int z = (chunkZ << 4) + 7;
+        public void generatePieces(RegistryAccess dynamicRegistryManager, ChunkGenerator chunkGenerator, StructureManager templateManagerIn, ChunkPos chunkPos, Biome biomeIn, NoneFeatureConfiguration config, LevelHeightAccessor levelHeightAccessor) {
+            int x = (chunkPos.x << 4) + 7;
+            int z = (chunkPos.z << 4) + 7;
 
-            BlockPos blockpos = new BlockPos(x, 0, z);
+            BlockPos blockPos = new BlockPos(x, 0, z);
 
-            JigsawManager.addPieces(
+            JigsawPlacement.addPieces(
                     dynamicRegistryManager,
-                    new VillageConfig(() -> dynamicRegistryManager.registryOrThrow(
+                    new JigsawConfiguration(() -> dynamicRegistryManager.registryOrThrow(
                             Registry.TEMPLATE_POOL_REGISTRY).get(new ResourceLocation(Electrona.MODID,
                             "ruins/start_pool")), 10),
-                    AbstractVillagePiece::new,
+                    PoolElementStructurePiece::new,
                     chunkGenerator,
                     templateManagerIn,
-                    blockpos,
+                    blockPos,
                     this.pieces,
                     this.random,
                     false,

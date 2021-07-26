@@ -4,14 +4,14 @@ import com.google.common.collect.*;
 import com.google.gson.JsonObject;
 
 import net.minecraft.advancements.*;
-import net.minecraft.advancements.criterion.*;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.loot.*;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.advancements.critereon.*;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.PlayerAdvancements;
+import net.minecraft.server.level.ServerPlayer;
 
 import java.util.*;
 
-public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance> {
+public class TriggerBase implements CriterionTrigger<TriggerBase.Instance> {
 
     private final ResourceLocation RL;
     private final Map<PlayerAdvancements, TriggerBase.Listeners> listeners = Maps.newHashMap();
@@ -48,7 +48,7 @@ public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance> {
      * @see net.minecraft.advancements.ICriterionTrigger#addListener(net.minecraft.advancements.PlayerAdvancements, net.minecraft.advancements.ICriterionTrigger.Listener)
      */
     @Override
-    public void addPlayerListener(PlayerAdvancements playerAdvancementsIn, ICriterionTrigger.Listener<TriggerBase.Instance> listener) {
+    public void addPlayerListener(PlayerAdvancements playerAdvancementsIn, CriterionTrigger.Listener<TriggerBase.Instance> listener) {
         TriggerBase.Listeners myCustomTrigger$listeners = listeners.get(playerAdvancementsIn);
 
         if (myCustomTrigger$listeners == null) {
@@ -63,7 +63,7 @@ public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance> {
      * @see net.minecraft.advancements.ICriterionTrigger#removeListener(net.minecraft.advancements.PlayerAdvancements, net.minecraft.advancements.ICriterionTrigger.Listener)
      */
     @Override
-    public void removePlayerListener(PlayerAdvancements playerAdvancementsIn, ICriterionTrigger.Listener<TriggerBase.Instance> listener) {
+    public void removePlayerListener(PlayerAdvancements playerAdvancementsIn, CriterionTrigger.Listener<TriggerBase.Instance> listener) {
         TriggerBase.Listeners tameanimaltrigger$listeners = listeners.get(playerAdvancementsIn);
 
         if (tameanimaltrigger$listeners != null) {
@@ -92,8 +92,8 @@ public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance> {
      * @return the tame bird trigger. instance
      */
     @Override
-    public TriggerBase.Instance createInstance(JsonObject object, ConditionArrayParser conditions) {
-        EntityPredicate.AndPredicate entitypredicate$andpredicate = EntityPredicate.AndPredicate.fromJson(object, "sub_condition", conditions);
+    public TriggerBase.Instance createInstance(JsonObject object, DeserializationContext conditions) {
+        EntityPredicate.Composite entitypredicate$andpredicate = EntityPredicate.Composite.fromJson(object, "sub_condition", conditions);
         return new TriggerBase.Instance(getId(), entitypredicate$andpredicate);
     }
 
@@ -103,7 +103,7 @@ public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance> {
      *
      * @param parPlayer the player
      */
-    public void trigger(ServerPlayerEntity parPlayer) {
+    public void trigger(ServerPlayer parPlayer) {
         TriggerBase.Listeners tameanimaltrigger$listeners = listeners.get(parPlayer.getAdvancements());
 
         if (tameanimaltrigger$listeners != null) {
@@ -111,17 +111,17 @@ public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance> {
         }
     }
 
-    public static class Instance implements ICriterionInstance {
+    public static class Instance implements CriterionTriggerInstance {
 
         private final ResourceLocation criterion;
-        private final EntityPredicate.AndPredicate player;
+        private final EntityPredicate.Composite player;
 
         /**
          * Instantiates a new instance.
          *
          * @param parRL the par RL
          */
-        public Instance(ResourceLocation parRL, EntityPredicate.AndPredicate playerCondition) {
+        public Instance(ResourceLocation parRL, EntityPredicate.Composite playerCondition) {
             this.criterion = parRL;
             this.player = playerCondition;
         }
@@ -141,7 +141,7 @@ public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance> {
         }
 
         @Override
-        public JsonObject serializeToJson(ConditionArraySerializer conditions) {
+        public JsonObject serializeToJson(SerializationContext conditions) {
             return null;
         }
     }
@@ -149,7 +149,7 @@ public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance> {
     static class Listeners {
 
         private final PlayerAdvancements playerAdvancements;
-        private final Set<ICriterionTrigger.Listener<TriggerBase.Instance>> listeners = Sets.newHashSet();
+        private final Set<CriterionTrigger.Listener<TriggerBase.Instance>> listeners = Sets.newHashSet();
 
         /**
          * Instantiates a new listeners.
@@ -174,7 +174,7 @@ public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance> {
          *
          * @param listener the listener
          */
-        public void add(ICriterionTrigger.Listener<TriggerBase.Instance> listener) {
+        public void add(CriterionTrigger.Listener<TriggerBase.Instance> listener) {
             listeners.add(listener);
         }
 
@@ -183,7 +183,7 @@ public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance> {
          *
          * @param listener the listener
          */
-        public void remove(ICriterionTrigger.Listener<TriggerBase.Instance> listener) {
+        public void remove(CriterionTrigger.Listener<TriggerBase.Instance> listener) {
             listeners.remove(listener);
         }
 
@@ -192,10 +192,10 @@ public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance> {
          *
          * @param player the player
          */
-        public void trigger(ServerPlayerEntity player) {
-            ArrayList<ICriterionTrigger.Listener<TriggerBase.Instance>> list = null;
+        public void trigger(ServerPlayer player) {
+            ArrayList<CriterionTrigger.Listener<TriggerBase.Instance>> list = null;
 
-            for (ICriterionTrigger.Listener<TriggerBase.Instance> listener : listeners) {
+            for (CriterionTrigger.Listener<TriggerBase.Instance> listener : listeners) {
                 if (listener.getTriggerInstance().test()) {
                     if (list == null) {
                         list = Lists.newArrayList();
@@ -205,7 +205,7 @@ public class TriggerBase implements ICriterionTrigger<TriggerBase.Instance> {
             }
 
             if (list != null) {
-                for (ICriterionTrigger.Listener<TriggerBase.Instance> listener1 : list) {
+                for (CriterionTrigger.Listener<TriggerBase.Instance> listener1 : list) {
                     listener1.run(playerAdvancements);
                 }
             }

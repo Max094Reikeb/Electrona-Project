@@ -1,15 +1,16 @@
 package net.reikeb.electrona.enchantments;
 
-import net.minecraft.enchantment.*;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 import net.reikeb.electrona.init.ItemInit;
 
 public class Thundering extends Enchantment {
 
-    public Thundering(EquipmentSlotType... slots) {
-        super(Enchantment.Rarity.RARE, EnchantmentType.WEAPON, slots);
+    public Thundering(EquipmentSlot... slots) {
+        super(Enchantment.Rarity.RARE, EnchantmentCategory.WEAPON, slots);
     }
 
     @Override

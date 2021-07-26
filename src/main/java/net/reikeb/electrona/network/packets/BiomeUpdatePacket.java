@@ -1,14 +1,14 @@
 package net.reikeb.electrona.network.packets;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import net.reikeb.electrona.init.BiomeInit;
 import net.reikeb.electrona.utils.ElectronaUtils;
@@ -27,11 +27,11 @@ public class BiomeUpdatePacket {
         this.radius = radius;
     }
 
-    public static BiomeUpdatePacket decode(PacketBuffer buf) {
+    public static BiomeUpdatePacket decode(FriendlyByteBuf buf) {
         return new BiomeUpdatePacket(buf.readBlockPos(), buf.readResourceLocation(), buf.readInt());
     }
 
-    public void encode(PacketBuffer buf) {
+    public void encode(FriendlyByteBuf buf) {
         buf.writeBlockPos(pos);
         buf.writeResourceLocation(biome);
         buf.writeInt(radius);
@@ -56,11 +56,11 @@ public class BiomeUpdatePacket {
 
         @Override
         public Object call() throws Exception {
-            ClientWorld world = Minecraft.getInstance().level;
+            ClientLevel world = Minecraft.getInstance().level;
             if (world == null) return null;
             int onepointfiveradius = (radius / 2) * 3;
             int onepointfiveradiussqrd = onepointfiveradius * onepointfiveradius;
-            BlockPos.Mutable newPos = new BlockPos.Mutable().set(pos.getX(), pos.getY(), pos.getZ());
+            BlockPos.MutableBlockPos newPos = new BlockPos.MutableBlockPos().set(pos.getX(), pos.getY(), pos.getZ());
             for (int X = -onepointfiveradius; X <= onepointfiveradius; X++) {
                 int xx = pos.getX() + X;
                 int XX = X * X;

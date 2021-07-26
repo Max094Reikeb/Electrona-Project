@@ -1,11 +1,12 @@
 package net.reikeb.electrona.network.packets;
 
-import net.minecraft.advancements.*;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -14,16 +15,16 @@ public class SkyHighPacket {
     public SkyHighPacket() {
     }
 
-    public static SkyHighPacket decode(PacketBuffer buf) {
+    public static SkyHighPacket decode(FriendlyByteBuf buf) {
         return new SkyHighPacket();
     }
 
-    public void encode(PacketBuffer buf) {
+    public void encode(FriendlyByteBuf buf) {
     }
 
     public void whenThisPacketIsReceived(Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> {
-            ServerPlayerEntity entity = context.get().getSender();
+            ServerPlayer entity = context.get().getSender();
             if (entity == null) return;
             Advancement advancement = entity.server.getAdvancements().getAdvancement(new ResourceLocation("electrona:sky_high"));
             if (advancement == null) System.out.println("Advancement SkyHigh! seems to be null");

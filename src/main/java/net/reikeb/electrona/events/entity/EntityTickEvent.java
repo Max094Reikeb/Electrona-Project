@@ -1,20 +1,17 @@
 package net.reikeb.electrona.events.entity;
 
-import net.minecraft.advancements.*;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.init.PotionEffectInit;
 import net.reikeb.electrona.misc.vm.RadioactivityFunction;
-
-import java.util.Collection;
 
 @Mod.EventBusSubscriber(modid = Electrona.MODID)
 public class EntityTickEvent {
@@ -34,14 +31,14 @@ public class EntityTickEvent {
                     entity.getPersistentData().putInt("nextRad", radio);
                 }
                 // Leader advancement
-                if (entity instanceof ServerPlayerEntity && RadioactivityFunction.isEntityWearingLeadArmor(entity)) {
-                    Advancement advancement = ((ServerPlayerEntity) entity).server.getAdvancements().getAdvancement(new ResourceLocation("electrona:leader"));
+                if (entity instanceof ServerPlayer && RadioactivityFunction.isEntityWearingLeadArmor(entity)) {
+                    Advancement advancement = ((ServerPlayer) entity).server.getAdvancements().getAdvancement(new ResourceLocation("electrona:leader"));
                     if (advancement == null) System.out.println("Advancement Leader! seems to be null");
                     if (advancement == null) return;
-                    AdvancementProgress advancementProgress = ((ServerPlayerEntity) entity).getAdvancements().getOrStartProgress(advancement);
+                    AdvancementProgress advancementProgress = ((ServerPlayer) entity).getAdvancements().getOrStartProgress(advancement);
                     if (!advancementProgress.isDone()) {
                         for (String criteria : advancementProgress.getRemainingCriteria()) {
-                            ((ServerPlayerEntity) entity).getAdvancements().award(advancement, criteria);
+                            ((ServerPlayer) entity).getAdvancements().award(advancement, criteria);
                         }
                     }
                 }

@@ -1,10 +1,12 @@
 package net.reikeb.electrona.world.gen.objects;
 
-import com.google.gson.*;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
-import net.minecraft.client.audio.Sound;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.resources.sounds.Sound;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 import net.reikeb.electrona.Electrona;
 
@@ -34,7 +36,7 @@ public class SoundBuilder {
     }
 
     public SoundBuilder volume(float volume) {
-        this.volume = MathHelper.clamp(volume, 0, 1);
+        this.volume = Mth.clamp(volume, 0, 1);
         this.nonDefault = true;
 
         return this;

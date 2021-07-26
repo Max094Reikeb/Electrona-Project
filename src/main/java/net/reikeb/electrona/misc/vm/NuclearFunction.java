@@ -1,21 +1,26 @@
 package net.reikeb.electrona.misc.vm;
 
-import net.minecraft.advancements.*;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.*;
-import net.minecraft.world.*;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.AABB;
 
-import net.reikeb.electrona.init.*;
+import net.reikeb.electrona.init.BlockInit;
+import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.tileentities.TileNuclearGeneratorController;
 import net.reikeb.electrona.world.Gamerules;
 import net.reikeb.electrona.world.NuclearExplosion;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class NuclearFunction {
@@ -31,7 +36,7 @@ public class NuclearFunction {
      * @param temperature     The temperature of the Nuclear Generator
      * @param waterLevel      The water level of the tank inside the Cooler
      */
-    public static void nuclearGeneration(TileNuclearGeneratorController tileEntity, TileEntity tileCooler, ItemStack slotCooler, ItemStack slotGenerator, double electronicPower, int temperature, int waterLevel) {
+    public static void nuclearGeneration(TileNuclearGeneratorController tileEntity, BlockEntity tileCooler, ItemStack slotCooler, ItemStack slotGenerator, double electronicPower, int temperature, int waterLevel) {
         if ((slotCooler.getItem() == ItemInit.URANIUM_BAR.get())
                 || (slotCooler.getItem() == ItemInit.URANIUM_DUAL_BAR.get())
                 || (slotCooler.getItem() == ItemInit.URANIUM_QUAD_BAR.get())) {
@@ -102,7 +107,7 @@ public class NuclearFunction {
                 }
                 if ((waterLevel < 800) && (temperature >= 2800)) {
                     if (tileEntity.getLevel() == null) return;
-                    World world = tileEntity.getLevel();
+                    Level world = tileEntity.getLevel();
                     BlockPos pos = tileEntity.getBlockPos();
                     world.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
                     world.setBlock(tileCooler.getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
@@ -135,13 +140,13 @@ public class NuclearFunction {
      * @param world World of the player(s)
      * @param pos   Position of the Singularity
      */
-    public static void advancementInevitableFunction(World world, BlockPos pos) {
+    public static void advancementInevitableFunction(Level world, BlockPos pos) {
         double x = pos.getX();
         double y = pos.getY();
         double z = pos.getZ();
         {
             List<Entity> _entfound = world.getEntitiesOfClass(Entity.class,
-                    new AxisAlignedBB(x - 5, y - 5, z - 5,
+                    new AABB(x - 5, y - 5, z - 5,
                             x + 5, y + 5, z + 5), null)
                     .stream().sorted(new Object() {
                         Comparator<Entity> compareDistOf(double _x, double _y, double _z) {
@@ -149,14 +154,14 @@ public class NuclearFunction {
                         }
                     }.compareDistOf(x, y, z)).collect(Collectors.toList());
             for (Entity entityiterator : _entfound) {
-                if (entityiterator instanceof ServerPlayerEntity) {
-                    Advancement advancement = ((ServerPlayerEntity) entityiterator).server.getAdvancements().getAdvancement(new ResourceLocation("electrona:i_am_inevitable"));
+                if (entityiterator instanceof ServerPlayer) {
+                    Advancement advancement = ((ServerPlayer) entityiterator).server.getAdvancements().getAdvancement(new ResourceLocation("electrona:i_am_inevitable"));
                     if (advancement == null) System.out.println("Advancement I Am... Inevitable! seems to be null");
                     if (advancement == null) return;
-                    AdvancementProgress advancementProgress = ((ServerPlayerEntity) entityiterator).getAdvancements().getOrStartProgress(advancement);
+                    AdvancementProgress advancementProgress = ((ServerPlayer) entityiterator).getAdvancements().getOrStartProgress(advancement);
                     if (!advancementProgress.isDone()) {
                         for (String criteria : advancementProgress.getRemainingCriteria()) {
-                            ((ServerPlayerEntity) entityiterator).getAdvancements().award(advancement, criteria);
+                            ((ServerPlayer) entityiterator).getAdvancements().award(advancement, criteria);
                         }
                     }
                 }

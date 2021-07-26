@@ -1,19 +1,25 @@
 package net.reikeb.electrona.blocks;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.*;
-import net.minecraft.loot.LootContext;
-import net.minecraft.state.*;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.*;
-import net.minecraft.util.text.*;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.minecraftforge.api.distmarker.*;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 
 import net.reikeb.electrona.misc.vm.CustomShapes;
@@ -21,11 +27,12 @@ import net.reikeb.electrona.tileentities.TileWaterTurbine;
 import net.reikeb.electrona.utils.ElectronaUtils;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
-public class WaterTurbine extends AbstractWaterLoggableBlock {
+public class WaterTurbine extends AbstractWaterLoggableBlock implements EntityBlock {
 
-    public static final DirectionProperty FACING = HorizontalBlock.FACING;
+    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public WaterTurbine() {
         super(Properties.of(Material.METAL)
@@ -41,10 +48,10 @@ public class WaterTurbine extends AbstractWaterLoggableBlock {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
+    public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, world, list, flag);
-        list.add(new TranslationTextComponent("block.electrona.water_turbine.desc1"));
-        list.add(new TranslationTextComponent("block.electrona.water_turbine.desc2"));
+        list.add(new TranslatableComponent("block.electrona.water_turbine.desc1"));
+        list.add(new TranslatableComponent("block.electrona.water_turbine.desc2"));
     }
 
     VoxelShape shape = CustomShapes.WaterTurbine;
@@ -53,7 +60,7 @@ public class WaterTurbine extends AbstractWaterLoggableBlock {
     VoxelShape eastShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.WEST, shape);
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         Direction facing = state.getValue(FACING);
         if (facing == Direction.NORTH) {
             return northShape;
@@ -66,7 +73,7 @@ public class WaterTurbine extends AbstractWaterLoggableBlock {
     }
 
     @Override
-    public void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    public void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, WATERLOGGED);
     }
 
@@ -79,16 +86,11 @@ public class WaterTurbine extends AbstractWaterLoggableBlock {
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState replaceState = context.getLevel().getBlockState(context.getClickedPos());
         return this.defaultBlockState()
                 .setValue(FACING, context.getHorizontalDirection().getOpposite())
                 .setValue(WATERLOGGED, replaceState.getBlock() == Blocks.WATER);
-    }
-
-    @Override
-    public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-        return true;
     }
 
     @Override
@@ -99,14 +101,9 @@ public class WaterTurbine extends AbstractWaterLoggableBlock {
         return Collections.singletonList(new ItemStack(this, 1));
     }
 
-    @Override
-    public boolean hasTileEntity(BlockState state) {
-        return true;
-    }
-
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new TileWaterTurbine();
     }
 }

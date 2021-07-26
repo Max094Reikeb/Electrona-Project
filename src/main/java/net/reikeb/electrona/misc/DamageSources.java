@@ -1,6 +1,6 @@
 package net.reikeb.electrona.misc;
 
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 
 public class DamageSources {
 

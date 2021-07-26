@@ -1,48 +1,56 @@
 package net.reikeb.electrona.setup.client.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.model.*;
-import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.tileentity.*;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.util.math.vector.*;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.tileentities.TileGravitor;
 
-public class TileGravitorRenderer extends TileEntityRenderer<TileGravitor> {
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
+import net.minecraft.client.Camera;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.resources.model.Material;
 
-    public static final RenderMaterial SHELL_TEXTURE = new RenderMaterial(AtlasTexture.LOCATION_BLOCKS, new ResourceLocation(Electrona.MODID, "entity/gravitor/base"));
-    public static final RenderMaterial ACTIVE_SHELL_TEXTURE = new RenderMaterial(AtlasTexture.LOCATION_BLOCKS, new ResourceLocation(Electrona.MODID, "entity/gravitor/cage"));
-    public static final RenderMaterial WIND_TEXTURE = new RenderMaterial(AtlasTexture.LOCATION_BLOCKS, new ResourceLocation(Electrona.MODID, "entity/gravitor/wind"));
-    public static final RenderMaterial VERTICAL_WIND_TEXTURE = new RenderMaterial(AtlasTexture.LOCATION_BLOCKS, new ResourceLocation(Electrona.MODID, "entity/gravitor/wind_vertical"));
-    public static final RenderMaterial OPEN_EYE_TEXTURE = new RenderMaterial(AtlasTexture.LOCATION_BLOCKS, new ResourceLocation(Electrona.MODID, "entity/gravitor/open_eye"));
-    public static final RenderMaterial CLOSED_EYE_TEXTURE = new RenderMaterial(AtlasTexture.LOCATION_BLOCKS, new ResourceLocation(Electrona.MODID, "entity/gravitor/closed_eye"));
-    private final ModelRenderer eye = new ModelRenderer(16, 16, 0, 0);
-    private final ModelRenderer wind;
-    private final ModelRenderer shell;
-    private final ModelRenderer cage;
+public class TileGravitorRenderer extends BlockEntityRenderer<TileGravitor> {
 
-    public TileGravitorRenderer(TileEntityRendererDispatcher tileEntityRendererDispatcher) {
+    public static final Material SHELL_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, new ResourceLocation(Electrona.MODID, "entity/gravitor/base"));
+    public static final Material ACTIVE_SHELL_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, new ResourceLocation(Electrona.MODID, "entity/gravitor/cage"));
+    public static final Material WIND_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, new ResourceLocation(Electrona.MODID, "entity/gravitor/wind"));
+    public static final Material VERTICAL_WIND_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, new ResourceLocation(Electrona.MODID, "entity/gravitor/wind_vertical"));
+    public static final Material OPEN_EYE_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, new ResourceLocation(Electrona.MODID, "entity/gravitor/open_eye"));
+    public static final Material CLOSED_EYE_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, new ResourceLocation(Electrona.MODID, "entity/gravitor/closed_eye"));
+    private final ModelPart eye = new ModelPart(16, 16, 0, 0);
+    private final ModelPart wind;
+    private final ModelPart shell;
+    private final ModelPart cage;
+
+    public TileGravitorRenderer(BlockEntityRenderDispatcher tileEntityRendererDispatcher) {
         super(tileEntityRendererDispatcher);
         this.eye.addBox(-4.0F, -4.0F, 0.0F, 8.0F, 8.0F, 0.0F, 0.01F);
-        this.wind = new ModelRenderer(64, 32, 0, 0);
+        this.wind = new ModelPart(64, 32, 0, 0);
         this.wind.addBox(-8.0F, -8.0F, -8.0F, 16.0F, 16.0F, 16.0F);
-        this.shell = new ModelRenderer(32, 16, 0, 0);
+        this.shell = new ModelPart(32, 16, 0, 0);
         this.shell.addBox(-3.0F, -3.0F, -3.0F, 6.0F, 6.0F, 6.0F);
-        this.cage = new ModelRenderer(32, 16, 0, 0);
+        this.cage = new ModelPart(32, 16, 0, 0);
         this.cage.addBox(-4.0F, -4.0F, -4.0F, 8.0F, 8.0F, 8.0F);
     }
 
-    public void render(TileGravitor tileGravitor, float n, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int x, int y) {
+    public void render(TileGravitor tileGravitor, float n, PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int x, int y) {
         float f = (float) tileGravitor.tickCount + n;
         if (!tileGravitor.isActive()) {
             float f5 = tileGravitor.getActiveRotation(0.0F);
-            IVertexBuilder ivertexbuilder1 = SHELL_TEXTURE.buffer(renderTypeBuffer, RenderType::entitySolid);
+            VertexConsumer ivertexbuilder1 = SHELL_TEXTURE.buffer(renderTypeBuffer, RenderType::entitySolid);
             matrixStack.pushPose();
             matrixStack.translate(0.5D, 0.5D, 0.5D);
             matrixStack.mulPose(Vector3f.YP.rotationDegrees(f5));
@@ -50,7 +58,7 @@ public class TileGravitorRenderer extends TileEntityRenderer<TileGravitor> {
             matrixStack.popPose();
         } else {
             float f1 = tileGravitor.getActiveRotation(n) * (180F / (float) Math.PI);
-            float f2 = MathHelper.sin(f * 0.1F) / 2.0F + 0.5F;
+            float f2 = Mth.sin(f * 0.1F) / 2.0F + 0.5F;
             f2 = f2 * f2 + f2;
             matrixStack.pushPose();
             matrixStack.translate(0.5D, 0.3F + f2 * 0.2F, 0.5D);
@@ -68,7 +76,7 @@ public class TileGravitorRenderer extends TileEntityRenderer<TileGravitor> {
                 matrixStack.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
             }
 
-            IVertexBuilder ivertexbuilder = (i == 1 ? VERTICAL_WIND_TEXTURE : WIND_TEXTURE).buffer(renderTypeBuffer, RenderType::entityCutoutNoCull);
+            VertexConsumer ivertexbuilder = (i == 1 ? VERTICAL_WIND_TEXTURE : WIND_TEXTURE).buffer(renderTypeBuffer, RenderType::entityCutoutNoCull);
             this.wind.render(matrixStack, ivertexbuilder, x, y);
             matrixStack.popPose();
             matrixStack.pushPose();
@@ -78,7 +86,7 @@ public class TileGravitorRenderer extends TileEntityRenderer<TileGravitor> {
             matrixStack.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
             this.wind.render(matrixStack, ivertexbuilder, x, y);
             matrixStack.popPose();
-            ActiveRenderInfo activerenderinfo = this.renderer.camera;
+            Camera activerenderinfo = this.renderer.camera;
             matrixStack.pushPose();
             matrixStack.translate(0.5D, 0.3F + f2 * 0.2F, 0.5D);
             matrixStack.scale(0.5F, 0.5F, 0.5F);

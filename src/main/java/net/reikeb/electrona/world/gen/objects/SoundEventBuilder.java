@@ -1,17 +1,22 @@
 package net.reikeb.electrona.world.gen.objects;
 
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
-import net.minecraft.util.*;
+import net.minecraft.Util;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by 50ap5ud5 29 March 2021
  * <br> A builder function that allows you to serialise a SoundEvent to json
  */
 public class SoundEventBuilder {
-    private SoundCategory category = SoundCategory.BLOCKS;
+    private SoundSource category = SoundSource.BLOCKS;
     private String subtitleTranslationKey = "";
     private final List<SoundBuilder> sounds = new ArrayList<>();
     private final SoundEvent event;
@@ -20,7 +25,7 @@ public class SoundEventBuilder {
         this.event = event;
     }
 
-    public SoundEventBuilder withCategory(SoundCategory category) {
+    public SoundEventBuilder withCategory(SoundSource category) {
         this.category = category;
         return this;
     }

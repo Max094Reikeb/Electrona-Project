@@ -2,15 +2,15 @@ package net.reikeb.electrona.tileentities;
 
 import net.minecraft.block.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.container.Container;
+import net.minecraft.world.Containers;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.text.*;
 import net.minecraft.world.*;
 
@@ -29,7 +29,24 @@ import static net.reikeb.electrona.init.TileEntityInit.*;
 
 import java.util.concurrent.atomic.*;
 
-public class TileNuclearGeneratorController extends LockableLootTileEntity implements ITickableTileEntity {
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+
+public class TileNuclearGeneratorController extends RandomizableContainerBlockEntity implements TickableBlockEntity {
 
     private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(2, ItemStack.EMPTY);
     private final ItemHandler inventory;
@@ -49,13 +66,13 @@ public class TileNuclearGeneratorController extends LockableLootTileEntity imple
     }
 
     @Override
-    public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("gui.electrona.nuclear_generator_controller.name");
+    public Component getDisplayName() {
+        return new TranslatableComponent("gui.electrona.nuclear_generator_controller.name");
     }
 
     @Override
-    protected ITextComponent getDefaultName() {
-        return new StringTextComponent("nuclear_generator_controller");
+    protected Component getDefaultName() {
+        return new TextComponent("nuclear_generator_controller");
     }
 
     @Override
@@ -69,12 +86,12 @@ public class TileNuclearGeneratorController extends LockableLootTileEntity imple
     }
 
     @Override
-    public Container createMenu(final int windowID, final PlayerInventory playerInv, final PlayerEntity playerIn) {
+    public AbstractContainerMenu createMenu(final int windowID, final Inventory playerInv, final Player playerIn) {
         return new NuclearGeneratorControllerContainer(windowID, playerInv, this);
     }
 
     @Override
-    public Container createMenu(int id, PlayerInventory player) {
+    public AbstractContainerMenu createMenu(int id, Inventory player) {
         return new NuclearGeneratorControllerContainer(ContainerInit.NUCLEAR_GENERATOR_CONTAINER.get(), id);
     }
 
@@ -85,13 +102,13 @@ public class TileNuclearGeneratorController extends LockableLootTileEntity imple
 
     @Override
     public void tick() {
-        World world = this.level;
+        Level world = this.level;
         if (world == null) return;
         BlockPos blockPos = this.getBlockPos();
         ItemStack stackInSlot0 = this.inventory.getStackInSlot(0);
 
         BlockPos posUnder = new BlockPos(blockPos.getX(), (blockPos.getY() - 1), blockPos.getZ());
-        TileEntity tileUnder = world.getBlockEntity(posUnder);
+        BlockEntity tileUnder = world.getBlockEntity(posUnder);
         Block blockUnder = world.getBlockState(posUnder).getBlock();
 
         double electronicPower = this.getTileData().getDouble("ElectronicPower");
@@ -142,7 +159,7 @@ public class TileNuclearGeneratorController extends LockableLootTileEntity imple
 
         if ((this.getTileData().getBoolean("alert")) && (this.level.getGameTime() % 20 == 0)) {
             world.playSound(null, blockPos, SoundsInit.NUCLEAR_GENERATOR_CONTROLLER_ALERT.get(),
-                    SoundCategory.BLOCKS, 0.6F, 1.0F);
+                    SoundSource.BLOCKS, 0.6F, 1.0F);
         }
 
         // Transfer energy
@@ -158,7 +175,7 @@ public class TileNuclearGeneratorController extends LockableLootTileEntity imple
     }
 
     @Override
-    public void load(BlockState blockState, CompoundNBT compound) {
+    public void load(BlockState blockState, CompoundTag compound) {
         super.load(blockState, compound);
         this.electronicPower = compound.getDouble("ElectronicPower");
         this.maxStorage = compound.getInt("MaxStorage");
@@ -167,12 +184,12 @@ public class TileNuclearGeneratorController extends LockableLootTileEntity imple
         this.ubIn = compound.getBoolean("UBIn");
         this.alert = compound.getBoolean("alert");
         if (compound.contains("Inventory")) {
-            inventory.deserializeNBT((CompoundNBT) compound.get("Inventory"));
+            inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
         }
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
         super.save(compound);
         compound.putDouble("ElectronicPower", this.electronicPower);
         compound.putInt("MaxStorage", this.maxStorage);
@@ -189,28 +206,28 @@ public class TileNuclearGeneratorController extends LockableLootTileEntity imple
         return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(cap, LazyOptional.of(() -> this.inventory));
     }
 
-    public void dropItems(World world, BlockPos pos) {
+    public void dropItems(Level world, BlockPos pos) {
         for (int i = 0; i < 2; i++) {
             if (!inventory.getStackInSlot(i).isEmpty()) {
                 if (!(this.getTileData().getBoolean("UBIn") && (i == 1))) {
-                    InventoryHelper.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(i));
+                    Containers.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(i));
                 }
             }
         }
     }
 
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.worldPosition, 0, this.getUpdateTag());
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return new ClientboundBlockEntityDataPacket(this.worldPosition, 0, this.getUpdateTag());
     }
 
     @Override
-    public CompoundNBT getUpdateTag() {
-        return this.save(new CompoundNBT());
+    public CompoundTag getUpdateTag() {
+        return this.save(new CompoundTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         this.load(this.getBlockState(), pkt.getTag());
     }
 

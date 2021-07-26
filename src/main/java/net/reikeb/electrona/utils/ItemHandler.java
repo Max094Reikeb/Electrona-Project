@@ -1,7 +1,8 @@
 package net.reikeb.electrona.utils;
 
-import net.minecraft.item.*;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 import net.minecraftforge.items.ItemStackHandler;
 

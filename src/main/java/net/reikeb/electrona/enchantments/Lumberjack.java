@@ -1,15 +1,18 @@
 package net.reikeb.electrona.enchantments;
 
-import net.minecraft.enchantment.*;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.item.enchantment.Enchantments;
 
-import net.reikeb.electrona.init.*;
+import net.reikeb.electrona.init.EnchantmentInit;
+import net.reikeb.electrona.init.ItemInit;
 
 public class Lumberjack extends Enchantment {
 
-    public Lumberjack(EquipmentSlotType... slots) {
-        super(Enchantment.Rarity.UNCOMMON, EnchantmentType.DIGGER, slots);
+    public Lumberjack(EquipmentSlot... slots) {
+        super(Enchantment.Rarity.UNCOMMON, EnchantmentCategory.DIGGER, slots);
     }
 
     @Override

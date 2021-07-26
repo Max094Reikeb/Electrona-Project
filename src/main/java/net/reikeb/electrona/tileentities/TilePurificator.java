@@ -1,20 +1,20 @@
 package net.reikeb.electrona.tileentities;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.entity.player.*;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.container.Container;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.Containers;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.text.*;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -40,7 +40,23 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-public class TilePurificator extends LockableLootTileEntity implements ITickableTileEntity {
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+
+public class TilePurificator extends RandomizableContainerBlockEntity implements TickableBlockEntity {
 
     private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(3, ItemStack.EMPTY);
     private final ItemHandler inventory;
@@ -58,13 +74,13 @@ public class TilePurificator extends LockableLootTileEntity implements ITickable
     }
 
     @Override
-    public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("gui.electrona.purificator.name");
+    public Component getDisplayName() {
+        return new TranslatableComponent("gui.electrona.purificator.name");
     }
 
     @Override
-    protected ITextComponent getDefaultName() {
-        return new StringTextComponent("purificator");
+    protected Component getDefaultName() {
+        return new TextComponent("purificator");
     }
 
     @Override
@@ -78,12 +94,12 @@ public class TilePurificator extends LockableLootTileEntity implements ITickable
     }
 
     @Override
-    public Container createMenu(final int windowID, final PlayerInventory playerInv, final PlayerEntity playerIn) {
+    public AbstractContainerMenu createMenu(final int windowID, final Inventory playerInv, final Player playerIn) {
         return new PurificatorContainer(windowID, playerInv, this);
     }
 
     @Override
-    public Container createMenu(int id, PlayerInventory player) {
+    public AbstractContainerMenu createMenu(int id, Inventory player) {
         return new PurificatorContainer(ContainerInit.COMPRESSOR_CONTAINER.get(), id);
     }
 
@@ -94,7 +110,7 @@ public class TilePurificator extends LockableLootTileEntity implements ITickable
 
     @Override
     public void tick() {
-        World world = this.level;
+        Level world = this.level;
         BlockPos blockPos = this.getBlockPos();
         ItemStack stackInSlot1 = this.inventory.getStackInSlot(1);
 
@@ -123,7 +139,7 @@ public class TilePurificator extends LockableLootTileEntity implements ITickable
                         this.currentPurifyingTime += 1;
                         FluidFunction.drainWater(this, (int) (waterPerSecond * 0.05));
                         world.playSound(null, blockPos, SoundsInit.PURIFICATOR_PURIFICATION.get(),
-                                SoundCategory.BLOCKS, 0.6F, 1.0F);
+                                SoundSource.BLOCKS, 0.6F, 1.0F);
 
                     } else {
                         if (!MinecraftForge.EVENT_BUS.post(new PurificationEvent(world, blockPos, stackInSlot1, new ItemStack(output.copy().getItem(), this.getRecipe(stackInSlot1).getCountOutput()), this.purifyingTime, this.waterRequired))) {
@@ -132,7 +148,7 @@ public class TilePurificator extends LockableLootTileEntity implements ITickable
                             this.inventory.decrStackSize(1, this.getRecipe(stackInSlot1).getCountInput());
                             world.playSound(null, blockPos, ForgeRegistries.SOUND_EVENTS
                                             .getValue(new ResourceLocation("block.brewing_stand.brew")),
-                                    SoundCategory.BLOCKS, 0.6F, 1.0F);
+                                    SoundSource.BLOCKS, 0.6F, 1.0F);
                         }
                     }
                 } else {
@@ -152,7 +168,7 @@ public class TilePurificator extends LockableLootTileEntity implements ITickable
         }
     }
 
-    protected void canPurify(@Nullable IRecipe<?> recipe) {
+    protected void canPurify(@Nullable Recipe<?> recipe) {
         if (!this.inventory.getStackInSlot(1).isEmpty() && recipe != null) {
             ItemStack resultItem = recipe.getResultItem();
             if (resultItem.isEmpty()) {
@@ -192,8 +208,8 @@ public class TilePurificator extends LockableLootTileEntity implements ITickable
     private PurificatorRecipe getRecipe(ItemStack stack) {
         if (stack == null) return null;
 
-        Set<IRecipe<?>> recipes = findRecipesByType(Electrona.PURIFYING, this.level);
-        for (IRecipe<?> iRecipe : recipes) {
+        Set<Recipe<?>> recipes = findRecipesByType(Electrona.PURIFYING, this.level);
+        for (Recipe<?> iRecipe : recipes) {
             PurificatorRecipe recipe = (PurificatorRecipe) iRecipe;
             if (recipe.matches(new RecipeWrapper(this.inventory), this.level)) {
                 canPurify(recipe);
@@ -203,26 +219,26 @@ public class TilePurificator extends LockableLootTileEntity implements ITickable
         return null;
     }
 
-    public static Set<IRecipe<?>> findRecipesByType(IRecipeType<?> typeIn, World world) {
+    public static Set<Recipe<?>> findRecipesByType(RecipeType<?> typeIn, Level world) {
         return world != null ? world.getRecipeManager().getRecipes().stream()
                 .filter(recipe -> recipe.getType() == typeIn).collect(Collectors.toSet()) : Collections.emptySet();
     }
 
     @Override
-    public void load(BlockState blockState, CompoundNBT compound) {
+    public void load(BlockState blockState, CompoundTag compound) {
         super.load(blockState, compound);
         this.purifyingTime = compound.getInt("PurifyingTime");
         this.currentPurifyingTime = compound.getInt("CurrentPurifyingTime");
         this.waterRequired = compound.getInt("WaterRequired");
         if (compound.contains("Inventory")) {
-            inventory.deserializeNBT((CompoundNBT) compound.get("Inventory"));
+            inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
         }
         if (compound.get("fluidTank") != null)
             CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.readNBT(fluidTank, null, compound.get("fluidTank"));
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
         super.save(compound);
         compound.putInt("PurifyingTime", this.purifyingTime);
         compound.putInt("CurrentPurifyingTime", this.currentPurifyingTime);
@@ -250,25 +266,25 @@ public class TilePurificator extends LockableLootTileEntity implements ITickable
         return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(cap, LazyOptional.of(() -> this.inventory));
     }
 
-    public void dropItems(World world, BlockPos pos) {
+    public void dropItems(Level world, BlockPos pos) {
         for (int i = 0; i < 3; i++)
             if (!inventory.getStackInSlot(i).isEmpty()) {
-                InventoryHelper.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(i));
+                Containers.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(i));
             }
     }
 
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.worldPosition, 0, this.getUpdateTag());
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return new ClientboundBlockEntityDataPacket(this.worldPosition, 0, this.getUpdateTag());
     }
 
     @Override
-    public CompoundNBT getUpdateTag() {
-        return this.save(new CompoundNBT());
+    public CompoundTag getUpdateTag() {
+        return this.save(new CompoundTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         this.load(this.getBlockState(), pkt.getTag());
     }
 
