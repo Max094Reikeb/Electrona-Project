@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[36,)"
+loaderVersion="[37,)"
 license="All rights reserved"
 
 [[mods]]
@@ -18,13 +18,13 @@ It was originally made on MCreator, but then, the r2.0 version ported it off.
 [[dependencies.electrona]] #optional
     modId="forge"
     mandatory=true
-    versionRange="[36,)"
+    versionRange="[37.0.15,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.electrona]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.5,1.17)"
+    versionRange="[1.17.1,1.18)"
     ordering="NONE"
     side="BOTH"
