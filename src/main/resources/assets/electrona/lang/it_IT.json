@@ -10,7 +10,6 @@
   "advancements.i_am_inevitable.descr": "Evoca una singolarità.",
   "advancements.i_am_inevitable.title": "Io Sono.... Ineluttabile!",
   "advancements.leader.descr": "Proteggi gli altri dalle radiazioni.",
-  "advancements.leader.title": "Leader!",
   "advancements.machinator.descr": "Fabbrica il tuo primo Macchinario.",
   "advancements.machinator.title": "Maceratore!",
   "advancements.master_engineer.descr": "Migliora il tuo Ingegnere al livello Maestro.",
@@ -97,6 +96,5 @@
   "gui.electrona.purificator.name": "Purificatore",
   "gui.electrona.sprayer.name": "Irroratore",
   "gui.electrona.steel_crate.name": "Scatola d'Acciaio",
-  "gui.electrona.teleporter.auto_button": "Auto",
   "gui.electrona.teleporter.auto_deletion": "Auto-Eliminazione"
 }
