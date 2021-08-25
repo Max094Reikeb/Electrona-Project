@@ -118,7 +118,7 @@
   "entity.electrona.energetic_lightning_bolt": "高能闪电",
   "entity.electrona.radioactive_zombie": "辐射僵尸",
   "entity.minecraft.villager.electrona.engineer": "工程师",
-  "gamerule.doBlackholesExist": "黑洞存在",
+  "gamerule.doBlackholesExist": "是否存在黑洞",
   "gamerule.doBlackholesExist.description": "定义是否在核能发电机控制器爆炸后生成黑洞",
   "gamerule.doNuclearBombsExplode": "核弹爆炸",
   "gamerule.doNuclearBombsExplode.description": "定义核弹是否能爆炸。",
