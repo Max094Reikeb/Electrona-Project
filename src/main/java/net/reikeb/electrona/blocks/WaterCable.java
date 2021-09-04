@@ -78,6 +78,6 @@ public class WaterCable extends AbstractCable implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileWaterCable();
+        return new TileWaterCable(pos, state);
     }
 }

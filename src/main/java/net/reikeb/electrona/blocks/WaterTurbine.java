@@ -101,6 +101,6 @@ public class WaterTurbine extends AbstractWaterLoggableBlock implements EntityBl
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileWaterTurbine();
+        return new TileWaterTurbine(pos, state);
     }
 }

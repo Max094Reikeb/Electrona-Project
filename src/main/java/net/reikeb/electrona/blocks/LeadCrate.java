@@ -99,7 +99,7 @@ public class LeadCrate extends Block implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileLeadCrate();
+        return new TileLeadCrate(pos, state);
     }
 
     @Override

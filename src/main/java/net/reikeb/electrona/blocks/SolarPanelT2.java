@@ -74,6 +74,6 @@ public class SolarPanelT2 extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileSolarPanelT2();
+        return new TileSolarPanelT2(pos, state);
     }
 }

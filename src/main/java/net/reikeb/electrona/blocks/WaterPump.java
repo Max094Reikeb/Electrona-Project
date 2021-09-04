@@ -99,7 +99,7 @@ public class WaterPump extends Block implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileWaterPump();
+        return new TileWaterPump(pos, state);
     }
 
     @Override

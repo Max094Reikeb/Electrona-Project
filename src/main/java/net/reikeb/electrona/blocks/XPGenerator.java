@@ -115,7 +115,7 @@ public class XPGenerator extends Block implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileXPGenerator();
+        return new TileXPGenerator(pos, state);
     }
 
     @Override

@@ -114,7 +114,7 @@ public class Compressor extends Block implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileCompressor();
+        return new TileCompressor(pos, state);
     }
 
     @Override

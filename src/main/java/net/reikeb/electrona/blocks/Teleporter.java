@@ -152,7 +152,7 @@ public class Teleporter extends AbstractWaterLoggableBlock implements EntityBloc
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileTeleporter();
+        return new TileTeleporter(pos, state);
     }
 
     @Override

@@ -94,6 +94,6 @@ public class Cable extends AbstractCable implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileCable();
+        return new TileCable(pos, state);
     }
 }

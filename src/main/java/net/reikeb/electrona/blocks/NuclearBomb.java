@@ -189,7 +189,7 @@ public class NuclearBomb extends FallingBlock implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileNuclearBomb();
+        return new TileNuclearBomb(pos, state);
     }
 
     @Override

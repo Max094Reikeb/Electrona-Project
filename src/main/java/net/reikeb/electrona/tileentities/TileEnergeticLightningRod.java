@@ -1,31 +1,27 @@
 package net.reikeb.electrona.tileentities;
 
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.tileentity.*;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 
-import static net.reikeb.electrona.init.TileEntityInit.*;
+import static net.reikeb.electrona.init.TileEntityInit.TILE_ENERGETIC_LIGHTNING_ROD;
 
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
-
-public class TileEnergeticLightningRod extends BlockEntity implements TickableBlockEntity {
+public class TileEnergeticLightningRod extends BlockEntity {
 
     private double electronicPower;
     private int maxStorage;
 
-    public TileEnergeticLightningRod() {
-        super(TILE_ENERGETIC_LIGHTNING_ROD.get());
+    public TileEnergeticLightningRod(BlockPos pos, BlockState state) {
+        super(TILE_ENERGETIC_LIGHTNING_ROD.get(), pos, state);
     }
 
-    @Override
     public void tick() {
         // We get the variables
         Level world = this.level;
@@ -54,8 +50,8 @@ public class TileEnergeticLightningRod extends BlockEntity implements TickableBl
     }
 
     @Override
-    public void load(BlockState blockState, CompoundTag compound) {
-        super.load(blockState, compound);
+    public void load(CompoundTag compound) {
+        super.load(compound);
         this.electronicPower = compound.getDouble("ElectronicPower");
         this.maxStorage = compound.getInt("MaxStorage");
     }
@@ -80,6 +76,6 @@ public class TileEnergeticLightningRod extends BlockEntity implements TickableBl
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(this.getBlockState(), pkt.getTag());
+        this.load(pkt.getTag());
     }
 }

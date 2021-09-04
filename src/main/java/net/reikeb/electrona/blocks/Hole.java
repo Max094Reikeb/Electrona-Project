@@ -73,6 +73,6 @@ public class Hole extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileHole();
+        return new TileHole(pos, state);
     }
 }

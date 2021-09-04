@@ -110,7 +110,7 @@ public class DimensionLinker extends AbstractWaterLoggableBlock implements Entit
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileDimensionLinker();
+        return new TileDimensionLinker(pos, state);
     }
 
     @Override

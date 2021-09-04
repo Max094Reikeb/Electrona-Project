@@ -2,30 +2,34 @@ package net.reikeb.electrona.misc;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import mezz.jei.api.IModPlugin;
 import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
-import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.helpers.*;
-import mezz.jei.api.IModPlugin;
+import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.registration.*;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
+import mezz.jei.api.registration.IRecipeCategoryRegistration;
+import mezz.jei.api.registration.IRecipeRegistration;
 
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.item.*;
+import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.network.chat.TranslatableComponent;
-
-import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.init.*;
-
-import java.util.*;
-
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
+
+import net.reikeb.electrona.Electrona;
+import net.reikeb.electrona.init.BlockInit;
+import net.reikeb.electrona.init.ItemInit;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @mezz.jei.api.JeiPlugin
 public class JeiPlugin implements IModPlugin {
@@ -242,8 +246,38 @@ public class JeiPlugin implements IModPlugin {
         }
 
         @Override
-        public String getTitle() {
-            return title;
+        public Component getTitle() {
+            return new Component() {
+                @Override
+                public Style getStyle() {
+                    return Style.EMPTY;
+                }
+
+                @Override
+                public String getContents() {
+                    return title;
+                }
+
+                @Override
+                public List<Component> getSiblings() {
+                    return null;
+                }
+
+                @Override
+                public MutableComponent plainCopy() {
+                    return null;
+                }
+
+                @Override
+                public MutableComponent copy() {
+                    return null;
+                }
+
+                @Override
+                public FormattedCharSequence getVisualOrderText() {
+                    return null;
+                }
+            };
         }
 
         @Override
@@ -326,8 +360,38 @@ public class JeiPlugin implements IModPlugin {
         }
 
         @Override
-        public String getTitle() {
-            return title;
+        public Component getTitle() {
+            return new Component() {
+                @Override
+                public Style getStyle() {
+                    return Style.EMPTY;
+                }
+
+                @Override
+                public String getContents() {
+                    return title;
+                }
+
+                @Override
+                public List<Component> getSiblings() {
+                    return null;
+                }
+
+                @Override
+                public MutableComponent plainCopy() {
+                    return null;
+                }
+
+                @Override
+                public MutableComponent copy() {
+                    return null;
+                }
+
+                @Override
+                public FormattedCharSequence getVisualOrderText() {
+                    return null;
+                }
+            };
         }
 
         @Override

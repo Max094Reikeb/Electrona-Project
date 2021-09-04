@@ -1,25 +1,23 @@
 package net.reikeb.electrona.tileentities;
 
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.tileentity.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.misc.vm.BlackHoleFunction;
 
-import static net.reikeb.electrona.init.TileEntityInit.*;
+import static net.reikeb.electrona.init.TileEntityInit.TILE_SINGULARITY;
 
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
-
-public class TileSingularity extends BlockEntity implements TickableBlockEntity {
+public class TileSingularity extends BlockEntity {
 
     private int wait;
     private int delay;
 
-    public TileSingularity() {
-        super(TILE_SINGULARITY.get());
+    public TileSingularity(BlockPos pos, BlockState state) {
+        super(TILE_SINGULARITY.get(), pos, state);
     }
 
     @Override
@@ -27,7 +25,6 @@ public class TileSingularity extends BlockEntity implements TickableBlockEntity 
         super.setRemoved();
     }
 
-    @Override
     public void tick() {
         if (this.level == null) return; // Avoid NullPointerExceptions
         int wait = this.getTileData().getInt("wait");
@@ -47,8 +44,8 @@ public class TileSingularity extends BlockEntity implements TickableBlockEntity 
     }
 
     @Override
-    public void load(BlockState blockState, CompoundTag compound) {
-        super.load(blockState, compound);
+    public void load(CompoundTag compound) {
+        super.load(compound);
         this.wait = compound.getInt("wait");
         this.delay = compound.getInt("delay");
     }
@@ -73,6 +70,6 @@ public class TileSingularity extends BlockEntity implements TickableBlockEntity 
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(this.getBlockState(), pkt.getTag());
+        this.load(pkt.getTag());
     }
 }

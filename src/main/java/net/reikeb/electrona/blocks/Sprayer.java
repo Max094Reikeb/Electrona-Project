@@ -113,7 +113,7 @@ public class Sprayer extends Block implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileSprayer();
+        return new TileSprayer(pos, state);
     }
 
     @Override

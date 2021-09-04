@@ -1,25 +1,23 @@
 package net.reikeb.electrona.tileentities;
 
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.tileentity.*;
-import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.misc.vm.BlackHoleFunction;
 
-import static net.reikeb.electrona.init.TileEntityInit.*;
+import static net.reikeb.electrona.init.TileEntityInit.TILE_HOLE;
 
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
-
-public class TileHole extends BlockEntity implements TickableBlockEntity {
+public class TileHole extends BlockEntity {
 
     private int wait;
 
-    public TileHole() {
-        super(TILE_HOLE.get());
+    public TileHole(BlockPos pos, BlockState state) {
+        super(TILE_HOLE.get(), pos, state);
     }
 
     @Override
@@ -27,7 +25,6 @@ public class TileHole extends BlockEntity implements TickableBlockEntity {
         super.setRemoved();
     }
 
-    @Override
     public void tick() {
         if (this.level == null) return; // Avoid NullPointerExceptions
         int wait = this.getTileData().getInt("wait");
@@ -40,8 +37,8 @@ public class TileHole extends BlockEntity implements TickableBlockEntity {
     }
 
     @Override
-    public void load(BlockState blockState, CompoundTag compound) {
-        super.load(blockState, compound);
+    public void load(CompoundTag compound) {
+        super.load(compound);
         this.wait = compound.getInt("wait");
     }
 
@@ -64,6 +61,6 @@ public class TileHole extends BlockEntity implements TickableBlockEntity {
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(this.getBlockState(), pkt.getTag());
+        this.load(pkt.getTag());
     }
 }

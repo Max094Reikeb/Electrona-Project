@@ -94,6 +94,6 @@ public class BlueCable extends AbstractCable implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileBlueCable();
+        return new TileBlueCable(pos, state);
     }
 }

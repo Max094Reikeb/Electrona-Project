@@ -2,33 +2,32 @@ package net.reikeb.electrona.tileentities;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.block.*;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
-import net.minecraft.util.math.*;
-import net.minecraft.world.phys.Vec3;
-
-import net.minecraftforge.api.distmarker.*;
-
-import net.reikeb.electrona.init.*;
-import net.reikeb.electrona.utils.ElectronaUtils;
-
-import javax.annotation.Nullable;
-import java.util.*;
-
-import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
-public class TileGravitor extends BlockEntity implements TickableBlockEntity {
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.reikeb.electrona.init.BlockInit;
+import net.reikeb.electrona.init.ParticleInit;
+import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.utils.ElectronaUtils;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Random;
+
+public class TileGravitor extends BlockEntity {
 
     public int tickCount;
     private float activeRotation;
@@ -40,12 +39,12 @@ public class TileGravitor extends BlockEntity implements TickableBlockEntity {
     public double electronicPower;
     private int maxStorage;
 
-    public TileGravitor() {
-        this(TileEntityInit.TILE_GRAVITOR.get());
+    public TileGravitor(BlockPos pos, BlockState state) {
+        this(TileEntityInit.TILE_GRAVITOR.get(), pos, state);
     }
 
-    public TileGravitor(BlockEntityType<?> tileEntityType) {
-        super(tileEntityType);
+    public TileGravitor(BlockEntityType<?> tileEntityType, BlockPos pos, BlockState state) {
+        super(tileEntityType, pos, state);
     }
 
     public void tick() {
@@ -176,8 +175,8 @@ public class TileGravitor extends BlockEntity implements TickableBlockEntity {
         this.level.playSound(null, this.worldPosition, sound, SoundSource.BLOCKS, 1.0F, 1.0F);
     }
 
-    public void load(BlockState state, CompoundTag nbt) {
-        super.load(state, nbt);
+    public void load(CompoundTag nbt) {
+        super.load(nbt);
         this.electronicPower = nbt.getDouble("ElectronicPower");
         this.maxStorage = nbt.getInt("MaxStorage");
     }

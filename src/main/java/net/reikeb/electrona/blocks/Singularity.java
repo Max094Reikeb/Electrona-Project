@@ -119,6 +119,6 @@ public class Singularity extends AbstractWaterLoggableBlock implements EntityBlo
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileSingularity();
+        return new TileSingularity(pos, state);
     }
 }

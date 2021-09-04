@@ -113,7 +113,7 @@ public class MiningMachine extends Block implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileMiningMachine();
+        return new TileMiningMachine(pos, state);
     }
 
     @Override

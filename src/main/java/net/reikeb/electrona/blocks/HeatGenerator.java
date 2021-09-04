@@ -116,6 +116,6 @@ public class HeatGenerator extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileHeatGenerator();
+        return new TileHeatGenerator(pos, state);
     }
 }

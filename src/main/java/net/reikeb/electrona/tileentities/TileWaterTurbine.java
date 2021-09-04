@@ -1,39 +1,34 @@
 package net.reikeb.electrona.tileentities;
 
-import net.minecraft.block.*;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.tileentity.*;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
 
 import net.reikeb.electrona.blocks.WaterTurbine;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 
-import static net.reikeb.electrona.init.TileEntityInit.*;
+import static net.reikeb.electrona.init.TileEntityInit.TILE_WATER_TURBINE;
 
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-
-public class TileWaterTurbine extends BlockEntity implements TickableBlockEntity {
+public class TileWaterTurbine extends BlockEntity {
 
     private double electronicPower;
     private int maxStorage;
 
-    public TileWaterTurbine() {
-        super(TILE_WATER_TURBINE.get());
+    public TileWaterTurbine(BlockPos pos, BlockState state) {
+        super(TILE_WATER_TURBINE.get(), pos, state);
     }
 
     public Direction getDirection() {
         return this.getBlockState().getValue(WaterTurbine.FACING);
     }
 
-    @Override
     public void tick() {
         // We get the variables
         Level world = this.level;
@@ -76,8 +71,8 @@ public class TileWaterTurbine extends BlockEntity implements TickableBlockEntity
     }
 
     @Override
-    public void load(BlockState blockState, CompoundTag compound) {
-        super.load(blockState, compound);
+    public void load(CompoundTag compound) {
+        super.load(compound);
         this.electronicPower = compound.getDouble("ElectronicPower");
         this.maxStorage = compound.getInt("MaxStorage");
     }
@@ -102,6 +97,6 @@ public class TileWaterTurbine extends BlockEntity implements TickableBlockEntity
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(this.getBlockState(), pkt.getTag());
+        this.load(pkt.getTag());
     }
 }

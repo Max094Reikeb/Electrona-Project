@@ -87,7 +87,7 @@ public class BiomassGenerator extends Block implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileBiomassGenerator();
+        return new TileBiomassGenerator(pos, state);
     }
 
     @Override

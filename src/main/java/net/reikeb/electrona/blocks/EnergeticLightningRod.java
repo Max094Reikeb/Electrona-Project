@@ -102,6 +102,6 @@ public class EnergeticLightningRod extends AbstractWaterLoggableBlock implements
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileEnergeticLightningRod();
+        return new TileEnergeticLightningRod(pos, state);
     }
 }

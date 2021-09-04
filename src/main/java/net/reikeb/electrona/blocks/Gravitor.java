@@ -95,6 +95,6 @@ public class Gravitor extends BaseEntityBlock implements SimpleWaterloggedBlock 
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileGravitor();
+        return new TileGravitor(pos, state);
     }
 }

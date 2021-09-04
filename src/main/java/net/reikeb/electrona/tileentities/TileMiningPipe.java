@@ -1,22 +1,19 @@
 package net.reikeb.electrona.tileentities;
 
-import net.minecraft.tileentity.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.init.BlockInit;
 
-import static net.reikeb.electrona.init.TileEntityInit.*;
+import static net.reikeb.electrona.init.TileEntityInit.TILE_MINING_PIPE;
 
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
+public class TileMiningPipe extends BlockEntity {
 
-public class TileMiningPipe extends BlockEntity implements TickableBlockEntity {
-
-    public TileMiningPipe() {
-        super(TILE_MINING_PIPE.get());
+    public TileMiningPipe(BlockPos pos, BlockState state) {
+        super(TILE_MINING_PIPE.get(), pos, state);
     }
 
-    @Override
     public void tick() {
         BlockPos pos = new BlockPos(this.getBlockPos().getX(), (this.getBlockPos().getY() + 1), this.getBlockPos().getZ());
 

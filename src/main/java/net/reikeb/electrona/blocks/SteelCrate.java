@@ -99,7 +99,7 @@ public class SteelCrate extends Block implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileSteelCrate();
+        return new TileSteelCrate(pos, state);
     }
 
     @Override

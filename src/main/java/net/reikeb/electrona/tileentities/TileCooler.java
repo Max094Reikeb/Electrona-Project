@@ -1,15 +1,10 @@
 package net.reikeb.electrona.tileentities;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.Containers;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
 
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -17,28 +12,17 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import net.reikeb.electrona.utils.ItemHandler;
+import static net.reikeb.electrona.init.TileEntityInit.TILE_COOLER;
 
-import static net.reikeb.electrona.init.TileEntityInit.*;
+public class TileCooler extends AbstractTileEntity {
 
-public class TileCooler extends BlockEntity {
-
-    private final ItemHandler inventory;
-
-    public TileCooler() {
-        super(TILE_COOLER.get());
-
-        this.inventory = new ItemHandler(1);
+    public TileCooler(BlockPos pos, BlockState state) {
+        super(TILE_COOLER.get(), pos, state, 1);
     }
 
     @Override
-    public void setRemoved() {
-        super.setRemoved();
-    }
-
-    @Override
-    public void load(BlockState blockState, CompoundTag compound) {
-        super.load(blockState, compound);
+    public void load(CompoundTag compound) {
+        super.load(compound);
         if (compound.contains("Inventory")) {
             inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
         }
@@ -70,27 +54,5 @@ public class TileCooler extends BlockEntity {
         if (!this.remove && cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return LazyOptional.of(() -> fluidTank).cast();
         return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(cap, LazyOptional.of(() -> this.inventory));
-    }
-
-    public void dropItems(Level world, BlockPos pos) {
-        for (int i = 0; i < 1; i++)
-            if (!inventory.getStackInSlot(i).isEmpty()) {
-                Containers.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(i));
-            }
-    }
-
-    @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return new ClientboundBlockEntityDataPacket(this.worldPosition, 0, this.getUpdateTag());
-    }
-
-    @Override
-    public CompoundTag getUpdateTag() {
-        return this.save(new CompoundTag());
-    }
-
-    @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(this.getBlockState(), pkt.getTag());
     }
 }

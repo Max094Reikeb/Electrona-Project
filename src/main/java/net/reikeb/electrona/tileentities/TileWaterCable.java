@@ -1,12 +1,13 @@
 package net.reikeb.electrona.tileentities;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluids;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.tileentity.*;
-import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -15,20 +16,16 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import net.reikeb.electrona.misc.vm.CableFunction;
 
-import static net.reikeb.electrona.init.TileEntityInit.*;
+import static net.reikeb.electrona.init.TileEntityInit.TILE_WATER_CABLE;
 
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
-
-public class TileWaterCable extends BlockEntity implements TickableBlockEntity {
+public class TileWaterCable extends BlockEntity {
 
     private boolean cableLogic;
 
-    public TileWaterCable() {
-        super(TILE_WATER_CABLE.get());
+    public TileWaterCable(BlockPos pos, BlockState state) {
+        super(TILE_WATER_CABLE.get(), pos, state);
     }
 
-    @Override
     public void tick() {
 
         // We pass energy to blocks around (this part is common to all cables)
@@ -38,8 +35,8 @@ public class TileWaterCable extends BlockEntity implements TickableBlockEntity {
     }
 
     @Override
-    public void load(BlockState blockState, CompoundTag compound) {
-        super.load(blockState, compound);
+    public void load(CompoundTag compound) {
+        super.load(compound);
         this.cableLogic = compound.getBoolean("logic");
         if (compound.get("fluidTank") != null)
             CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.readNBT(fluidTank, null, compound.get("fluidTank"));
@@ -81,6 +78,6 @@ public class TileWaterCable extends BlockEntity implements TickableBlockEntity {
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(this.getBlockState(), pkt.getTag());
+        this.load(pkt.getTag());
     }
 }

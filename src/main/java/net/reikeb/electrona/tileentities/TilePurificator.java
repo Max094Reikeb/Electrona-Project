@@ -1,47 +1,8 @@
 package net.reikeb.electrona.tileentities;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.entity.player.*;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.Containers;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.text.*;
-import net.minecraft.world.level.Level;
-
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.*;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.items.*;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
-import net.minecraftforge.registries.ForgeRegistries;
-
-import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.containers.PurificatorContainer;
-import net.reikeb.electrona.events.local.PurificationEvent;
-import net.reikeb.electrona.init.*;
-import net.reikeb.electrona.misc.vm.FluidFunction;
-import net.reikeb.electrona.recipes.PurificatorRecipe;
-import net.reikeb.electrona.utils.ItemHandler;
-
-import static net.reikeb.electrona.init.TileEntityInit.*;
-
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -49,17 +10,42 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 
-public class TilePurificator extends RandomizableContainerBlockEntity implements TickableBlockEntity {
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.wrapper.RecipeWrapper;
+import net.minecraftforge.registries.ForgeRegistries;
 
-    private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(3, ItemStack.EMPTY);
-    private final ItemHandler inventory;
+import net.reikeb.electrona.Electrona;
+import net.reikeb.electrona.containers.PurificatorContainer;
+import net.reikeb.electrona.events.local.PurificationEvent;
+import net.reikeb.electrona.init.ContainerInit;
+import net.reikeb.electrona.init.SoundsInit;
+import net.reikeb.electrona.misc.vm.FluidFunction;
+import net.reikeb.electrona.recipes.PurificatorRecipe;
+
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+
+import static net.reikeb.electrona.init.TileEntityInit.TILE_PURIFICATOR;
+
+public class TilePurificator extends AbstractTileEntity {
 
     public int purifyingTime;
     public int currentPurifyingTime;
@@ -67,10 +53,8 @@ public class TilePurificator extends RandomizableContainerBlockEntity implements
 
     private boolean canPurify;
 
-    public TilePurificator() {
-        super(TILE_PURIFICATOR.get());
-
-        this.inventory = new ItemHandler(3);
+    public TilePurificator(BlockPos pos, BlockState state) {
+        super(TILE_PURIFICATOR.get(), pos, state, 2);
     }
 
     @Override
@@ -84,16 +68,6 @@ public class TilePurificator extends RandomizableContainerBlockEntity implements
     }
 
     @Override
-    protected NonNullList<ItemStack> getItems() {
-        return this.stacks;
-    }
-
-    @Override
-    protected void setItems(NonNullList<ItemStack> stacks) {
-        this.stacks = stacks;
-    }
-
-    @Override
     public AbstractContainerMenu createMenu(final int windowID, final Inventory playerInv, final Player playerIn) {
         return new PurificatorContainer(windowID, playerInv, this);
     }
@@ -103,12 +77,6 @@ public class TilePurificator extends RandomizableContainerBlockEntity implements
         return new PurificatorContainer(ContainerInit.COMPRESSOR_CONTAINER.get(), id);
     }
 
-    @Override
-    public void setRemoved() {
-        super.setRemoved();
-    }
-
-    @Override
     public void tick() {
         Level world = this.level;
         BlockPos blockPos = this.getBlockPos();
@@ -200,10 +168,6 @@ public class TilePurificator extends RandomizableContainerBlockEntity implements
         return this.getRecipe(stack).getWaterRequired();
     }
 
-    public final IItemHandlerModifiable getInventory() {
-        return this.inventory;
-    }
-
     @Nullable
     private PurificatorRecipe getRecipe(ItemStack stack) {
         if (stack == null) return null;
@@ -225,8 +189,8 @@ public class TilePurificator extends RandomizableContainerBlockEntity implements
     }
 
     @Override
-    public void load(BlockState blockState, CompoundTag compound) {
-        super.load(blockState, compound);
+    public void load(CompoundTag compound) {
+        super.load(compound);
         this.purifyingTime = compound.getInt("PurifyingTime");
         this.currentPurifyingTime = compound.getInt("CurrentPurifyingTime");
         this.waterRequired = compound.getInt("WaterRequired");
@@ -264,32 +228,5 @@ public class TilePurificator extends RandomizableContainerBlockEntity implements
         if (!this.remove && cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return LazyOptional.of(() -> fluidTank).cast();
         return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(cap, LazyOptional.of(() -> this.inventory));
-    }
-
-    public void dropItems(Level world, BlockPos pos) {
-        for (int i = 0; i < 3; i++)
-            if (!inventory.getStackInSlot(i).isEmpty()) {
-                Containers.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(i));
-            }
-    }
-
-    @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return new ClientboundBlockEntityDataPacket(this.worldPosition, 0, this.getUpdateTag());
-    }
-
-    @Override
-    public CompoundTag getUpdateTag() {
-        return this.save(new CompoundTag());
-    }
-
-    @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(this.getBlockState(), pkt.getTag());
-    }
-
-    @Override
-    public int getContainerSize() {
-        return 3;
     }
 }

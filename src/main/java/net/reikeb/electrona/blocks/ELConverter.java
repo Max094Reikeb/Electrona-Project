@@ -88,7 +88,7 @@ public class ELConverter extends Block implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileConverter();
+        return new TileConverter(pos, state);
     }
 
     @Override

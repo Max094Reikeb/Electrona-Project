@@ -89,6 +89,6 @@ public class MiningPipe extends AbstractWaterLoggableBlock implements EntityBloc
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileMiningPipe();
+        return new TileMiningPipe(pos, state);
     }
 }

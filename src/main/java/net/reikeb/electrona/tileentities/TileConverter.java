@@ -1,45 +1,32 @@
 package net.reikeb.electrona.tileentities;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.entity.player.*;
-import net.minecraft.world.Containers;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.text.*;
-import net.minecraft.world.level.Level;
-
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.*;
-import net.minecraftforge.energy.*;
-import net.minecraftforge.items.*;
-
-import net.reikeb.electrona.containers.ConverterContainer;
-import net.reikeb.electrona.init.*;
-import net.reikeb.electrona.misc.vm.EnergyFunction;
-import net.reikeb.electrona.utils.ItemHandler;
-
-import static net.reikeb.electrona.init.TileEntityInit.*;
-
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class TileConverter extends RandomizableContainerBlockEntity implements TickableBlockEntity {
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.EnergyStorage;
+import net.minecraftforge.items.CapabilityItemHandler;
 
-    private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(1, ItemStack.EMPTY);
-    private final ItemHandler inventory;
+import net.reikeb.electrona.containers.ConverterContainer;
+import net.reikeb.electrona.init.ContainerInit;
+import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.misc.vm.EnergyFunction;
+
+import static net.reikeb.electrona.init.TileEntityInit.TILE_CONTERTER;
+
+public class TileConverter extends AbstractTileEntity {
 
     public double electronicPower;
     private int maxStorage;
@@ -48,10 +35,8 @@ public class TileConverter extends RandomizableContainerBlockEntity implements T
     private double vp;
     private int wait;
 
-    public TileConverter() {
-        super(TILE_CONTERTER.get());
-
-        this.inventory = new ItemHandler(1);
+    public TileConverter(BlockPos pos, BlockState state) {
+        super(TILE_CONTERTER.get(), pos, state, 3);
     }
 
     @Override
@@ -65,16 +50,6 @@ public class TileConverter extends RandomizableContainerBlockEntity implements T
     }
 
     @Override
-    protected NonNullList<ItemStack> getItems() {
-        return this.stacks;
-    }
-
-    @Override
-    protected void setItems(NonNullList<ItemStack> stacks) {
-        this.stacks = stacks;
-    }
-
-    @Override
     public AbstractContainerMenu createMenu(final int windowID, final Inventory playerInv, final Player playerIn) {
         return new ConverterContainer(windowID, playerInv, this);
     }
@@ -84,12 +59,6 @@ public class TileConverter extends RandomizableContainerBlockEntity implements T
         return new ConverterContainer(ContainerInit.CONVERTER_CONTAINER.get(), id);
     }
 
-    @Override
-    public void setRemoved() {
-        super.setRemoved();
-    }
-
-    @Override
     public void tick() {
         // We get the variables
         Level world = this.level;
@@ -135,13 +104,9 @@ public class TileConverter extends RandomizableContainerBlockEntity implements T
         }
     }
 
-    public final IItemHandlerModifiable getInventory() {
-        return this.inventory;
-    }
-
     @Override
-    public void load(BlockState blockState, CompoundTag compound) {
-        super.load(blockState, compound);
+    public void load(CompoundTag compound) {
+        super.load(compound);
         this.electronicPower = compound.getDouble("ElectronicPower");
         this.maxStorage = compound.getInt("MaxStorage");
         this.toVP = compound.getBoolean("toVP");
@@ -152,7 +117,7 @@ public class TileConverter extends RandomizableContainerBlockEntity implements T
             inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
         }
         if (compound.contains("energyStorage")) {
-            CapabilityEnergy.ENERGY.readNBT(energyStorage, null, compound.get("energyStorage"));
+            energyStorage.deserializeNBT(compound.get("energyStorage"));
         }
     }
 
@@ -166,7 +131,7 @@ public class TileConverter extends RandomizableContainerBlockEntity implements T
         compound.putDouble("vp", this.vp);
         compound.putInt("wait", this.wait);
         compound.put("Inventory", inventory.serializeNBT());
-        compound.put("energyStorage", CapabilityEnergy.ENERGY.writeNBT(energyStorage, null));
+        compound.put("energyStorage", energyStorage.serializeNBT());
         return compound;
     }
 
@@ -199,32 +164,5 @@ public class TileConverter extends RandomizableContainerBlockEntity implements T
         if (!this.remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return LazyOptional.of(() -> this.inventory).cast();
         return super.getCapability(cap, side);
-    }
-
-    public void dropItems(Level world, BlockPos pos) {
-        for (int i = 0; i < 1; i++)
-            if (!inventory.getStackInSlot(i).isEmpty()) {
-                Containers.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(i));
-            }
-    }
-
-    @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return new ClientboundBlockEntityDataPacket(this.worldPosition, 0, this.getUpdateTag());
-    }
-
-    @Override
-    public CompoundTag getUpdateTag() {
-        return this.save(new CompoundTag());
-    }
-
-    @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(this.getBlockState(), pkt.getTag());
-    }
-
-    @Override
-    public int getContainerSize() {
-        return 1;
     }
 }

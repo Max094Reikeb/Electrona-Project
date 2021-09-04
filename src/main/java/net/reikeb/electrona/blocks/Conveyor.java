@@ -142,7 +142,7 @@ public class Conveyor extends AbstractWaterLoggableBlock implements EntityBlock 
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileConveyor();
+        return new TileConveyor(pos, state);
     }
 
     @Override

@@ -144,7 +144,7 @@ public class Purificator extends AbstractWaterLoggableBlock implements EntityBlo
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TilePurificator();
+        return new TilePurificator(pos, state);
     }
 
     @Override

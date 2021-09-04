@@ -87,6 +87,6 @@ public class Cooler extends AbstractWaterLoggableBlock implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileCooler();
+        return new TileCooler(pos, state);
     }
 }

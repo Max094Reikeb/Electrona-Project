@@ -118,7 +118,7 @@ public class Battery extends AbstractWaterLoggableBlock implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileBattery();
+        return new TileBattery(pos, state);
     }
 
     @Override
