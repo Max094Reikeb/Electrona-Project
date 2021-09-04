@@ -2,11 +2,13 @@ package net.reikeb.electrona.init;
 
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.biome.VanillaBiomes;
-import net.minecraft.resources.*;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 
 import net.minecraftforge.fmllegacy.RegistryObject;
-import net.minecraftforge.registries.*;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import net.reikeb.electrona.Electrona;
 
