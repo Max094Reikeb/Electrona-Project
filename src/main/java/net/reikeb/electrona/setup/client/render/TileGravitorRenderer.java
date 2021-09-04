@@ -22,7 +22,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.resources.model.Material;
 
-public class TileGravitorRenderer extends BlockEntityRenderer<TileGravitor> {
+public class TileGravitorRenderer implements BlockEntityRenderer<TileGravitor> {
 
     public static final Material SHELL_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, new ResourceLocation(Electrona.MODID, "entity/gravitor/base"));
     public static final Material ACTIVE_SHELL_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, new ResourceLocation(Electrona.MODID, "entity/gravitor/cage"));

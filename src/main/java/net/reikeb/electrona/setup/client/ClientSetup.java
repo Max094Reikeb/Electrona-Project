@@ -74,14 +74,6 @@ public class ClientSetup {
         MenuScreens.register(LEAD_CRATE_CONTAINER.get(), LeadCrateWindow::new);
         MenuScreens.register(NUCLEAR_BOMB_CONTAINER.get(), NuclearBombWindow::new);
 
-        // Connect Entities and their renderer
-        RenderingRegistry.registerEntityRenderingHandler(EntityInit.RADIOACTIVE_ZOMBIE_TYPE, RadioactiveZombieRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityInit.ENERGETIC_LIGHTNING_BOLT_TYPE, EnergeticLightningBoltRenderer::new);
-
-        // Connect TileEntities and their renderer
-        ClientRegistry.bindTileEntityRenderer(TileEntityInit.TILE_SINGULARITY.get(), TileSingularityRenderer::new);
-        ClientRegistry.bindTileEntityRenderer(TileEntityInit.TILE_GRAVITOR.get(), TileGravitorRenderer::new);
-
         // Make this deferred for unsafe threads
         event.enqueueWork(() -> {
             // Cutout
@@ -171,6 +163,15 @@ public class ClientSetup {
         Minecraft.getInstance().particleEngine.register(ParticleInit.DARK_MATTER.get(), DarkMatter.DarkMatterParticleFactory::new);
         Minecraft.getInstance().particleEngine.register(ParticleInit.GRAVITORIUM.get(), Gravitorium.GravitoriumParticleFactory::new);
         Minecraft.getInstance().particleEngine.register(ParticleInit.RADIOACTIVE_FALLOUT.get(), RadioactiveFallout.RadioactiveFalloutFactory::new);
+    }
+
+    @SubscribeEvent
+    public static void registerModels(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(EntityInit.RADIOACTIVE_ZOMBIE_TYPE, RadioactiveZombieRenderer::new);
+        event.registerEntityRenderer(EntityInit.ENERGETIC_LIGHTNING_BOLT_TYPE, EnergeticLightningBoltRenderer::new);
+
+        event.registerBlockEntityRenderer(TileEntityInit.TILE_SINGULARITY.get(), TileSingularityRenderer::new);
+        event.registerBlockEntityRenderer(TileEntityInit.TILE_GRAVITOR.get(), TileGravitorRenderer::new);
     }
 
     @SubscribeEvent

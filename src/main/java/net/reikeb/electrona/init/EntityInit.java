@@ -14,7 +14,7 @@ public class EntityInit {
             Electrona.MODID);
 
     public static final EntityType<RadioactiveZombie> RADIOACTIVE_ZOMBIE_TYPE = EntityType.Builder
-            .of(RadioactiveZombie::new, MobCategory.MONSTER)
+            .<RadioactiveZombie>of(RadioactiveZombie::new, MobCategory.MONSTER)
             .sized(0.7F, 1.8F)
             .build("radioactive_zombie");
 
