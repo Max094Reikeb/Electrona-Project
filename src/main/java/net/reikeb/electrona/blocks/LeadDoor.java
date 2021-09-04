@@ -15,8 +15,6 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 
-import net.minecraftforge.common.ToolType;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -27,8 +25,6 @@ public class LeadDoor extends DoorBlock {
                 .sound(SoundType.METAL)
                 .strength(5f, 6f)
                 .lightLevel(s -> 0)
-                .harvestLevel(2)
-                .harvestTool(ToolType.PICKAXE)
                 .requiresCorrectToolForDrops()
                 .noOcclusion()
                 .isRedstoneConductor((bs, br, bp) -> false));

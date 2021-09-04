@@ -10,8 +10,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext;
 
-import net.minecraftforge.common.ToolType;
-
 import net.reikeb.electrona.misc.vm.RadioactivityFunction;
 
 import java.util.Collections;
@@ -23,9 +21,7 @@ public class RadioactiveDirt extends Block {
         super(Properties.of(Material.DIRT)
                 .sound(SoundType.GRAVEL)
                 .strength(5f, 2f)
-                .lightLevel(s -> 0)
-                .harvestLevel(0)
-                .harvestTool(ToolType.SHOVEL));
+                .lightLevel(s -> 0));
     }
 
     @Override

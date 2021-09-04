@@ -19,7 +19,6 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 
-import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import net.reikeb.electrona.tileentities.TileLeadCrate;
@@ -36,8 +35,6 @@ public class LeadCrate extends Block implements EntityBlock {
                 .sound(SoundType.METAL)
                 .strength(20f, 9f)
                 .lightLevel(s -> 0)
-                .harvestLevel(2)
-                .harvestTool(ToolType.PICKAXE)
                 .requiresCorrectToolForDrops());
         this.registerDefaultState(this.getStateDefinition().any()
                 .setValue(FACING, Direction.NORTH));

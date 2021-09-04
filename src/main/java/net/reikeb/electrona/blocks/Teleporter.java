@@ -29,7 +29,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import net.reikeb.electrona.misc.vm.CustomShapes;
@@ -49,8 +48,6 @@ public class Teleporter extends AbstractWaterLoggableBlock implements EntityBloc
                 .sound(SoundType.STONE)
                 .strength(50f, 2400f)
                 .lightLevel(s -> 15)
-                .harvestLevel(3)
-                .harvestTool(ToolType.PICKAXE)
                 .requiresCorrectToolForDrops()
                 .noOcclusion()
                 .isRedstoneConductor((bs, br, bp) -> false));

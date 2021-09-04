@@ -8,8 +8,6 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootContext;
 
-import net.minecraftforge.common.ToolType;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -20,8 +18,6 @@ public class MachineCasing extends Block {
                 .sound(SoundType.METAL)
                 .strength(5f, 6f)
                 .lightLevel(s -> 0)
-                .harvestLevel(1)
-                .harvestTool(ToolType.PICKAXE)
                 .requiresCorrectToolForDrops());
     }
 

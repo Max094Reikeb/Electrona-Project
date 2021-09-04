@@ -1,29 +1,37 @@
 package net.reikeb.electrona.blocks;
 
-import net.minecraft.core.*;
-import net.minecraft.network.chat.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.*;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.*;
-import net.minecraft.world.level.block.state.properties.*;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.phys.BlockHitResult;
 
-import net.minecraftforge.api.distmarker.*;
-import net.minecraftforge.common.ToolType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import net.reikeb.electrona.tileentities.TileCompressor;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 public class Compressor extends Block implements EntityBlock {
 
@@ -34,9 +42,7 @@ public class Compressor extends Block implements EntityBlock {
         super(Properties.of(Material.METAL)
                 .sound(SoundType.METAL)
                 .strength(4f, 6f)
-                .lightLevel(s -> 0)
-                .harvestLevel(1)
-                .harvestTool(ToolType.PICKAXE));
+                .lightLevel(s -> 0));
         this.registerDefaultState(this.getStateDefinition().any()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(COMPRESSING, false));

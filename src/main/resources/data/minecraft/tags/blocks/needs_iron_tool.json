@@ -1,0 +1,25 @@
+{
+  "replace": false,
+  "values": [
+    "electrona:conveyor",
+    "electrona:cooler",
+    "electrona:dimension_linker",
+    "electrona:gravitonium_block",
+    "electrona:gravitonium_ore",
+    "electrona:gravitor",
+    "electrona:heat_generator",
+    "electrona:lead_block",
+    "electrona:lead_crate",
+    "electrona:lead_door",
+    "electrona:lead_ore",
+    "electrona:nuclear_generator_controller",
+    "electrona:purificator",
+    "electrona:sprayer",
+    "electrona:steel_block",
+    "electrona:steel_crate",
+    "electrona:tin_block",
+    "electrona:tin_ore",
+    "electrona:uranium_ore",
+    "electrona:water_pump"
+  ]
+}

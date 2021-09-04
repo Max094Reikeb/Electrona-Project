@@ -16,8 +16,6 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.minecraftforge.common.ToolType;
-
 import net.reikeb.electrona.misc.vm.CustomShapes;
 import net.reikeb.electrona.tileentities.TileEnergeticLightningRod;
 import net.reikeb.electrona.utils.ElectronaUtils;
@@ -34,8 +32,6 @@ public class EnergeticLightningRod extends AbstractWaterLoggableBlock implements
         super(Properties.of(Material.HEAVY_METAL)
                 .sound(SoundType.CHAIN)
                 .strength(3f, 6f)
-                .harvestLevel(1)
-                .harvestTool(ToolType.PICKAXE)
                 .noOcclusion());
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.UP)

@@ -25,7 +25,6 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import net.reikeb.electrona.tileentities.TileWaterPump;
@@ -42,8 +41,6 @@ public class WaterPump extends Block implements EntityBlock {
                 .sound(SoundType.METAL)
                 .strength(4f, 6f)
                 .lightLevel(s -> 0)
-                .harvestLevel(2)
-                .harvestTool(ToolType.PICKAXE)
                 .requiresCorrectToolForDrops());
         this.registerDefaultState(this.getStateDefinition().any()
                 .setValue(PUMPING, false));

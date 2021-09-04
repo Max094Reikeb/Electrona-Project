@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "electrona:battery",
+    "electrona:biomass_generator",
+    "electrona:compressor",
+    "electrona:el_converter",
+    "electrona:energetic_lightning_rod",
+    "electrona:machine_casing",
+    "electrona:mining_machine",
+    "electrona:solar_panel_tiers1",
+    "electrona:solar_panel_tiers2",
+    "electrona:water_turbine",
+    "electrona:xp_generator"
+  ]
+}

@@ -1,14 +1,15 @@
 package net.reikeb.electrona.blocks;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.*;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootContext;
 
-import net.minecraftforge.common.ToolType;
-
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 public class CompressedObsidian extends Block {
 
@@ -17,8 +18,6 @@ public class CompressedObsidian extends Block {
                 .sound(SoundType.STONE)
                 .strength(50f, 2400f)
                 .lightLevel(s -> 0)
-                .harvestLevel(3)
-                .harvestTool(ToolType.PICKAXE)
                 .requiresCorrectToolForDrops());
     }
 

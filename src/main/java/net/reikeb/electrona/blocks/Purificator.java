@@ -27,7 +27,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import net.reikeb.electrona.misc.vm.CustomShapes;
@@ -46,8 +45,6 @@ public class Purificator extends AbstractWaterLoggableBlock implements EntityBlo
                 .sound(SoundType.METAL)
                 .strength(4f, 6f)
                 .lightLevel(s -> 0)
-                .harvestLevel(2)
-                .harvestTool(ToolType.PICKAXE)
                 .requiresCorrectToolForDrops()
                 .noOcclusion()
                 .isRedstoneConductor((bs, br, bp) -> false));

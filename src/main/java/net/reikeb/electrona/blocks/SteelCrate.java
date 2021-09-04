@@ -19,7 +19,6 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 
-import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import net.reikeb.electrona.tileentities.TileSteelCrate;
@@ -35,8 +34,7 @@ public class SteelCrate extends Block implements EntityBlock {
         super(Properties.of(Material.METAL)
                 .sound(SoundType.METAL)
                 .strength(20f, 8f)
-                .lightLevel(s -> 0).harvestLevel(2)
-                .harvestTool(ToolType.PICKAXE)
+                .lightLevel(s -> 0)
                 .requiresCorrectToolForDrops());
         this.registerDefaultState(this.getStateDefinition().any()
                 .setValue(FACING, Direction.NORTH));

@@ -18,7 +18,6 @@ import net.minecraft.world.level.storage.loot.LootContext;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
 
 import net.reikeb.electrona.tileentities.TileSolarPanelT1;
 
@@ -34,9 +33,7 @@ public class SolarPanelT1 extends Block implements EntityBlock {
         super(Properties.of(Material.GLASS)
                 .sound(SoundType.GLASS)
                 .strength(4f, 6f)
-                .lightLevel(s -> 0)
-                .harvestLevel(1)
-                .harvestTool(ToolType.PICKAXE));
+                .lightLevel(s -> 0));
         this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
     }
 

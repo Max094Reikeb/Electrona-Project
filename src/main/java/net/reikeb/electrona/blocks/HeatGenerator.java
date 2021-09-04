@@ -26,7 +26,6 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
 
 import net.reikeb.electrona.tileentities.TileHeatGenerator;
 
@@ -43,9 +42,7 @@ public class HeatGenerator extends Block implements EntityBlock {
         super(Properties.of(Material.STONE)
                 .sound(SoundType.METAL)
                 .strength(4f, 6f)
-                .lightLevel(s -> (s.getValue(HEATING) ? 15 : 0))
-                .harvestLevel(2)
-                .harvestTool(ToolType.PICKAXE));
+                .lightLevel(s -> (s.getValue(HEATING) ? 15 : 0)));
         this.registerDefaultState(this.getStateDefinition().any()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(HEATING, false));

@@ -20,7 +20,6 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 
-import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import net.reikeb.electrona.tileentities.TileDimensionLinker;
@@ -37,8 +36,6 @@ public class DimensionLinker extends AbstractWaterLoggableBlock implements Entit
                 .sound(SoundType.METAL)
                 .strength(5f, 6f)
                 .lightLevel(s -> 0)
-                .harvestLevel(2)
-                .harvestTool(ToolType.PICKAXE)
                 .requiresCorrectToolForDrops()
                 .noOcclusion()
                 .isRedstoneConductor((bs, br, bp) -> false));

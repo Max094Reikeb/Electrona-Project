@@ -26,7 +26,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
 
 import net.reikeb.electrona.misc.vm.CustomShapes;
 import net.reikeb.electrona.tileentities.TileConveyor;
@@ -45,8 +44,6 @@ public class Conveyor extends AbstractWaterLoggableBlock implements EntityBlock 
                 .sound(SoundType.METAL)
                 .strength(5f, 6f)
                 .lightLevel(s -> 0)
-                .harvestLevel(2)
-                .harvestTool(ToolType.PICKAXE)
                 .requiresCorrectToolForDrops()
                 .noOcclusion()
                 .isRedstoneConductor((bs, br, bp) -> false));

@@ -20,7 +20,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
 
 import net.reikeb.electrona.misc.vm.CustomShapes;
 import net.reikeb.electrona.tileentities.TileWaterTurbine;
@@ -38,9 +37,7 @@ public class WaterTurbine extends AbstractWaterLoggableBlock implements EntityBl
         super(Properties.of(Material.METAL)
                 .sound(SoundType.METAL)
                 .strength(4f, 6f)
-                .lightLevel(s -> 0)
-                .harvestLevel(1)
-                .harvestTool(ToolType.PICKAXE));
+                .lightLevel(s -> 0));
         this.registerDefaultState(this.getStateDefinition().any()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(WATERLOGGED, false));

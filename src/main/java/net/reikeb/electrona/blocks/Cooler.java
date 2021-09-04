@@ -20,7 +20,6 @@ import net.minecraft.world.level.storage.loot.LootContext;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
 
 import net.reikeb.electrona.tileentities.TileCooler;
 
@@ -34,8 +33,6 @@ public class Cooler extends AbstractWaterLoggableBlock implements EntityBlock {
                 .sound(SoundType.METAL)
                 .strength(4f, 6f)
                 .lightLevel(s -> 0)
-                .harvestLevel(2)
-                .harvestTool(ToolType.PICKAXE)
                 .requiresCorrectToolForDrops()
                 .noOcclusion()
                 .isRedstoneConductor((bs, br, bp) -> false));

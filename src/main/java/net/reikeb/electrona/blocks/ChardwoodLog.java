@@ -1,27 +1,25 @@
 package net.reikeb.electrona.blocks;
 
 import net.minecraft.core.Direction;
-
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.*;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.storage.loot.LootContext;
 
-import net.minecraftforge.common.ToolType;
-
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 public class ChardwoodLog extends RotatedPillarBlock {
 
     public ChardwoodLog() {
         super(Properties.of(Material.WOOD,
-                s -> s.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ?
-                        MaterialColor.COLOR_PINK : MaterialColor.COLOR_RED)
+                        s -> s.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ?
+                                MaterialColor.COLOR_PINK : MaterialColor.COLOR_RED)
                 .sound(SoundType.WOOD)
-                .strength(2.0F, 1.0F)
-                .harvestLevel(0)
-                .harvestTool(ToolType.AXE));
+                .strength(2.0F, 1.0F));
     }
 
     @Override

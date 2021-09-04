@@ -7,8 +7,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext;
 
-import net.minecraftforge.common.ToolType;
-
 import net.reikeb.electrona.init.ItemInit;
 
 import java.util.Collections;
@@ -20,8 +18,6 @@ public class GravitoniumOre extends Block {
         super(Properties.of(Material.STONE)
                 .sound(SoundType.STONE)
                 .strength(3f, 10f)
-                .harvestLevel(2)
-                .harvestTool(ToolType.PICKAXE)
                 .requiresCorrectToolForDrops());
     }
 

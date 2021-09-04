@@ -7,8 +7,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext;
 
-import net.minecraftforge.common.ToolType;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -19,8 +17,6 @@ public class UraniumOre extends Block {
                 .sound(SoundType.STONE)
                 .strength(3f, 5f)
                 .lightLevel(s -> 0)
-                .harvestLevel(2)
-                .harvestTool(ToolType.PICKAXE)
                 .requiresCorrectToolForDrops()
                 .hasPostProcess((bs, br, bp) -> true)
                 .emissiveRendering((bs, br, bp) -> true));
