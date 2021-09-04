@@ -157,8 +157,9 @@ public class TileWaterPump extends AbstractTileEntity {
         if (compound.contains("Inventory")) {
             inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
         }
-        if (compound.get("fluidTank") != null)
-            CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.readNBT(fluidTank, null, compound.get("fluidTank"));
+        if (compound.get("fluidTank") != null) {
+            fluidTank.writeToNBT((CompoundTag) compound.get("fluidTank"));
+        }
     }
 
     @Override

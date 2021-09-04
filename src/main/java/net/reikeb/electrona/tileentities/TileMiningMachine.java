@@ -91,8 +91,7 @@ public class TileMiningMachine extends AbstractTileEntity {
                 } else {
                     if ((!(world.getBlockState(_tempPos)).getFluidState().isSource()) && (!(_tempBlock instanceof LiquidBlock))) {
                         item = this.inventory.getStackInSlot(0);
-                        if ((item.getHarvestLevel(ToolType.PICKAXE, null, world.getBlockState(_tempPos)) >=
-                                (world.getBlockState(_tempPos)).getHarvestLevel()) && (Blocks.BEDROCK != _tempBlock)) {
+                        if (item.isCorrectToolForDrops(world.getBlockState(_tempPos)) && (Blocks.BEDROCK != _tempBlock)) {
                             if (!world.isClientSide()) {
                                 ItemEntity entityToSpawn = new ItemEntity(world, x, (y + 1), z, (new ItemStack(_tempBlock)));
                                 entityToSpawn.setPickUpDelay(10);
