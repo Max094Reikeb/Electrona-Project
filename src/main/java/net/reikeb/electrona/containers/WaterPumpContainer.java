@@ -57,6 +57,7 @@ public class WaterPumpContainer extends AbstractContainer {
                 });
             });
         }
+        this.layoutPlayerInventorySlots(playerInv);
     }
 
     public TileWaterPump getTileEntity() {

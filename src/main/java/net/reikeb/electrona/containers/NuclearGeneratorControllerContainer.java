@@ -62,6 +62,7 @@ public class NuclearGeneratorControllerContainer extends AbstractContainer {
                 });
             });
         }
+        this.layoutPlayerInventorySlots(playerInv);
     }
 
     public TileNuclearGeneratorController getTileEntity() {

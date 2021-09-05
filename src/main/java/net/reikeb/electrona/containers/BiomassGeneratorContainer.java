@@ -38,6 +38,7 @@ public class BiomassGeneratorContainer extends AbstractContainer {
                 addSlot(new SlotItemHandler(h, 0, 80, 36));
             });
         }
+        this.layoutPlayerInventorySlots(playerInv);
     }
 
     public TileBiomassGenerator getTileEntity() {

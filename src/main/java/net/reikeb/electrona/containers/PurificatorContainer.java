@@ -68,6 +68,7 @@ public class PurificatorContainer extends AbstractContainer {
                 });
             });
         }
+        this.layoutPlayerInventorySlots(playerInv);
     }
 
     public TilePurificator getTileEntity() {

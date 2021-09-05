@@ -55,6 +55,7 @@ public class SprayerContainer extends AbstractContainer {
                 });
             });
         }
+        this.layoutPlayerInventorySlots(playerInv);
     }
 
     public TileSprayer getTileEntity() {

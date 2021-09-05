@@ -50,6 +50,7 @@ public class MiningMachineContainer extends AbstractContainer {
                 });
             });
         }
+        this.layoutPlayerInventorySlots(playerInv);
     }
 
     public TileMiningMachine getTileEntity() {

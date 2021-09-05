@@ -64,6 +64,7 @@ public class SteelCrateContainer extends AbstractContainer {
                 addSlot(new SlotItemHandler(h, 26, 152, 54));
             });
         }
+        this.layoutPlayerInventorySlots(playerInv);
     }
 
     public TileSteelCrate getTileEntity() {

@@ -39,6 +39,7 @@ public class NuclearBombContainer extends AbstractContainer {
                 addSlot(new SlotItemHandler(h, 1, 107, 31));
             });
         }
+        this.layoutPlayerInventorySlots(playerInv);
     }
 
     public TileNuclearBomb getTileEntity() {

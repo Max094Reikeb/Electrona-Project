@@ -45,6 +45,7 @@ public class XPGeneratorContainer extends AbstractContainer {
                 });
             });
         }
+        this.layoutPlayerInventorySlots(playerInv);
     }
 
     public TileXPGenerator getTileEntity() {

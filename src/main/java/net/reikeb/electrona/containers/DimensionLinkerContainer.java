@@ -32,6 +32,7 @@ public class DimensionLinkerContainer extends AbstractContainer {
     }
 
     public void init(Inventory playerInv, TileDimensionLinker tile) {
+        this.layoutPlayerInventorySlots(playerInv);
     }
 
     public TileDimensionLinker getTileEntity() {

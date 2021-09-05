@@ -47,6 +47,7 @@ public class ConverterContainer extends AbstractContainer {
                 });
             });
         }
+        this.layoutPlayerInventorySlots(playerInv);
     }
 
     public TileConverter getTileEntity() {

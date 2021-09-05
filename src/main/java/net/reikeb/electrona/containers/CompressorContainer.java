@@ -61,6 +61,7 @@ public class CompressorContainer extends AbstractContainer {
                 });
             });
         }
+        this.layoutPlayerInventorySlots(playerInv);
     }
 
     public TileCompressor getTileEntity() {

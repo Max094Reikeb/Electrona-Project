@@ -46,6 +46,7 @@ public class TeleporterContainer extends AbstractContainer {
                 });
             });
         }
+        this.layoutPlayerInventorySlots(playerInv);
     }
 
     public TileTeleporter getTileEntity() {

@@ -56,6 +56,7 @@ public class BatteryContainer extends AbstractContainer {
                 });
             });
         }
+        this.layoutPlayerInventorySlots(playerInv);
     }
 
     public TileBattery getTileEntity() {
