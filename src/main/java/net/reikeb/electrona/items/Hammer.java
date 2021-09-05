@@ -58,7 +58,7 @@ public class Hammer extends Item {
 
     @Override
     public boolean isCorrectToolForDrops(BlockState state) {
-        return 1 >= state.getHarvestLevel();
+        return this.isCorrectToolForDrops(new ItemStack(this), state);
     }
 
     @Override
