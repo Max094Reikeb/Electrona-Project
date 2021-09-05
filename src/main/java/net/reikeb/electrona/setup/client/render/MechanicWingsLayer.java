@@ -3,8 +3,10 @@ package net.reikeb.electrona.setup.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -20,11 +22,15 @@ import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.ItemInit;
 
 public class MechanicWingsLayer<T extends LivingEntity, M extends EntityModel<T>> extends ElytraLayer<T, M> {
+
+    public static ModelLayerLocation MECHANIC_WINGS_LAYER = new ModelLayerLocation(new ResourceLocation("minecraft:player"), "mechanic_wings");
     private static final ResourceLocation TEXTURE_WINGS = new ResourceLocation(Electrona.MODID, "textures/models/mechanic_wings.png");
-    private final MechanicWingsModel<T> wingsModel = new MechanicWingsModel<>();
+    private final MechanicWingsModel<T> wingsModel;
 
     public MechanicWingsLayer(RenderLayerParent<T, M> p_i50942_1_, EntityModelSet p_i50942_2_) {
         super(p_i50942_1_, p_i50942_2_);
+
+        wingsModel = new MechanicWingsModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(MECHANIC_WINGS_LAYER));
     }
 
     @Override
