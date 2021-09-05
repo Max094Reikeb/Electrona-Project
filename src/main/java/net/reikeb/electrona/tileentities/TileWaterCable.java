@@ -38,15 +38,16 @@ public class TileWaterCable extends BlockEntity {
     public void load(CompoundTag compound) {
         super.load(compound);
         this.cableLogic = compound.getBoolean("logic");
-        if (compound.get("fluidTank") != null)
-            CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.readNBT(fluidTank, null, compound.get("fluidTank"));
+        if (compound.get("fluidTank") != null) {
+            fluidTank.readFromNBT((CompoundTag) compound.get("fluidTank"));
+        }
     }
 
     @Override
     public CompoundTag save(CompoundTag compound) {
         compound = super.save(compound);
         compound.putBoolean("logic", this.cableLogic);
-        compound.put("fluidTank", CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.writeNBT(fluidTank, null));
+        fluidTank.writeToNBT(compound);
         return compound;
     }
 

@@ -158,7 +158,7 @@ public class TileWaterPump extends AbstractTileEntity {
             inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
         }
         if (compound.get("fluidTank") != null) {
-            fluidTank.writeToNBT((CompoundTag) compound.get("fluidTank"));
+            fluidTank.readFromNBT((CompoundTag) compound.get("fluidTank"));
         }
     }
 
@@ -170,7 +170,7 @@ public class TileWaterPump extends AbstractTileEntity {
         compound.putBoolean("isOn", this.isOn);
         compound.putInt("wait", this.wait);
         compound.put("Inventory", inventory.serializeNBT());
-        compound.put("fluidTank", CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.writeNBT(fluidTank, null));
+        fluidTank.writeToNBT(compound);
         return compound;
     }
 

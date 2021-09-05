@@ -197,8 +197,9 @@ public class TilePurificator extends AbstractTileEntity {
         if (compound.contains("Inventory")) {
             inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
         }
-        if (compound.get("fluidTank") != null)
-            CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.readNBT(fluidTank, null, compound.get("fluidTank"));
+        if (compound.get("fluidTank") != null) {
+            fluidTank.readFromNBT((CompoundTag) compound.get("fluidTank"));
+        }
     }
 
     @Override
@@ -208,7 +209,7 @@ public class TilePurificator extends AbstractTileEntity {
         compound.putInt("CurrentPurifyingTime", this.currentPurifyingTime);
         compound.putInt("WaterRequired", this.waterRequired);
         compound.put("Inventory", inventory.serializeNBT());
-        compound.put("fluidTank", CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.writeNBT(fluidTank, null));
+        fluidTank.writeToNBT(compound);
         return compound;
     }
 
