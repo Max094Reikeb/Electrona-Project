@@ -12,7 +12,11 @@
                 "xspread": 2,
                 "yspread": 3,
                 "zspread": 2,
-                "whitelist": [],
+                "whitelist": [
+                  {
+                    "Name": "electrona:radioactive_dirt"
+                  }
+                ],
                 "blacklist": [],
                 "tries": 10,
                 "state_provider": {
@@ -44,7 +48,9 @@
               "type": "minecraft:square"
             },
             "inner": {
-              "config": {},
+              "config": {
+                "heightmap": "MOTION_BLOCKING"
+              },
               "type": "minecraft:heightmap"
             }
           },

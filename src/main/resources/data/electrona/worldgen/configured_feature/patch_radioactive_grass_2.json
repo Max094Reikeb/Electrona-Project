@@ -36,8 +36,10 @@
               "type": "minecraft:square"
             },
             "inner": {
-              "config": {},
-              "type": "minecraft:heightmap_spread_double"
+              "config": {
+                "heightmap": "MOTION_BLOCKING"
+              },
+              "type": "minecraft:heightmap"
             }
           },
           "type": "minecraft:decorated"

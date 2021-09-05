@@ -2,43 +2,65 @@
   "config": {
     "feature": {
       "config": {
-        "can_replace": false,
-        "project": true,
-        "need_water": false,
-        "xspread": 5,
-        "yspread": 3,
-        "zspread": 5,
-        "whitelist": [
-          {
-            "Name": "electrona:radioactive_dirt"
-          }
-        ],
-        "blacklist": [],
-        "tries": 4,
-        "state_provider": {
-          "state": {
-            "Name": "electrona:radioactive_grass"
+        "feature": {
+          "config": {
+            "feature": {
+              "config": {
+                "can_replace": false,
+                "project": true,
+                "need_water": false,
+                "xspread": 5,
+                "yspread": 3,
+                "zspread": 5,
+                "whitelist": [
+                  {
+                    "Name": "electrona:radioactive_dirt"
+                  }
+                ],
+                "blacklist": [],
+                "tries": 4,
+                "state_provider": {
+                  "state": {
+                    "Name": "electrona:radioactive_grass"
+                  },
+                  "type": "minecraft:simple_state_provider"
+                },
+                "block_placer": {
+                  "type": "minecraft:simple_block_placer"
+                }
+              },
+              "type": "minecraft:random_patch"
+            },
+            "decorator": {
+              "config": {},
+              "type": "minecraft:spread_32_above"
+            }
           },
-          "type": "minecraft:simple_state_provider"
+          "type": "minecraft:decorated"
         },
-        "block_placer": {
-          "type": "minecraft:simple_block_placer"
-        }
-      },
-      "type": "minecraft:random_patch"
-    },
-    "decorator": {
-      "config": {
-        "outer": {
-          "config": {},
-          "type": "minecraft:square"
-        },
-        "inner": {
-          "config": {},
-          "type": "minecraft:heightmap_spread_double"
+        "decorator": {
+          "config": {
+            "outer": {
+              "config": {},
+              "type": "minecraft:square"
+            },
+            "inner": {
+              "config": {
+                "heightmap": "MOTION_BLOCKING"
+              },
+              "type": "minecraft:heightmap"
+            }
+          },
+          "type": "minecraft:decorated"
         }
       },
       "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {
+        "count": 2
+      },
+      "type": "minecraft:count"
     }
   },
   "type": "minecraft:decorated"
