@@ -1,12 +1,9 @@
 package net.reikeb.electrona.guis;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -19,19 +16,15 @@ import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.DimensionIDPacket;
 import net.reikeb.electrona.tileentities.TileDimensionLinker;
 
-import org.lwjgl.opengl.GL11;
-
-public class DimensionLinkerWindow extends AbstractContainerScreen<DimensionLinkerContainer> {
+public class DimensionLinkerWindow extends AbstractWindow<DimensionLinkerContainer> {
 
     private static final ResourceLocation DIMENSION_LINKER_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/dimension_linker_gui.png");
     public TileDimensionLinker tileEntity;
     EditBox dimension_id;
 
     public DimensionLinkerWindow(DimensionLinkerContainer container, Inventory inv, Component title) {
-        super(container, inv, title);
+        super(container, inv, title, DIMENSION_LINKER_GUI);
         this.tileEntity = container.getTileEntity();
-        this.imageWidth = 176;
-        this.imageHeight = 166;
     }
 
     @Override
@@ -48,15 +41,6 @@ public class DimensionLinkerWindow extends AbstractContainerScreen<DimensionLink
     }
 
     @Override
-    protected void renderBg(PoseStack ms, float par1, int par2, int par3) {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, DIMENSION_LINKER_GUI);
-        int k = (this.width - this.imageWidth) / 2;
-        int l = (this.height - this.imageHeight) / 2;
-        this.blit(ms, k, l, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
-    }
-
-    @Override
     public boolean keyPressed(int key, int b, int c) {
         if (key == 256) {
             this.minecraft.player.closeContainer();
@@ -67,12 +51,6 @@ public class DimensionLinkerWindow extends AbstractContainerScreen<DimensionLink
         return super.keyPressed(key, b, c);
     }
 
-    @Override
-    public void removed() {
-        super.removed();
-        Minecraft.getInstance().keyboardHandler.setSendRepeatsToGui(false);
-    }
-
     public String getDimensionID() {
         String id = tileEntity.getTileData().getString("dimensionID");
         return ((id.equals("")) ? "minecraft:overworld" : id);
@@ -80,6 +58,7 @@ public class DimensionLinkerWindow extends AbstractContainerScreen<DimensionLink
 
     @Override
     public void init() {
+        super.init();
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
         dimension_id = new EditBox(this.font, this.leftPos + 27, this.topPos + 28, 120, 20,
                 new TextComponent("minecraft:overworld")) {

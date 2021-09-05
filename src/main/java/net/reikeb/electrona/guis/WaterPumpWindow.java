@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -17,12 +17,11 @@ import net.reikeb.electrona.containers.WaterPumpContainer;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.WaterPumpActivationPacket;
 import net.reikeb.electrona.tileentities.TileWaterPump;
-
-import org.lwjgl.opengl.GL11;
+import net.reikeb.electrona.utils.ElectronaUtils;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class WaterPumpWindow extends AbstractContainerScreen<WaterPumpContainer> {
+public class WaterPumpWindow extends AbstractWindow<WaterPumpContainer> {
 
     private static final ResourceLocation WATER_PUMP_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/water_pump_gui.png");
     public TileWaterPump tileEntity;
@@ -38,10 +37,8 @@ public class WaterPumpWindow extends AbstractContainerScreen<WaterPumpContainer>
     final static int WATER_HEIGHT = 52;
 
     public WaterPumpWindow(WaterPumpContainer container, Inventory inv, Component title) {
-        super(container, inv, title);
+        super(container, inv, title, WATER_PUMP_GUI);
         this.tileEntity = container.getTileEntity();
-        this.imageWidth = 176;
-        this.imageHeight = 166;
     }
 
     @Override
@@ -75,8 +72,9 @@ public class WaterPumpWindow extends AbstractContainerScreen<WaterPumpContainer>
 
     @Override
     protected void renderBg(PoseStack matrixStack, float par1, int par2, int par3) {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, WATER_PUMP_GUI);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        ElectronaUtils.bind(WATER_PUMP_GUI);
         int k = (this.width - this.imageWidth) / 2;
         int l = (this.height - this.imageHeight) / 2;
         this.blit(matrixStack, k, l, 0, 0, this.imageWidth, this.imageHeight);
@@ -96,22 +94,8 @@ public class WaterPumpWindow extends AbstractContainerScreen<WaterPumpContainer>
     }
 
     @Override
-    public boolean keyPressed(int key, int b, int c) {
-        if (key == 256) {
-            this.minecraft.player.closeContainer();
-            return true;
-        }
-        return super.keyPressed(key, b, c);
-    }
-
-    @Override
-    public void removed() {
-        super.removed();
-        this.minecraft.keyboardHandler.setSendRepeatsToGui(false);
-    }
-
-    @Override
     public void init() {
+        super.init();
         this.addRenderableWidget(new Button(this.leftPos + 65, this.topPos + 39, 50, 20,
                 Component.nullToEmpty("On/Off"), e -> {
             NetworkManager.INSTANCE.sendToServer(new WaterPumpActivationPacket());

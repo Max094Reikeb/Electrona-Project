@@ -90,6 +90,10 @@ public class Electrona {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
+    public static ResourceLocation RL(String path) {
+        return new ResourceLocation(MODID, path);
+    }
+
     /**
      * This is the event you will use to add anything to any biome.
      * This includes spawns, changing the biome's looks, messing with its surfacebuilders,

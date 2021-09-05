@@ -3,7 +3,7 @@ package net.reikeb.electrona.guis;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -14,12 +14,11 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.PurificatorContainer;
 import net.reikeb.electrona.tileentities.TilePurificator;
-
-import org.lwjgl.opengl.GL11;
+import net.reikeb.electrona.utils.ElectronaUtils;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class PurificatorWindow extends AbstractContainerScreen<PurificatorContainer> {
+public class PurificatorWindow extends AbstractWindow<PurificatorContainer> {
 
     private static final ResourceLocation PURIFICATOR_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/purificator_gui.png");
     public TilePurificator tileEntity;
@@ -45,10 +44,8 @@ public class PurificatorWindow extends AbstractContainerScreen<PurificatorContai
     final static int WATER_HEIGHT = 52;
 
     public PurificatorWindow(PurificatorContainer container, Inventory inv, Component title) {
-        super(container, inv, title);
+        super(container, inv, title, PURIFICATOR_GUI);
         this.tileEntity = container.getTileEntity();
-        this.imageWidth = 176;
-        this.imageHeight = 166;
     }
 
     @Override
@@ -88,8 +85,9 @@ public class PurificatorWindow extends AbstractContainerScreen<PurificatorContai
 
     @Override
     protected void renderBg(PoseStack matrixStack, float par1, int par2, int par3) {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, PURIFICATOR_GUI);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        ElectronaUtils.bind(PURIFICATOR_GUI);
         int k = (this.width - this.imageWidth) / 2;
         int l = (this.height - this.imageHeight) / 2;
         this.blit(matrixStack, k, l, 0, 0, this.imageWidth, this.imageHeight);
@@ -117,25 +115,5 @@ public class PurificatorWindow extends AbstractContainerScreen<PurificatorContai
             this.blit(matrixStack, this.leftPos + WATER_XPOS, this.topPos + WATER_YPOS + yOffsetWater, WATER_ICON_U, WATER_ICON_V + yOffsetWater,
                     WATER_WIDTH, WATER_HEIGHT - yOffsetWater);
         }
-    }
-
-    @Override
-    public boolean keyPressed(int key, int b, int c) {
-        if (key == 256) {
-            this.minecraft.player.closeContainer();
-            return true;
-        }
-        return super.keyPressed(key, b, c);
-    }
-
-    @Override
-    public void removed() {
-        super.removed();
-        this.minecraft.keyboardHandler.setSendRepeatsToGui(false);
-    }
-
-    @Override
-    public void init() {
-        this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
     }
 }

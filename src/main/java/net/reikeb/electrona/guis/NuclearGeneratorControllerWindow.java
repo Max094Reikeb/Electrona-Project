@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -21,12 +21,11 @@ import net.reikeb.electrona.network.packets.NuclearActivatePacket;
 import net.reikeb.electrona.network.packets.NuclearBarStatusPacket;
 import net.reikeb.electrona.tileentities.TileCooler;
 import net.reikeb.electrona.tileentities.TileNuclearGeneratorController;
-
-import org.lwjgl.opengl.GL11;
+import net.reikeb.electrona.utils.ElectronaUtils;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class NuclearGeneratorControllerWindow extends AbstractContainerScreen<NuclearGeneratorControllerContainer> {
+public class NuclearGeneratorControllerWindow extends AbstractWindow<NuclearGeneratorControllerContainer> {
 
     private static final ResourceLocation NUCLEAR_GENERATOR_CONTROLLER_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/nuclear_generator_controller_gui.png");
     public TileNuclearGeneratorController tileEntity;
@@ -73,12 +72,10 @@ public class NuclearGeneratorControllerWindow extends AbstractContainerScreen<Nu
     final static int POWER_HEIGHT = 40;
 
     public NuclearGeneratorControllerWindow(NuclearGeneratorControllerContainer container, Inventory inv, Component title) {
-        super(container, inv, title);
+        super(container, inv, title, NUCLEAR_GENERATOR_CONTROLLER_GUI);
         this.tileEntity = container.getTileEntity();
         this.underTileEntity = inv.player.level.getBlockEntity(new BlockPos(tileEntity.getBlockPos().getX(),
                 (tileEntity.getBlockPos().getY() - 1), tileEntity.getBlockPos().getZ()));
-        this.imageWidth = 176;
-        this.imageHeight = 166;
     }
 
     @Override
@@ -132,8 +129,9 @@ public class NuclearGeneratorControllerWindow extends AbstractContainerScreen<Nu
 
     @Override
     protected void renderBg(PoseStack matrixStack, float par1, int par2, int par3) {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, NUCLEAR_GENERATOR_CONTROLLER_GUI);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        ElectronaUtils.bind(NUCLEAR_GENERATOR_CONTROLLER_GUI);
         int k = (this.width - this.imageWidth) / 2;
         int l = (this.height - this.imageHeight) / 2;
         this.blit(matrixStack, k, l, 0, 0, this.imageWidth, this.imageHeight);
@@ -184,23 +182,8 @@ public class NuclearGeneratorControllerWindow extends AbstractContainerScreen<Nu
     }
 
     @Override
-    public boolean keyPressed(int key, int b, int c) {
-        if (key == 256) {
-            this.minecraft.player.closeContainer();
-            return true;
-        }
-        return super.keyPressed(key, b, c);
-    }
-
-    @Override
-    public void removed() {
-        super.removed();
-        this.minecraft.keyboardHandler.setSendRepeatsToGui(false);
-    }
-
-    @Override
     public void init() {
-        super.init(minecraft, width, height);
+        super.init();
         this.addRenderableWidget(new Button(this.leftPos + 43, this.topPos + 60, 60, 20,
                 Component.nullToEmpty("In/Out"), e -> {
             NetworkManager.INSTANCE.sendToServer(new NuclearBarStatusPacket());

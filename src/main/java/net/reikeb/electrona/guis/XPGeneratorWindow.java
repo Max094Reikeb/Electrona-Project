@@ -1,10 +1,8 @@
 package net.reikeb.electrona.guis;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -16,18 +14,14 @@ import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.ExperienceHarvestPacket;
 import net.reikeb.electrona.tileentities.TileXPGenerator;
 
-import org.lwjgl.opengl.GL11;
-
-public class XPGeneratorWindow extends AbstractContainerScreen<XPGeneratorContainer> {
+public class XPGeneratorWindow extends AbstractWindow<XPGeneratorContainer> {
 
     private static final ResourceLocation XP_GENERATOR_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/xp_generator_gui.png");
     public TileXPGenerator tileEntity;
 
     public XPGeneratorWindow(XPGeneratorContainer container, Inventory inv, Component title) {
-        super(container, inv, title);
+        super(container, inv, title, XP_GENERATOR_GUI);
         this.tileEntity = container.getTileEntity();
-        this.imageWidth = 176;
-        this.imageHeight = 166;
     }
 
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
@@ -57,31 +51,8 @@ public class XPGeneratorWindow extends AbstractContainerScreen<XPGeneratorContai
     }
 
     @Override
-    protected void renderBg(PoseStack matrixStack, float par1, int par2, int par3) {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, XP_GENERATOR_GUI);
-        int k = (this.width - this.imageWidth) / 2;
-        int l = (this.height - this.imageHeight) / 2;
-        this.blit(matrixStack, k, l, 0, 0, this.imageWidth, this.imageHeight);
-    }
-
-    @Override
-    public boolean keyPressed(int key, int b, int c) {
-        if (key == 256) {
-            this.minecraft.player.closeContainer();
-            return true;
-        }
-        return super.keyPressed(key, b, c);
-    }
-
-    @Override
-    public void removed() {
-        super.removed();
-        this.minecraft.keyboardHandler.setSendRepeatsToGui(false);
-    }
-
-    @Override
     public void init() {
+        super.init();
         this.addRenderableWidget(new Button(this.leftPos + 98, this.topPos + 60, 70, 20,
                 new TranslatableComponent("gui.electrona.xp_generator.harvest_button"), e -> {
             NetworkManager.INSTANCE.sendToServer(new ExperienceHarvestPacket());

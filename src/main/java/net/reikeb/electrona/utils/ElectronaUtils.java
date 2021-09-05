@@ -1,5 +1,7 @@
 package net.reikeb.electrona.utils;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
@@ -62,6 +64,15 @@ public class ElectronaUtils {
         Vec3 vector3d1 = entity.getViewVector(height);
         Vec3 vector3d2 = vector3d.add(vector3d1.x * range, vector3d1.y * range, vector3d1.z * range);
         return entity.level.clip(new ClipContext(vector3d, vector3d2, ClipContext.Block.OUTLINE, includeFluids ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, entity));
+    }
+
+    /**
+     * Method to bind a texture from a RL to a RenderSystem
+     *
+     * @param res The ResourceLocation of the texture to bind
+     */
+    public static void bind(ResourceLocation res) {
+        RenderSystem.setShaderTexture(0, res);
     }
 
     public static class Gravity {
