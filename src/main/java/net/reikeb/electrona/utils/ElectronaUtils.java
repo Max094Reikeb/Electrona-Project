@@ -1,38 +1,29 @@
 package net.reikeb.electrona.utils;
 
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.item.FallingBlockEntity;
-import net.minecraft.util.*;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
-import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.network.NetworkManager;
-import net.reikeb.electrona.network.packets.BiomeSingleUpdatePacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.LinearCongruentialGenerator;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ChainBlock;
-import net.minecraft.world.level.block.FallingBlock;
-import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.FenceGateBlock;
-import net.minecraft.world.level.block.IronBarsBlock;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.LeverBlock;
-import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.TorchBlock;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkBiomeContainer;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
+
+import net.reikeb.electrona.Electrona;
+import net.reikeb.electrona.network.NetworkManager;
+import net.reikeb.electrona.network.packets.BiomeSingleUpdatePacket;
 
 public class ElectronaUtils {
 
@@ -145,6 +136,8 @@ public class ElectronaUtils {
     public static class Biome {
 
         private static final int WIDTH_BITS = (int) Math.round(Math.log(16.0D) / Math.log(2.0D)) - 2;
+        private static final int HEIGHT_BITS = (int) Math.round(Math.log(256.0D) / Math.log(2.0D)) - 2;
+        private static final int VERTICAL_MASK = (1 << HEIGHT_BITS) - 1;
 
         public static void setBiomeAtPos(Level world, BlockPos pos, ResourceLocation biome) {
             if (world.isClientSide) return;
@@ -158,7 +151,7 @@ public class ElectronaUtils {
             if (biome == null) return;
             ChunkBiomeContainer bc = world.getChunk(pos).getBiomes();
             ChunkAccess chunk = world.getChunk(pos);
-            if (bc != null && bc.biomes != null) {
+            if (bc != null) {
                 net.minecraft.world.level.biome.Biome[] biomeArray = bc.biomes;
                 int biomeIndex = getBiomeIndex(pos.getX(), pos.getY(), pos.getZ(), 0L);
                 if (biomeIndex < biomeArray.length) {
@@ -211,7 +204,7 @@ public class ElectronaUtils {
 
             int arrayIndex = i3 & ChunkBiomeContainer.HORIZONTAL_MASK;
             arrayIndex |= (k3 & ChunkBiomeContainer.HORIZONTAL_MASK) << WIDTH_BITS;
-            return arrayIndex | Mth.clamp(j3, 0, ChunkBiomeContainer.VERTICAL_MASK) << WIDTH_BITS + WIDTH_BITS;
+            return arrayIndex | Mth.clamp(j3, 0, VERTICAL_MASK) << WIDTH_BITS + WIDTH_BITS;
         }
 
         private static double func_226845_a_(long p_226845_0_, int p_226845_2_, int p_226845_3_, int p_226845_4_, double p_226845_5_, double p_226845_7_, double p_226845_9_) {

@@ -2,32 +2,34 @@ package net.reikeb.electrona.world.structures;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
-import net.minecraft.world.level.LevelHeightAccessor;
-import net.minecraft.world.level.NoiseColumn;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.structures.JigsawPlacement;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
-import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.init.EntityInit;
-import java.util.List;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.JigsawConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.structures.JigsawPlacement;
 import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+
+import net.reikeb.electrona.Electrona;
+import net.reikeb.electrona.init.EntityInit;
+
+import java.util.List;
 
 public class RuinsStructure extends StructureFeature<NoneFeatureConfiguration> {
 
@@ -85,10 +87,11 @@ public class RuinsStructure extends StructureFeature<NoneFeatureConfiguration> {
                     chunkGenerator,
                     templateManagerIn,
                     blockPos,
-                    this.pieces,
+                    this,
                     this.random,
                     false,
-                    true);
+                    false,
+                    levelHeightAccessor);
 
             // **THE FOLLOWING TWO LINES ARE OPTIONAL**
             //
@@ -108,9 +111,9 @@ public class RuinsStructure extends StructureFeature<NoneFeatureConfiguration> {
             // By lifting the house up by 1 and lowering the bounding box, the land at bottom of house will now be
             // flush with the surrounding terrain without blocking off the doorstep.
             this.pieces.forEach(piece -> piece.move(0, 1, 0));
-            this.pieces.forEach(piece -> piece.getBoundingBox().y0 -= 1);
+            this.pieces.forEach(piece -> piece.getBoundingBox().minY -= 1);
 
-            this.calculateBoundingBox();
+            this.getBoundingBox();
         }
     }
 }
