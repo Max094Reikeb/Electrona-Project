@@ -2,10 +2,7 @@ package net.reikeb.electrona.containers;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -16,23 +13,23 @@ import net.reikeb.electrona.tileentities.TileXPGenerator;
 
 import static net.reikeb.electrona.init.ContainerInit.XP_GENERATOR_CONTAINER;
 
-public class XPGeneratorContainer extends AbstractContainerMenu {
+public class XPGeneratorContainer extends AbstractContainer {
 
     public TileXPGenerator tileEntity;
 
     public XPGeneratorContainer(MenuType<?> type, int id) {
-        super(type, id);
+        super(type, id, 1);
     }
 
     // Client
     public XPGeneratorContainer(int id, Inventory inv, FriendlyByteBuf buf) {
-        super(XP_GENERATOR_CONTAINER.get(), id);
+        super(XP_GENERATOR_CONTAINER.get(), id, 1);
         this.init(inv, this.tileEntity = (TileXPGenerator) inv.player.level.getBlockEntity(buf.readBlockPos()));
     }
 
     // Server
     public XPGeneratorContainer(int id, Inventory inv, TileXPGenerator tile) {
-        super(XP_GENERATOR_CONTAINER.get(), id);
+        super(XP_GENERATOR_CONTAINER.get(), id, 1);
         this.init(inv, this.tileEntity = tile);
     }
 
@@ -48,62 +45,9 @@ public class XPGeneratorContainer extends AbstractContainerMenu {
                 });
             });
         }
-        layoutPlayerInventorySlots(playerInv);
     }
 
     public TileXPGenerator getTileEntity() {
         return this.tileEntity;
-    }
-
-    private void layoutPlayerInventorySlots(Inventory playerInv) {
-        int si;
-        int sj;
-        for (si = 0; si < 3; ++si)
-            for (sj = 0; sj < 9; ++sj)
-                addSlot(new Slot(playerInv, sj + (si + 1) * 9, 8 + sj * 18, 84 + si * 18));
-        for (si = 0; si < 9; ++si)
-            addSlot(new Slot(playerInv, si, 8 + si * 18, 142));
-    }
-
-    @Override
-    public boolean stillValid(Player playerEntity) {
-        return true;
-    }
-
-    @Override
-    public ItemStack quickMoveStack(Player playerIn, int index) {
-        ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = (Slot) this.slots.get(index);
-        if (slot != null && slot.hasItem()) {
-            ItemStack itemstack1 = slot.getItem();
-            itemstack = itemstack1.copy();
-            if (index < 1) {
-                if (!this.moveItemStackTo(itemstack1, 1, this.slots.size(), true)) {
-                    return ItemStack.EMPTY;
-                }
-                slot.onQuickCraft(itemstack1, itemstack);
-            } else if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
-                if (index < 1 + 27) {
-                    if (!this.moveItemStackTo(itemstack1, 1 + 27, this.slots.size(), true)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else {
-                    if (!this.moveItemStackTo(itemstack1, 1, 1 + 27, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                }
-                return ItemStack.EMPTY;
-            }
-            if (itemstack1.getCount() == 0) {
-                slot.set(ItemStack.EMPTY);
-            } else {
-                slot.setChanged();
-            }
-            if (itemstack1.getCount() == itemstack.getCount()) {
-                return ItemStack.EMPTY;
-            }
-            slot.onTake(playerIn, itemstack1);
-        }
-        return itemstack;
     }
 }
