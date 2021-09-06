@@ -13,7 +13,7 @@ import net.reikeb.electrona.tileentities.TileBattery;
 
 public class BatteryWindow extends AbstractWindow<BatteryContainer> {
 
-    private static final ResourceLocation BATTERY_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/battery_gui.png");
+    private static final ResourceLocation BATTERY_GUI = Electrona.RL("textures/guis/battery_gui.png");
     public TileBattery tileEntity;
 
     public BatteryWindow(BatteryContainer container, Inventory inv, Component title) {

@@ -13,7 +13,7 @@ import net.reikeb.electrona.tileentities.TileBiomassGenerator;
 
 public class BiomassGeneratorWindow extends AbstractWindow<BiomassGeneratorContainer> {
 
-    private static final ResourceLocation BIOMASS_GENERATOR_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/biomass_generator_gui.png");
+    private static final ResourceLocation BIOMASS_GENERATOR_GUI = Electrona.RL("textures/guis/biomass_generator_gui.png");
     public TileBiomassGenerator tileEntity;
 
     public BiomassGeneratorWindow(BiomassGeneratorContainer container, Inventory inv, Component title) {

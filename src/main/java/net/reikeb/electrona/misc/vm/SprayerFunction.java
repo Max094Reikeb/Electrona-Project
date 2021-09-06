@@ -7,6 +7,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.PotionItem;
@@ -49,34 +50,32 @@ public class SprayerFunction {
         tileSprayer.getTileData().putInt("radius", 5 + (boostCount * 3));
         if ((!(inv.getStackInSlot(0).isEmpty())) && (electronicPower >= 200)) {
             double radiusEffect = tileSprayer.getTileData().getInt("radius");
-            {
-                List<Entity> _entfound = world.getEntitiesOfClass(Entity.class,
-                        new AABB(x - radiusEffect, y - radiusEffect, z - radiusEffect,
-                                x + radiusEffect, y + radiusEffect, z + radiusEffect),
-                        null).stream().sorted(new Object() {
-                    Comparator<Entity> compareDistOf(double _x, double _y, double _z) {
-                        return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(_x, _y, _z));
-                    }
-                }.compareDistOf(x, y, z)).collect(Collectors.toList());
-                for (Entity entityiterator : _entfound) {
-                    if (entityiterator instanceof LivingEntity) {
-                        if (inv.getStackInSlot(0).getItem().isEdible()) {
-                            tileSprayer.getTileData().putDouble("ElectronicPower", (electronicPower - 200));
-                            FoodProperties usedFood = inv.getStackInSlot(0).getItem().getFoodProperties();
-                            for (Pair<MobEffectInstance, Float> pairiterator : usedFood.getEffects()) {
-                                if (world.getRandom().nextFloat() < pairiterator.getSecond()) {
-                                    ((LivingEntity) entityiterator).addEffect(pairiterator.getFirst());
-                                }
-                            }
-                            inv.decrStackSize(0, 1);
-                        } else if (inv.getStackInSlot(0).getItem() instanceof PotionItem) {
-                            tileSprayer.getTileData().putDouble("ElectronicPower", (electronicPower - 200));
-                            for (MobEffectInstance effectiterator : PotionUtils.getMobEffects(inv.getStackInSlot(0))) {
-                                ((LivingEntity) entityiterator).addEffect(new MobEffectInstance(effectiterator));
-                            }
-                            inv.decrStackSize(0, 1);
+            if (world == null) return;
+            List<LivingEntity> livingEntities = world.getEntitiesOfClass(LivingEntity.class,
+                    new AABB(x - radiusEffect, y - radiusEffect, z - radiusEffect,
+                            x + radiusEffect, y + radiusEffect, z + radiusEffect),
+                    EntitySelector.LIVING_ENTITY_STILL_ALIVE).stream().sorted(new Object() {
+                        Comparator<Entity> compareDistOf(double x, double y, double z) {
+                            return Comparator.comparing(axis -> axis.distanceToSqr(x, y, z));
+                        }
+            }.compareDistOf(x, y, z)).collect(Collectors.toList());
+            for (LivingEntity entityiterator : livingEntities) {
+                if (inv.getStackInSlot(0).getItem().isEdible()) {
+                    tileSprayer.getTileData().putDouble("ElectronicPower", (electronicPower - 200));
+                    FoodProperties usedFood = inv.getStackInSlot(0).getItem().getFoodProperties();
+                    if (usedFood == null) return;
+                    for (Pair<MobEffectInstance, Float> pairiterator : usedFood.getEffects()) {
+                        if (world.getRandom().nextFloat() < pairiterator.getSecond()) {
+                            entityiterator.addEffect(pairiterator.getFirst());
                         }
                     }
+                    inv.decrStackSize(0, 1);
+                } else if (inv.getStackInSlot(0).getItem() instanceof PotionItem) {
+                    tileSprayer.getTileData().putDouble("ElectronicPower", (electronicPower - 200));
+                    for (MobEffectInstance effectiterator : PotionUtils.getMobEffects(inv.getStackInSlot(0))) {
+                        entityiterator.addEffect(new MobEffectInstance(effectiterator));
+                    }
+                    inv.decrStackSize(0, 1);
                 }
             }
         }

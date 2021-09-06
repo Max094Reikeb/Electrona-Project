@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ConverterWindow extends AbstractWindow<ConverterContainer> {
 
-    private static final ResourceLocation CONVERTER_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/converter_gui.png");
+    private static final ResourceLocation CONVERTER_GUI = Electrona.RL("textures/guis/converter_gui.png");
     public TileConverter tileEntity;
 
     public ConverterWindow(ConverterContainer container, Inventory inv, Component title) {

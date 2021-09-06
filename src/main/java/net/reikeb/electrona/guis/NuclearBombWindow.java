@@ -13,7 +13,7 @@ import net.reikeb.electrona.tileentities.TileNuclearBomb;
 
 public class NuclearBombWindow extends AbstractWindow<NuclearBombContainer> {
 
-    private static final ResourceLocation NUCLEAR_BOMB_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/nuclear_bomb_gui.png");
+    private static final ResourceLocation NUCLEAR_BOMB_GUI = Electrona.RL("textures/guis/nuclear_bomb_gui.png");
     public TileNuclearBomb tileEntity;
 
     public NuclearBombWindow(NuclearBombContainer container, Inventory inv, Component title) {

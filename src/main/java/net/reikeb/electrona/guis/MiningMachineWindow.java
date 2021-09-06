@@ -13,7 +13,7 @@ import net.reikeb.electrona.tileentities.TileMiningMachine;
 
 public class MiningMachineWindow extends AbstractWindow<MiningMachineContainer> {
 
-    private static final ResourceLocation MINING_MACHINE_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/mining_machine_gui.png");
+    private static final ResourceLocation MINING_MACHINE_GUI = Electrona.RL("textures/guis/mining_machine_gui.png");
     public TileMiningMachine tileEntity;
 
     public MiningMachineWindow(MiningMachineContainer container, Inventory inv, Component title) {

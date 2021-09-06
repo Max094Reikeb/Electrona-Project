@@ -18,7 +18,7 @@ import net.reikeb.electrona.tileentities.TileDimensionLinker;
 
 public class DimensionLinkerWindow extends AbstractWindow<DimensionLinkerContainer> {
 
-    private static final ResourceLocation DIMENSION_LINKER_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/dimension_linker_gui.png");
+    private static final ResourceLocation DIMENSION_LINKER_GUI = Electrona.RL("textures/guis/dimension_linker_gui.png");
     public TileDimensionLinker tileEntity;
     EditBox dimension_id;
 

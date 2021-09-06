@@ -17,7 +17,7 @@ import net.reikeb.electrona.tileentities.TileTeleporter;
 
 public class TeleporterWindow extends AbstractWindow<TeleporterContainer> {
 
-    private static final ResourceLocation TELEPORTER_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/teleporter_gui.png");
+    private static final ResourceLocation TELEPORTER_GUI = Electrona.RL("textures/guis/teleporter_gui.png");
     public TileTeleporter tileEntity;
 
     public TeleporterWindow(TeleporterContainer container, Inventory inv, Component title) {

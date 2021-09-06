@@ -51,7 +51,6 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void init(final FMLClientSetupEvent event) {
-
         // Connect Containers and Windows
         MenuScreens.register(BIOMASS_GENERATOR_CONTAINER.get(), BiomassGeneratorWindow::new);
         MenuScreens.register(NUCLEAR_GENERATOR_CONTAINER.get(), NuclearGeneratorControllerWindow::new);

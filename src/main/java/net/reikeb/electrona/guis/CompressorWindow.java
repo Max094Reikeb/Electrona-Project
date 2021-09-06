@@ -13,7 +13,7 @@ import net.reikeb.electrona.tileentities.TileCompressor;
 
 public class CompressorWindow extends AbstractWindow<CompressorContainer> {
 
-    private static final ResourceLocation COMPRESSOR_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/compressor_gui.png");
+    private static final ResourceLocation COMPRESSOR_GUI = Electrona.RL("textures/guis/compressor_gui.png");
     public TileCompressor tileEntity;
 
     public CompressorWindow(CompressorContainer container, Inventory inv, Component title) {

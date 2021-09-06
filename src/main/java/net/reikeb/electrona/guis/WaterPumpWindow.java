@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class WaterPumpWindow extends AbstractWindow<WaterPumpContainer> {
 
-    private static final ResourceLocation WATER_PUMP_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/water_pump_gui.png");
+    private static final ResourceLocation WATER_PUMP_GUI = Electrona.RL("textures/guis/water_pump_gui.png");
     public TileWaterPump tileEntity;
 
     /**

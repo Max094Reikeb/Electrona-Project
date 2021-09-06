@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class PurificatorWindow extends AbstractWindow<PurificatorContainer> {
 
-    private static final ResourceLocation PURIFICATOR_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/purificator_gui.png");
+    private static final ResourceLocation PURIFICATOR_GUI = Electrona.RL("textures/guis/purificator_gui.png");
     public TilePurificator tileEntity;
 
     /**

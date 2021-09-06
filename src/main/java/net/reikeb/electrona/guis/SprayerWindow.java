@@ -13,7 +13,7 @@ import net.reikeb.electrona.tileentities.TileSprayer;
 
 public class SprayerWindow extends AbstractWindow<SprayerContainer> {
 
-    private static final ResourceLocation SPRAYER_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/sprayer_gui.png");
+    private static final ResourceLocation SPRAYER_GUI = Electrona.RL("textures/guis/sprayer_gui.png");
     public TileSprayer tileEntity;
 
     public SprayerWindow(SprayerContainer container, Inventory inv, Component title) {

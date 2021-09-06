@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class NuclearGeneratorControllerWindow extends AbstractWindow<NuclearGeneratorControllerContainer> {
 
-    private static final ResourceLocation NUCLEAR_GENERATOR_CONTROLLER_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/nuclear_generator_controller_gui.png");
+    private static final ResourceLocation NUCLEAR_GENERATOR_CONTROLLER_GUI = Electrona.RL("textures/guis/nuclear_generator_controller_gui.png");
     public TileNuclearGeneratorController tileEntity;
     public BlockEntity underTileEntity;
 

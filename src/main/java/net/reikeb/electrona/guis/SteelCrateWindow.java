@@ -13,7 +13,7 @@ import net.reikeb.electrona.tileentities.TileSteelCrate;
 
 public class SteelCrateWindow extends AbstractWindow<SteelCrateContainer> {
 
-    private static final ResourceLocation STEEL_CRATE_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/steel_crate_gui.png");
+    private static final ResourceLocation STEEL_CRATE_GUI = Electrona.RL("textures/guis/steel_crate_gui.png");
     public TileSteelCrate tileEntity;
 
     public SteelCrateWindow(SteelCrateContainer container, Inventory inv, Component title) {

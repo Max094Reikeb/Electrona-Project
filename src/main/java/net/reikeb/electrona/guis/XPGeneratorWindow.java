@@ -16,7 +16,7 @@ import net.reikeb.electrona.tileentities.TileXPGenerator;
 
 public class XPGeneratorWindow extends AbstractWindow<XPGeneratorContainer> {
 
-    private static final ResourceLocation XP_GENERATOR_GUI = new ResourceLocation(Electrona.MODID, "textures/guis/xp_generator_gui.png");
+    private static final ResourceLocation XP_GENERATOR_GUI = Electrona.RL("textures/guis/xp_generator_gui.png");
     public TileXPGenerator tileEntity;
 
     public XPGeneratorWindow(XPGeneratorContainer container, Inventory inv, Component title) {
