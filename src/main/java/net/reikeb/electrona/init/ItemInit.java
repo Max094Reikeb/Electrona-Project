@@ -49,6 +49,7 @@ public class ItemInit {
     public static final RegistryObject<Item> GEIGER_POINTER = ITEMS.register("geiger_pointer", GeigerPointer::new);
     public static final RegistryObject<Item> COSMIC_GEM = ITEMS.register("cosmic_gem", CosmicGem::new);
     public static final RegistryObject<Item> GRAVITY_DEVICE = ITEMS.register("gravity_device", GravityDevice::new);
+    public static final RegistryObject<Item> ENERGY_ANALYZER = ITEMS.register("energy_analyzer", EnergyAnalyzer::new);
 
     // Tools and armors
     public static final RegistryObject<Item> HAMMER = ITEMS.register("hammer", Hammer::new);
