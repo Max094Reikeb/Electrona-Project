@@ -5,7 +5,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 
@@ -20,14 +22,14 @@ import static net.reikeb.electrona.init.TileEntityInit.TILE_WATER_CABLE;
 
 public class TileWaterCable extends BlockEntity {
 
+    public static final BlockEntityTicker<TileWaterCable> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private boolean cableLogic;
 
     public TileWaterCable(BlockPos pos, BlockState state) {
         super(TILE_WATER_CABLE.get(), pos, state);
     }
 
-    public void tick() {
-
+    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         // We pass energy to blocks around (this part is common to all cables)
         CableFunction.cableTransferFluid(this.level, this.getBlockPos(), Direction.values(), this, this.fluidTank.getFluidAmount(), 100);
 

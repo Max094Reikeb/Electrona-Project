@@ -7,6 +7,7 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.misc.vm.EnergyFunction;
@@ -15,6 +16,7 @@ import static net.reikeb.electrona.init.TileEntityInit.TILE_SOLAR_PANEL_T_2;
 
 public class TileSolarPanelT2 extends BlockEntity {
 
+    public static final BlockEntityTicker<TileSolarPanelT2> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private double electronicPower;
     private int maxStorage;
 
@@ -22,11 +24,7 @@ public class TileSolarPanelT2 extends BlockEntity {
         super(TILE_SOLAR_PANEL_T_2.get(), pos, state);
     }
 
-    public void tick() {
-        // We get the variables
-        Level world = this.level;
-        BlockPos blockPos = this.getBlockPos();
-
+    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         // We get the NBT Tags
         this.getTileData().putInt("MaxStorage", 2000);
         double electronicPower = this.getTileData().getDouble("ElectronicPower");
@@ -34,8 +32,7 @@ public class TileSolarPanelT2 extends BlockEntity {
         if (world != null) { // Avoid NullPointerExceptions
 
             // We generate the energy (this part is uncommon for all generators)
-            if ((world.canSeeSky(new BlockPos(blockPos.getX(), (blockPos.getY() + 1), blockPos.getZ())))
-                    && (world.isDay())) {
+            if ((world.canSeeSky(blockPos.above())) && (world.isDay())) {
                 if (electronicPower < 1996) {
                     if ((world.getLevelData().isRaining() || world.getLevelData().isThundering())) {
                         this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.2));

@@ -14,6 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 
@@ -38,6 +40,7 @@ import static net.reikeb.electrona.init.TileEntityInit.TILE_WATER_PUMP;
 
 public class TileWaterPump extends AbstractTileEntity {
 
+    public static final BlockEntityTicker<TileWaterPump> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     public double electronicPower;
     private int maxStorage;
     private boolean isOn;
@@ -67,12 +70,7 @@ public class TileWaterPump extends AbstractTileEntity {
         return new WaterPumpContainer(ContainerInit.WATER_PUMP_CONTAINER.get(), id);
     }
 
-    public void tick() {
-        // We get the variables
-        Level world = this.level;
-        BlockPos blockPos = this.getBlockPos();
-        BlockPos posUnder = new BlockPos(blockPos.getX(), (blockPos.getY() - 1), blockPos.getZ());
-
+    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         // We get the NBT Tags
         this.getTileData().putInt("MaxStorage", 1000);
         double electronicPower = this.getTileData().getDouble("ElectronicPower");
@@ -92,26 +90,26 @@ public class TileWaterPump extends AbstractTileEntity {
                 wait += 1;
                 if (wait >= 15) {
                     if (electronicPower >= 20
-                            && Blocks.WATER == world.getBlockState(posUnder).getBlock()) {
+                            && Blocks.WATER == world.getBlockState(blockPos.below()).getBlock()) {
                         if (tankCapacity.get() >= (waterLevel.get() + 100)) {
                             FluidFunction.fillWater(this, 100);
                             electronicPower -= 20;
-                            world.setBlockAndUpdate(posUnder, Blocks.AIR.defaultBlockState());
+                            world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
                             world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                         } else if (tankCapacity.get() >= (waterLevel.get() + 50)) {
                             FluidFunction.fillWater(this, 50);
                             electronicPower -= 10;
-                            world.setBlockAndUpdate(posUnder, Blocks.AIR.defaultBlockState());
+                            world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
                             world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                         } else if (tankCapacity.get() >= (waterLevel.get() + 10)) {
                             FluidFunction.fillWater(this, 10);
                             electronicPower -= 2;
-                            world.setBlockAndUpdate(posUnder, Blocks.AIR.defaultBlockState());
+                            world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
                             world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                         } else if (tankCapacity.get() > waterLevel.get()) {
                             FluidFunction.fillWater(this, 1);
                             electronicPower -= 0.2;
-                            world.setBlockAndUpdate(posUnder, Blocks.AIR.defaultBlockState());
+                            world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
                             world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                         } else {
                             isOn = false;

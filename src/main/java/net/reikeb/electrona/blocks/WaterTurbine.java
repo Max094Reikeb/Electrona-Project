@@ -8,8 +8,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
@@ -21,6 +24,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import net.reikeb.electrona.init.TileEntityInit;
 import net.reikeb.electrona.misc.vm.CustomShapes;
 import net.reikeb.electrona.tileentities.TileWaterTurbine;
 import net.reikeb.electrona.utils.ElectronaUtils;
@@ -102,5 +106,11 @@ public class WaterTurbine extends AbstractWaterLoggableBlock implements EntityBl
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new TileWaterTurbine(pos, state);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
+        return blockEntityType == TileEntityInit.TILE_WATER_TURBINE.get() ? (BlockEntityTicker<T>) TileWaterTurbine.TICKER : null;
     }
 }

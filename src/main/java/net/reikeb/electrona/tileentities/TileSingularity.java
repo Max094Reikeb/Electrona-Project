@@ -4,7 +4,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.misc.vm.BlackHoleFunction;
@@ -13,6 +15,7 @@ import static net.reikeb.electrona.init.TileEntityInit.TILE_SINGULARITY;
 
 public class TileSingularity extends BlockEntity {
 
+    public static final BlockEntityTicker<TileSingularity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private int wait;
     private int delay;
 
@@ -25,7 +28,7 @@ public class TileSingularity extends BlockEntity {
         super.setRemoved();
     }
 
-    public void tick() {
+    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         if (this.level == null) return; // Avoid NullPointerExceptions
         int wait = this.getTileData().getInt("wait");
         int delay = this.getTileData().getInt("delay");

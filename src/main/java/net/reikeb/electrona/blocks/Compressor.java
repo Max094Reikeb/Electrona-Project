@@ -16,6 +16,8 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -28,8 +30,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
+import net.reikeb.electrona.init.TileEntityInit;
 import net.reikeb.electrona.tileentities.TileCompressor;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
@@ -122,5 +126,11 @@ public class Compressor extends Block implements EntityBlock {
         super.triggerEvent(state, world, pos, eventID, eventParam);
         BlockEntity tileentity = world.getBlockEntity(pos);
         return tileentity != null && tileentity.triggerEvent(eventID, eventParam);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
+        return blockEntityType == TileEntityInit.TILE_COMPRESSOR.get() ? (BlockEntityTicker<T>) TileCompressor.TICKER : null;
     }
 }

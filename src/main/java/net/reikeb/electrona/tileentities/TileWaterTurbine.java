@@ -8,6 +8,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 
@@ -18,6 +19,7 @@ import static net.reikeb.electrona.init.TileEntityInit.TILE_WATER_TURBINE;
 
 public class TileWaterTurbine extends BlockEntity {
 
+    public static final BlockEntityTicker<TileWaterTurbine> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private double electronicPower;
     private int maxStorage;
 
@@ -29,10 +31,8 @@ public class TileWaterTurbine extends BlockEntity {
         return this.getBlockState().getValue(WaterTurbine.FACING);
     }
 
-    public void tick() {
+    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         // We get the variables
-        Level world = this.level;
-        BlockPos blockPos = this.getBlockPos();
         BlockPos frontPos = blockPos.relative(this.getDirection().getOpposite());
         BlockPos backPos = blockPos.relative(this.getDirection());
 

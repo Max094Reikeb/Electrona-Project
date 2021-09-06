@@ -41,7 +41,7 @@ public class TileEntityInit {
     public static final RegistryObject<BlockEntityType<TileBattery>> TILE_BATTERY = TILE_ENTITIES.register("battery", () ->
             BlockEntityType.Builder.of(TileBattery::new, BlockInit.BATTERY.get()).build(null));
 
-    public static final RegistryObject<BlockEntityType<TileConverter>> TILE_CONTERTER = TILE_ENTITIES.register("el_converter", () ->
+    public static final RegistryObject<BlockEntityType<TileConverter>> TILE_CONVERTER = TILE_ENTITIES.register("el_converter", () ->
             BlockEntityType.Builder.of(TileConverter::new, BlockInit.EL_CONVERTER.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<TileCompressor>> TILE_COMPRESSOR = TILE_ENTITIES.register("compressor", () ->

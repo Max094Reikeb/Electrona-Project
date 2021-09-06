@@ -13,6 +13,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -36,6 +38,7 @@ import static net.reikeb.electrona.init.TileEntityInit.TILE_COMPRESSOR;
 
 public class TileCompressor extends AbstractTileEntity {
 
+    public static final BlockEntityTicker<TileCompressor> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     public double electronicPower;
     private int maxStorage;
 
@@ -69,14 +72,12 @@ public class TileCompressor extends AbstractTileEntity {
         return new CompressorContainer(ContainerInit.COMPRESSOR_CONTAINER.get(), id);
     }
 
-    public void tick() {
-        Level world = this.level;
-        BlockPos blockPos = this.getBlockPos();
+    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         ItemStack stackInSlot0 = this.inventory.getStackInSlot(0);
         ItemStack stackInSlot1 = this.inventory.getStackInSlot(1);
 
-        double electronicPower = this.getTileData().getDouble("ElectronicPower");
-        this.getTileData().putInt("MaxStorage", 5000);
+        double electronicPower = t.getTileData().getDouble("ElectronicPower");
+        t.getTileData().putInt("MaxStorage", 5000);
 
         if ((world != null) && (!world.isClientSide)) {
             if ((electronicPower > 0) && (this.getRecipe(stackInSlot0, stackInSlot1) != null)) {
@@ -100,23 +101,23 @@ public class TileCompressor extends AbstractTileEntity {
                                     SoundSource.BLOCKS, 0.6F, 1.0F);
                         }
                     }
-                    this.getTileData().putDouble("ElectronicPower", electronicPower);
+                    t.getTileData().putDouble("ElectronicPower", electronicPower);
                 } else {
                     this.currentCompressingTime = 0;
                 }
             } else {
                 this.currentCompressingTime = 0;
             }
-            world.setBlockAndUpdate(blockPos, this.getBlockState()
+            world.setBlockAndUpdate(blockPos, state
                     .setValue(Compressor.COMPRESSING, this.currentCompressingTime > 0));
 
-            this.getTileData().putInt("CurrentCompressingTime", this.currentCompressingTime);
-            this.getTileData().putInt("CompressingTime", this.compressingTime);
+            t.getTileData().putInt("CurrentCompressingTime", this.currentCompressingTime);
+            t.getTileData().putInt("CompressingTime", this.compressingTime);
         }
 
         if (world != null) {
-            this.setChanged();
-            world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(),
+            t.setChanged();
+            world.sendBlockUpdated(blockPos, state, state,
                     Constants.BlockFlags.BLOCK_UPDATE);
         }
     }

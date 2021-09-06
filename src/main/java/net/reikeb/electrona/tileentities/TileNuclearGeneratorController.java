@@ -15,6 +15,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraftforge.common.util.Constants;
@@ -33,6 +34,7 @@ import static net.reikeb.electrona.init.TileEntityInit.TILE_NUCLEAR_GENERATOR_CO
 
 public class TileNuclearGeneratorController extends AbstractTileEntity {
 
+    public static final BlockEntityTicker<TileNuclearGeneratorController> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     public double electronicPower;
     private int maxStorage;
     private int temperature;
@@ -65,10 +67,8 @@ public class TileNuclearGeneratorController extends AbstractTileEntity {
         return new NuclearGeneratorControllerContainer(ContainerInit.NUCLEAR_GENERATOR_CONTAINER.get(), id);
     }
 
-    public void tick() {
-        Level world = this.level;
+    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         if (world == null) return;
-        BlockPos blockPos = this.getBlockPos();
         ItemStack stackInSlot0 = this.inventory.getStackInSlot(0);
 
         BlockPos posUnder = new BlockPos(blockPos.getX(), (blockPos.getY() - 1), blockPos.getZ());

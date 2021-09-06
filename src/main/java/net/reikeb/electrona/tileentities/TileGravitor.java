@@ -9,7 +9,9 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -29,6 +31,7 @@ import java.util.Random;
 
 public class TileGravitor extends BlockEntity {
 
+    public static final BlockEntityTicker<TileGravitor> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     public int tickCount;
     private float activeRotation;
     private boolean isActive;
@@ -47,7 +50,7 @@ public class TileGravitor extends BlockEntity {
         super(tileEntityType, pos, state);
     }
 
-    public void tick() {
+    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         if (this.level == null) return;
 
         this.getTileData().putInt("MaxStorage", 50);

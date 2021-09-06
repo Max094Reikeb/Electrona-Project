@@ -5,8 +5,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -16,6 +19,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.reikeb.electrona.init.TileEntityInit;
 import net.reikeb.electrona.misc.vm.CustomShapes;
 import net.reikeb.electrona.tileentities.TileEnergeticLightningRod;
 import net.reikeb.electrona.utils.ElectronaUtils;
@@ -103,5 +107,11 @@ public class EnergeticLightningRod extends AbstractWaterLoggableBlock implements
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new TileEnergeticLightningRod(pos, state);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
+        return blockEntityType == TileEntityInit.TILE_ENERGETIC_LIGHTNING_ROD.get() ? (BlockEntityTicker<T>) TileEnergeticLightningRod.TICKER : null;
     }
 }

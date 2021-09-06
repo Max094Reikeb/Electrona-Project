@@ -10,6 +10,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraftforge.common.capabilities.Capability;
@@ -24,10 +26,11 @@ import net.reikeb.electrona.init.ContainerInit;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 
-import static net.reikeb.electrona.init.TileEntityInit.TILE_CONTERTER;
+import static net.reikeb.electrona.init.TileEntityInit.TILE_CONVERTER;
 
 public class TileConverter extends AbstractTileEntity {
 
+    public static final BlockEntityTicker<TileConverter> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     public double electronicPower;
     private int maxStorage;
     private boolean toVP;
@@ -36,7 +39,7 @@ public class TileConverter extends AbstractTileEntity {
     private int wait;
 
     public TileConverter(BlockPos pos, BlockState state) {
-        super(TILE_CONTERTER.get(), pos, state, 3);
+        super(TILE_CONVERTER.get(), pos, state, 3);
     }
 
     @Override
@@ -59,11 +62,7 @@ public class TileConverter extends AbstractTileEntity {
         return new ConverterContainer(ContainerInit.CONVERTER_CONTAINER.get(), id);
     }
 
-    public void tick() {
-        // We get the variables
-        Level world = this.level;
-        BlockPos blockPos = this.getBlockPos();
-
+    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         // We get the NBT Tags
         this.getTileData().putInt("MaxStorage", 10000);
         double electronicPower = this.getTileData().getDouble("ElectronicPower");

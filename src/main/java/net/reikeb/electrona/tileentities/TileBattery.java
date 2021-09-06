@@ -10,19 +10,24 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraftforge.common.util.Constants;
 
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.reikeb.electrona.containers.BatteryContainer;
 import net.reikeb.electrona.init.ContainerInit;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import static net.reikeb.electrona.init.TileEntityInit.TILE_BATTERY;
 
 public class TileBattery extends AbstractTileEntity {
 
+    public static final BlockEntityTicker<TileBattery> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     public double electronicPower;
     private int maxStorage;
 
@@ -50,30 +55,26 @@ public class TileBattery extends AbstractTileEntity {
         return new BatteryContainer(ContainerInit.BATTERY_CONTAINER.get(), id);
     }
 
-    public void tick() {
-        // We get the variables
-        Level world = this.level;
-        BlockPos blockPos = this.getBlockPos();
-
+    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         // We get the NBT Tags
-        this.getTileData().putInt("MaxStorage", 10000);
-        double electronicPower = this.getTileData().getDouble("ElectronicPower");
+        t.getTileData().putInt("MaxStorage", 10000);
+        double electronicPower = t.getTileData().getDouble("ElectronicPower");
 
         if (world != null) { // Avoid NullPointerExceptions
 
             // Input slots - Handling slots
-            EnergyFunction.transferEnergyWithItemSlot(this.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), inventory, true, electronicPower, 1, 4);
-            EnergyFunction.transferEnergyWithItemSlot(this.getTileData(), ItemInit.MECHANIC_WINGS.get().asItem(), inventory, true, electronicPower, 1, 8);
-            EnergyFunction.transferEnergyWithItemSlot(this.getTileData(), ItemInit.PORTABLE_TELEPORTER.get().asItem(), inventory, true, electronicPower, 1, 8);
+            EnergyFunction.transferEnergyWithItemSlot(t.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), inventory, true, electronicPower, 1, 4);
+            EnergyFunction.transferEnergyWithItemSlot(t.getTileData(), ItemInit.MECHANIC_WINGS.get().asItem(), inventory, true, electronicPower, 1, 8);
+            EnergyFunction.transferEnergyWithItemSlot(t.getTileData(), ItemInit.PORTABLE_TELEPORTER.get().asItem(), inventory, true, electronicPower, 1, 8);
 
             // Output slot - Handling slots
-            EnergyFunction.transferEnergyWithItemSlot(this.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), inventory, false, electronicPower, 0, 4);
+            EnergyFunction.transferEnergyWithItemSlot(t.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), inventory, false, electronicPower, 0, 4);
 
             // We pass energy to blocks around (this part is common to all generators)
-            EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 6, electronicPower, false);
+            EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), t.getTileData(), 6, electronicPower, false);
 
-            this.setChanged();
-            world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(),
+            t.setChanged();
+            world.sendBlockUpdated(blockPos, t.getBlockState(), t.getBlockState(),
                     Constants.BlockFlags.NOTIFY_NEIGHBORS);
         }
     }

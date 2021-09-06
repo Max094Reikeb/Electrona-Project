@@ -16,6 +16,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 
@@ -47,6 +49,7 @@ import static net.reikeb.electrona.init.TileEntityInit.TILE_PURIFICATOR;
 
 public class TilePurificator extends AbstractTileEntity {
 
+    public static final BlockEntityTicker<TilePurificator> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     public int purifyingTime;
     public int currentPurifyingTime;
     private int waterRequired;
@@ -54,7 +57,7 @@ public class TilePurificator extends AbstractTileEntity {
     private boolean canPurify;
 
     public TilePurificator(BlockPos pos, BlockState state) {
-        super(TILE_PURIFICATOR.get(), pos, state, 2);
+        super(TILE_PURIFICATOR.get(), pos, state, 3);
     }
 
     @Override
@@ -74,12 +77,10 @@ public class TilePurificator extends AbstractTileEntity {
 
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory player) {
-        return new PurificatorContainer(ContainerInit.COMPRESSOR_CONTAINER.get(), id);
+        return new PurificatorContainer(ContainerInit.PURIFICATOR_CONTAINER.get(), id);
     }
 
-    public void tick() {
-        Level world = this.level;
-        BlockPos blockPos = this.getBlockPos();
+    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         ItemStack stackInSlot1 = this.inventory.getStackInSlot(1);
 
         AtomicInteger waterLevel = new AtomicInteger();

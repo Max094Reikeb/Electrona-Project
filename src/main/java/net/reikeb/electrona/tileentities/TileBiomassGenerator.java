@@ -13,6 +13,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraftforge.common.util.Constants;
@@ -26,6 +28,7 @@ import static net.reikeb.electrona.init.TileEntityInit.TILE_BIOMASS_GENERATOR;
 
 public class TileBiomassGenerator extends AbstractTileEntity {
 
+    public static final BlockEntityTicker<TileBiomassGenerator> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     public double electronicPower;
     private int maxStorage;
     private int wait;
@@ -54,14 +57,10 @@ public class TileBiomassGenerator extends AbstractTileEntity {
         return new BiomassGeneratorContainer(ContainerInit.BIOMASS_GENERATOR_CONTAINER.get(), id);
     }
 
-    public void tick() {
-        // We get the variables
-        Level world = this.level;
-        BlockPos blockPos = this.getBlockPos();
-
+    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         // We get the NBT Tags
-        this.getTileData().putInt("MaxStorage", 3000);
-        double electronicPower = this.getTileData().getDouble("ElectronicPower");
+        t.getTileData().putInt("MaxStorage", 3000);
+        double electronicPower = t.getTileData().getDouble("ElectronicPower");
 
         if (world != null) { // Avoid NullPointerExceptions
 
@@ -71,9 +70,9 @@ public class TileBiomassGenerator extends AbstractTileEntity {
                 wait += 1;
                 if (wait >= 20) {
                     if (electronicPower <= 2990) {
-                        this.getTileData().putDouble("ElectronicPower", electronicPower + 10);
+                        t.getTileData().putDouble("ElectronicPower", electronicPower + 10);
                     } else {
-                        this.getTileData().putDouble("ElectronicPower", 3000);
+                        t.getTileData().putDouble("ElectronicPower", 3000);
                     }
                     this.inventory.decrStackSize(0, 1);
                     world.playSound(null, blockPos, SoundsInit.BIOMASS_GENERATOR_ACTIVE.get(),
@@ -85,10 +84,10 @@ public class TileBiomassGenerator extends AbstractTileEntity {
             }
 
             // Transfer energy
-            EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 3, electronicPower, true);
+            EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), t.getTileData(), 3, electronicPower, true);
 
-            this.setChanged();
-            world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(),
+            t.setChanged();
+            world.sendBlockUpdated(blockPos, t.getBlockState(), t.getBlockState(),
                     Constants.BlockFlags.NOTIFY_NEIGHBORS);
         }
     }

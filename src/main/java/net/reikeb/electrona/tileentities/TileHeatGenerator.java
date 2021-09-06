@@ -9,6 +9,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.blocks.HeatGenerator;
@@ -18,6 +19,7 @@ import static net.reikeb.electrona.init.TileEntityInit.TILE_HEAT_GENERATOR;
 
 public class TileHeatGenerator extends BlockEntity {
 
+    public static final BlockEntityTicker<TileHeatGenerator> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private double electronicPower;
     private int maxStorage;
 
@@ -25,11 +27,7 @@ public class TileHeatGenerator extends BlockEntity {
         super(TILE_HEAT_GENERATOR.get(), pos, state);
     }
 
-    public void tick() {
-        // We get the variables
-        Level world = this.level;
-        BlockPos pos = this.getBlockPos();
-
+    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         // We set the NBT Tags
         this.getTileData().putInt("MaxStorage", 2000);
         double electronicPower = this.getTileData().getDouble("ElectronicPower");
@@ -37,12 +35,12 @@ public class TileHeatGenerator extends BlockEntity {
         if (world != null) { // Avoid NullPointerExceptions
 
             // We generate the energy (this part is uncommon for all generators)
-            ResourceLocation biomeRL = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(world.getBiome(pos));
+            ResourceLocation biomeRL = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(world.getBiome(blockPos));
 
             if (electronicPower > 0) {
-                world.setBlockAndUpdate(pos, this.getBlockState().setValue(HeatGenerator.HEATING, true));
+                world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(HeatGenerator.HEATING, true));
             } else {
-                world.setBlockAndUpdate(pos, this.getBlockState().setValue(HeatGenerator.HEATING, false));
+                world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(HeatGenerator.HEATING, false));
             }
 
             if (((biomeRL != null)) && (biomeRL.equals(new ResourceLocation("desert"))
@@ -69,7 +67,7 @@ public class TileHeatGenerator extends BlockEntity {
             }
 
             // We pass energy to blocks around (this part is common to all generators)
-            EnergyFunction.generatorTransferEnergy(world, pos, Direction.values(), this.getTileData(), 3, electronicPower, true);
+            EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 3, electronicPower, true);
 
             this.setChanged();
         }

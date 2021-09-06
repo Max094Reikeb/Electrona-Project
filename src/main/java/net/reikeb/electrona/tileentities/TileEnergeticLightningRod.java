@@ -7,6 +7,7 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.misc.vm.EnergyFunction;
@@ -15,6 +16,7 @@ import static net.reikeb.electrona.init.TileEntityInit.TILE_ENERGETIC_LIGHTNING_
 
 public class TileEnergeticLightningRod extends BlockEntity {
 
+    public static final BlockEntityTicker<TileEnergeticLightningRod> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private double electronicPower;
     private int maxStorage;
 
@@ -22,11 +24,7 @@ public class TileEnergeticLightningRod extends BlockEntity {
         super(TILE_ENERGETIC_LIGHTNING_ROD.get(), pos, state);
     }
 
-    public void tick() {
-        // We get the variables
-        Level world = this.level;
-        BlockPos blockPos = this.getBlockPos();
-
+    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         // We get the NBT Tags
         this.getTileData().putInt("MaxStorage", 3000);
         double electronicPower = this.getTileData().getDouble("ElectronicPower");

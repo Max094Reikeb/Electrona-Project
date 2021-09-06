@@ -7,6 +7,7 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraftforge.common.capabilities.Capability;
@@ -20,6 +21,7 @@ import static net.reikeb.electrona.init.TileEntityInit.TILE_CREATIVE_GENERATOR;
 
 public class TileCreativeGenerator extends BlockEntity {
 
+    public static final BlockEntityTicker<TileCreativeGenerator> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private double electronicPower;
     private int maxStorage;
 
@@ -27,11 +29,7 @@ public class TileCreativeGenerator extends BlockEntity {
         super(TILE_CREATIVE_GENERATOR.get(), pos, state);
     }
 
-    public void tick() {
-        // We get the variables
-        Level world = this.level;
-        BlockPos blockPos = this.getBlockPos();
-
+    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         // We get the NBT Tags
         this.getTileData().putInt("MaxStorage", 999999999);
         this.getTileData().putDouble("ElectronicPower", 999999999);

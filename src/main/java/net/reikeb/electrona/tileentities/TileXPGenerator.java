@@ -10,6 +10,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraftforge.common.util.Constants;
@@ -22,6 +24,7 @@ import static net.reikeb.electrona.init.TileEntityInit.TILE_XP_GENERATOR;
 
 public class TileXPGenerator extends AbstractTileEntity {
 
+    public static final BlockEntityTicker<TileXPGenerator> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     public double electronicPower;
     private int maxStorage;
     private int wait;
@@ -51,11 +54,7 @@ public class TileXPGenerator extends AbstractTileEntity {
         return new XPGeneratorContainer(ContainerInit.XP_GENERATOR_CONTAINER.get(), id);
     }
 
-    public void tick() {
-        // We get the variables
-        Level world = this.level;
-        BlockPos blockPos = this.getBlockPos();
-
+    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         // We get the NBT Tags
         this.getTileData().putInt("MaxStorage", 10000);
         double electronicPower = this.getTileData().getDouble("ElectronicPower");

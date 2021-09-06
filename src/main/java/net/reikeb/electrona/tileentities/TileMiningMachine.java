@@ -15,6 +15,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraftforge.common.util.Constants;
@@ -29,6 +31,7 @@ import static net.reikeb.electrona.init.TileEntityInit.TILE_MINING_MACHINE;
 
 public class TileMiningMachine extends AbstractTileEntity {
 
+    public static final BlockEntityTicker<TileMiningMachine> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     public double electronicPower;
     private int maxStorage;
     private int wait;
@@ -57,11 +60,7 @@ public class TileMiningMachine extends AbstractTileEntity {
         return new MiningMachineContainer(ContainerInit.MINING_MACHINE_CONTAINER.get(), id);
     }
 
-    public void tick() {
-        // We get the variables
-        Level world = this.level;
-        BlockPos blockPos = this.getBlockPos();
-
+    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         // We get the NBT Tags
         this.getTileData().putInt("MaxStorage", 6000);
         double electronicPower = this.getTileData().getDouble("ElectronicPower");
