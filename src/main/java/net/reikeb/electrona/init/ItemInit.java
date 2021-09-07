@@ -194,6 +194,5 @@ public class ItemInit {
     public static final RegistryObject<Item> RADIOACTIVE_TALL_GRASS_ITEM = ITEMS.register("radioactive_tall_grass", () ->
             new BlockItem(BlockInit.RADIOACTIVE_TALL_GRASS.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
 
-    public static final RegistryObject<Item> GRAVITOR_ITEM = ITEMS.register("gravitor", () ->
-            new BlockItem(BlockInit.GRAVITOR.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS).rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> GRAVITOR_ITEM = ITEMS.register("gravitor", GravitorItem::new);
 }
