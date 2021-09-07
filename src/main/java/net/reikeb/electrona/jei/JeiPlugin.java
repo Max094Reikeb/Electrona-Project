@@ -46,7 +46,6 @@ public class JeiPlugin implements IModPlugin {
         registration.addRecipes(generateCompressorBlockRecipes8(), CompressorBlockJeiCategory.Uid);
         registration.addRecipes(generateCompressorBlockRecipes9(), CompressorBlockJeiCategory.Uid);
         registration.addRecipes(generatePurificatorBlockRecipes(), PurificatorBlockJeiCategory.Uid);
-        registration.addRecipes(generatePurificatorBlockRecipes2(), PurificatorBlockJeiCategory.Uid);
     }
 
     private List<CompressorBlockRecipeWrapper> generateCompressorBlockRecipes() {
@@ -153,23 +152,8 @@ public class JeiPlugin implements IModPlugin {
         ArrayList<ItemStack> inputs = new ArrayList<>();
         ArrayList<ItemStack> outputs = new ArrayList<>();
         inputs.add(new ItemStack(Items.WATER_BUCKET));
-        inputs.add(new ItemStack(ItemInit.CONCENTRATED_URANIUM.get(), (int) 3));
+        inputs.add(new ItemStack(ItemInit.CONCENTRATED_URANIUM.get(), 3));
         outputs.add(new ItemStack(ItemInit.PURIFIED_URANIUM.get()));
-        recipes.add(new PurificatorBlockRecipeWrapper(inputs, outputs));
-        return recipes;
-    }
-
-    private List<PurificatorBlockRecipeWrapper> generatePurificatorBlockRecipes2() {
-        List<PurificatorBlockRecipeWrapper> recipes = new ArrayList<>();
-        ArrayList<ItemStack> inputs = new ArrayList<>();
-        ArrayList<ItemStack> outputs = new ArrayList<>();
-        inputs.add(new ItemStack(Items.WATER_BUCKET));
-        inputs.add(new ItemStack(Blocks.GOLD_ORE));
-        int goldPowderNum = 1;
-        if ((Math.random() < 0.5)) {
-            goldPowderNum = 2;
-        }
-        outputs.add(new ItemStack(ItemInit.GOLD_POWDER.get(), goldPowderNum));
         recipes.add(new PurificatorBlockRecipeWrapper(inputs, outputs));
         return recipes;
     }

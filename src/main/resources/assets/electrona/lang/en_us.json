@@ -1,5 +1,5 @@
 {
-  "advancements.a_new_mechanic.descr": "Purify your first Gold Ore.",
+  "advancements.a_new_mechanic.descr": "Make your first purification.",
   "advancements.a_new_mechanic.title": "A New Mechanic!",
   "advancements.a_whole_new_world.descr": "Mine Tin Ore.",
   "advancements.a_whole_new_world.title": "A Whole New World!",
@@ -183,7 +183,6 @@
   "item.electrona.geiger_pointer": "Geiger Pointer",
   "item.electrona.geiger_pointer.desc": "§dRight-click to update",
   "item.electrona.gravitonium": "Gravitonium",
-  "item.electrona.gold_powder": "Gold Powder",
   "item.electrona.gravity_device": "Gravity Device",
   "item.electrona.hammer": "Hammer",
   "item.electrona.lava_cell": "Lava Cell",

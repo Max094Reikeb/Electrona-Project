@@ -60,7 +60,7 @@ public class PurificatorContainer extends AbstractContainer {
                     }
 
                     public void onTake(Player playerEntity, ItemStack stack) {
-                        if (stack.getItem() == ItemInit.GOLD_POWDER.get()) {
+                        if (stack.getItem() == ItemInit.PURIFIED_URANIUM.get()) {
                             // Trigger Advancement
                             NetworkManager.INSTANCE.sendToServer(new PurificationPacket());
                         }
