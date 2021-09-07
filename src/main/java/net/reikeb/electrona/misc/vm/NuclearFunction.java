@@ -6,6 +6,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -144,25 +146,23 @@ public class NuclearFunction {
         double x = pos.getX();
         double y = pos.getY();
         double z = pos.getZ();
-        {
-            List<Entity> _entfound = world.getEntitiesOfClass(Entity.class,
-                    new AABB(x - 5, y - 5, z - 5,
-                            x + 5, y + 5, z + 5), null)
-                    .stream().sorted(new Object() {
-                        Comparator<Entity> compareDistOf(double _x, double _y, double _z) {
-                            return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(_x, _y, _z));
-                        }
-                    }.compareDistOf(x, y, z)).collect(Collectors.toList());
-            for (Entity entityiterator : _entfound) {
-                if (entityiterator instanceof ServerPlayer) {
-                    Advancement advancement = ((ServerPlayer) entityiterator).server.getAdvancements().getAdvancement(new ResourceLocation("electrona:i_am_inevitable"));
-                    if (advancement == null) System.out.println("Advancement I Am... Inevitable! seems to be null");
-                    if (advancement == null) return;
-                    AdvancementProgress advancementProgress = ((ServerPlayer) entityiterator).getAdvancements().getOrStartProgress(advancement);
-                    if (!advancementProgress.isDone()) {
-                        for (String criteria : advancementProgress.getRemainingCriteria()) {
-                            ((ServerPlayer) entityiterator).getAdvancements().award(advancement, criteria);
-                        }
+        List<LivingEntity> livingEntities = world.getEntitiesOfClass(LivingEntity.class,
+                        new AABB(x - 5, y - 5, z - 5,
+                                x + 5, y + 5, z + 5),
+                        EntitySelector.LIVING_ENTITY_STILL_ALIVE).stream().sorted(new Object() {
+                            Comparator<Entity> compareDistOf(double x, double y, double z) {
+                                return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(x, y, z));
+                            }
+                        }.compareDistOf(x, y, z)).collect(Collectors.toList());
+        for (LivingEntity entityiterator : livingEntities) {
+            if (entityiterator instanceof ServerPlayer) {
+                Advancement advancement = ((ServerPlayer) entityiterator).server.getAdvancements().getAdvancement(new ResourceLocation("electrona:i_am_inevitable"));
+                if (advancement == null) System.out.println("Advancement I Am... Inevitable! seems to be null");
+                if (advancement == null) return;
+                AdvancementProgress advancementProgress = ((ServerPlayer) entityiterator).getAdvancements().getOrStartProgress(advancement);
+                if (!advancementProgress.isDone()) {
+                    for (String criteria : advancementProgress.getRemainingCriteria()) {
+                        ((ServerPlayer) entityiterator).getAdvancements().award(advancement, criteria);
                     }
                 }
             }

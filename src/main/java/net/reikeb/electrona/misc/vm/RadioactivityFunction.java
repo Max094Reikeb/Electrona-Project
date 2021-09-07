@@ -3,6 +3,7 @@ package net.reikeb.electrona.misc.vm;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Skeleton;
@@ -56,27 +57,24 @@ public class RadioactivityFunction {
      * @param power    The power of the give effect
      */
     public static void radioactiveItemInInventory(Level world, Entity entity, int duration, int power) {
-        {
-            List<Entity> _entfound = world.getEntitiesOfClass(Entity.class,
-                    new AABB(entity.getX() - (10 / 2d),
-                            entity.getY() - (10 / 2d), entity.getZ() - (10 / 2d),
-                            entity.getX() + (10 / 2d), entity.getY() + (10 / 2d),
-                            entity.getZ() + (10 / 2d)), null)
-                    .stream().sorted(new Object() {
-                        Comparator<Entity> compareDistOf(double _x, double _y, double _z) {
-                            return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(_x, _y, _z));
-                        }
-                    }.compareDistOf(entity.getX(), entity.getY(), entity.getZ())).collect(Collectors.toList());
-            for (Entity entityiterator : _entfound) {
-                if ((!(entityiterator instanceof LivingEntity)) || (entityiterator instanceof Skeleton)
-                        || (entityiterator instanceof RadioactiveZombie)) return;
-                if (entityiterator instanceof Player) {
-                    if (((Player) entityiterator).isCreative()) return;
-                }
-                if (!isEntityWearingAntiRadiationSuit((LivingEntity) entity)) {
-                    boolean entityWearsLeadArmor = isEntityWearingLeadArmor((LivingEntity) entity);
-                    ((LivingEntity) (entityWearsLeadArmor ? entity : entityiterator)).addEffect(new MobEffectInstance(PotionEffectInit.RADIOACTIVITY.get(), duration, power));
-                }
+        List<LivingEntity> livingEntities = world.getEntitiesOfClass(LivingEntity.class,
+                new AABB(entity.getX() - (10 / 2d),
+                        entity.getY() - (10 / 2d), entity.getZ() - (10 / 2d),
+                        entity.getX() + (10 / 2d), entity.getY() + (10 / 2d),
+                        entity.getZ() + (10 / 2d)), EntitySelector.LIVING_ENTITY_STILL_ALIVE)
+                .stream().sorted(new Object() {
+                    Comparator<Entity> compareDistOf(double x, double y, double z) {
+                        return Comparator.comparing(axis -> axis.distanceToSqr(x, y, z));
+                    }
+                }.compareDistOf(entity.getX(), entity.getY(), entity.getZ())).collect(Collectors.toList());
+        for (LivingEntity entityiterator : livingEntities) {
+            if ((entityiterator instanceof Skeleton) || (entityiterator instanceof RadioactiveZombie)) return;
+            if (entityiterator instanceof Player) {
+                if (((Player) entityiterator).isCreative()) return;
+            }
+            if (!isEntityWearingAntiRadiationSuit((LivingEntity) entity)) {
+                boolean entityWearsLeadArmor = isEntityWearingLeadArmor((LivingEntity) entity);
+                ((LivingEntity) (entityWearsLeadArmor ? entity : entityiterator)).addEffect(new MobEffectInstance(PotionEffectInit.RADIOACTIVITY.get(), duration, power));
             }
         }
     }

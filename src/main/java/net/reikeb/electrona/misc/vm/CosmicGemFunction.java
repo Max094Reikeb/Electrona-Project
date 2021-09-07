@@ -16,6 +16,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -225,24 +226,22 @@ public class CosmicGemFunction {
             int y = playerEntity.blockPosition().getY();
             int z = playerEntity.blockPosition().getZ();
             boolean flag = false;
-            {
-                List<Entity> _entfound = world.getEntitiesOfClass(Entity.class,
-                        new AABB(x - 5, y - 5, z - 5,
-                                x + 5, y + 5, z + 5),
-                        null).stream().sorted(new Object() {
-                    Comparator<Entity> compareDistOf(double _x, double _y, double _z) {
-                        return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(_x, _y, _z));
-                    }
-                }.compareDistOf(x, y, z)).collect(Collectors.toList());
-                for (Entity entity : _entfound) {
-                    if ((entity instanceof LivingEntity) && (entity != playerEntity)) {
-                        flag = true;
-                        ((LivingEntity) entity).knockback(5F * 0.5F, Mth.sin(playerEntity.yRot * ((float) Math.PI / 180F)), -Mth.cos(playerEntity.yRot * ((float) Math.PI / 180F)));
-                        playerEntity.setDeltaMovement(playerEntity.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
-                    }
+            List<LivingEntity> livingEntities = world.getEntitiesOfClass(LivingEntity.class,
+                    new AABB(x - 5, y - 5, z - 5,
+                            x + 5, y + 5, z + 5),
+                    EntitySelector.LIVING_ENTITY_STILL_ALIVE).stream().sorted(new Object() {
+                        Comparator<Entity> compareDistOf(double x, double y, double z) {
+                            return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(x, y, z));
+                        }
+                    }.compareDistOf(x, y, z)).collect(Collectors.toList());
+            for (LivingEntity entityiterator : livingEntities) {
+                if (entityiterator != playerEntity) {
+                    flag = true;
+                    entityiterator.knockback(5F * 0.5F, Mth.sin(playerEntity.yRot * ((float) Math.PI / 180F)), -Mth.cos(playerEntity.yRot * ((float) Math.PI / 180F)));
+                    playerEntity.setDeltaMovement(playerEntity.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
                 }
-                return flag;
             }
+            return flag;
         } else if (GemPower.FLYING.equalsTo(getPower(stack))) {
             if (playerEntity.abilities.flying) {
                 playerEntity.abilities.flying = false;

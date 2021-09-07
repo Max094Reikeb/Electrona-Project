@@ -10,6 +10,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -77,21 +78,19 @@ public class BlackHoleFunction {
         if (world.isClientSide) return;
 
         AreaEffectCloud areaEffectCloudEntity = new AreaEffectCloud(world, x, y, z);
-        {
-            List<Entity> _entfound = world.getEntitiesOfClass(Entity.class,
-                    new AABB(x - 100, y - 100, z - 100,
-                            x + 100, y + 100, z + 100), null)
-                    .stream().sorted(new Object() {
-                        Comparator<Entity> compareDistOf(double _x, double _y, double _z) {
-                            return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(_x, _y, _z));
-                        }
-                    }.compareDistOf(x, y, z)).collect(Collectors.toList());
-            for (Entity entityiterator : _entfound) {
-                if (entityiterator instanceof LivingEntity) {
-                    areaEffectCloudEntity.setOwner((LivingEntity) entityiterator);
-                }
-            }
+
+        List<LivingEntity> livingEntities = world.getEntitiesOfClass(LivingEntity.class,
+                        new AABB(x - 100, y - 100, z - 100,
+                            x + 100, y + 100, z + 100),
+                EntitySelector.LIVING_ENTITY_STILL_ALIVE).stream().sorted(new Object() {
+                    Comparator<Entity> compareDistOf(double x, double y, double z) {
+                        return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(x, y, z));
+                    }
+                }.compareDistOf(x, y, z)).collect(Collectors.toList());
+        for (LivingEntity entityiterator : livingEntities) {
+            areaEffectCloudEntity.setOwner(entityiterator);
         }
+
         areaEffectCloudEntity.setParticle(ParticleInit.DARK_MATTER.get());
         areaEffectCloudEntity.setRadius(5.0F);
         areaEffectCloudEntity.setDuration(60);
