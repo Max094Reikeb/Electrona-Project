@@ -184,7 +184,7 @@ public class TeleporterFunction {
      * @param player The player who right clicks
      */
     public static void rightClick(BlockPos pos, Player player) {
-        ItemStack stack = player.getMainHandItem().getContainerItem();
+        ItemStack stack = player.getMainHandItem();
         if (stack.getItem() == ItemInit.TELEPORT_SAVER.get()) {
             player.closeContainer();
             stack.getOrCreateTag().putDouble("teleportX", (Math.floor(pos.getX()) + 0.5));
