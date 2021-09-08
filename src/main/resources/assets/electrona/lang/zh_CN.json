@@ -1,5 +1,4 @@
 {
-  "advancements.a_new_mechanic.descr": "净化您的首块金矿。",
   "advancements.a_new_mechanic.title": "全新机制！",
   "advancements.a_whole_new_world.descr": "挖锡矿。",
   "advancements.a_whole_new_world.title": "新新世界！",
@@ -165,7 +164,6 @@
   "item.electrona.geiger_pointer": "盖革指示器",
   "item.electrona.geiger_pointer.desc": "§d右击更新",
   "item.electrona.gravitonium": "重力鎓",
-  "item.electrona.gold_powder": "金粉",
   "item.electrona.gravity_device": "重力装置",
   "item.electrona.hammer": "锤子",
   "item.electrona.lava_cell": "熔岩单元",
