@@ -1,5 +1,4 @@
 {
-  "advancements.a_new_mechanic.descr": "İlk Altın Cevherinizi saflaştırın.",
   "advancements.a_new_mechanic.title": "Yeni bir mekanik!",
   "advancements.a_whole_new_world.descr": "Tin Cevheri Kaz.",
   "advancements.a_whole_new_world.title": "Yepyeni bir dünya!",
@@ -171,7 +170,6 @@
   "item.electrona.geiger_pointer": "Radyasyon İşaretçisi",
   "item.electrona.geiger_pointer.desc": "§dGüncellemek için sağ tıkla",
   "item.electrona.gravitonium": "Yerçekimiyum",
-  "item.electrona.gold_powder": "Altın Güç",
   "item.electrona.gravity_device": "Yerçekimi Aleti",
   "item.electrona.hammer": "Çekiç",
   "item.electrona.lava_cell": "Lav Hücresi",
