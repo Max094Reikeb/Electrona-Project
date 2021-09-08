@@ -1,5 +1,4 @@
 {
-  "advancements.a_new_mechanic.descr": "Reinigen Sie Ihr erstes Golderz.",
   "advancements.a_new_mechanic.title": "Ein neuer Mechaniker!",
   "advancements.a_whole_new_world.descr": "Baue Zinnerz ab.",
   "advancements.a_whole_new_world.title": "Eine ganz neue Welt!",
@@ -140,7 +139,6 @@
   "item.electrona.electronic_circuit": "Electronic Schaltkreis",
   "item.electrona.emitter": "Sender",
   "item.electrona.empty_cell": "Leere Zelle",
-  "item.electrona.gold_powder": "Gold-Pulver",
   "item.electrona.lava_cell": "Lava-Zelle",
   "item.electrona.lead_boots": "Blei-Stiefel",
   "item.electrona.lead_chestplate": "Blei-Brustplatte",
