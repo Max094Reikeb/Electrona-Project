@@ -1,5 +1,4 @@
 {
-  "advancements.a_new_mechanic.descr": "Очистите свою первую золотую руду.",
   "advancements.a_new_mechanic.title": "Новый механизм!",
   "advancements.a_whole_new_world.descr": "Добудьте оловянную руду.",
   "advancements.a_whole_new_world.title": "Целый новый мир!",
@@ -181,7 +180,6 @@
   "item.electrona.geiger_pointer": "Указатель гейгера",
   "item.electrona.geiger_pointer.desc": "§dЩелкните правой кнопкой мыши для обновления",
   "item.electrona.gravitonium": "Гравитониум",
-  "item.electrona.gold_powder": "Золотой порошок",
   "item.electrona.gravity_device": "Гравитационное устройство",
   "item.electrona.hammer": "Молот",
   "item.electrona.lava_cell": "Ген лавы",
