@@ -1,5 +1,4 @@
 {
-  "advancements.a_new_mechanic.descr": "Rena din första guldmalm.",
   "advancements.a_new_mechanic.title": "En ny mekanik!",
   "advancements.a_whole_new_world.descr": "Hugg tennmalm.",
   "advancements.a_whole_new_world.title": "En helt ny värld!",
@@ -181,7 +180,6 @@
   "item.electrona.geiger_pointer": "Geiger-pekare",
   "item.electrona.geiger_pointer.desc": "§dHögerklicka för att uppdatera",
   "item.electrona.gravitonium": "Gravitit",
-  "item.electrona.gold_powder": "Guldpulver",
   "item.electrona.gravity_device": "Gravitationsenhet",
   "item.electrona.hammer": "Hammare",
   "item.electrona.lava_cell": "Lavacell",

@@ -1,5 +1,4 @@
 {
-  "advancements.a_new_mechanic.descr": "Oczyść swoją pierwszą Rudę Złota.",
   "advancements.a_whole_new_world.descr": "Wykop Rudę Cyny.",
   "advancements.a_whole_new_world.title": "Całkowicie Nowy Świat!",
   "advancements.first_compression.descr": "Stwórz swój pierwszy skompresowany przedmiot w Kompresorze.",
@@ -152,7 +151,6 @@
   "item.electrona.geiger_pointer": "Licznik Geigera",
   "item.electrona.geiger_pointer.desc": "§dKliknij prawym przyciskiem myszy, aby zaktualizować",
   "item.electrona.gravitonium": "Grawiton",
-  "item.electrona.gold_powder": "Złoty Proszek",
   "item.electrona.gravity_device": "Urządzenie Grawitacyjne",
   "item.electrona.hammer": "Młot",
   "item.electrona.lava_cell": "Ogniwo Lawy",
