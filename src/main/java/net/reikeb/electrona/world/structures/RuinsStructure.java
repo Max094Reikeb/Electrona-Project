@@ -89,7 +89,7 @@ public class RuinsStructure extends StructureFeature<NoneFeatureConfiguration> {
                     this,
                     this.random,
                     false,
-                    false,
+                    true,
                     levelHeightAccessor);
 
             // **THE FOLLOWING TWO LINES ARE OPTIONAL**
