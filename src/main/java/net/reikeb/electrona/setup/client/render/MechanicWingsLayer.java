@@ -30,7 +30,7 @@ public class MechanicWingsLayer<T extends LivingEntity, M extends EntityModel<T>
     public MechanicWingsLayer(RenderLayerParent<T, M> p_i50942_1_, EntityModelSet p_i50942_2_) {
         super(p_i50942_1_, p_i50942_2_);
 
-        wingsModel = new MechanicWingsModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(MECHANIC_WINGS_LAYER));
+        wingsModel = new MechanicWingsModel<>(p_i50942_2_.bakeLayer(MECHANIC_WINGS_LAYER));
     }
 
     @Override

@@ -5,6 +5,7 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -198,5 +199,14 @@ public class ClientSetup {
     @SubscribeEvent
     public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(MechanicWingsLayer.MECHANIC_WINGS_LAYER, MechanicWingsModel::createLayer);
+    }
+
+    @SubscribeEvent
+    public static void addLayers(EntityRenderersEvent.AddLayers event) {
+        event.getSkins().forEach(skinTypeName -> {
+            if (event.getSkin(skinTypeName) instanceof PlayerRenderer renderer) {
+                renderer.addLayer(new MechanicWingsLayer<>(renderer, event.getEntityModels()));
+            }
+        });
     }
 }
