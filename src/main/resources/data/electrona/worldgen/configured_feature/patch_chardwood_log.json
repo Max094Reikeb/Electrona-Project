@@ -3,9 +3,9 @@
     "can_replace": false,
     "project": false,
     "need_water": false,
-    "xspread": 2,
-    "yspread": 0,
-    "zspread": 2,
+    "xspread": 4,
+    "yspread": 3,
+    "zspread": 4,
     "whitelist": [
       {
         "Name": "electrona:radioactive_dirt"
@@ -26,7 +26,7 @@
       "size": {
         "type": "minecraft:biased_to_bottom",
         "value": {
-          "min_inclusive": 2,
+          "min_inclusive": 1,
           "max_inclusive": 3
         }
       },

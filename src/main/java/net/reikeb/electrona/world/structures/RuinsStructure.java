@@ -81,8 +81,7 @@ public class RuinsStructure extends StructureFeature<NoneFeatureConfiguration> {
             JigsawPlacement.addPieces(
                     dynamicRegistryManager,
                     new JigsawConfiguration(() -> dynamicRegistryManager.registryOrThrow(
-                            Registry.TEMPLATE_POOL_REGISTRY).get(new ResourceLocation(Electrona.MODID,
-                            "ruins/start_pool")), 10),
+                            Registry.TEMPLATE_POOL_REGISTRY).get(Electrona.RL("ruins/start_pool")), 10),
                     PoolElementStructurePiece::new,
                     chunkGenerator,
                     templateManagerIn,
