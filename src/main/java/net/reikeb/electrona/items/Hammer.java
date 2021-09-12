@@ -1,30 +1,42 @@
 package net.reikeb.electrona.items;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
+import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.Tiers;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
+
+import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.setup.ItemGroups;
+import net.reikeb.electrona.utils.ElectronaUtils;
 
-public class Hammer extends Item {
+import java.util.Set;
+
+public class Hammer extends DiggerItem {
+
+    private static final Set<Block> NOT_EFFECTIVE_BLOCKS = ImmutableSet.of(Blocks.BEDROCK, Blocks.LAVA, Blocks.WATER);
+    private static final Tags.IOptionalNamedTag<Block> MINEABLE_WITH_HAMMER = BlockTags.createOptional(Electrona.RL("mineable/hammer"));
 
     public Hammer() {
-        super(new Properties()
-                .stacksTo(1)
-                .rarity(Rarity.COMMON)
-                .durability(100)
-                .tab(ItemGroups.ELECTRONA_TOOLS));
+        super(1F, -2.8F, Tiers.IRON, MINEABLE_WITH_HAMMER,
+                new Properties().stacksTo(1).rarity(Rarity.COMMON).tab(ItemGroups.ELECTRONA_TOOLS));
     }
 
     @Override
@@ -43,43 +55,56 @@ public class Hammer extends Item {
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
-        if (equipmentSlot == EquipmentSlot.MAINHAND) {
-            ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-            builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
-            builder.put(Attributes.ATTACK_DAMAGE,
-                    new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 2f, AttributeModifier.Operation.ADDITION));
-            builder.put(Attributes.ATTACK_SPEED,
-                    new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -3, AttributeModifier.Operation.ADDITION));
-            return builder.build();
+    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+        return (toolAction.equals(ToolActions.SHOVEL_DIG) || (toolAction.equals(ToolActions.AXE_DIG)) ||
+                (toolAction.equals(ToolActions.PICKAXE_DIG)) || (toolAction.equals(ToolActions.HOE_DIG)));
+    }
+
+    public boolean mineBlock(ItemStack stack, Level world, BlockState state, BlockPos pos, LivingEntity entity) {
+        if (!world.isClientSide && state.getDestroySpeed(world, pos) != 0.0F) {
+            stack.hurtAndBreak(1, entity, (e) -> {
+                e.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+            });
+            attemptBreakNeighbors(world, pos, (Player) entity, NOT_EFFECTIVE_BLOCKS, false, 3);
         }
-        return super.getDefaultAttributeModifiers(equipmentSlot);
-    }
-
-    @Override
-    public boolean isCorrectToolForDrops(BlockState state) {
-        return this.isCorrectToolForDrops(new ItemStack(this), state);
-    }
-
-    @Override
-    public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
-        return 4f;
-    }
-
-    @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.hurtAndBreak(1, attacker, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
         return true;
     }
 
-    @Override
-    public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-        stack.hurtAndBreak(1, entityLiving, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-        return true;
+    public static void attemptBreakNeighbors(Level world, BlockPos pos, Player player, Set<Block> notEffectiveOn, boolean checkHarvestLevel, int radioImpar) {
+        world.setBlockAndUpdate(pos, Blocks.GLASS.defaultBlockState());
+        BlockHitResult trace = ElectronaUtils.rayTrace(world, player, ClipContext.Fluid.ANY);
+        world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+
+        if (trace.getType() == BlockHitResult.Type.BLOCK) {
+            Direction face = trace.getDirection();
+
+
+            for (int a = ((radioImpar - 1) / 2) * (-1); a <= ((radioImpar - 1) / 2); a++) {
+                for (int b = ((radioImpar - 1) / 2) * (-1); b <= ((radioImpar - 1) / 2); b++) {
+                    if (a == 0 && b == 0) continue;
+
+                    BlockPos target = null;
+
+                    if (face == Direction.UP || face == Direction.DOWN) target = pos.offset(a, 0, b);
+                    if (face == Direction.NORTH || face == Direction.SOUTH) target = pos.offset(a, b, 0);
+                    if (face == Direction.EAST || face == Direction.WEST) target = pos.offset(0, a, b);
+
+                    attemptBreak(world, target, player, notEffectiveOn, checkHarvestLevel);
+                }
+            }
+        }
     }
 
-    @Override
-    public int getEnchantmentValue() {
-        return 2;
+    public static void attemptBreak(Level world, BlockPos pos, Player player, Set<Block> notEffectiveOn, boolean checkHarvestLevel) {
+        BlockState state = world.getBlockState(pos);
+
+        boolean validHarvest = !checkHarvestLevel || player.getMainHandItem().isCorrectToolForDrops(state);
+        boolean isEffective = !notEffectiveOn.contains(state.getBlock());
+        boolean witherImmune = BlockTags.WITHER_IMMUNE.contains(state.getBlock());
+
+        if (validHarvest && isEffective && !witherImmune) {
+            Block.dropResources(state, world, pos, null, player, player.getMainHandItem());
+            world.destroyBlock(pos, false);
+        }
     }
 }
