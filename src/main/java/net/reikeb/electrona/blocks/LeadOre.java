@@ -7,6 +7,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext;
 
+import net.reikeb.electrona.init.ItemInit;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -22,9 +24,7 @@ public class LeadOre extends Block {
 
     @Override
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-        List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-        if (!dropsOriginal.isEmpty())
-            return dropsOriginal;
-        return Collections.singletonList(new ItemStack(this, 1));
+        int randomNum = 3 + (int) (Math.random() * ((6 - 3) + 1)); // Random number between 3 and 6
+        return Collections.singletonList(new ItemStack(ItemInit.RAW_LEAD.get(), randomNum));
     }
 }

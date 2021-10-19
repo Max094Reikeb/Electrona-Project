@@ -17,10 +17,12 @@ public class ItemInit {
             Electrona.MODID);
 
     // Items
+    public static final RegistryObject<Item> RAW_TIN = ITEMS.register("raw_tin", RawTin::new);
     public static final RegistryObject<Item> TIN_INGOT = ITEMS.register("tin_ingot", TinIngot::new);
     public static final RegistryObject<Item> TIN_PLATE = ITEMS.register("tin_plate", TinPlate::new);
     public static final RegistryObject<Item> STEEL_INGOT = ITEMS.register("steel_ingot", SteelIngot::new);
     public static final RegistryObject<Item> STEEL_PLATE = ITEMS.register("steel_plate", SteelPlate::new);
+    public static final RegistryObject<Item> RAW_LEAD = ITEMS.register("raw_lead", RawLead::new);
     public static final RegistryObject<Item> LEAD_INGOT = ITEMS.register("lead_ingot", LeadIngot::new);
     public static final RegistryObject<Item> GRAVITONIUM = ITEMS.register("gravitonium", Gravitonium::new);
     public static final RegistryObject<Item> PORTABLE_BATTERY = ITEMS.register("portable_battery", PortableBattery::new);
