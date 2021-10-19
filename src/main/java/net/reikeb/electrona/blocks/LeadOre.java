@@ -24,7 +24,6 @@ public class LeadOre extends Block {
 
     @Override
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-        int randomNum = 3 + (int) (Math.random() * ((6 - 3) + 1)); // Random number between 3 and 6
-        return Collections.singletonList(new ItemStack(ItemInit.RAW_LEAD.get(), randomNum));
+        return Collections.singletonList(new ItemStack(ItemInit.RAW_LEAD.get(), 1));
     }
 }
