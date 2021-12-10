@@ -24,7 +24,7 @@ If applicable, add screenshots to help explain your problem.
 **Mod informations (please complete the following information):**
  - Mod Version: [e.g. r2.2]
  - Minecraft Version: [e.g. 1.17.1]
- - Forge Version: [e.g. 37.0.104]
+ - Forge Version: [e.g. 37.1.1]
 
 **Additional context**
 Add any other context about the problem here.
