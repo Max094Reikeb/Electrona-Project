@@ -8,7 +8,7 @@ on:
 jobs:
   vars:
     name: Get Variables
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     outputs:
       mod_id: ${{ steps.mod_id.outputs.value }}
       package_version: ${{ steps.package_version.outputs.value }}
@@ -32,7 +32,7 @@ jobs:
 
   jar:
     name: Publish JAR
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     needs: [vars]
     steps:
       - name: Checkout
