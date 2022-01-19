@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
-import net.reikeb.electrona.utils.ElectronaUtils;
+import net.reikeb.electrona.utils.BiomeUtil;
 
 import java.util.function.Supplier;
 
@@ -38,7 +38,7 @@ public class BiomeSingleUpdatePacket {
 
     public void whenThisPacketIsReceived(Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> {
-            DistExecutor.safeCallWhenOn(Dist.CLIENT, () ->  new BiomeUpdate(pos, biome));
+            DistExecutor.safeCallWhenOn(Dist.CLIENT, () -> new BiomeUpdate(pos, biome));
         });
         context.get().setPacketHandled(true);
     }
@@ -58,7 +58,7 @@ public class BiomeSingleUpdatePacket {
             ClientLevel world = Minecraft.getInstance().level;
             if (world == null) return null;
             ResourceKey<Biome> biomeKey = ResourceKey.create(Registry.BIOME_REGISTRY, biome);
-            ElectronaUtils.Biome.setBiomeKeyAtPos(world, pos, biomeKey);
+            BiomeUtil.setBiomeKeyAtPos(world, pos, biomeKey);
             return null;
         }
     }

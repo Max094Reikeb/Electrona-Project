@@ -23,7 +23,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ParticleInit;
 import net.reikeb.electrona.init.TileEntityInit;
-import net.reikeb.electrona.utils.ElectronaUtils;
+import net.reikeb.electrona.utils.Gravity;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -132,7 +132,7 @@ public class TileGravitor extends BlockEntity {
         Iterable<BlockPos> posList = BlockPos.betweenClosed(minPos, maxPos);
         for (BlockPos pos : posList) {
             boolean flag = (pos.getX() - k > 2) || (pos.getX() - k < -2) || (pos.getY() - l > 2) || (pos.getY() - l < -2) || (pos.getZ() - i1 > 2) || (pos.getZ() - i1 < -2);
-            if (flag) ElectronaUtils.Gravity.applyGravity(this.level, pos);
+            if (flag) Gravity.applyGravity(this.level, pos);
         }
     }
 

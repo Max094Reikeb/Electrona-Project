@@ -11,7 +11,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import net.reikeb.electrona.init.BiomeInit;
-import net.reikeb.electrona.utils.ElectronaUtils;
+import net.reikeb.electrona.utils.BiomeUtil;
 
 import java.util.function.Supplier;
 
@@ -39,7 +39,7 @@ public class BiomeUpdatePacket {
 
     public void whenThisPacketIsReceived(Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> {
-            DistExecutor.safeCallWhenOn(Dist.CLIENT, () ->  new BiomeUpdate(pos, radius));
+            DistExecutor.safeCallWhenOn(Dist.CLIENT, () -> new BiomeUpdate(pos, radius));
         });
         context.get().setPacketHandled(true);
     }
@@ -74,7 +74,7 @@ public class BiomeUpdatePacket {
                             int dist = (int) Math.sqrt(YY);
                             if (dist < radius || dist < onepointfiveradius) {
                                 newPos.set(xx, yy, zz);
-                                ElectronaUtils.Biome.setBiomeKeyAtPos(world, newPos, BiomeInit.NUCLEAR_BIOME_KEY);
+                                BiomeUtil.setBiomeKeyAtPos(world, newPos, BiomeInit.NUCLEAR_BIOME_KEY);
                             }
                         }
                     }

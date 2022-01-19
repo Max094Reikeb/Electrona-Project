@@ -30,7 +30,8 @@ import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.misc.DamageSources;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.BiomeUpdatePacket;
-import net.reikeb.electrona.utils.ElectronaUtils;
+import net.reikeb.electrona.utils.BiomeUtil;
+import net.reikeb.electrona.utils.Gravity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +106,7 @@ public class NuclearExplosion {
                     if (YY < onepointfiveradiussqrd) {
                         BlockPos blockPos = new BlockPos(xx, yy, zz);
                         Block block = world.getBlockState(blockPos).getBlock();
-                        if ((!ElectronaUtils.Gravity.isAir(world, blockPos)) && (block != Blocks.BEDROCK)) {
+                        if ((!Gravity.isAir(world, blockPos)) && (block != Blocks.BEDROCK)) {
                             int dist = (int) Math.sqrt(YY);
                             boolean flag = false;
                             if (dist < radius) {
@@ -150,8 +151,8 @@ public class NuclearExplosion {
                                 }
                             }
                             if (flag) {
-                                ElectronaUtils.Gravity.applyGravity(world, blockPos);
-                                ElectronaUtils.Biome.setBiomeKeyAtPos(world, blockPos, BiomeInit.NUCLEAR_BIOME_KEY);
+                                Gravity.applyGravity(world, blockPos);
+                                BiomeUtil.setBiomeKeyAtPos(world, blockPos, BiomeInit.NUCLEAR_BIOME_KEY);
                             }
                         }
                     }
