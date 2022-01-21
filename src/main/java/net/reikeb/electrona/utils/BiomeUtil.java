@@ -115,18 +115,18 @@ public class BiomeUtil {
     }
 
     private static double func_226845_a_(long p_226845_0_, int p_226845_2_, int p_226845_3_, int p_226845_4_, double p_226845_5_, double p_226845_7_, double p_226845_9_) {
-        long lvt_11_1_ = LinearCongruentialGenerator.next(p_226845_0_, p_226845_2_);
-        lvt_11_1_ = LinearCongruentialGenerator.next(lvt_11_1_, p_226845_3_);
-        lvt_11_1_ = LinearCongruentialGenerator.next(lvt_11_1_, p_226845_4_);
-        lvt_11_1_ = LinearCongruentialGenerator.next(lvt_11_1_, p_226845_2_);
-        lvt_11_1_ = LinearCongruentialGenerator.next(lvt_11_1_, p_226845_3_);
-        lvt_11_1_ = LinearCongruentialGenerator.next(lvt_11_1_, p_226845_4_);
-        double d0 = func_226844_a_(lvt_11_1_);
-        lvt_11_1_ = LinearCongruentialGenerator.next(lvt_11_1_, p_226845_0_);
-        double d1 = func_226844_a_(lvt_11_1_);
-        lvt_11_1_ = LinearCongruentialGenerator.next(lvt_11_1_, p_226845_0_);
-        double d2 = func_226844_a_(lvt_11_1_);
-        return func_226843_a_(p_226845_9_ + d2) + func_226843_a_(p_226845_7_ + d1) + func_226843_a_(p_226845_5_ + d0);
+        long linCongGen = LinearCongruentialGenerator.next(p_226845_0_, p_226845_2_);
+        linCongGen = LinearCongruentialGenerator.next(linCongGen, p_226845_3_);
+        linCongGen = LinearCongruentialGenerator.next(linCongGen, p_226845_4_);
+        linCongGen = LinearCongruentialGenerator.next(linCongGen, p_226845_2_);
+        linCongGen = LinearCongruentialGenerator.next(linCongGen, p_226845_3_);
+        linCongGen = LinearCongruentialGenerator.next(linCongGen, p_226845_4_);
+        double d0 = func_226844_a_(linCongGen);
+        linCongGen = LinearCongruentialGenerator.next(linCongGen, p_226845_0_);
+        double d1 = func_226844_a_(linCongGen);
+        linCongGen = LinearCongruentialGenerator.next(linCongGen, p_226845_0_);
+        double d2 = func_226844_a_(linCongGen);
+        return square(p_226845_9_ + d2) + square(p_226845_7_ + d1) + square(p_226845_5_ + d0);
     }
 
     private static double func_226844_a_(long p_226844_0_) {
@@ -134,7 +134,13 @@ public class BiomeUtil {
         return (d0 - 0.5D) * 0.9D;
     }
 
-    private static double func_226843_a_(double p_226843_0_) {
-        return p_226843_0_ * p_226843_0_;
+    /**
+     * Calculate the square of a number (n*n)
+     *
+     * @param n the number
+     * @return the square
+     */
+    private static double square(double n) {
+        return n * n;
     }
 }
