@@ -1,6 +1,7 @@
 package net.reikeb.electrona.utils;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -37,7 +38,8 @@ public class Gravity {
         boolean flag3 = world.isEmptyBlock(pos.below()) || FallingBlock.isFree(world.getBlockState(pos.below()));
         boolean flag4 = isSupport(world, pos);
         boolean flag5 = staysAttached(world, pos);
-        return ((!flag1) && (!flag2) && (pos.getY() > 0) && flag3 && (!flag4) && (!flag5));
+        boolean flag6 = isAttachedToNormalBlock(world, pos, true);
+        return ((!flag1) && (!flag2) && (pos.getY() > 0) && flag3 && (!flag4) && (!flag5) && (!flag6));
     }
 
     /**
@@ -51,8 +53,7 @@ public class Gravity {
         if (world == null) return false;
         Block block = world.getBlockState(pos).getBlock();
         if ((block instanceof StairBlock) || (block instanceof SlabBlock)) {
-            return !isAir(world, pos.north()) || !isAir(world, pos.south())
-                    || !isAir(world, pos.east()) || !isAir(world, pos.west());
+            return areBlocksAround(world, pos);
         }
         return false;
     }
@@ -68,10 +69,21 @@ public class Gravity {
         Block block = world.getBlockState(pos).getBlock();
         if ((block instanceof FenceBlock) || (block instanceof FenceGateBlock)
                 || (block instanceof ChainBlock) || (block instanceof IronBarsBlock)) {
-            return !isAir(world, pos.north()) || !isAir(world, pos.south())
-                    || !isAir(world, pos.east()) || !isAir(world, pos.west());
+            return areBlocksAround(world, pos);
         }
         return false;
+    }
+
+    /**
+     * Checks if blocks are around a position
+     *
+     * @param world The world of the blocks
+     * @param pos   The position of base block
+     * @return true if blocks are around the position
+     */
+    private static boolean areBlocksAround(Level world, BlockPos pos) {
+        return !isAir(world, pos.north()) || !isAir(world, pos.south())
+                || !isAir(world, pos.east()) || !isAir(world, pos.west());
     }
 
     /**
@@ -86,8 +98,15 @@ public class Gravity {
         return (block == Blocks.AIR) || (block == Blocks.VOID_AIR) || (block == Blocks.CAVE_AIR);
     }
 
-    /*
-    private static boolean isAttachedToNormalBlock(World world, BlockPos pos, boolean checkNextBlock) {
+    /**
+     * Checks if a block is attached to a normal block over 1 distance
+     *
+     * @param world          The world of the block
+     * @param pos            The position of the block
+     * @param checkNextBlock Whether or not it should check for a next block
+     * @return true if attached to a normal block over 1 distance
+     */
+    private static boolean isAttachedToNormalBlock(Level world, BlockPos pos, boolean checkNextBlock) {
         for (Direction dir : Direction.values()) {
             BlockPos otherPos = pos.relative(dir);
             if ((!isSupport(world, otherPos)) && (!staysAttached(world, otherPos))) {
@@ -95,9 +114,7 @@ public class Gravity {
             } else {
                 if (checkNextBlock) {
                     if (!isAir(world, otherPos)) {
-                        if (isAttachedToNormalBlock(world, otherPos, false)) {
-                            return true;
-                        }
+                        return isAttachedToNormalBlock(world, otherPos, false);
                     }
                 }
             }
@@ -105,5 +122,4 @@ public class Gravity {
         }
         return false;
     }
-    */
 }
