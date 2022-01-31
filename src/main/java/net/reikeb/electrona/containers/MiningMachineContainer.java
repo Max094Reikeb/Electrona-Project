@@ -37,13 +37,13 @@ public class MiningMachineContainer extends AbstractContainer {
 
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                addSlot(new SlotItemHandler(h, 0, 79, 35));
-                addSlot(new SlotItemHandler(h, 1, 34, 26) {
+                addSlot(new SlotItemHandler(h, 0, 91, 12));
+                addSlot(new SlotItemHandler(h, 1, 74, 51) {
                     public boolean mayPlace(ItemStack itemStack) {
                         return itemStack.getItem() == Items.BUCKET;
                     }
                 });
-                addSlot(new SlotItemHandler(h, 2, 34, 44) {
+                addSlot(new SlotItemHandler(h, 2, 108, 51) {
                     public boolean mayPlace(ItemStack itemStack) {
                         return itemStack.getItem() == Items.BUCKET;
                     }
