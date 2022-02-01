@@ -23,6 +23,6 @@ public class NuclearBombWindow extends AbstractWindow<NuclearBombContainer> {
 
     @Override
     protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-        this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.nuclear_bomb.name"), 54, 17, -16777216);
+        this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.nuclear_bomb.name"), 55, 12, -16777216);
     }
 }

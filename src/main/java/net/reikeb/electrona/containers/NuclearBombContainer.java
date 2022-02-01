@@ -35,8 +35,8 @@ public class NuclearBombContainer extends AbstractContainer {
 
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                addSlot(new SlotItemHandler(h, 0, 53, 31));
-                addSlot(new SlotItemHandler(h, 1, 107, 31));
+                addSlot(new SlotItemHandler(h, 0, 53, 36));
+                addSlot(new SlotItemHandler(h, 1, 96, 36));
             });
         }
         this.layoutPlayerInventorySlots(playerInv);
