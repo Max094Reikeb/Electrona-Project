@@ -43,7 +43,7 @@ public class PurificatorContainer extends AbstractContainer {
 
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                addSlot(new SlotItemHandler(h, 0, 27, 43) {
+                addSlot(new SlotItemHandler(h, 0, 27, 27) {
                     public boolean mayPlace(ItemStack itemStack) {
                         return Items.WATER_BUCKET == itemStack.getItem();
                     }
@@ -52,8 +52,8 @@ public class PurificatorContainer extends AbstractContainer {
                         return 1;
                     }
                 });
-                addSlot(new SlotItemHandler(h, 1, 56, 28));
-                addSlot(new SlotItemHandler(h, 2, 136, 28) {
+                addSlot(new SlotItemHandler(h, 1, 56, 40));
+                addSlot(new SlotItemHandler(h, 2, 136, 40) {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack) {
                         return false;

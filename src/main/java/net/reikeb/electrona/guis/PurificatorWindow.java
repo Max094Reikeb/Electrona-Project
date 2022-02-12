@@ -26,12 +26,12 @@ public class PurificatorWindow extends AbstractWindow<PurificatorContainer> {
     /**
      * Texture position of the thermometer
      */
-    final static int THERMOMETER_XPOS = 98;
-    final static int THERMOMETER_YPOS = 27;
+    final static int THERMOMETER_XPOS = 101;
+    final static int THERMOMETER_YPOS = 36;
     final static int THERMOMETER_ICON_U = 194;
     final static int THERMOMETER_ICON_V = 0;
     final static int THERMOMETER_WIDTH = 6;
-    final static int THERMOMETER_HEIGHT = 16;
+    final static int THERMOMETER_HEIGHT = 20;
 
     /**
      * Texture position of the water
@@ -58,18 +58,18 @@ public class PurificatorWindow extends AbstractWindow<PurificatorContainer> {
         tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
                 .ifPresent(cap -> currentWater.set(cap.getFluidInTank(1).getAmount()));
         int XposT1 = leftPos + 6;
-        int XposT2 = leftPos + 24;
+        int XposT2 = leftPos + 23;
         int YposT1 = topPos + 6;
-        int YposT2 = topPos + 59;
+        int YposT2 = topPos + 60;
         String string = (currentWater.get() + " mb");
         // Purifying percentage
         int currentPurify = tileEntity.getTileData().getInt("CurrentPurifyingTime");
         int purifyTime = tileEntity.getTileData().getInt("PurifyingTime");
         int percentage = (currentPurify * 5) / (purifyTime == 0 ? 100 : purifyTime);
-        int XperT1 = leftPos + 97;
-        int XperT2 = leftPos + 105;
-        int YperT1 = topPos + 27;
-        int YperT2 = topPos + 44;
+        int XperT1 = leftPos + 100;
+        int XperT2 = leftPos + 108;
+        int YperT1 = topPos + 35;
+        int YperT2 = topPos + 57;
         String perString = (percentage + "%");
         if (mouseX > XposT1 && mouseX < XposT2 && mouseY > YposT1 && mouseY < YposT2) {
             renderTooltip(matrixStack, Component.nullToEmpty(string), mouseX, mouseY);
@@ -80,7 +80,7 @@ public class PurificatorWindow extends AbstractWindow<PurificatorContainer> {
 
     @Override
     protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-        this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.purificator.name"), 48, 6, -16777216);
+        this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.purificator.name"), 52, 12, -16777216);
     }
 
     @Override
