@@ -37,18 +37,18 @@ public class SprayerContainer extends AbstractContainer {
 
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                addSlot(new SlotItemHandler(h, 0, 61, 34));
-                addSlot(new SlotItemHandler(h, 1, 25, 16) {
+                addSlot(new SlotItemHandler(h, 0, 80, 14));
+                addSlot(new SlotItemHandler(h, 1, 20, 44) {
                     public boolean mayPlace(ItemStack itemStack) {
                         return itemStack.getItem() == ItemInit.WIRELESS_BOOSTER.get();
                     }
                 });
-                addSlot(new SlotItemHandler(h, 2, 25, 34) {
+                addSlot(new SlotItemHandler(h, 2, 50, 44) {
                     public boolean mayPlace(ItemStack itemStack) {
                         return itemStack.getItem() == ItemInit.WIRELESS_BOOSTER.get();
                     }
                 });
-                addSlot(new SlotItemHandler(h, 3, 25, 52) {
+                addSlot(new SlotItemHandler(h, 3, 80, 44) {
                     public boolean mayPlace(ItemStack itemStack) {
                         return itemStack.getItem() == ItemInit.WIRELESS_BOOSTER.get();
                     }
