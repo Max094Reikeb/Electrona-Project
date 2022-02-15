@@ -9,8 +9,9 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
+
+import net.reikeb.electrona.utils.FluidTankHandler;
 
 import static net.reikeb.electrona.init.TileEntityInit.TILE_COOLER;
 
@@ -35,11 +36,11 @@ public class TileCooler extends AbstractTileEntity {
     public CompoundTag save(CompoundTag compound) {
         super.save(compound);
         compound.put("Inventory", inventory.serializeNBT());
-        fluidTank.writeToNBT(compound);
+        compound.put("fluidTank", fluidTank.serializeNBT());
         return compound;
     }
 
-    private final FluidTank fluidTank = new FluidTank(10000, fs -> {
+    private final FluidTankHandler fluidTank = new FluidTankHandler(10000, fs -> {
         return fs.getFluid() == Fluids.WATER;
     }) {
         @Override

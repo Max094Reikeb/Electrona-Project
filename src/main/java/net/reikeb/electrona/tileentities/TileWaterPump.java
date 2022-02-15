@@ -23,7 +23,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.reikeb.electrona.blocks.WaterPump;
@@ -33,6 +32,7 @@ import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.electrona.misc.vm.FluidFunction;
+import net.reikeb.electrona.utils.FluidTankHandler;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -81,68 +81,67 @@ public class TileWaterPump extends AbstractTileEntity {
         AtomicInteger tankCapacity = new AtomicInteger();
         this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).ifPresent(cap -> tankCapacity.set(cap.getTankCapacity(1)));
 
-        if (world != null) { // Avoid NullPointerExceptions
+        if (world == null) return;
 
-            world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(WaterPump.PUMPING, isOn));
+        world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(WaterPump.PUMPING, isOn));
 
-            // Pump water
-            if (isOn) {
-                wait += 1;
-                if (wait >= 15) {
-                    if (electronicPower >= 20
-                            && Blocks.WATER == world.getBlockState(blockPos.below()).getBlock()) {
-                        if (tankCapacity.get() >= (waterLevel.get() + 100)) {
-                            FluidFunction.fillWater(this, 100);
-                            electronicPower -= 20;
-                            world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
-                            world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
-                        } else if (tankCapacity.get() >= (waterLevel.get() + 50)) {
-                            FluidFunction.fillWater(this, 50);
-                            electronicPower -= 10;
-                            world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
-                            world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
-                        } else if (tankCapacity.get() >= (waterLevel.get() + 10)) {
-                            FluidFunction.fillWater(this, 10);
-                            electronicPower -= 2;
-                            world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
-                            world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
-                        } else if (tankCapacity.get() > waterLevel.get()) {
-                            FluidFunction.fillWater(this, 1);
-                            electronicPower -= 0.2;
-                            world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
-                            world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
-                        } else {
-                            isOn = false;
-                        }
-                        this.getTileData().putDouble("ElectronicPower", electronicPower);
-                    } else if (electronicPower < 20) {
+        // Pump water
+        if (isOn) {
+            wait += 1;
+            if (wait >= 15) {
+                if (electronicPower >= 20
+                        && Blocks.WATER == world.getBlockState(blockPos.below()).getBlock()) {
+                    if (tankCapacity.get() >= (waterLevel.get() + 100)) {
+                        FluidFunction.fillWater(this, 100);
+                        electronicPower -= 20;
+                        world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
+                        world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
+                    } else if (tankCapacity.get() >= (waterLevel.get() + 50)) {
+                        FluidFunction.fillWater(this, 50);
+                        electronicPower -= 10;
+                        world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
+                        world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
+                    } else if (tankCapacity.get() >= (waterLevel.get() + 10)) {
+                        FluidFunction.fillWater(this, 10);
+                        electronicPower -= 2;
+                        world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
+                        world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
+                    } else if (tankCapacity.get() > waterLevel.get()) {
+                        FluidFunction.fillWater(this, 1);
+                        electronicPower -= 0.2;
+                        world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
+                        world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
+                    } else {
                         isOn = false;
                     }
-                    wait = 0;
+                    this.getTileData().putDouble("ElectronicPower", electronicPower);
+                } else if (electronicPower < 20) {
+                    isOn = false;
                 }
-            } else {
                 wait = 0;
             }
-            this.getTileData().putBoolean("isOn", isOn);
-
-            // Input slot - Handling slots
-            if ((this.inventory.getStackInSlot(0).getItem() == Items.BUCKET)
-                    && (waterLevel.get() >= 1000)) {
-                this.inventory.decrStackSize(0, 1);
-                this.inventory.insertItem(0, new ItemStack(Items.WATER_BUCKET, 1), false);
-                FluidFunction.drainWater(this, 1000);
-            }
-
-            // Output slot - Handling slots
-            EnergyFunction.transferEnergyWithItemSlot(this.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), inventory, false, electronicPower, 1, 4);
-
-            // We pass water to blocks around
-            FluidFunction.generatorTransferFluid(world, blockPos, Direction.values(), this, waterLevel.get(), 100);
-
-            this.setChanged();
-            world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(),
-                    Constants.BlockFlags.NOTIFY_NEIGHBORS);
+        } else {
+            wait = 0;
         }
+        this.getTileData().putBoolean("isOn", isOn);
+
+        // Input slot - Handling slots
+        if ((this.inventory.getStackInSlot(0).getItem() == Items.BUCKET)
+                && (waterLevel.get() >= 1000)) {
+            this.inventory.decrStackSize(0, 1);
+            this.inventory.insertItem(0, new ItemStack(Items.WATER_BUCKET, 1), false);
+            FluidFunction.drainWater(this, 1000);
+        }
+
+        // Output slot - Handling slots
+        EnergyFunction.transferEnergyWithItemSlot(this.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), inventory, false, electronicPower, 1, 4);
+
+        // We pass water to blocks around
+        FluidFunction.generatorTransferFluid(world, blockPos, Direction.values(), this, waterLevel.get(), 100);
+
+        this.setChanged();
+        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(),
+                Constants.BlockFlags.NOTIFY_NEIGHBORS);
     }
 
     @Override
@@ -168,11 +167,11 @@ public class TileWaterPump extends AbstractTileEntity {
         compound.putBoolean("isOn", this.isOn);
         compound.putInt("wait", this.wait);
         compound.put("Inventory", inventory.serializeNBT());
-        fluidTank.writeToNBT(compound);
+        compound.put("fluidTank", fluidTank.serializeNBT());
         return compound;
     }
 
-    private final FluidTank fluidTank = new FluidTank(10000, fs -> {
+    private final FluidTankHandler fluidTank = new FluidTankHandler(10000, fs -> {
         return fs.getFluid() == Fluids.WATER;
     }) {
         @Override

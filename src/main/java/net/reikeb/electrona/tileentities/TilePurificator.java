@@ -26,7 +26,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -38,6 +37,7 @@ import net.reikeb.electrona.init.ContainerInit;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.misc.vm.FluidFunction;
 import net.reikeb.electrona.recipes.PurificatorRecipe;
+import net.reikeb.electrona.utils.FluidTankHandler;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -81,6 +81,7 @@ public class TilePurificator extends AbstractTileEntity {
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
+        if (world == null) return;
         ItemStack stackInSlot1 = this.inventory.getStackInSlot(1);
 
         AtomicInteger waterLevel = new AtomicInteger();
@@ -96,7 +97,7 @@ public class TilePurificator extends AbstractTileEntity {
             FluidFunction.fillWater(this, 1000);
         }
 
-        if ((world != null) && (!world.isClientSide)) {
+        if (!world.isClientSide) {
             if ((waterLevel.get() > 0) && (this.getRecipe(stackInSlot1) != null)) {
                 if (this.canPurify) {
                     this.waterRequired = getWaterRequired(stackInSlot1);
@@ -130,11 +131,8 @@ public class TilePurificator extends AbstractTileEntity {
             this.getTileData().putInt("PurifyingTime", this.purifyingTime);
         }
 
-        if (world != null) {
-            this.setChanged();
-            world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(),
-                    Constants.BlockFlags.BLOCK_UPDATE);
-        }
+        this.setChanged();
+        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
     }
 
     protected void canPurify(@Nullable Recipe<?> recipe) {
@@ -210,11 +208,11 @@ public class TilePurificator extends AbstractTileEntity {
         compound.putInt("CurrentPurifyingTime", this.currentPurifyingTime);
         compound.putInt("WaterRequired", this.waterRequired);
         compound.put("Inventory", inventory.serializeNBT());
-        fluidTank.writeToNBT(compound);
+        compound.put("fluidTank", fluidTank.serializeNBT());
         return compound;
     }
 
-    private final FluidTank fluidTank = new FluidTank(10000, fs -> {
+    private final FluidTankHandler fluidTank = new FluidTankHandler(10000, fs -> {
         return fs.getFluid() == Fluids.WATER;
     }) {
         @Override
