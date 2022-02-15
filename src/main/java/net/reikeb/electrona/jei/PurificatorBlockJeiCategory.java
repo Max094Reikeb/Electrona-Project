@@ -70,7 +70,7 @@ public class PurificatorBlockJeiCategory implements IRecipeCategory<PurificatorB
     @Override
     public void setRecipe(IRecipeLayout iRecipeLayout, PurificatorBlockRecipeWrapper recipeWrapper, IIngredients iIngredients) {
         IGuiItemStackGroup stacks = iRecipeLayout.getItemStacks();
-        stacks.init(input1, true, 27, 27);
+        stacks.init(input1, true, 26, 26);
         stacks.set(input1, iIngredients.getInputs(VanillaTypes.ITEM).get(0));
         stacks.init(input2, true, 56, 40);
         stacks.set(input2, iIngredients.getInputs(VanillaTypes.ITEM).get(1));
