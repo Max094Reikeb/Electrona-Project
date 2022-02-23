@@ -1,5 +1,5 @@
-<img align="center" width="800" src="https://zupimages.net/up/21/22/5qhf.png">
-<p align="center"><b>Sounds and Light update!</b></p>
+<img align="center" width="800" src="https://zupimages.net/up/22/08/p4pn.png">
+<p align="center"><b>GUIs update!</b></p>
 
 <b><u>The links!</u></b> <br />
 You want informations about the blocks/items/mechanics of the mod? <br />
