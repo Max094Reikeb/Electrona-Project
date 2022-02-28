@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -25,12 +26,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import net.reikeb.electrona.events.local.TeleporterUseEvent;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
-import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.tileentities.TileDimensionLinker;
 import net.reikeb.electrona.tileentities.TileTeleporter;
 
@@ -168,7 +167,7 @@ public class TeleporterFunction {
                         entity.xRot, Collections.emptySet());
             }
         }
-        SoundEvent teleportSound = ForgeRegistries.SOUND_EVENTS.getValue(Keys.ENDERMAN_TELEPORT_SOUND);
+        SoundEvent teleportSound = SoundEvents.ENDERMAN_TELEPORT;
         teleportParticles(world, pos, 300);
         teleportParticles(world, teleportPos, 300);
         if (teleportSound == null) return;

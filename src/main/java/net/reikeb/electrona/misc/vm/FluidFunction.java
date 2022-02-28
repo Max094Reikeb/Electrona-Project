@@ -41,13 +41,13 @@ public class FluidFunction {
         for (Direction dir : directions) {
             if (generatorLevel <= 0) return; // we have no more fluid
 
-            BlockEntity tileEntity = getUtilBlockEntity(world, pos, dir);
-            Block offsetBlock = getUtilOffsetBlock(world, pos, dir);
+            BlockEntity tileEntity = world.getBlockEntity(pos.relative(dir));
+            Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
             if (tileEntity == null) continue;
             if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
 
-            AtomicInteger machineLevel = getUtilMachineLevel(world, pos, dir);
-            AtomicInteger machineCapacity = getUtilMachineCapacity(world, pos, dir);
+            AtomicInteger machineLevel = getFluidAmount(tileEntity);
+            AtomicInteger machineCapacity = getTankCapacity(tileEntity);
             double headroom = machineCapacity.get() - machineLevel.get();
             double actualTransfer = Math.min(Math.min(transferPerTick, generatorLevel), headroom);
 
@@ -102,39 +102,5 @@ public class FluidFunction {
         te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
                 .ifPresent(cap -> capacity.set(cap.getTankCapacity(1)));
         return capacity;
-    }
-
-    public static BlockEntity utilTE;
-    public static Block utilOB;
-    public static AtomicInteger utilML;
-    public static AtomicInteger utilMC;
-
-    public static void genUtils(Level world, BlockPos pos, Direction dir) {
-        utilTE = world.getBlockEntity(pos.relative(dir));
-        utilOB = world.getBlockState(pos.relative(dir)).getBlock();
-        if (utilTE == null) return;
-
-        utilML = getFluidAmount(utilTE);
-        utilMC = getTankCapacity(utilTE);
-    }
-
-    public static BlockEntity getUtilBlockEntity(Level world, BlockPos pos, Direction dir) {
-        genUtils(world, pos, dir);
-        return utilTE;
-    }
-
-    public static Block getUtilOffsetBlock(Level world, BlockPos pos, Direction dir) {
-        genUtils(world, pos, dir);
-        return utilOB;
-    }
-
-    public static AtomicInteger getUtilMachineLevel(Level world, BlockPos pos, Direction dir) {
-        genUtils(world, pos, dir);
-        return utilML;
-    }
-
-    public static AtomicInteger getUtilMachineCapacity(Level world, BlockPos pos, Direction dir) {
-        genUtils(world, pos, dir);
-        return utilMC;
     }
 }

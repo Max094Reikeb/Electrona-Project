@@ -37,13 +37,13 @@ public class CableFunction {
 
         for (Direction dir : directions) {
             if (cablePower > 0) {
-                BlockEntity tileEntity = EnergyFunction.getUtilBlockEntity(world, pos, dir);
-                Block offsetBlock = EnergyFunction.getUtilOffsetBlock(world, pos, dir);
+                BlockEntity tileEntity = world.getBlockEntity(pos.relative(dir));
+                Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
                 if (tileEntity == null) continue;
                 if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
 
-                double machinePower = EnergyFunction.getUtilMachinePower(world, pos, dir);
-                int machineMax = EnergyFunction.getUtilMachineMax(world, pos, dir);
+                double machinePower = tileEntity.getTileData().getDouble("ElectronicPower");
+                int machineMax = tileEntity.getTileData().getInt("MaxStorage");
                 boolean machineLogic = tileEntity.getTileData().getBoolean("logic");
 
                 if (machineTag.contains(offsetBlock)) {
@@ -88,13 +88,13 @@ public class CableFunction {
 
         for (Direction dir : directions) {
             if (cableFLuid > 0) {
-                BlockEntity tileEntity = FluidFunction.getUtilBlockEntity(world, pos, dir);
-                Block offsetBlock = FluidFunction.getUtilOffsetBlock(world, pos, dir);
+                BlockEntity tileEntity = world.getBlockEntity(pos.relative(dir));
+                Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
                 if (tileEntity == null) continue;
                 if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
 
-                AtomicInteger machineFluid = FluidFunction.getUtilMachineLevel(world, pos, dir);
-                AtomicInteger machineMax = FluidFunction.getUtilMachineCapacity(world, pos, dir);
+                AtomicInteger machineFluid = FluidFunction.getFluidAmount(tileEntity);
+                AtomicInteger machineMax = FluidFunction.getTankCapacity(tileEntity);
                 boolean machineLogic = tileEntity.getTileData().getBoolean("logic");
 
                 if (machineTag.contains(offsetBlock)) {

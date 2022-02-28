@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -27,14 +28,12 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.PurificatorContainer;
 import net.reikeb.electrona.events.local.PurificationEvent;
 import net.reikeb.electrona.init.ContainerInit;
 import net.reikeb.electrona.init.SoundsInit;
-import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.misc.vm.FluidFunction;
 import net.reikeb.electrona.recipes.PurificatorRecipe;
 import net.reikeb.electrona.utils.FluidTankHandler;
@@ -97,38 +96,38 @@ public class TilePurificator extends AbstractTileEntity {
             FluidFunction.fillWater(this, 1000);
         }
 
-        if (!world.isClientSide) {
-            if ((waterLevel.get() > 0) && (this.getRecipe(stackInSlot1) != null)) {
-                if (this.canPurify) {
-                    this.waterRequired = getWaterRequired(stackInSlot1);
-                    this.purifyingTime = getPurifyingTime(stackInSlot1);
-                    ItemStack output = this.getRecipe(stackInSlot1).getResultItem();
-                    double waterPerSecond = (double) this.waterRequired / this.purifyingTime;
+        if (world.isClientSide) return;
 
-                    if (this.currentPurifyingTime < (this.purifyingTime * 20)) {
-                        this.currentPurifyingTime += 1;
-                        FluidFunction.drainWater(this, (int) (waterPerSecond * 0.05));
-                        world.playSound(null, blockPos, SoundsInit.PURIFICATOR_PURIFICATION.get(),
-                                SoundSource.BLOCKS, 0.6F, 1.0F);
+        if ((waterLevel.get() > 0) && (this.getRecipe(stackInSlot1) != null)) {
+            if (this.canPurify) {
+                this.waterRequired = getWaterRequired(stackInSlot1);
+                this.purifyingTime = getPurifyingTime(stackInSlot1);
+                ItemStack output = this.getRecipe(stackInSlot1).getResultItem();
+                double waterPerSecond = (double) this.waterRequired / this.purifyingTime;
 
-                    } else {
-                        if (!MinecraftForge.EVENT_BUS.post(new PurificationEvent(world, blockPos, stackInSlot1, new ItemStack(output.copy().getItem(), this.getRecipe(stackInSlot1).getCountOutput()), this.purifyingTime, this.waterRequired))) {
-                            this.currentPurifyingTime = 0;
-                            this.inventory.insertItem(2, new ItemStack(output.copy().getItem(), this.getRecipe(stackInSlot1).getCountOutput()), false);
-                            this.inventory.decrStackSize(1, this.getRecipe(stackInSlot1).getCountInput());
-                            world.playSound(null, blockPos, ForgeRegistries.SOUND_EVENTS.getValue(Keys.BREWING_STAND_BREW_SOUND),
-                                    SoundSource.BLOCKS, 0.6F, 1.0F);
-                        }
-                    }
+                if (this.currentPurifyingTime < (this.purifyingTime * 20)) {
+                    this.currentPurifyingTime += 1;
+                    FluidFunction.drainWater(this, (int) (waterPerSecond * 0.05));
+                    world.playSound(null, blockPos, SoundsInit.PURIFICATOR_PURIFICATION.get(),
+                            SoundSource.BLOCKS, 0.6F, 1.0F);
+
                 } else {
-                    this.currentPurifyingTime = 0;
+                    if (!MinecraftForge.EVENT_BUS.post(new PurificationEvent(world, blockPos, stackInSlot1, new ItemStack(output.copy().getItem(), this.getRecipe(stackInSlot1).getCountOutput()), this.purifyingTime, this.waterRequired))) {
+                        this.currentPurifyingTime = 0;
+                        this.inventory.insertItem(2, new ItemStack(output.copy().getItem(), this.getRecipe(stackInSlot1).getCountOutput()), false);
+                        this.inventory.decrStackSize(1, this.getRecipe(stackInSlot1).getCountInput());
+                        world.playSound(null, blockPos, SoundEvents.BREWING_STAND_BREW,
+                                SoundSource.BLOCKS, 0.6F, 1.0F);
+                    }
                 }
             } else {
                 this.currentPurifyingTime = 0;
             }
-            this.getTileData().putInt("CurrentPurifyingTime", this.currentPurifyingTime);
-            this.getTileData().putInt("PurifyingTime", this.purifyingTime);
+        } else {
+            this.currentPurifyingTime = 0;
         }
+        this.getTileData().putInt("CurrentPurifyingTime", this.currentPurifyingTime);
+        this.getTileData().putInt("PurifyingTime", this.purifyingTime);
 
         this.setChanged();
         world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);

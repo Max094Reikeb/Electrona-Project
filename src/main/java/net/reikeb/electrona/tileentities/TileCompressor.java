@@ -79,47 +79,45 @@ public class TileCompressor extends AbstractTileEntity {
         double electronicPower = t.getTileData().getDouble("ElectronicPower");
         t.getTileData().putInt("MaxStorage", 5000);
 
-        if ((world != null) && (!world.isClientSide)) {
-            if ((electronicPower > 0) && (this.getRecipe(stackInSlot0, stackInSlot1) != null)) {
-                if (this.canCompress) {
-                    this.energyRequired = getEnergyRequired(stackInSlot0, stackInSlot1);
-                    this.compressingTime = getCompressingTime(stackInSlot0, stackInSlot1);
-                    ItemStack output = this.getRecipe(stackInSlot0, stackInSlot1).getResultItem();
-                    double energyPerSecond = (double) this.energyRequired / this.compressingTime;
+        if ((world == null) || (world.isClientSide)) return;
 
-                    if (this.currentCompressingTime < (this.compressingTime * 20)) {
-                        this.currentCompressingTime += 1;
-                        electronicPower = electronicPower - (energyPerSecond * 0.05);
+        if ((electronicPower > 0) && (this.getRecipe(stackInSlot0, stackInSlot1) != null)) {
+            if (this.canCompress) {
+                this.energyRequired = getEnergyRequired(stackInSlot0, stackInSlot1);
+                this.compressingTime = getCompressingTime(stackInSlot0, stackInSlot1);
+                ItemStack output = this.getRecipe(stackInSlot0, stackInSlot1).getResultItem();
+                double energyPerSecond = (double) this.energyRequired / this.compressingTime;
 
-                    } else {
-                        if (!MinecraftForge.EVENT_BUS.post(new CompressionEvent(world, blockPos, stackInSlot0, stackInSlot1, output.copy(), this.compressingTime, this.energyRequired))) {
-                            this.currentCompressingTime = 0;
-                            this.inventory.insertItem(2, output.copy(), false);
-                            this.inventory.decrStackSize(0, 1);
-                            this.inventory.decrStackSize(1, 1);
-                            world.playSound(null, blockPos, SoundsInit.COMPRESSOR_END_COMPRESSION.get(),
-                                    SoundSource.BLOCKS, 0.6F, 1.0F);
-                        }
-                    }
-                    t.getTileData().putDouble("ElectronicPower", electronicPower);
+                if (this.currentCompressingTime < (this.compressingTime * 20)) {
+                    this.currentCompressingTime += 1;
+                    electronicPower = electronicPower - (energyPerSecond * 0.05);
+
                 } else {
-                    this.currentCompressingTime = 0;
+                    if (!MinecraftForge.EVENT_BUS.post(new CompressionEvent(world, blockPos, stackInSlot0, stackInSlot1, output.copy(), this.compressingTime, this.energyRequired))) {
+                        this.currentCompressingTime = 0;
+                        this.inventory.insertItem(2, output.copy(), false);
+                        this.inventory.decrStackSize(0, 1);
+                        this.inventory.decrStackSize(1, 1);
+                        world.playSound(null, blockPos, SoundsInit.COMPRESSOR_END_COMPRESSION.get(),
+                                SoundSource.BLOCKS, 0.6F, 1.0F);
+                    }
                 }
+                t.getTileData().putDouble("ElectronicPower", electronicPower);
             } else {
                 this.currentCompressingTime = 0;
             }
-            world.setBlockAndUpdate(blockPos, state
-                    .setValue(Compressor.COMPRESSING, this.currentCompressingTime > 0));
-
-            t.getTileData().putInt("CurrentCompressingTime", this.currentCompressingTime);
-            t.getTileData().putInt("CompressingTime", this.compressingTime);
+        } else {
+            this.currentCompressingTime = 0;
         }
+        world.setBlockAndUpdate(blockPos, state
+                .setValue(Compressor.COMPRESSING, this.currentCompressingTime > 0));
 
-        if (world != null) {
-            t.setChanged();
-            world.sendBlockUpdated(blockPos, state, state,
-                    Constants.BlockFlags.BLOCK_UPDATE);
-        }
+        t.getTileData().putInt("CurrentCompressingTime", this.currentCompressingTime);
+        t.getTileData().putInt("CompressingTime", this.compressingTime);
+
+        t.setChanged();
+        world.sendBlockUpdated(blockPos, state, state,
+                Constants.BlockFlags.BLOCK_UPDATE);
     }
 
     protected void canCompress(@Nullable Recipe<?> recipe) {

@@ -31,26 +31,21 @@ public class WorldTickEvent {
     @SubscribeEvent
     public static void worldTick(TickEvent.WorldTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
-            if (event.world instanceof ServerLevel) {
-                ServerChunkCache chunkProvider = ((ServerLevel) event.world).getChunkSource();
-                boolean flag = chunkProvider.level.isDebug();
-                if (!flag) {
-                    List<ChunkHolder> list = Lists.newArrayList(chunkProvider.chunkMap.getChunks());
-                    list.forEach((p_241099_7_) -> {
-                        Optional<LevelChunk> optional = p_241099_7_.getTickingChunkFuture().getNow(ChunkHolder.UNLOADED_LEVEL_CHUNK).left();
-                        if (optional.isPresent()) {
-                            Optional<LevelChunk> optional1 = p_241099_7_.getEntityTickingChunkFuture().getNow(ChunkHolder.UNLOADED_LEVEL_CHUNK).left();
-                            if (optional1.isPresent()) {
-                                LevelChunk chunk = optional1.get();
-                                ChunkPos chunkpos = p_241099_7_.getPos();
-                                if (!chunkProvider.chunkMap.noPlayersCloseForSpawning(chunkpos) || shouldForceTicks(chunkProvider, chunkpos.toLong())) {
-                                    lightnings((ServerLevel) event.world, chunk);
-                                }
-                            }
-                        }
-                    });
+            if (!(event.world instanceof ServerLevel)) return;
+            ServerChunkCache chunkProvider = ((ServerLevel) event.world).getChunkSource();
+            if (chunkProvider.level.isDebug()) return;
+            List<ChunkHolder> list = Lists.newArrayList(chunkProvider.chunkMap.getChunks());
+            list.forEach((chunkHolder) -> {
+                Optional<LevelChunk> optional = chunkHolder.getTickingChunkFuture().getNow(ChunkHolder.UNLOADED_LEVEL_CHUNK).left();
+                if (optional.isEmpty()) return;
+                Optional<LevelChunk> optional1 = chunkHolder.getEntityTickingChunkFuture().getNow(ChunkHolder.UNLOADED_LEVEL_CHUNK).left();
+                if (optional1.isEmpty()) return;
+                LevelChunk chunk = optional1.get();
+                ChunkPos chunkpos = chunkHolder.getPos();
+                if (!chunkProvider.chunkMap.noPlayersCloseForSpawning(chunkpos) || shouldForceTicks(chunkProvider, chunkpos.toLong())) {
+                    lightnings((ServerLevel) event.world, chunk);
                 }
-            }
+            });
         }
     }
 
@@ -70,12 +65,11 @@ public class WorldTickEvent {
         }
         if (world.isRaining() && world.isThundering() && world.random.nextInt(delay) == 0) {
             BlockPos pos = world.findLightningTargetAround(world.getBlockRandomPos(i, 0, j, 15));
-            if (world.isRainingAt(pos)) {
-                EnergeticLightningBolt energeticLightningBolt = EntityInit.ENERGETIC_LIGHTNING_BOLT_TYPE.create(world);
-                if (energeticLightningBolt == null) return;
-                energeticLightningBolt.moveTo(Vec3.atBottomCenterOf(pos));
-                world.addFreshEntity(energeticLightningBolt);
-            }
+            if (!world.isRainingAt(pos)) return;
+            EnergeticLightningBolt energeticLightningBolt = EntityInit.ENERGETIC_LIGHTNING_BOLT_TYPE.create(world);
+            if (energeticLightningBolt == null) return;
+            energeticLightningBolt.moveTo(Vec3.atBottomCenterOf(pos));
+            world.addFreshEntity(energeticLightningBolt);
         }
     }
 

@@ -10,11 +10,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.utils.ElectronaUtils;
 
 public abstract class AbstractWindow<C extends AbstractContainerMenu> extends AbstractContainerScreen<C> {
 
-    public static ResourceLocation GUI_TO_RENDER = new ResourceLocation("");
+    public static ResourceLocation GUI_TO_RENDER = Keys.DEFAULT_NULL;
 
     public AbstractWindow(C container, Inventory inv, Component title, ResourceLocation background) {
         super(container, inv, title);

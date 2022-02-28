@@ -40,13 +40,13 @@ public class EnergyFunction {
         for (Direction dir : directions) {
             if (generatorPower <= 0) return; // we have no more power
 
-            BlockEntity tileEntity = getUtilBlockEntity(world, pos, dir);
-            Block offsetBlock = getUtilOffsetBlock(world, pos, dir);
+            BlockEntity tileEntity = world.getBlockEntity(pos.relative(dir));
+            Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
             if (tileEntity == null) continue;
             if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
 
-            double machinePower = getUtilMachinePower(world, pos, dir);
-            int machineMax = getUtilMachineMax(world, pos, dir);
+            double machinePower = tileEntity.getTileData().getDouble("ElectronicPower");
+            int machineMax = tileEntity.getTileData().getInt("MaxStorage");
             double headroom = machineMax - machinePower;
             double actualTransfer = Math.min(Math.min(transferPerTick, generatorPower), headroom);
 
@@ -79,39 +79,5 @@ public class EnergyFunction {
 
         generatorNBT.putDouble("ElectronicPower", (fromGenerator ? (generatorPower - actualTransfer) : (generatorPower + actualTransfer)));
         stackInSlot.getOrCreateTag().putDouble("ElectronicPower", (fromGenerator ? (itemPower + actualTransfer) : (itemPower - actualTransfer)));
-    }
-
-    public static BlockEntity utilTE;
-    public static Block utilOB;
-    public static double utilMP;
-    public static int utilMM;
-
-    public static void genUtils(Level world, BlockPos pos, Direction dir) {
-        utilTE = world.getBlockEntity(pos.relative(dir));
-        utilOB = world.getBlockState(pos.relative(dir)).getBlock();
-        if (utilTE == null) return;
-
-        utilMP = utilTE.getTileData().getDouble("ElectronicPower");
-        utilMM = utilTE.getTileData().getInt("MaxStorage");
-    }
-
-    public static BlockEntity getUtilBlockEntity(Level world, BlockPos pos, Direction dir) {
-        genUtils(world, pos, dir);
-        return utilTE;
-    }
-
-    public static Block getUtilOffsetBlock(Level world, BlockPos pos, Direction dir) {
-        genUtils(world, pos, dir);
-        return utilOB;
-    }
-
-    public static double getUtilMachinePower(Level world, BlockPos pos, Direction dir) {
-        genUtils(world, pos, dir);
-        return utilMP;
-    }
-
-    public static int getUtilMachineMax(Level world, BlockPos pos, Direction dir) {
-        genUtils(world, pos, dir);
-        return utilMM;
     }
 }

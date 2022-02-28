@@ -4,6 +4,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class Keys {
 
+    public static final ResourceLocation DEFAULT_NULL = new ResourceLocation("");
+
     // Cable & machines tags
     public static final ResourceLocation CABLE_TAG = new ResourceLocation("forge", "electrona/cable");
     public static final ResourceLocation CABLE_MACHINE_TAG = new ResourceLocation("forge", "electrona/machines_all");
@@ -46,8 +48,4 @@ public class Keys {
     public static final ResourceLocation MINECRAFT_ORES = new ResourceLocation("minecraft:ores");
     public static final ResourceLocation FORGE_ORES = new ResourceLocation("forge:ores");
     public static final ResourceLocation ELECTRONA_ORES = new ResourceLocation("forge:electrona/ores");
-
-    // Sounds tags
-    public static final ResourceLocation ENDERMAN_TELEPORT_SOUND = new ResourceLocation("entity.enderman.teleport");
-    public static final ResourceLocation BREWING_STAND_BREW_SOUND = new ResourceLocation("block.brewing_stand.brew");
 }
