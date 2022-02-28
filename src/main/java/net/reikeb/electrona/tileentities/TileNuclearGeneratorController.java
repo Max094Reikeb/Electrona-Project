@@ -89,10 +89,8 @@ public class TileNuclearGeneratorController extends AbstractTileEntity {
                 stackInSlot1.set(h.getStackInSlot(0));
             });
 
-            AtomicInteger waterLevel = new AtomicInteger();
-            tileUnder.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).ifPresent(cap -> waterLevel.set(cap.getFluidInTank(1).getAmount()));
-            AtomicInteger tankCapacity = new AtomicInteger();
-            tileUnder.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).ifPresent(cap -> tankCapacity.set(cap.getTankCapacity(1)));
+            AtomicInteger waterLevel = FluidFunction.getFluidAmount(tileUnder);
+            AtomicInteger tankCapacity = FluidFunction.getTankCapacity(tileUnder);
 
             // Input slot - Handling slots
             if ((stackInSlot0.getItem() == Items.WATER_BUCKET)

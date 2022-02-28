@@ -3,7 +3,6 @@ package net.reikeb.electrona.misc.vm;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagCollection;
@@ -11,8 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.tileentities.TileWaterCable;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -34,18 +32,15 @@ public class CableFunction {
 
         TagCollection<Block> tagCollection = BlockTags.getAllTags();
         Tag<Block> machineTag, cableTag;
-        machineTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", (isBlue ? "electrona/machines" : "electrona/machines_all")));
-        cableTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", (isBlue ? "electrona/blue_cable" : "electrona/cable")));
+        machineTag = tagCollection.getTagOrEmpty((isBlue ? Keys.BLUE_CABLE_MACHINE_TAG : Keys.CABLE_MACHINE_TAG));
+        cableTag = tagCollection.getTagOrEmpty((isBlue ? Keys.BLUE_CABLE_TAG : Keys.CABLE_TAG));
 
         for (Direction dir : directions) {
             if (cablePower > 0) {
-                BlockEntity tileEntity = world.getBlockEntity(pos.relative(dir));
-                if (tileEntity == null) continue;
-                Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
-                if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
-
-                double machinePower = tileEntity.getTileData().getDouble("ElectronicPower");
-                int machineMax = tileEntity.getTileData().getInt("MaxStorage");
+                BlockEntity tileEntity = EnergyFunction.getUtilBlockEntity(world, pos, dir, machineTag, cableTag);
+                Block offsetBlock = EnergyFunction.getUtilOffsetBlock(world, pos, dir, machineTag, cableTag);
+                double machinePower = EnergyFunction.getUtilMachinePower(world, pos, dir, machineTag, cableTag);
+                int machineMax = EnergyFunction.getUtilMachineMax(world, pos, dir, machineTag, cableTag);
                 boolean machineLogic = tileEntity.getTileData().getBoolean("logic");
 
                 if (machineTag.contains(offsetBlock)) {
@@ -85,22 +80,15 @@ public class CableFunction {
 
         TagCollection<Block> tagCollection = BlockTags.getAllTags();
         Tag<Block> machineTag, cableTag;
-        machineTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/has_water_tank"));
-        cableTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/water_cable"));
+        machineTag = tagCollection.getTagOrEmpty(Keys.HAS_WATER_TANK_TAG);
+        cableTag = tagCollection.getTagOrEmpty(Keys.WATER_CABLE_TAG);
 
         for (Direction dir : directions) {
             if (cableFLuid > 0) {
-                BlockEntity tileEntity = world.getBlockEntity(pos.relative(dir));
-                if (tileEntity == null) continue;
-                Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
-                if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
-
-                AtomicInteger machineFluid = new AtomicInteger();
-                tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
-                        .ifPresent(cap -> machineFluid.set(cap.getFluidInTank(1).getAmount()));
-                AtomicInteger machineMax = new AtomicInteger();
-                tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
-                        .ifPresent(cap -> machineMax.set(cap.getTankCapacity(1)));
+                BlockEntity tileEntity = FluidFunction.getUtilBlockEntity(world, pos, dir, machineTag, cableTag);
+                Block offsetBlock = FluidFunction.getUtilOffsetBlock(world, pos, dir, machineTag, cableTag);
+                AtomicInteger machineFluid = FluidFunction.getUtilMachineLevel(world, pos, dir, machineTag, cableTag);
+                AtomicInteger machineMax = FluidFunction.getUtilMachineCapacity(world, pos, dir, machineTag, cableTag);
                 boolean machineLogic = tileEntity.getTileData().getBoolean("logic");
 
                 if (machineTag.contains(offsetBlock)) {

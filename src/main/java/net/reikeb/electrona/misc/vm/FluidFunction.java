@@ -2,7 +2,6 @@ package net.reikeb.electrona.misc.vm;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagCollection;
@@ -14,6 +13,8 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+
+import net.reikeb.electrona.misc.Keys;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -34,22 +35,15 @@ public class FluidFunction {
 
         TagCollection<Block> tagCollection = BlockTags.getAllTags();
         Tag<Block> machineTag, cableTag;
-        machineTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/has_water_tank"));
-        cableTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/water_cable"));
+        machineTag = tagCollection.getTagOrEmpty(Keys.HAS_WATER_TANK_TAG);
+        cableTag = tagCollection.getTagOrEmpty(Keys.WATER_CABLE_TAG);
 
         for (Direction dir : directions) {
             if (generatorLevel <= 0) return; // we have no more fluid
 
-            BlockEntity tileEntity = world.getBlockEntity(pos.relative(dir));
-            if (tileEntity == null) continue;
-            Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
-            if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
-
-            AtomicInteger machineLevel = new AtomicInteger();
-            tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).ifPresent(cap -> machineLevel.set(cap.getFluidInTank(1).getAmount()));
-            AtomicInteger machineCapacity = new AtomicInteger();
-            tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).ifPresent(cap -> machineCapacity.set(cap.getTankCapacity(1)));
-
+            BlockEntity tileEntity = getUtilBlockEntity(world, pos, dir, machineTag, cableTag);
+            AtomicInteger machineLevel = getUtilMachineLevel(world, pos, dir, machineTag, cableTag);
+            AtomicInteger machineCapacity = getUtilMachineCapacity(world, pos, dir, machineTag, cableTag);
             double headroom = machineCapacity.get() - machineLevel.get();
             double actualTransfer = Math.min(Math.min(transferPerTick, generatorLevel), headroom);
 
@@ -78,5 +72,66 @@ public class FluidFunction {
     public static void fillWater(BlockEntity te, int amount) {
         te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
                 .ifPresent(cap -> cap.fill(new FluidStack(Fluids.WATER, amount), IFluidHandler.FluidAction.EXECUTE));
+    }
+
+    /**
+     * Small method to get the amount of fluid in a TileEntity
+     *
+     * @param te The TileEntity to check
+     * @return The amount of fluid
+     */
+    public static AtomicInteger getFluidAmount(BlockEntity te) {
+        AtomicInteger amount = new AtomicInteger();
+        te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+                .ifPresent(cap -> amount.set(cap.getFluidInTank(1).getAmount()));
+        return amount;
+    }
+
+    /**
+     * Small method to get the capacity of a tank in a TileEntity
+     *
+     * @param te The TileEntity to check
+     * @return The tank capacity
+     */
+    public static AtomicInteger getTankCapacity(BlockEntity te) {
+        AtomicInteger capacity = new AtomicInteger();
+        te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+                .ifPresent(cap -> capacity.set(cap.getTankCapacity(1)));
+        return capacity;
+    }
+
+    public static BlockEntity utilTE;
+    public static Block utilOB;
+    public static AtomicInteger utilML;
+    public static AtomicInteger utilMC;
+
+    public static void genUtils(Level world, BlockPos pos, Direction dir, Tag<Block> machineTag, Tag<Block> cableTag) {
+        utilTE = world.getBlockEntity(pos.relative(dir));
+        if (utilTE == null) return;
+        utilOB = world.getBlockState(pos.relative(dir)).getBlock();
+        if (!(machineTag.contains(utilOB) || cableTag.contains(utilOB))) return;
+
+        utilML = getFluidAmount(utilTE);
+        utilMC = getTankCapacity(utilTE);
+    }
+
+    public static BlockEntity getUtilBlockEntity(Level world, BlockPos pos, Direction dir, Tag<Block> machineTag, Tag<Block> cableTag) {
+        genUtils(world, pos, dir, machineTag, cableTag);
+        return utilTE;
+    }
+
+    public static Block getUtilOffsetBlock(Level world, BlockPos pos, Direction dir, Tag<Block> machineTag, Tag<Block> cableTag) {
+        genUtils(world, pos, dir, machineTag, cableTag);
+        return utilOB;
+    }
+
+    public static AtomicInteger getUtilMachineLevel(Level world, BlockPos pos, Direction dir, Tag<Block> machineTag, Tag<Block> cableTag) {
+        genUtils(world, pos, dir, machineTag, cableTag);
+        return utilML;
+    }
+
+    public static AtomicInteger getUtilMachineCapacity(Level world, BlockPos pos, Direction dir, Tag<Block> machineTag, Tag<Block> cableTag) {
+        genUtils(world, pos, dir, machineTag, cableTag);
+        return utilMC;
     }
 }

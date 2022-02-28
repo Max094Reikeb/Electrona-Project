@@ -3,7 +3,6 @@ package net.reikeb.electrona.misc.vm;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagCollection;
@@ -13,6 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.utils.ItemHandler;
 
 public class EnergyFunction {
@@ -34,19 +34,15 @@ public class EnergyFunction {
 
         TagCollection<Block> tagCollection = BlockTags.getAllTags();
         Tag<Block> machineTag, cableTag;
-        machineTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", (isGenerator ? "electrona/machines_all" : "electrona/machines")));
-        cableTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", (isGenerator ? "electrona/cable" : "electrona/blue_cable")));
+        machineTag = tagCollection.getTagOrEmpty((isGenerator ? Keys.CABLE_MACHINE_TAG : Keys.BLUE_CABLE_MACHINE_TAG));
+        cableTag = tagCollection.getTagOrEmpty((isGenerator ? Keys.CABLE_TAG : Keys.BLUE_CABLE_TAG));
 
         for (Direction dir : directions) {
             if (generatorPower <= 0) return; // we have no more power
 
-            BlockEntity tileEntity = world.getBlockEntity(pos.relative(dir));
-            if (tileEntity == null) continue;
-            Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
-            if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
-
-            double machinePower = tileEntity.getTileData().getDouble("ElectronicPower");
-            int machineMax = tileEntity.getTileData().getInt("MaxStorage");
+            BlockEntity tileEntity = getUtilBlockEntity(world, pos, dir, machineTag, cableTag);
+            double machinePower = getUtilMachinePower(world, pos, dir, machineTag, cableTag);
+            int machineMax = getUtilMachineMax(world, pos, dir, machineTag, cableTag);
             double headroom = machineMax - machinePower;
             double actualTransfer = Math.min(Math.min(transferPerTick, generatorPower), headroom);
 
@@ -79,5 +75,40 @@ public class EnergyFunction {
 
         generatorNBT.putDouble("ElectronicPower", (fromGenerator ? (generatorPower - actualTransfer) : (generatorPower + actualTransfer)));
         stackInSlot.getOrCreateTag().putDouble("ElectronicPower", (fromGenerator ? (itemPower + actualTransfer) : (itemPower - actualTransfer)));
+    }
+
+    public static BlockEntity utilTE;
+    public static Block utilOB;
+    public static double utilMP;
+    public static int utilMM;
+
+    public static void genUtils(Level world, BlockPos pos, Direction dir, Tag<Block> machineTag, Tag<Block> cableTag) {
+        utilTE = world.getBlockEntity(pos.relative(dir));
+        if (utilTE == null) return;
+        utilOB = world.getBlockState(pos.relative(dir)).getBlock();
+        if (!(machineTag.contains(utilOB) || cableTag.contains(utilOB))) return;
+
+        utilMP = utilTE.getTileData().getDouble("ElectronicPower");
+        utilMM = utilTE.getTileData().getInt("MaxStorage");
+    }
+
+    public static BlockEntity getUtilBlockEntity(Level world, BlockPos pos, Direction dir, Tag<Block> machineTag, Tag<Block> cableTag) {
+        genUtils(world, pos, dir, machineTag, cableTag);
+        return utilTE;
+    }
+
+    public static Block getUtilOffsetBlock(Level world, BlockPos pos, Direction dir, Tag<Block> machineTag, Tag<Block> cableTag) {
+        genUtils(world, pos, dir, machineTag, cableTag);
+        return utilOB;
+    }
+
+    public static double getUtilMachinePower(Level world, BlockPos pos, Direction dir, Tag<Block> machineTag, Tag<Block> cableTag) {
+        genUtils(world, pos, dir, machineTag, cableTag);
+        return utilMP;
+    }
+
+    public static int getUtilMachineMax(Level world, BlockPos pos, Direction dir, Tag<Block> machineTag, Tag<Block> cableTag) {
+        genUtils(world, pos, dir, machineTag, cableTag);
+        return utilMM;
     }
 }
