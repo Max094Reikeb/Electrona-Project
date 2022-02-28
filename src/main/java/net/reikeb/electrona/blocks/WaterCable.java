@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagCollection;
@@ -28,6 +27,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.tileentities.TileWaterCable;
 
 import javax.annotation.Nullable;
@@ -53,8 +53,8 @@ public class WaterCable extends AbstractCable implements EntityBlock {
 
         TagCollection<Block> tagCollection = BlockTags.getAllTags();
         Tag<Block> machineTag, cableTag;
-        machineTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/has_water_tank"));
-        cableTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/water_cable"));
+        machineTag = tagCollection.getTagOrEmpty(Keys.HAS_WATER_TANK_TAG);
+        cableTag = tagCollection.getTagOrEmpty(Keys.WATER_CABLE_TAG);
 
         return (otherState.getBlock() == BlockInit.WATER_PUMP.get()) || (machineTag.contains(otherState.getBlock()))
                 || (cableTag.contains(otherState.getBlock()));

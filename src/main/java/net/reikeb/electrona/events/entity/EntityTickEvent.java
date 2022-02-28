@@ -2,7 +2,6 @@ package net.reikeb.electrona.events.entity;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -11,6 +10,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import net.reikeb.electrona.Electrona;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.misc.vm.RadioactivityFunction;
 
 @Mod.EventBusSubscriber(modid = Electrona.MODID)
@@ -32,7 +32,7 @@ public class EntityTickEvent {
                 }
                 // Leader advancement
                 if (entity instanceof ServerPlayer && RadioactivityFunction.isEntityWearingLeadArmor(entity)) {
-                    Advancement advancement = ((ServerPlayer) entity).server.getAdvancements().getAdvancement(new ResourceLocation("electrona:leader"));
+                    Advancement advancement = ((ServerPlayer) entity).server.getAdvancements().getAdvancement(Keys.LEADER_ADVANCEMENT);
                     if (advancement == null) System.out.println("Advancement Leader! seems to be null");
                     if (advancement == null) return;
                     AdvancementProgress advancementProgress = ((ServerPlayer) entity).getAdvancements().getOrStartProgress(advancement);

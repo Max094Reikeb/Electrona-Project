@@ -30,6 +30,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.reikeb.electrona.events.local.TeleporterUseEvent;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.tileentities.TileDimensionLinker;
 import net.reikeb.electrona.tileentities.TileTeleporter;
 
@@ -167,7 +168,7 @@ public class TeleporterFunction {
                         entity.xRot, Collections.emptySet());
             }
         }
-        SoundEvent teleportSound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport"));
+        SoundEvent teleportSound = ForgeRegistries.SOUND_EVENTS.getValue(Keys.ENDERMAN_TELEPORT_SOUND);
         teleportParticles(world, pos, 300);
         teleportParticles(world, teleportPos, 300);
         if (teleportSound == null) return;

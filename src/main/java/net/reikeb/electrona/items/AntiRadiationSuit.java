@@ -1,6 +1,6 @@
 package net.reikeb.electrona.items;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
@@ -10,7 +10,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.setup.ItemGroups;
@@ -47,7 +46,7 @@ public class AntiRadiationSuit extends ArmorItem {
 
         @Override
         public net.minecraft.sounds.SoundEvent getEquipSound() {
-            return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(""));
+            return SoundEvents.ARMOR_EQUIP_LEATHER;
         }
 
         @Override

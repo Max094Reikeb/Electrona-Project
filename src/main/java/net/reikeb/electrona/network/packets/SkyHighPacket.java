@@ -3,10 +3,11 @@ package net.reikeb.electrona.network.packets;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
+
+import net.reikeb.electrona.misc.Keys;
 
 import java.util.function.Supplier;
 
@@ -26,7 +27,7 @@ public class SkyHighPacket {
         context.get().enqueueWork(() -> {
             ServerPlayer entity = context.get().getSender();
             if (entity == null) return;
-            Advancement advancement = entity.server.getAdvancements().getAdvancement(new ResourceLocation("electrona:sky_high"));
+            Advancement advancement = entity.server.getAdvancements().getAdvancement(Keys.SKY_HIGH_ADVANCEMENT);
             if (advancement == null) System.out.println("Advancement SkyHigh! seems to be null");
             if (advancement == null) return;
             AdvancementProgress advancementProgress = entity.getAdvancements().getOrStartProgress(advancement);

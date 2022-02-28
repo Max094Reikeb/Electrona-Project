@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.blocks.HeatGenerator;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 
 import static net.reikeb.electrona.init.TileEntityInit.TILE_HEAT_GENERATOR;
@@ -43,16 +44,16 @@ public class TileHeatGenerator extends BlockEntity {
                 world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(HeatGenerator.HEATING, false));
             }
 
-            if (((biomeRL != null)) && (biomeRL.equals(new ResourceLocation("desert"))
-                    || (biomeRL.equals(new ResourceLocation("nether_wastes"))
-                    || (biomeRL.equals(new ResourceLocation("warm_ocean"))
-                    || (biomeRL.equals(new ResourceLocation("deep_warm_ocean")))
-                    || (biomeRL.equals(new ResourceLocation("modified_wooded_badlands_plateau"))
-                    || (biomeRL.equals(new ResourceLocation("modified_badlands_plateau"))
-                    || (biomeRL.equals(new ResourceLocation("crimson_forest"))
-                    || (biomeRL.equals(new ResourceLocation("warped_forest"))
-                    || (biomeRL.equals(new ResourceLocation("soul_sand_valley"))
-                    || (biomeRL.equals(new ResourceLocation("basalt_deltas")))))))))))) {
+            if ((biomeRL != null) && (biomeRL.equals(Keys.DESERT_BIOME)
+                    || biomeRL.equals(Keys.NETHER_WASTES_BIOME)
+                    || biomeRL.equals(Keys.WARM_OCEAN_BIOME)
+                    || biomeRL.equals(Keys.DEEP_WARM_OCEAN_BIOME)
+                    || biomeRL.equals(Keys.MODIFIED_WOODED_BADLANDS_BIOME)
+                    || biomeRL.equals(Keys.MODIFIED_BADLANDS_BIOME)
+                    || biomeRL.equals(Keys.CRIMSON_FOREST_BIOME)
+                    || biomeRL.equals(Keys.WARPED_FOREST_BIOME)
+                    || biomeRL.equals(Keys.SOUL_SAND_VALLEY_BIOME)
+                    || biomeRL.equals(Keys.BASALT_DELTAS_BIOME))) {
                 if (electronicPower < 1996) {
                     this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.15));
                 } else if ((electronicPower >= 1996) && (electronicPower <= 1999.95)) {

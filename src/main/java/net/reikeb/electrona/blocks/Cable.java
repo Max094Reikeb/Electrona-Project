@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagCollection;
@@ -30,6 +29,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import net.reikeb.electrona.init.TileEntityInit;
 import net.reikeb.electrona.misc.DamageSources;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.tileentities.TileCable;
 
 import javax.annotation.Nullable;
@@ -55,9 +55,9 @@ public class Cable extends AbstractCable implements EntityBlock {
 
         TagCollection<Block> tagCollection = BlockTags.getAllTags();
         Tag<Block> generatorTag, machineTag, cableTag;
-        generatorTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/generators"));
-        machineTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/machines_all"));
-        cableTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/cable"));
+        generatorTag = tagCollection.getTagOrEmpty(Keys.GENERATORS_TAG);
+        machineTag = tagCollection.getTagOrEmpty(Keys.CABLE_MACHINE_TAG);
+        cableTag = tagCollection.getTagOrEmpty(Keys.CABLE_TAG);
 
         return (generatorTag.contains(otherState.getBlock())) || (machineTag.contains(otherState.getBlock()))
                 || (cableTag.contains(otherState.getBlock()));

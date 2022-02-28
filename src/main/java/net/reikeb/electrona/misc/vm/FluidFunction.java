@@ -41,9 +41,13 @@ public class FluidFunction {
         for (Direction dir : directions) {
             if (generatorLevel <= 0) return; // we have no more fluid
 
-            BlockEntity tileEntity = getUtilBlockEntity(world, pos, dir, machineTag, cableTag);
-            AtomicInteger machineLevel = getUtilMachineLevel(world, pos, dir, machineTag, cableTag);
-            AtomicInteger machineCapacity = getUtilMachineCapacity(world, pos, dir, machineTag, cableTag);
+            BlockEntity tileEntity = getUtilBlockEntity(world, pos, dir);
+            Block offsetBlock = getUtilOffsetBlock(world, pos, dir);
+            if (tileEntity == null) continue;
+            if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
+
+            AtomicInteger machineLevel = getUtilMachineLevel(world, pos, dir);
+            AtomicInteger machineCapacity = getUtilMachineCapacity(world, pos, dir);
             double headroom = machineCapacity.get() - machineLevel.get();
             double actualTransfer = Math.min(Math.min(transferPerTick, generatorLevel), headroom);
 
@@ -105,33 +109,32 @@ public class FluidFunction {
     public static AtomicInteger utilML;
     public static AtomicInteger utilMC;
 
-    public static void genUtils(Level world, BlockPos pos, Direction dir, Tag<Block> machineTag, Tag<Block> cableTag) {
+    public static void genUtils(Level world, BlockPos pos, Direction dir) {
         utilTE = world.getBlockEntity(pos.relative(dir));
-        if (utilTE == null) return;
         utilOB = world.getBlockState(pos.relative(dir)).getBlock();
-        if (!(machineTag.contains(utilOB) || cableTag.contains(utilOB))) return;
+        if (utilTE == null) return;
 
         utilML = getFluidAmount(utilTE);
         utilMC = getTankCapacity(utilTE);
     }
 
-    public static BlockEntity getUtilBlockEntity(Level world, BlockPos pos, Direction dir, Tag<Block> machineTag, Tag<Block> cableTag) {
-        genUtils(world, pos, dir, machineTag, cableTag);
+    public static BlockEntity getUtilBlockEntity(Level world, BlockPos pos, Direction dir) {
+        genUtils(world, pos, dir);
         return utilTE;
     }
 
-    public static Block getUtilOffsetBlock(Level world, BlockPos pos, Direction dir, Tag<Block> machineTag, Tag<Block> cableTag) {
-        genUtils(world, pos, dir, machineTag, cableTag);
+    public static Block getUtilOffsetBlock(Level world, BlockPos pos, Direction dir) {
+        genUtils(world, pos, dir);
         return utilOB;
     }
 
-    public static AtomicInteger getUtilMachineLevel(Level world, BlockPos pos, Direction dir, Tag<Block> machineTag, Tag<Block> cableTag) {
-        genUtils(world, pos, dir, machineTag, cableTag);
+    public static AtomicInteger getUtilMachineLevel(Level world, BlockPos pos, Direction dir) {
+        genUtils(world, pos, dir);
         return utilML;
     }
 
-    public static AtomicInteger getUtilMachineCapacity(Level world, BlockPos pos, Direction dir, Tag<Block> machineTag, Tag<Block> cableTag) {
-        genUtils(world, pos, dir, machineTag, cableTag);
+    public static AtomicInteger getUtilMachineCapacity(Level world, BlockPos pos, Direction dir) {
+        genUtils(world, pos, dir);
         return utilMC;
     }
 }

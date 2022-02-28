@@ -2,7 +2,6 @@ package net.reikeb.electrona.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagCollection;
@@ -31,6 +30,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.tileentities.TileSingularity;
 import net.reikeb.electrona.world.Gamerules;
 
@@ -106,7 +106,7 @@ public class Singularity extends AbstractWaterLoggableBlock implements EntityBlo
     public static void singularitySpawn(Level world, BlockPos pos) {
         if (world.isClientSide) return;
         TagCollection<Block> tagCollection = BlockTags.getAllTags();
-        Tag<Block> stopsHoleTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "electrona/stops_black_hole"));
+        Tag<Block> stopsHoleTag = tagCollection.getTagOrEmpty(Keys.STOPS_BLACK_HOLES_TAG);
 
         if (world.getLevelData().getGameRules().getBoolean(Gamerules.DO_BLACK_HOLES_EXIST)) {
 

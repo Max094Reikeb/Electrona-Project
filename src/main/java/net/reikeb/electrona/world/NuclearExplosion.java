@@ -1,7 +1,6 @@
 package net.reikeb.electrona.world;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
@@ -28,6 +27,7 @@ import net.reikeb.electrona.init.BiomeInit;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.misc.DamageSources;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.BiomeUpdatePacket;
 import net.reikeb.electrona.utils.BiomeUtil;
@@ -80,13 +80,13 @@ public class NuclearExplosion {
     private void createHole(Level world, int x, int y, int z, int radius) {
         TagCollection<Block> tagCollection = BlockTags.getAllTags();
         Tag<Block> logTag, plankTag, stairsTag, slabsTag, doorTag, glassTag, panesTag;
-        logTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft", "logs_that_burn"));
-        plankTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft", "planks"));
-        stairsTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft", "wooden_stairs"));
-        slabsTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft", "wooden_slabs"));
-        doorTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft", "wooden_doors"));
-        glassTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft", "impermeable"));
-        panesTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge", "panes"));
+        logTag = tagCollection.getTagOrEmpty(Keys.LOG_THAT_BURN_TAG);
+        plankTag = tagCollection.getTagOrEmpty(Keys.PLANKS_TAG);
+        stairsTag = tagCollection.getTagOrEmpty(Keys.STAIRS_TAG);
+        slabsTag = tagCollection.getTagOrEmpty(Keys.SLABS_TAG);
+        doorTag = tagCollection.getTagOrEmpty(Keys.DOORS_TAG);
+        glassTag = tagCollection.getTagOrEmpty(Keys.GLASS_TAG);
+        panesTag = tagCollection.getTagOrEmpty(Keys.PANES_TAG);
 
         Random rand = new Random();
         int halfradius = radius / 2;

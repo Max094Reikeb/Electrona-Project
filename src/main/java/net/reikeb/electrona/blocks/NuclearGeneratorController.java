@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -38,6 +37,7 @@ import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.misc.vm.CustomShapes;
 import net.reikeb.electrona.tileentities.TileNuclearGeneratorController;
 import net.reikeb.electrona.utils.ElectronaUtils;
@@ -94,7 +94,7 @@ public class NuclearGeneratorController extends Block implements EntityBlock {
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack itemStack) {
         if (BlockInit.COOLER.get() == world.getBlockState(new BlockPos(pos.getX(), (pos.getY() - 1), pos.getZ())).getBlock()) {
             if (entity instanceof ServerPlayer) {
-                Advancement advancement = ((ServerPlayer) entity).server.getAdvancements().getAdvancement(new ResourceLocation("electrona:unlocked_potential"));
+                Advancement advancement = ((ServerPlayer) entity).server.getAdvancements().getAdvancement(Keys.UNLOCKED_POTENTIAL_ADVANCEMENT);
                 if (advancement == null) System.out.println("Advancement Unlocked Potential! seems to be null");
                 if (advancement == null) return;
                 AdvancementProgress advancementProgress = ((ServerPlayer) entity).getAdvancements().getOrStartProgress(advancement);

@@ -6,7 +6,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -35,6 +34,7 @@ import net.reikeb.electrona.containers.PurificatorContainer;
 import net.reikeb.electrona.events.local.PurificationEvent;
 import net.reikeb.electrona.init.ContainerInit;
 import net.reikeb.electrona.init.SoundsInit;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.misc.vm.FluidFunction;
 import net.reikeb.electrona.recipes.PurificatorRecipe;
 import net.reikeb.electrona.utils.FluidTankHandler;
@@ -116,8 +116,7 @@ public class TilePurificator extends AbstractTileEntity {
                             this.currentPurifyingTime = 0;
                             this.inventory.insertItem(2, new ItemStack(output.copy().getItem(), this.getRecipe(stackInSlot1).getCountOutput()), false);
                             this.inventory.decrStackSize(1, this.getRecipe(stackInSlot1).getCountInput());
-                            world.playSound(null, blockPos, ForgeRegistries.SOUND_EVENTS
-                                            .getValue(new ResourceLocation("block.brewing_stand.brew")),
+                            world.playSound(null, blockPos, ForgeRegistries.SOUND_EVENTS.getValue(Keys.BREWING_STAND_BREW_SOUND),
                                     SoundSource.BLOCKS, 0.6F, 1.0F);
                         }
                     }

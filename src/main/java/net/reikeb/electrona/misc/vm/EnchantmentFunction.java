@@ -2,7 +2,6 @@ package net.reikeb.electrona.misc.vm;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
@@ -25,6 +24,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
 import net.reikeb.electrona.init.EnchantmentInit;
+import net.reikeb.electrona.misc.Keys;
 
 public class EnchantmentFunction {
 
@@ -39,7 +39,7 @@ public class EnchantmentFunction {
     public static void lumberjackMain(ServerPlayer player, Level world, BlockPos pos, Direction[] directions) {
         TagCollection<Block> tagCollection = BlockTags.getAllTags();
         Tag<Block> logTag;
-        logTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft:logs"));
+        logTag = tagCollection.getTagOrEmpty(Keys.LOG_TAG);
         if (EnchantmentHelper.getItemEnchantmentLevel(EnchantmentInit.LUMBERJACK.get(), player.getMainHandItem()) > 0) {
             for (Direction dir : directions) {
                 BlockPos otherPos = pos.relative(dir);
@@ -62,7 +62,7 @@ public class EnchantmentFunction {
     public static void lumberjackDef(Level world, BlockPos pos, Direction[] directions) {
         TagCollection<Block> tagCollection = BlockTags.getAllTags();
         Tag<Block> logTag;
-        logTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft:logs"));
+        logTag = tagCollection.getTagOrEmpty(Keys.LOG_TAG);
 
         for (Direction dir : directions) {
             BlockPos otherPos = pos.relative(dir);
@@ -85,9 +85,9 @@ public class EnchantmentFunction {
     public static void veinminerMain(ServerPlayer player, Level world, BlockPos pos, Direction[] directions) {
         TagCollection<Block> tagCollection = BlockTags.getAllTags();
         Tag<Block> mcOreTag, fgOreTag, elOreTag;
-        mcOreTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft:ores"));
-        fgOreTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge:ores"));
-        elOreTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge:electrona/ores"));
+        mcOreTag = tagCollection.getTagOrEmpty(Keys.MINECRAFT_ORES);
+        fgOreTag = tagCollection.getTagOrEmpty(Keys.FORGE_ORES);
+        elOreTag = tagCollection.getTagOrEmpty(Keys.ELECTRONA_ORES);
 
         if (EnchantmentHelper.getItemEnchantmentLevel(EnchantmentInit.VEINMINER.get(), player.getMainHandItem()) > 0) {
             for (Direction dir : directions) {
@@ -113,9 +113,9 @@ public class EnchantmentFunction {
     public static void veinminerDef(Level world, BlockPos pos, Direction[] directions) {
         TagCollection<Block> tagCollection = BlockTags.getAllTags();
         Tag<Block> mcOreTag, fgOreTag, elOreTag;
-        mcOreTag = tagCollection.getTagOrEmpty(new ResourceLocation("minecraft:ores"));
-        fgOreTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge:ores"));
-        elOreTag = tagCollection.getTagOrEmpty(new ResourceLocation("forge:electrona/ores"));
+        mcOreTag = tagCollection.getTagOrEmpty(Keys.MINECRAFT_ORES);
+        fgOreTag = tagCollection.getTagOrEmpty(Keys.FORGE_ORES);
+        elOreTag = tagCollection.getTagOrEmpty(Keys.ELECTRONA_ORES);
 
         for (Direction dir : directions) {
             BlockPos otherPos = pos.relative(dir);

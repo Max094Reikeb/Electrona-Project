@@ -3,7 +3,6 @@ package net.reikeb.electrona.misc.vm;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
@@ -16,6 +15,7 @@ import net.minecraft.world.phys.AABB;
 
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.tileentities.TileNuclearGeneratorController;
 import net.reikeb.electrona.world.Gamerules;
 import net.reikeb.electrona.world.NuclearExplosion;
@@ -156,7 +156,7 @@ public class NuclearFunction {
                         }.compareDistOf(x, y, z)).collect(Collectors.toList());
         for (LivingEntity entityiterator : livingEntities) {
             if (entityiterator instanceof ServerPlayer) {
-                Advancement advancement = ((ServerPlayer) entityiterator).server.getAdvancements().getAdvancement(new ResourceLocation("electrona:i_am_inevitable"));
+                Advancement advancement = ((ServerPlayer) entityiterator).server.getAdvancements().getAdvancement(Keys.I_AM_INEVITABLE_ADVANCEMENT);
                 if (advancement == null) System.out.println("Advancement I Am... Inevitable! seems to be null");
                 if (advancement == null) return;
                 AdvancementProgress advancementProgress = ((ServerPlayer) entityiterator).getAdvancements().getOrStartProgress(advancement);
