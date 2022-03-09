@@ -11,7 +11,7 @@ import net.minecraft.world.level.biome.Biome;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 import net.reikeb.electrona.utils.BiomeUtil;
 

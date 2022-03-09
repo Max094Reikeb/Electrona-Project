@@ -90,11 +90,10 @@ public class TileBattery extends AbstractTileEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
-        super.save(compound);
+    public void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
         compound.putDouble("ElectronicPower", this.electronicPower);
         compound.putInt("MaxStorage", this.maxStorage);
         compound.put("Inventory", inventory.serializeNBT());
-        return compound;
     }
 }

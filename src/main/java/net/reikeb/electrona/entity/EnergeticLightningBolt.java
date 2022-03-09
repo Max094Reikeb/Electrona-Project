@@ -20,7 +20,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
 
 import net.reikeb.electrona.events.local.EntityStruckByEnergeticLightningEvent;
 import net.reikeb.electrona.misc.DamageSources;

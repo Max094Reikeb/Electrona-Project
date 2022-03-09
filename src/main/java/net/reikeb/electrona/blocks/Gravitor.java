@@ -57,7 +57,7 @@ public class Gravitor extends BaseEntityBlock implements SimpleWaterloggedBlock 
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState state2, LevelAccessor world, BlockPos pos, BlockPos pos2) {
         if (state.getValue(WATERLOGGED)) {
-            world.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+            world.scheduleTick(pos, Fluids.WATER, 0);
         }
 
         return super.updateShape(state, direction, state2, world, pos, pos2);

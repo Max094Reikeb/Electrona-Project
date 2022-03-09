@@ -87,10 +87,9 @@ public class AbstractTileEntity extends RandomizableContainerBlockEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compoundNBT) {
-        super.save(compoundNBT);
+    public void saveAdditional(CompoundTag compoundNBT) {
+        super.saveAdditional(compoundNBT);
         compoundNBT.put("Inventory", inventory.serializeNBT());
-        return compoundNBT;
     }
 
     @Override
@@ -103,16 +102,6 @@ public class AbstractTileEntity extends RandomizableContainerBlockEntity {
             if (!inventory.getStackInSlot(i).isEmpty()) {
                 Containers.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(i));
             }
-    }
-
-    @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return new ClientboundBlockEntityDataPacket(this.worldPosition, 0, this.getUpdateTag());
-    }
-
-    @Override
-    public CompoundTag getUpdateTag() {
-        return this.save(new CompoundTag());
     }
 
     @Override

@@ -6,7 +6,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 import net.reikeb.electrona.containers.TeleporterContainer;
 import net.reikeb.electrona.init.ItemInit;

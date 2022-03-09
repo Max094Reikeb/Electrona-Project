@@ -3,12 +3,15 @@ package net.reikeb.electrona.init;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.enchantments.*;
+import net.reikeb.electrona.enchantments.Lumberjack;
+import net.reikeb.electrona.enchantments.Smelting;
+import net.reikeb.electrona.enchantments.Thundering;
+import net.reikeb.electrona.enchantments.Veinminer;
 
 public class EnchantmentInit {
 

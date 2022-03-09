@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 import net.reikeb.electrona.init.BiomeInit;
 import net.reikeb.electrona.utils.BiomeUtil;

@@ -30,7 +30,7 @@ public abstract class AbstractWaterLoggableBlock extends Block implements Simple
     public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
         if (!world.isClientSide)
             if (state.getValue(WATERLOGGED))
-                world.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+                world.scheduleTick(pos, Fluids.WATER, 0);
     }
 
     /**
@@ -57,7 +57,7 @@ public abstract class AbstractWaterLoggableBlock extends Block implements Simple
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
         if (state.getValue(WATERLOGGED))
-            world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+            world.scheduleTick(currentPos, Fluids.WATER, 0);
 
         return super.updateShape(state, facing, facingState, world, currentPos, facingPos);
     }
@@ -67,7 +67,7 @@ public abstract class AbstractWaterLoggableBlock extends Block implements Simple
      */
     @Override
     public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean isMoving) {
-        world.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+        world.scheduleTick(pos, Fluids.WATER, 0);
     }
 
     /**

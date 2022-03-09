@@ -35,11 +35,11 @@ version = "${mod_version}"
 group = 'net.reikeb'
 archivesBaseName = mod_id
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'official', version: '1.17.1'
+    mappings channel: 'official', version: '1.18.1'
     
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 

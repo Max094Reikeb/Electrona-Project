@@ -7,8 +7,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.network.NetworkEvent;
 
 import net.reikeb.electrona.containers.NuclearGeneratorControllerContainer;
 import net.reikeb.electrona.init.BlockInit;
