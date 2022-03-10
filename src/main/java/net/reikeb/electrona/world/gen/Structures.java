@@ -6,7 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.world.level.levelgen.StructureSettings;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.JigsawConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
 
 import net.minecraftforge.registries.DeferredRegister;
@@ -23,7 +23,7 @@ public class Structures {
 
     public static final DeferredRegister<StructureFeature<?>> DEFERRED_REGISTRY_STRUCTURE = DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, Electrona.MODID);
 
-    public static final RegistryObject<StructureFeature<NoneFeatureConfiguration>> RUINS = DEFERRED_REGISTRY_STRUCTURE.register("ruins", () -> (new RuinsStructure(NoneFeatureConfiguration.CODEC)));
+    public static final RegistryObject<StructureFeature<JigsawConfiguration>> RUINS = DEFERRED_REGISTRY_STRUCTURE.register("ruins", () -> (new RuinsStructure(JigsawConfiguration.CODEC)));
 
     public static void setupStructures() {
         setupMapSpacingAndLand(

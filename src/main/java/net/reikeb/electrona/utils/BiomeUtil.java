@@ -8,12 +8,9 @@ import net.minecraft.util.LinearCongruentialGenerator;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.chunk.ChunkBiomeContainer;
 
 import net.minecraftforge.network.PacketDistributor;
 
-import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.BiomeSingleUpdatePacket;
 
@@ -22,6 +19,7 @@ public class BiomeUtil {
     private static final int WIDTH_BITS = (int) Math.round(Math.log(16.0D) / Math.log(2.0D)) - 2;
     private static final int HEIGHT_BITS = (int) Math.round(Math.log(256.0D) / Math.log(2.0D)) - 2;
     private static final int VERTICAL_MASK = (1 << HEIGHT_BITS) - 1;
+    private static final int HORIZONTAL_MASK = (1 << WIDTH_BITS) - 1;
 
     /**
      * Modifies the biome at a location by a biome's ResourceLocation
@@ -45,6 +43,7 @@ public class BiomeUtil {
      * @param biomeKey The biome's ResourceKey to replace with
      */
     public static void setBiomeKeyAtPos(Level world, BlockPos pos, ResourceKey<Biome> biomeKey) {
+        /*
         Biome biome = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).get(biomeKey);
         if (biome == null) return;
         ChunkBiomeContainer bc = world.getChunk(pos).getBiomes();
@@ -59,6 +58,7 @@ public class BiomeUtil {
             }
         }
         chunk.setUnsaved(true);
+         */
     }
 
     /**
@@ -109,8 +109,8 @@ public class BiomeUtil {
         int j3 = (k2 & 2) == 0 ? i1 : i1 + 1;
         int k3 = (k2 & 1) == 0 ? j1 : j1 + 1;
 
-        int arrayIndex = i3 & ChunkBiomeContainer.HORIZONTAL_MASK;
-        arrayIndex |= (k3 & ChunkBiomeContainer.HORIZONTAL_MASK) << WIDTH_BITS;
+        int arrayIndex = i3 & HORIZONTAL_MASK;
+        arrayIndex |= (k3 & HORIZONTAL_MASK) << WIDTH_BITS;
         return arrayIndex | Mth.clamp(j3, 0, VERTICAL_MASK) << WIDTH_BITS + WIDTH_BITS;
     }
 

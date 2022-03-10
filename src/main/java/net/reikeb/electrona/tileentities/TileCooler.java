@@ -33,11 +33,10 @@ public class TileCooler extends AbstractTileEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
-        super.save(compound);
+    public void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
         compound.put("Inventory", inventory.serializeNBT());
         compound.put("fluidTank", fluidTank.serializeNBT());
-        return compound;
     }
 
     private final FluidTankHandler fluidTank = new FluidTankHandler(10000, fs -> {

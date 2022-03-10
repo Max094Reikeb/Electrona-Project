@@ -18,14 +18,17 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.reikeb.electrona.blocks.NuclearGeneratorController;
 import net.reikeb.electrona.containers.NuclearGeneratorControllerContainer;
-import net.reikeb.electrona.init.*;
-import net.reikeb.electrona.misc.vm.*;
+import net.reikeb.electrona.init.BlockInit;
+import net.reikeb.electrona.init.ContainerInit;
+import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.init.SoundsInit;
+import net.reikeb.electrona.misc.vm.EnergyFunction;
+import net.reikeb.electrona.misc.vm.FluidFunction;
+import net.reikeb.electrona.misc.vm.NuclearFunction;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -128,8 +131,7 @@ public class TileNuclearGeneratorController extends AbstractTileEntity {
         EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 10, electronicPower, true);
 
         this.setChanged();
-        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(),
-                Constants.BlockFlags.BLOCK_UPDATE);
+        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), Block.UPDATE_ALL);
     }
 
     @Override
@@ -147,8 +149,8 @@ public class TileNuclearGeneratorController extends AbstractTileEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
-        super.save(compound);
+    public void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
         compound.putDouble("ElectronicPower", this.electronicPower);
         compound.putInt("MaxStorage", this.maxStorage);
         compound.putInt("temperature", this.temperature);
@@ -156,6 +158,5 @@ public class TileNuclearGeneratorController extends AbstractTileEntity {
         compound.putBoolean("UBIn", this.ubIn);
         compound.putBoolean("alert", this.alert);
         compound.put("Inventory", inventory.serializeNBT());
-        return compound;
     }
 }

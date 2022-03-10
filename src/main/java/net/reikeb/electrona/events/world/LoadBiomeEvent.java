@@ -1,5 +1,7 @@
 package net.reikeb.electrona.events.world;
 
+import net.minecraft.data.worldgen.features.OreFeatures;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -7,6 +9,10 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.placement.BiomeFilter;
+import net.minecraft.world.level.levelgen.placement.CountPlacement;
+import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
+import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 
@@ -17,8 +23,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.BlockInit;
 
+import java.util.List;
+
 @Mod.EventBusSubscriber(modid = Electrona.MODID)
-public class BiomeLoadingEvent {
+public class LoadBiomeEvent {
 
     public static final RuleTest END_STONE = new BlockMatchTest(Blocks.END_STONE);
 
@@ -27,9 +35,9 @@ public class BiomeLoadingEvent {
         if (!event.getCategory().equals(Biome.BiomeCategory.NETHER)
                 && !event.getCategory().equals(Biome.BiomeCategory.THEEND)
                 && !event.getCategory().equals(Biome.BiomeCategory.NONE)) {
-            generateOre(event.getGeneration(), OreConfiguration.Predicates.NATURAL_STONE, BlockInit.TIN_ORE.get().defaultBlockState(), 10, 0, 50, 5);
-            generateOre(event.getGeneration(), OreConfiguration.Predicates.NATURAL_STONE, BlockInit.URANIUM_ORE.get().defaultBlockState(), 8, 0, 30, 6);
-            generateOre(event.getGeneration(), OreConfiguration.Predicates.NATURAL_STONE, BlockInit.LEAD_ORE.get().defaultBlockState(), 10, 0, 25, 6);
+            generateOre(event.getGeneration(), OreFeatures.NATURAL_STONE, BlockInit.TIN_ORE.get().defaultBlockState(), 10, 0, 50, 5);
+            generateOre(event.getGeneration(), OreFeatures.NATURAL_STONE, BlockInit.URANIUM_ORE.get().defaultBlockState(), 8, 0, 30, 6);
+            generateOre(event.getGeneration(), OreFeatures.NATURAL_STONE, BlockInit.LEAD_ORE.get().defaultBlockState(), 10, 0, 25, 6);
         }
 
         if (event.getCategory().equals(Biome.BiomeCategory.THEEND)) {
@@ -40,7 +48,9 @@ public class BiomeLoadingEvent {
     private static void generateOre(BiomeGenerationSettingsBuilder settings, RuleTest fillerType, BlockState state, int veinSize, int minHeight, int maxHeight, int count) {
         settings.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES,
                 Feature.ORE.configured(new OreConfiguration(fillerType, state, veinSize))
-                        .rangeUniform(VerticalAnchor.absolute(minHeight), VerticalAnchor.absolute(maxHeight))
-                        .squared().count(count));
+                        .placed(List.of((CountPlacement.of(UniformInt.of(0, count))),
+                                InSquarePlacement.spread(),
+                                HeightRangePlacement.uniform(VerticalAnchor.absolute(minHeight), VerticalAnchor.absolute(maxHeight)),
+                                BiomeFilter.biome())));
     }
 }

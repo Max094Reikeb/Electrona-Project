@@ -16,6 +16,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,7 +24,6 @@ import net.minecraft.world.level.material.Fluids;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -130,7 +130,7 @@ public class TilePurificator extends AbstractTileEntity {
         this.getTileData().putInt("PurifyingTime", this.purifyingTime);
 
         this.setChanged();
-        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), Block.UPDATE_CLIENTS);
     }
 
     protected void canPurify(@Nullable Recipe<?> recipe) {
@@ -200,14 +200,13 @@ public class TilePurificator extends AbstractTileEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
-        super.save(compound);
+    public void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
         compound.putInt("PurifyingTime", this.purifyingTime);
         compound.putInt("CurrentPurifyingTime", this.currentPurifyingTime);
         compound.putInt("WaterRequired", this.waterRequired);
         compound.put("Inventory", inventory.serializeNBT());
         compound.put("fluidTank", fluidTank.serializeNBT());
-        return compound;
     }
 
     private final FluidTankHandler fluidTank = new FluidTankHandler(10000, fs -> {

@@ -56,12 +56,11 @@ public class TileCreativeGenerator extends BlockEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
-        compound = super.save(compound);
+    public void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
         compound.putDouble("ElectronicPower", this.electronicPower);
         compound.putInt("MaxStorage", this.maxStorage);
         compound.put("energyStorage", energyStorage.serializeNBT());
-        return compound;
     }
 
     private final EnergyStorage energyStorage = new EnergyStorage(999999999, 999999999, 999999999, 999999999) {
@@ -95,12 +94,7 @@ public class TileCreativeGenerator extends BlockEntity {
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return new ClientboundBlockEntityDataPacket(this.worldPosition, 0, this.getUpdateTag());
-    }
-
-    @Override
-    public CompoundTag getUpdateTag() {
-        return this.save(new CompoundTag());
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override

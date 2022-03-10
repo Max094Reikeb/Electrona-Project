@@ -46,11 +46,10 @@ public class TileWaterCable extends BlockEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
-        compound = super.save(compound);
+    public void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
         compound.putBoolean("logic", this.cableLogic);
         compound.put("fluidTank", fluidTank.serializeNBT());
-        return compound;
     }
 
     private final FluidTankHandler fluidTank = new FluidTankHandler(1000, fs -> {
@@ -71,12 +70,7 @@ public class TileWaterCable extends BlockEntity {
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return new ClientboundBlockEntityDataPacket(this.worldPosition, 0, this.getUpdateTag());
-    }
-
-    @Override
-    public CompoundTag getUpdateTag() {
-        return this.save(new CompoundTag());
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override

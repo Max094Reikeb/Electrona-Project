@@ -13,11 +13,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
-
-import net.minecraftforge.common.util.Constants;
 
 import net.reikeb.electrona.containers.BiomassGeneratorContainer;
 import net.reikeb.electrona.init.ContainerInit;
@@ -87,8 +86,7 @@ public class TileBiomassGenerator extends AbstractTileEntity {
             EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), t.getTileData(), 3, electronicPower, true);
 
             t.setChanged();
-            world.sendBlockUpdated(blockPos, t.getBlockState(), t.getBlockState(),
-                    Constants.BlockFlags.NOTIFY_NEIGHBORS);
+            world.sendBlockUpdated(blockPos, t.getBlockState(), t.getBlockState(), Block.UPDATE_NEIGHBORS);
         }
     }
 

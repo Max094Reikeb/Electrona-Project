@@ -184,19 +184,14 @@ public class TileGravitor extends BlockEntity {
         this.maxStorage = nbt.getInt("MaxStorage");
     }
 
-    public CompoundTag save(CompoundTag nbt) {
-        super.save(nbt);
+    public void saveAdditional(CompoundTag nbt) {
+        super.saveAdditional(nbt);
         nbt.putDouble("ElectronicPower", this.electronicPower);
         nbt.putInt("MaxStorage", this.maxStorage);
-        return nbt;
     }
 
     @Nullable
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return new ClientboundBlockEntityDataPacket(this.worldPosition, 5, this.getUpdateTag());
-    }
-
-    public CompoundTag getUpdateTag() {
-        return this.save(new CompoundTag());
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 }

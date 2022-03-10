@@ -14,12 +14,11 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BaseSpawner;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-
-import net.minecraftforge.common.util.Constants;
 
 import net.reikeb.electrona.init.EntityInit;
 
@@ -58,7 +57,7 @@ public class RadioactiveZombieEgg extends SpawnEggItem {
                 BaseSpawner abstractspawner = ((SpawnerBlockEntity) tileentity).getSpawner();
                 abstractspawner.setEntityId(EntityInit.RADIOACTIVE_ZOMBIE.get());
                 tileentity.setChanged();
-                world.sendBlockUpdated(blockpos, blockstate, blockstate, Constants.BlockFlags.BLOCK_UPDATE + Constants.BlockFlags.NOTIFY_NEIGHBORS);
+                world.sendBlockUpdated(blockpos, blockstate, blockstate, Block.UPDATE_CLIENTS + Block.UPDATE_NEIGHBORS);
                 itemstack.shrink(1);
                 return InteractionResult.SUCCESS;
             }

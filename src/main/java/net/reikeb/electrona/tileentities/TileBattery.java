@@ -10,18 +10,15 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.minecraftforge.common.util.Constants;
-
-import net.minecraftforge.items.IItemHandlerModifiable;
 import net.reikeb.electrona.containers.BatteryContainer;
 import net.reikeb.electrona.init.ContainerInit;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
-import net.reikeb.electrona.utils.ItemHandler;
 
 import static net.reikeb.electrona.init.TileEntityInit.TILE_BATTERY;
 
@@ -74,8 +71,7 @@ public class TileBattery extends AbstractTileEntity {
             EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), t.getTileData(), 6, electronicPower, false);
 
             t.setChanged();
-            world.sendBlockUpdated(blockPos, t.getBlockState(), t.getBlockState(),
-                    Constants.BlockFlags.NOTIFY_NEIGHBORS);
+            world.sendBlockUpdated(blockPos, t.getBlockState(), t.getBlockState(), Block.UPDATE_NEIGHBORS);
         }
     }
 

@@ -10,12 +10,12 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
@@ -98,8 +98,7 @@ public class TileConverter extends AbstractTileEntity {
             EnergyFunction.transferEnergyWithItemSlot(this.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), inventory, false, electronicPower, 0, 4);
 
             this.setChanged();
-            world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(),
-                    Constants.BlockFlags.NOTIFY_NEIGHBORS);
+            world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), Block.UPDATE_NEIGHBORS);
         }
     }
 
@@ -121,8 +120,8 @@ public class TileConverter extends AbstractTileEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
-        super.save(compound);
+    public void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
         compound.putDouble("ElectronicPower", this.electronicPower);
         compound.putInt("MaxStorage", this.maxStorage);
         compound.putBoolean("toVP", this.toVP);
@@ -131,7 +130,6 @@ public class TileConverter extends AbstractTileEntity {
         compound.putInt("wait", this.wait);
         compound.put("Inventory", inventory.serializeNBT());
         compound.put("energyStorage", energyStorage.serializeNBT());
-        return compound;
     }
 
     private final EnergyStorage energyStorage = new EnergyStorage(10000, 40, 40, 0) {

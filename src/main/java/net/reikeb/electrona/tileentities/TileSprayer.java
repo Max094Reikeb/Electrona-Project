@@ -9,11 +9,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
-
-import net.minecraftforge.common.util.Constants;
 
 import net.reikeb.electrona.containers.SprayerContainer;
 import net.reikeb.electrona.init.ContainerInit;
@@ -67,8 +66,7 @@ public class TileSprayer extends AbstractTileEntity {
             }
 
             this.setChanged();
-            world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(),
-                    Constants.BlockFlags.NOTIFY_NEIGHBORS);
+            world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), Block.UPDATE_NEIGHBORS);
         }
     }
 
@@ -85,13 +83,12 @@ public class TileSprayer extends AbstractTileEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
-        super.save(compound);
+    public void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
         compound.putDouble("ElectronicPower", this.electronicPower);
         compound.putInt("MaxStorage", this.maxStorage);
         compound.putInt("radius", this.radius);
         compound.putInt("wait", this.wait);
         compound.put("Inventory", inventory.serializeNBT());
-        return compound;
     }
 }

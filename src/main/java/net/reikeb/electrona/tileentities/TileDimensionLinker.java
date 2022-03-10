@@ -53,12 +53,11 @@ public class TileDimensionLinker extends AbstractTileEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
-        super.save(compound);
+    public void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
         if (this.dimensionID != null) {
             compound.putString("dimensionID", this.dimensionID);
         }
         compound.put("Inventory", inventory.serializeNBT());
-        return compound;
     }
 }

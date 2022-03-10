@@ -35,7 +35,7 @@ public class WorldTickEvent {
             if (optional.isEmpty()) return;
             ChunkPos chunkpos = optional.get().getPos();
             DistanceManager distanceManager = chunkProvider.chunkMap.getDistanceManager();
-            if ((serverLevel.isPositionEntityTicking(chunkpos) && !chunkProvider.chunkMap.noPlayersCloseForSpawning(chunkpos))
+            if ((serverLevel.isPositionEntityTicking(chunkpos) && !chunkProvider.chunkMap.anyPlayerCloseEnoughForSpawning(chunkpos))
                     || distanceManager.shouldForceTicks(chunkpos.toLong())) {
                 lightnings(serverLevel, optional.get());
             }

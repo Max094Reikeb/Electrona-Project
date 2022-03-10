@@ -5,11 +5,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
-
-import net.minecraftforge.common.util.Constants;
 
 import net.reikeb.electrona.blocks.Conveyor;
 
@@ -38,8 +37,7 @@ public class TileConveyor extends BlockEntity {
             this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.05));
 
             this.setChanged();
-            world.sendBlockUpdated(blockPos, state, state,
-                    Constants.BlockFlags.BLOCK_UPDATE);
+            world.sendBlockUpdated(blockPos, state, state, Block.UPDATE_CLIENTS);
         }
     }
 
@@ -51,21 +49,15 @@ public class TileConveyor extends BlockEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
-        compound = super.save(compound);
+    public void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
         compound.putDouble("ElectronicPower", this.electronicPower);
         compound.putInt("MaxStorage", this.maxStorage);
-        return compound;
     }
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return new ClientboundBlockEntityDataPacket(this.worldPosition, 0, this.getUpdateTag());
-    }
-
-    @Override
-    public CompoundTag getUpdateTag() {
-        return this.save(new CompoundTag());
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override

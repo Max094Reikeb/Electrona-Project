@@ -13,12 +13,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 import net.reikeb.electrona.Electrona;
@@ -116,8 +116,7 @@ public class TileCompressor extends AbstractTileEntity {
         t.getTileData().putInt("CompressingTime", this.compressingTime);
 
         t.setChanged();
-        world.sendBlockUpdated(blockPos, state, state,
-                Constants.BlockFlags.BLOCK_UPDATE);
+        world.sendBlockUpdated(blockPos, state, state, Block.UPDATE_CLIENTS);
     }
 
     protected void canCompress(@Nullable Recipe<?> recipe) {
@@ -186,14 +185,13 @@ public class TileCompressor extends AbstractTileEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
-        super.save(compound);
+    public void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
         compound.putDouble("ElectronicPower", this.electronicPower);
         compound.putInt("MaxStorage", this.maxStorage);
         compound.putInt("CompressingTime", this.compressingTime);
         compound.putInt("CurrentCompressingTime", this.currentCompressingTime);
         compound.putInt("EnergyRequired", this.energyRequired);
         compound.put("Inventory", inventory.serializeNBT());
-        return compound;
     }
 }

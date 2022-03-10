@@ -186,7 +186,7 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void textureSwitchEvent(TextureStitchEvent.Pre event) {
-        if (event.getMap().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+        if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
             event.addSprite(new ResourceLocation(Electrona.MODID, "entity/gravitor/base"));
             event.addSprite(new ResourceLocation(Electrona.MODID, "entity/gravitor/cage"));
             event.addSprite(new ResourceLocation(Electrona.MODID, "entity/gravitor/wind"));
