@@ -1,36 +1,72 @@
 {
   "config": {
-    "can_replace": false,
-    "project": false,
-    "need_water": false,
-    "xspread": 4,
-    "yspread": 3,
-    "zspread": 4,
+    "tries": 10,
+    "xz_spread": 4,
+    "y_spread": 3,
     "whitelist": [
       {
         "Name": "electrona:radioactive_dirt"
       }
     ],
-    "blacklist": [],
-    "tries": 10,
-    "state_provider": {
-      "state": {
-        "Properties": {
-          "axis": "y"
+    "feature": {
+      "feature": {
+        "config": {
+          "layers": [
+            {
+              "height": {
+                "type": "minecraft:biased_to_bottom",
+                "value": {
+                  "min_inclusive": 1,
+                  "max_inclusive": 3
+                }
+              },
+              "provider": {
+                "state": {
+                  "Properties": {
+                    "axis": "y"
+                  },
+                  "Name": "electrona:chardwood_log"
+                },
+                "type": "minecraft:simple_state_provider"
+              }
+            }
+          ],
+          "direction": "up",
+          "allowed_placement": {
+            "blocks": [
+              "minecraft:air"
+            ],
+            "type": "minecraft:matching_blocks"
+          },
+          "prioritize_tip": false
         },
-        "Name": "electrona:chardwood_log"
+        "type": "minecraft:block_column"
       },
-      "type": "minecraft:simple_state_provider"
-    },
-    "block_placer": {
-      "size": {
-        "type": "minecraft:biased_to_bottom",
-        "value": {
-          "min_inclusive": 1,
-          "max_inclusive": 3
+      "placement": [
+        {
+          "predicate": {
+            "predicates": [
+              {
+                "blocks": [
+                  "minecraft:air"
+                ],
+                "type": "minecraft:matching_blocks"
+              },
+              {
+                "state": {
+                  "Properties": {
+                    "axis": "y"
+                  },
+                  "Name": "electrona:chardwood_log"
+                },
+                "type": "minecraft:would_survive"
+              }
+            ],
+            "type": "minecraft:all_of"
+          },
+          "type": "minecraft:block_predicate_filter"
         }
-      },
-      "type": "minecraft:column_placer"
+      ]
     }
   },
   "type": "minecraft:random_patch"

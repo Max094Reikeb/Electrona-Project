@@ -2,7 +2,6 @@ package net.reikeb.electrona.world.structures;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
-import cpw.mods.util.Lazy;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
@@ -20,6 +19,7 @@ import net.minecraft.world.level.levelgen.structure.PostPlacementProcessor;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGenerator;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplier;
 
+import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.event.world.StructureSpawnListGatherEvent;
 
 import net.reikeb.electrona.Electrona;

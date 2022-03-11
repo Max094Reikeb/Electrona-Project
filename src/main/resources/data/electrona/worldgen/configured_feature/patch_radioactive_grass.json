@@ -1,67 +1,37 @@
 {
   "config": {
+    "tries": 10,
+    "xz_spread": 5,
+    "y_spread": 3,
+    "whitelist": [
+      {
+        "Name": "electrona:radioactive_dirt"
+      }
+    ],
     "feature": {
-      "config": {
-        "feature": {
-          "config": {
-            "feature": {
-              "config": {
-                "can_replace": false,
-                "project": true,
-                "need_water": false,
-                "xspread": 5,
-                "yspread": 3,
-                "zspread": 5,
-                "whitelist": [
-                  {
-                    "Name": "electrona:radioactive_dirt"
-                  }
-                ],
-                "blacklist": [],
-                "tries": 4,
-                "state_provider": {
-                  "state": {
-                    "Name": "electrona:radioactive_grass"
-                  },
-                  "type": "minecraft:simple_state_provider"
-                },
-                "block_placer": {
-                  "type": "minecraft:simple_block_placer"
-                }
-              },
-              "type": "minecraft:random_patch"
+      "feature": {
+        "config": {
+          "to_place": {
+            "state": {
+              "Name": "electrona:radioactive_grass"
             },
-            "decorator": {
-              "config": {},
-              "type": "minecraft:spread_32_above"
-            }
-          },
-          "type": "minecraft:decorated"
+            "type": "minecraft:simple_state_provider"
+          }
         },
-        "decorator": {
-          "config": {
-            "outer": {
-              "config": {},
-              "type": "minecraft:square"
-            },
-            "inner": {
-              "config": {
-                "heightmap": "MOTION_BLOCKING"
-              },
-              "type": "minecraft:heightmap"
-            }
+        "type": "minecraft:simple_block"
+      },
+      "placement": [
+        {
+          "predicate": {
+            "blocks": [
+              "minecraft:air"
+            ],
+            "type": "minecraft:matching_blocks"
           },
-          "type": "minecraft:decorated"
+          "type": "minecraft:block_predicate_filter"
         }
-      },
-      "type": "minecraft:decorated"
-    },
-    "decorator": {
-      "config": {
-        "count": 2
-      },
-      "type": "minecraft:count"
+      ]
     }
   },
-  "type": "minecraft:decorated"
+  "type": "minecraft:random_patch"
 }
