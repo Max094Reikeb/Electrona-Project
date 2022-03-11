@@ -3,6 +3,7 @@ package net.reikeb.electrona;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.Registry;
@@ -39,6 +40,7 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 import net.reikeb.electrona.advancements.TTriggers;
 import net.reikeb.electrona.events.entity.EntityDiesEvent;
+import net.reikeb.electrona.init.BiomeInit;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.recipes.CompressorRecipe;
 import net.reikeb.electrona.recipes.PurificatorRecipe;
@@ -139,12 +141,9 @@ public class Electrona {
             StructureSettings worldStructureConfig = chunkGenerator.getSettings();
             HashMap<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> STStructureToMultiMap = new HashMap<>();
 
-            for (Map.Entry<ResourceKey<Biome>, Biome> biomeEntry : serverLevel.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).entrySet()) {
-                Biome.BiomeCategory biomeCategory = biomeEntry.getValue().getBiomeCategory();
-                if (biomeCategory != Biome.BiomeCategory.OCEAN && biomeCategory != Biome.BiomeCategory.THEEND && biomeCategory != Biome.BiomeCategory.NETHER && biomeCategory != Biome.BiomeCategory.NONE) {
-                    associateBiomeToConfiguredStructure(STStructureToMultiMap, ConfiguredStructures.CONFIGURED_RUINS, biomeEntry.getKey());
-                }
-            }
+            ImmutableSet<ResourceKey<Biome>> overworldBiomes = ImmutableSet.<ResourceKey<Biome>>builder()
+                    .add(BiomeInit.NUCLEAR_BIOME_KEY).build();
+            overworldBiomes.forEach(biomeKey -> associateBiomeToConfiguredStructure(STStructureToMultiMap, ConfiguredStructures.CONFIGURED_RUINS, biomeKey));
 
             ImmutableMap.Builder<StructureFeature<?>, ImmutableMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> tempStructureToMultiMap = ImmutableMap.builder();
             worldStructureConfig.configuredStructures.entrySet().stream().filter(entry -> !STStructureToMultiMap.containsKey(entry.getKey())).forEach(tempStructureToMultiMap::put);
