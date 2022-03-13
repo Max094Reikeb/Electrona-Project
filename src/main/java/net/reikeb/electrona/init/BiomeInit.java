@@ -18,5 +18,4 @@ public class BiomeInit {
             Electrona.MODID);
 
     public static final ResourceKey<Biome> NUCLEAR_BIOME_KEY = ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Electrona.MODID, "nuclear"));
-    public static final RegistryObject<Biome> NUCLEAR = BIOMES.register("nuclear", OverworldBiomes::theVoid);
 }

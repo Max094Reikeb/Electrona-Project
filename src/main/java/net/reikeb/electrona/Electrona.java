@@ -4,6 +4,8 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
+
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.Registry;
@@ -18,14 +20,15 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.FlatLevelSource;
 import net.minecraft.world.level.levelgen.StructureSettings;
+import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
 
-import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.RegistryEvent;
@@ -53,14 +56,22 @@ import net.reikeb.electrona.villages.Villagers;
 import net.reikeb.electrona.world.Gamerules;
 import net.reikeb.electrona.world.gen.ConfiguredStructures;
 import net.reikeb.electrona.world.gen.Structures;
+import net.reikeb.electrona.world.gen.biomes.OverworldBiomes;
+import net.reikeb.electrona.world.gen.biomes.SurfaceRuleData;
 import net.reikeb.electrona.world.structures.RuinsStructure;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import terrablender.api.BiomeProvider;
+import terrablender.api.BiomeProviders;
+import terrablender.worldgen.TBClimate;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 @Mod(Electrona.MODID)
 public class Electrona {
@@ -105,11 +116,25 @@ public class Electrona {
     public void setup(final FMLCommonSetupEvent event) {
         POIFixup.fixup();
 
-        /**
-         * Register biomes
-         */
-        BiomeManager.addBiome(BiomeManager.BiomeType.DESERT, new BiomeManager.BiomeEntry(ResourceKey.create(Registry.BIOME_REGISTRY,
-                RL("nuclear")), 5));
+        // Register structures & biomes
+        event.enqueueWork(() -> {
+            Structures.setupStructures();
+            ConfiguredStructures.registerConfiguredStructures();
+
+            BiomeProviders.register(new BiomeProvider(RL("nuclear"), 5) {
+                @Override
+                public void addOverworldBiomes(Registry<Biome> registry, Consumer<Pair<TBClimate.ParameterPoint, ResourceKey<Biome>>> mapper) {
+                    this.addBiomeSimilar(mapper, Biomes.DESERT, BiomeInit.NUCLEAR_BIOME_KEY);
+                }
+
+                @Override
+                public Optional<SurfaceRules.RuleSource> getOverworldSurfaceRules() {
+                    return Optional.of(SurfaceRuleData.makeRules());
+                }
+            });
+
+            BuiltinRegistries.registerMapping(BuiltinRegistries.BIOME, BiomeInit.NUCLEAR_BIOME_KEY, OverworldBiomes.nuclear());
+        });
 
         /**
          * Custom potion recipes
@@ -120,14 +145,6 @@ public class Electrona {
         // Concentrated Uranium recipe
         BrewingRecipeRegistry.addRecipe(Ingredient.of(ItemInit.SUGAR_BOTTLE.get()), Ingredient.of(ItemInit.YELLOWCAKE.get()),
                 new ItemStack(ItemInit.CONCENTRATED_URANIUM.get()));
-
-        /**
-         * Register structures
-         */
-        event.enqueueWork(() -> {
-            Structures.setupStructures();
-            ConfiguredStructures.registerConfiguredStructures();
-        });
     }
 
     private static Method GETCODEC_METHOD;
