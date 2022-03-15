@@ -41,6 +41,16 @@ import static net.reikeb.electrona.init.TileEntityInit.TILE_WATER_PUMP;
 public class TileWaterPump extends AbstractTileEntity {
 
     public static final BlockEntityTicker<TileWaterPump> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
+    private final FluidTankHandler fluidTank = new FluidTankHandler(10000, fs -> {
+        return fs.getFluid() == Fluids.WATER;
+    }) {
+        @Override
+        protected void onContentsChanged() {
+            super.onContentsChanged();
+            setChanged();
+            level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
+        }
+    };
     public double electronicPower;
     private int maxStorage;
     private boolean isOn;
@@ -168,17 +178,6 @@ public class TileWaterPump extends AbstractTileEntity {
         compound.put("Inventory", inventory.serializeNBT());
         compound.put("fluidTank", fluidTank.serializeNBT());
     }
-
-    private final FluidTankHandler fluidTank = new FluidTankHandler(10000, fs -> {
-        return fs.getFluid() == Fluids.WATER;
-    }) {
-        @Override
-        protected void onContentsChanged() {
-            super.onContentsChanged();
-            setChanged();
-            level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
-        }
-    };
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {

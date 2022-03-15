@@ -31,6 +31,27 @@ import static net.reikeb.electrona.init.TileEntityInit.TILE_CONVERTER;
 public class TileConverter extends AbstractTileEntity {
 
     public static final BlockEntityTicker<TileConverter> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
+    private final EnergyStorage energyStorage = new EnergyStorage(10000, 40, 40, 0) {
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate) {
+            int retval = super.receiveEnergy(maxReceive, simulate);
+            if (!simulate) {
+                setChanged();
+                level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
+            }
+            return retval;
+        }
+
+        @Override
+        public int extractEnergy(int maxExtract, boolean simulate) {
+            int retval = super.extractEnergy(maxExtract, simulate);
+            if (!simulate) {
+                setChanged();
+                level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
+            }
+            return retval;
+        }
+    };
     public double electronicPower;
     private int maxStorage;
     private boolean toVP;
@@ -131,28 +152,6 @@ public class TileConverter extends AbstractTileEntity {
         compound.put("Inventory", inventory.serializeNBT());
         compound.put("energyStorage", energyStorage.serializeNBT());
     }
-
-    private final EnergyStorage energyStorage = new EnergyStorage(10000, 40, 40, 0) {
-        @Override
-        public int receiveEnergy(int maxReceive, boolean simulate) {
-            int retval = super.receiveEnergy(maxReceive, simulate);
-            if (!simulate) {
-                setChanged();
-                level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
-            }
-            return retval;
-        }
-
-        @Override
-        public int extractEnergy(int maxExtract, boolean simulate) {
-            int retval = super.extractEnergy(maxExtract, simulate);
-            if (!simulate) {
-                setChanged();
-                level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
-            }
-            return retval;
-        }
-    };
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {

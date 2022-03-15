@@ -12,6 +12,9 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 
+import javax.annotation.Nullable;
+import java.util.Objects;
+
 import static net.reikeb.electrona.init.TileEntityInit.TILE_SOLAR_PANEL_T_1;
 
 public class TileSolarPanelT1 extends BlockEntity {
@@ -69,13 +72,16 @@ public class TileSolarPanelT1 extends BlockEntity {
         compound.putInt("MaxStorage", this.maxStorage);
     }
 
+    @Nullable
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
+        CompoundTag nbt = new CompoundTag();
+        saveAdditional(nbt);
+        return ClientboundBlockEntityDataPacket.create(this, blockEntity -> nbt);
     }
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(pkt.getTag());
+        this.load(Objects.requireNonNull(pkt.getTag()));
     }
 }

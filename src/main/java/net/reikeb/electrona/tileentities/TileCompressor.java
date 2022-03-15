@@ -40,16 +40,20 @@ public class TileCompressor extends AbstractTileEntity {
 
     public static final BlockEntityTicker<TileCompressor> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     public double electronicPower;
-    private int maxStorage;
-
     public int compressingTime;
     public int currentCompressingTime;
+    private int maxStorage;
     private int energyRequired;
 
     private boolean canCompress;
 
     public TileCompressor(BlockPos pos, BlockState state) {
         super(TILE_COMPRESSOR.get(), pos, state, 3);
+    }
+
+    public static Set<Recipe<?>> findRecipesByType(RecipeType<?> typeIn, Level world) {
+        return world != null ? world.getRecipeManager().getRecipes().stream()
+                .filter(recipe -> recipe.getType() == typeIn).collect(Collectors.toSet()) : Collections.emptySet();
     }
 
     @Override
@@ -164,11 +168,6 @@ public class TileCompressor extends AbstractTileEntity {
             }
         }
         return null;
-    }
-
-    public static Set<Recipe<?>> findRecipesByType(RecipeType<?> typeIn, Level world) {
-        return world != null ? world.getRecipeManager().getRecipes().stream()
-                .filter(recipe -> recipe.getType() == typeIn).collect(Collectors.toSet()) : Collections.emptySet();
     }
 
     @Override

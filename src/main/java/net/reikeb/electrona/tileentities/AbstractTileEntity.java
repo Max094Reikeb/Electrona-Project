@@ -24,11 +24,13 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 
 import net.reikeb.electrona.utils.ItemHandler;
 
+import java.util.Objects;
+
 public class AbstractTileEntity extends RandomizableContainerBlockEntity {
 
+    public final ItemHandler inventory;
     public int slots;
     public NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(slots, ItemStack.EMPTY);
-    public final ItemHandler inventory;
 
     protected AbstractTileEntity(BlockEntityType<?> tileEntity, BlockPos pos, BlockState state, int slots) {
         super(tileEntity, pos, state);
@@ -106,7 +108,7 @@ public class AbstractTileEntity extends RandomizableContainerBlockEntity {
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(pkt.getTag());
+        this.load(Objects.requireNonNull(pkt.getTag()));
     }
 
     @Override

@@ -12,6 +12,9 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.misc.vm.BlackHoleFunction;
 
+import javax.annotation.Nullable;
+import java.util.Objects;
+
 import static net.reikeb.electrona.init.TileEntityInit.TILE_HOLE;
 
 public class TileHole extends BlockEntity {
@@ -51,13 +54,16 @@ public class TileHole extends BlockEntity {
         compound.putInt("wait", this.wait);
     }
 
+    @Nullable
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
+        CompoundTag nbt = new CompoundTag();
+        saveAdditional(nbt);
+        return ClientboundBlockEntityDataPacket.create(this, blockEntity -> nbt);
     }
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(pkt.getTag());
+        this.load(Objects.requireNonNull(pkt.getTag()));
     }
 }

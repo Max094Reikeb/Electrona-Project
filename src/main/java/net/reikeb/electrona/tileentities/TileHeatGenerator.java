@@ -16,6 +16,9 @@ import net.reikeb.electrona.blocks.HeatGenerator;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 
+import javax.annotation.Nullable;
+import java.util.Objects;
+
 import static net.reikeb.electrona.init.TileEntityInit.TILE_HEAT_GENERATOR;
 
 public class TileHeatGenerator extends BlockEntity {
@@ -88,13 +91,16 @@ public class TileHeatGenerator extends BlockEntity {
         compound.putInt("MaxStorage", this.maxStorage);
     }
 
+    @Nullable
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
+        CompoundTag nbt = new CompoundTag();
+        saveAdditional(nbt);
+        return ClientboundBlockEntityDataPacket.create(this, blockEntity -> nbt);
     }
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(pkt.getTag());
+        this.load(Objects.requireNonNull(pkt.getTag()));
     }
 }

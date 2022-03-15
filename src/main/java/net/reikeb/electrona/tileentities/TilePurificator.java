@@ -49,14 +49,28 @@ import static net.reikeb.electrona.init.TileEntityInit.TILE_PURIFICATOR;
 public class TilePurificator extends AbstractTileEntity {
 
     public static final BlockEntityTicker<TilePurificator> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
+    private final FluidTankHandler fluidTank = new FluidTankHandler(10000, fs -> {
+        return fs.getFluid() == Fluids.WATER;
+    }) {
+        @Override
+        protected void onContentsChanged() {
+            super.onContentsChanged();
+            setChanged();
+            level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
+        }
+    };
     public int purifyingTime;
     public int currentPurifyingTime;
     private int waterRequired;
-
     private boolean canPurify;
 
     public TilePurificator(BlockPos pos, BlockState state) {
         super(TILE_PURIFICATOR.get(), pos, state, 3);
+    }
+
+    public static Set<Recipe<?>> findRecipesByType(RecipeType<?> typeIn, Level world) {
+        return world != null ? world.getRecipeManager().getRecipes().stream()
+                .filter(recipe -> recipe.getType() == typeIn).collect(Collectors.toSet()) : Collections.emptySet();
     }
 
     @Override
@@ -180,11 +194,6 @@ public class TilePurificator extends AbstractTileEntity {
         return null;
     }
 
-    public static Set<Recipe<?>> findRecipesByType(RecipeType<?> typeIn, Level world) {
-        return world != null ? world.getRecipeManager().getRecipes().stream()
-                .filter(recipe -> recipe.getType() == typeIn).collect(Collectors.toSet()) : Collections.emptySet();
-    }
-
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
@@ -208,17 +217,6 @@ public class TilePurificator extends AbstractTileEntity {
         compound.put("Inventory", inventory.serializeNBT());
         compound.put("fluidTank", fluidTank.serializeNBT());
     }
-
-    private final FluidTankHandler fluidTank = new FluidTankHandler(10000, fs -> {
-        return fs.getFluid() == Fluids.WATER;
-    }) {
-        @Override
-        protected void onContentsChanged() {
-            super.onContentsChanged();
-            setChanged();
-            level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
-        }
-    };
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {

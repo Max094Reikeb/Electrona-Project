@@ -32,14 +32,13 @@ import java.util.Random;
 public class TileGravitor extends BlockEntity {
 
     public static final BlockEntityTicker<TileGravitor> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
+    private final List<BlockPos> effectBlocks = Lists.newArrayList();
     public int tickCount;
+    public double electronicPower;
     private float activeRotation;
     private boolean isActive;
     private boolean isHunting;
-    private final List<BlockPos> effectBlocks = Lists.newArrayList();
     private long nextAmbientSoundActivation;
-
-    public double electronicPower;
     private int maxStorage;
 
     public TileGravitor(BlockPos pos, BlockState state) {
@@ -83,14 +82,6 @@ public class TileGravitor extends BlockEntity {
                 ++this.activeRotation;
             }
         }
-    }
-
-    private void setActive(boolean flag) {
-        if (flag != this.isActive) {
-            this.playSound(flag ? SoundEvents.CONDUIT_ACTIVATE : SoundEvents.CONDUIT_DEACTIVATE);
-        }
-
-        this.isActive = flag;
     }
 
     private boolean updateShape() {
@@ -159,6 +150,14 @@ public class TileGravitor extends BlockEntity {
         return this.isActive;
     }
 
+    private void setActive(boolean flag) {
+        if (flag != this.isActive) {
+            this.playSound(flag ? SoundEvents.CONDUIT_ACTIVATE : SoundEvents.CONDUIT_DEACTIVATE);
+        }
+
+        this.isActive = flag;
+    }
+
     @OnlyIn(Dist.CLIENT)
     public boolean isHunting() {
         return this.isHunting;
@@ -191,7 +190,10 @@ public class TileGravitor extends BlockEntity {
     }
 
     @Nullable
+    @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
+        CompoundTag nbt = new CompoundTag();
+        saveAdditional(nbt);
+        return ClientboundBlockEntityDataPacket.create(this, blockEntity -> nbt);
     }
 }

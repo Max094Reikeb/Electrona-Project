@@ -11,6 +11,9 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.misc.vm.BlackHoleFunction;
 
+import javax.annotation.Nullable;
+import java.util.Objects;
+
 import static net.reikeb.electrona.init.TileEntityInit.TILE_SINGULARITY;
 
 public class TileSingularity extends BlockEntity {
@@ -60,13 +63,16 @@ public class TileSingularity extends BlockEntity {
         compound.putInt("delay", this.delay);
     }
 
+    @Nullable
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
+        CompoundTag nbt = new CompoundTag();
+        saveAdditional(nbt);
+        return ClientboundBlockEntityDataPacket.create(this, blockEntity -> nbt);
     }
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(pkt.getTag());
+        this.load(Objects.requireNonNull(pkt.getTag()));
     }
 }

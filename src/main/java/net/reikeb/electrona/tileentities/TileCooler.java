@@ -17,6 +17,17 @@ import static net.reikeb.electrona.init.TileEntityInit.TILE_COOLER;
 
 public class TileCooler extends AbstractTileEntity {
 
+    private final FluidTankHandler fluidTank = new FluidTankHandler(10000, fs -> {
+        return fs.getFluid() == Fluids.WATER;
+    }) {
+        @Override
+        protected void onContentsChanged() {
+            super.onContentsChanged();
+            setChanged();
+            level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
+        }
+    };
+
     public TileCooler(BlockPos pos, BlockState state) {
         super(TILE_COOLER.get(), pos, state, 1);
     }
@@ -38,17 +49,6 @@ public class TileCooler extends AbstractTileEntity {
         compound.put("Inventory", inventory.serializeNBT());
         compound.put("fluidTank", fluidTank.serializeNBT());
     }
-
-    private final FluidTankHandler fluidTank = new FluidTankHandler(10000, fs -> {
-        return fs.getFluid() == Fluids.WATER;
-    }) {
-        @Override
-        protected void onContentsChanged() {
-            super.onContentsChanged();
-            setChanged();
-            level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
-        }
-    };
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {

@@ -15,6 +15,9 @@ import net.minecraft.world.level.material.Material;
 import net.reikeb.electrona.blocks.WaterTurbine;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 
+import javax.annotation.Nullable;
+import java.util.Objects;
+
 import static net.reikeb.electrona.init.TileEntityInit.TILE_WATER_TURBINE;
 
 public class TileWaterTurbine extends BlockEntity {
@@ -84,13 +87,16 @@ public class TileWaterTurbine extends BlockEntity {
         compound.putInt("MaxStorage", this.maxStorage);
     }
 
+    @Nullable
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
+        CompoundTag nbt = new CompoundTag();
+        saveAdditional(nbt);
+        return ClientboundBlockEntityDataPacket.create(this, blockEntity -> nbt);
     }
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(pkt.getTag());
+        this.load(Objects.requireNonNull(pkt.getTag()));
     }
 }

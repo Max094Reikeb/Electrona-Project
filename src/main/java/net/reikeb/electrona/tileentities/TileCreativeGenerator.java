@@ -17,11 +17,35 @@ import net.minecraftforge.energy.EnergyStorage;
 
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 
+import javax.annotation.Nullable;
+import java.util.Objects;
+
 import static net.reikeb.electrona.init.TileEntityInit.TILE_CREATIVE_GENERATOR;
 
 public class TileCreativeGenerator extends BlockEntity {
 
     public static final BlockEntityTicker<TileCreativeGenerator> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
+    private final EnergyStorage energyStorage = new EnergyStorage(999999999, 999999999, 999999999, 999999999) {
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate) {
+            int retval = super.receiveEnergy(maxReceive, simulate);
+            if (!simulate) {
+                setChanged();
+                level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
+            }
+            return retval;
+        }
+
+        @Override
+        public int extractEnergy(int maxExtract, boolean simulate) {
+            int retval = super.extractEnergy(maxExtract, simulate);
+            if (!simulate) {
+                setChanged();
+                level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
+            }
+            return retval;
+        }
+    };
     private double electronicPower;
     private int maxStorage;
 
@@ -63,28 +87,6 @@ public class TileCreativeGenerator extends BlockEntity {
         compound.put("energyStorage", energyStorage.serializeNBT());
     }
 
-    private final EnergyStorage energyStorage = new EnergyStorage(999999999, 999999999, 999999999, 999999999) {
-        @Override
-        public int receiveEnergy(int maxReceive, boolean simulate) {
-            int retval = super.receiveEnergy(maxReceive, simulate);
-            if (!simulate) {
-                setChanged();
-                level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
-            }
-            return retval;
-        }
-
-        @Override
-        public int extractEnergy(int maxExtract, boolean simulate) {
-            int retval = super.extractEnergy(maxExtract, simulate);
-            if (!simulate) {
-                setChanged();
-                level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
-            }
-            return retval;
-        }
-    };
-
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
         if (!this.remove && cap == CapabilityEnergy.ENERGY)
@@ -92,13 +94,16 @@ public class TileCreativeGenerator extends BlockEntity {
         return super.getCapability(cap, side);
     }
 
+    @Nullable
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
+        CompoundTag nbt = new CompoundTag();
+        saveAdditional(nbt);
+        return ClientboundBlockEntityDataPacket.create(this, blockEntity -> nbt);
     }
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(pkt.getTag());
+        this.load(Objects.requireNonNull(pkt.getTag()));
     }
 }

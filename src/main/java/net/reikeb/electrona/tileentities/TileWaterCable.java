@@ -18,11 +18,24 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.reikeb.electrona.misc.vm.CableFunction;
 import net.reikeb.electrona.utils.FluidTankHandler;
 
+import javax.annotation.Nullable;
+import java.util.Objects;
+
 import static net.reikeb.electrona.init.TileEntityInit.TILE_WATER_CABLE;
 
 public class TileWaterCable extends BlockEntity {
 
     public static final BlockEntityTicker<TileWaterCable> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
+    private final FluidTankHandler fluidTank = new FluidTankHandler(1000, fs -> {
+        return fs.getFluid() == Fluids.WATER;
+    }) {
+        @Override
+        protected void onContentsChanged() {
+            super.onContentsChanged();
+            setChanged();
+            level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
+        }
+    };
     private boolean cableLogic;
 
     public TileWaterCable(BlockPos pos, BlockState state) {
@@ -52,29 +65,21 @@ public class TileWaterCable extends BlockEntity {
         compound.put("fluidTank", fluidTank.serializeNBT());
     }
 
-    private final FluidTankHandler fluidTank = new FluidTankHandler(1000, fs -> {
-        return fs.getFluid() == Fluids.WATER;
-    }) {
-        @Override
-        protected void onContentsChanged() {
-            super.onContentsChanged();
-            setChanged();
-            level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
-        }
-    };
-
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
         return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.orEmpty(cap, LazyOptional.of(() -> fluidTank).cast());
     }
 
+    @Nullable
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
+        CompoundTag nbt = new CompoundTag();
+        saveAdditional(nbt);
+        return ClientboundBlockEntityDataPacket.create(this, blockEntity -> nbt);
     }
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(pkt.getTag());
+        this.load(Objects.requireNonNull(pkt.getTag()));
     }
 }
