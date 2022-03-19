@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "electrona",
+  "version": "${version}",
+  "name": "Electrona",
+  "description": "Electrona is a tech mod made by Max094_Reikeb. It was originally made on MCreator, but then, the r2.0 version ported it off.",
+  "authors": [
+    "Max094_Reikeb",
+    "FirstMegaGame4"
+  ],
+  "contact": {
+    "website": "https://max-electrona.000webhostapp.com"
+  },
+  "license": "GPL-3.0",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "fr.firstmegagame4.electrona.client.ElectronaClient"
+    ],
+    "main": [
+      "fr.firstmegagame4.electrona.Electrona"
+    ]
+  },
+  "mixins": [
+    "fr.firstmegagame4.electrona.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.13.3",
+    "fabric": "*",
+    "minecraft": "1.18.2"
+  }
+}
