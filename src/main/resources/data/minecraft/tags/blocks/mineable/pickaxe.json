@@ -1,38 +1,134 @@
 {
   "replace": false,
   "values": [
-    "electrona:battery",
-    "electrona:biomass_generator",
-    "electrona:compressed_obsidian",
-    "electrona:compressor",
-    "electrona:conveyor",
-    "electrona:cooler",
-    "electrona:dimension_linker",
-    "electrona:el_converter",
-    "electrona:energetic_lightning_rod",
-    "electrona:gravitonium_block",
-    "electrona:gravitonium_ore",
-    "electrona:gravitor",
-    "electrona:heat_generator",
-    "electrona:lead_block",
-    "electrona:lead_crate",
-    "electrona:lead_door",
-    "electrona:lead_ore",
-    "electrona:machine_casing",
-    "electrona:mining_machine",
-    "electrona:nuclear_generator_controller",
-    "electrona:purificator",
-    "electrona:solar_panel_tiers1",
-    "electrona:solar_panel_tiers2",
-    "electrona:sprayer",
-    "electrona:steel_block",
-    "electrona:steel_crate",
-    "electrona:teleporter",
-    "electrona:tin_block",
+    {
+      "id": "electrona:battery",
+      "required": false
+    },
+    {
+      "id": "electrona:biomass_generator",
+      "required": false
+    },
+    {
+      "id": "electrona:compressed_obsidian",
+      "required": false
+    },
+    {
+      "id": "electrona:compressor",
+      "required": false
+    },
+    {
+      "id": "electrona:conveyor",
+      "required": false
+    },
+    {
+      "id": "electrona:cooler",
+      "required": false
+    },
+    {
+      "id": "electrona:dimension_linker",
+      "required": false
+    },
+    {
+      "id": "electrona:el_converter",
+      "required": false
+    },
+    {
+      "id": "electrona:energetic_lightning_rod",
+      "required": false
+    },
+    {
+      "id": "electrona:gravitonium_block",
+      "required": false
+    },
+    {
+      "id": "electrona:gravitonium_ore",
+      "required": false
+    },
+    {
+      "id": "electrona:gravitor",
+      "required": false
+    },
+    {
+      "id": "electrona:heat_generator",
+      "required": false
+    },
+    {
+      "id": "electrona:lead_block",
+      "required": false
+    },
+    {
+      "id": "electrona:lead_crate",
+      "required": false
+    },
+    {
+      "id": "electrona:lead_door",
+      "required": false
+    },
+    {
+      "id": "electrona:lead_ore",
+      "required": false
+    },
+    {
+      "id": "electrona:machine_casing",
+      "required": false
+    },
+    {
+      "id": "electrona:mining_machine",
+      "required": false
+    },
+    {
+      "id": "electrona:nuclear_generator_controller",
+      "required": false
+    },
+    {
+      "id": "electrona:purificator",
+      "required": false
+    },
+    {
+      "id": "electrona:solar_panel_tiers1",
+      "required": false
+    },
+    {
+      "id": "electrona:solar_panel_tiers2",
+      "required": false
+    },
+    {
+      "id": "electrona:sprayer",
+      "required": false
+    },
+    {
+      "id": "electrona:steel_block",
+      "required": false
+    },
+    {
+      "id": "electrona:steel_crate",
+      "required": false
+    },
+    {
+      "id": "electrona:teleporter",
+      "required": false
+    },
+    {
+      "id": "electrona:tin_block",
+      "required": false
+    },
     "electrona:tin_ore",
-    "electrona:uranium_ore",
-    "electrona:water_pump",
-    "electrona:water_turbine",
-    "electrona:xp_generator"
+    {
+      "id": "electrona:uranium_ore",
+      "required": false
+    },
+    {
+      "id": "electrona:water_pump",
+      "required": false
+    },
+    {
+      "id": "electrona:water_turbine",
+      "required": false
+    },
+    {
+      "id": "electrona:xp_generator",
+      "required": false
+    }
   ]
 }
