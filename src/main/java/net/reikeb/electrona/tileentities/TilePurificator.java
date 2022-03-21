@@ -13,10 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,22 +24,16 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
 
-import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.PurificatorContainer;
 import net.reikeb.electrona.events.local.PurificationEvent;
 import net.reikeb.electrona.init.ContainerInit;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.misc.vm.FluidFunction;
-import net.reikeb.electrona.recipes.PurificatorRecipe;
+import net.reikeb.electrona.recipes.Recipes;
 import net.reikeb.electrona.utils.FluidTankHandler;
 
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 import static net.reikeb.electrona.init.TileEntityInit.TILE_PURIFICATOR;
 
@@ -66,11 +57,6 @@ public class TilePurificator extends AbstractTileEntity {
 
     public TilePurificator(BlockPos pos, BlockState state) {
         super(TILE_PURIFICATOR.get(), pos, state, 3);
-    }
-
-    public static Set<Recipe<?>> findRecipesByType(RecipeType<?> typeIn, Level world) {
-        return world != null ? world.getRecipeManager().getRecipes().stream()
-                .filter(recipe -> recipe.getType() == typeIn).collect(Collectors.toSet()) : Collections.emptySet();
     }
 
     @Override
@@ -112,11 +98,11 @@ public class TilePurificator extends AbstractTileEntity {
 
         if (world.isClientSide) return;
 
-        if ((waterLevel.get() > 0) && (this.getRecipe(stackInSlot1) != null)) {
+        if ((waterLevel.get() > 0) && (Recipes.getRecipe(this, stackInSlot1) != null)) {
             if (this.canPurify) {
                 this.waterRequired = getWaterRequired(stackInSlot1);
                 this.purifyingTime = getPurifyingTime(stackInSlot1);
-                ItemStack output = this.getRecipe(stackInSlot1).getResultItem();
+                ItemStack output = Recipes.getRecipe(this, stackInSlot1).getResultItem();
                 double waterPerSecond = (double) this.waterRequired / this.purifyingTime;
 
                 if (this.currentPurifyingTime < (this.purifyingTime * 20)) {
@@ -126,10 +112,10 @@ public class TilePurificator extends AbstractTileEntity {
                             SoundSource.BLOCKS, 0.6F, 1.0F);
 
                 } else {
-                    if (!MinecraftForge.EVENT_BUS.post(new PurificationEvent(world, blockPos, stackInSlot1, new ItemStack(output.copy().getItem(), this.getRecipe(stackInSlot1).getCountOutput()), this.purifyingTime, this.waterRequired))) {
+                    if (!MinecraftForge.EVENT_BUS.post(new PurificationEvent(world, blockPos, stackInSlot1, new ItemStack(output.copy().getItem(), Recipes.getRecipe(this, stackInSlot1).getCountOutput()), this.purifyingTime, this.waterRequired))) {
                         this.currentPurifyingTime = 0;
-                        this.inventory.insertItem(2, new ItemStack(output.copy().getItem(), this.getRecipe(stackInSlot1).getCountOutput()), false);
-                        this.inventory.decrStackSize(1, this.getRecipe(stackInSlot1).getCountInput());
+                        this.inventory.insertItem(2, new ItemStack(output.copy().getItem(), Recipes.getRecipe(this, stackInSlot1).getCountOutput()), false);
+                        this.inventory.decrStackSize(1, Recipes.getRecipe(this, stackInSlot1).getCountInput());
                         world.playSound(null, blockPos, SoundEvents.BREWING_STAND_BREW,
                                 SoundSource.BLOCKS, 0.6F, 1.0F);
                     }
@@ -144,54 +130,21 @@ public class TilePurificator extends AbstractTileEntity {
         this.getTileData().putInt("PurifyingTime", this.purifyingTime);
 
         this.setChanged();
-        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), Block.UPDATE_CLIENTS);
+        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
     }
 
-    protected void canPurify(@Nullable Recipe<?> recipe) {
-        if (!this.inventory.getStackInSlot(1).isEmpty() && recipe != null) {
-            ItemStack resultItem = recipe.getResultItem();
-            if (resultItem.isEmpty()) {
-                this.canPurify = false;
-            } else {
-                ItemStack stackInSlot = this.inventory.getStackInSlot(2);
-                if (stackInSlot.isEmpty()) {
-                    this.canPurify = true;
-                } else if (!stackInSlot.sameItem(resultItem)) {
-                    this.canPurify = false;
-                } else if (stackInSlot.getCount() + resultItem.getCount() <= 64 && stackInSlot.getCount() + resultItem.getCount() <= stackInSlot.getMaxStackSize()) { // Forge fix: make furnace respect stack sizes in furnace recipes
-                    this.canPurify = true;
-                } else {
-                    this.canPurify = stackInSlot.getCount() + resultItem.getCount() <= resultItem.getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
-                }
-            }
-        } else {
-            this.canPurify = false;
-        }
+    public void setPurify(boolean canPurify) {
+        this.canPurify = canPurify;
     }
 
     public int getPurifyingTime(ItemStack stack) {
         if (ItemStack.EMPTY == stack) return 0;
-        return this.getRecipe(stack).getPurifyingTime();
+        return Recipes.getRecipe(this, stack).getPurifyingTime();
     }
 
     public int getWaterRequired(ItemStack stack) {
         if (ItemStack.EMPTY == stack) return 0;
-        return this.getRecipe(stack).getWaterRequired();
-    }
-
-    @Nullable
-    private PurificatorRecipe getRecipe(ItemStack stack) {
-        if (stack == null) return null;
-
-        Set<Recipe<?>> recipes = findRecipesByType(Electrona.PURIFYING, this.level);
-        for (Recipe<?> iRecipe : recipes) {
-            PurificatorRecipe recipe = (PurificatorRecipe) iRecipe;
-            if (recipe.matches(new RecipeWrapper(this.inventory), this.level)) {
-                canPurify(recipe);
-                return recipe;
-            }
-        }
-        return null;
+        return Recipes.getRecipe(this, stack).getWaterRequired();
     }
 
     @Override

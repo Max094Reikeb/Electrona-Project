@@ -10,29 +10,19 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
 
-import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.blocks.Compressor;
 import net.reikeb.electrona.containers.CompressorContainer;
 import net.reikeb.electrona.events.local.CompressionEvent;
 import net.reikeb.electrona.init.ContainerInit;
 import net.reikeb.electrona.init.SoundsInit;
-import net.reikeb.electrona.recipes.CompressorRecipe;
-
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.Set;
-import java.util.stream.Collectors;
+import net.reikeb.electrona.recipes.Recipes;
 
 import static net.reikeb.electrona.init.TileEntityInit.TILE_COMPRESSOR;
 
@@ -49,11 +39,6 @@ public class TileCompressor extends AbstractTileEntity {
 
     public TileCompressor(BlockPos pos, BlockState state) {
         super(TILE_COMPRESSOR.get(), pos, state, 3);
-    }
-
-    public static Set<Recipe<?>> findRecipesByType(RecipeType<?> typeIn, Level world) {
-        return world != null ? world.getRecipeManager().getRecipes().stream()
-                .filter(recipe -> recipe.getType() == typeIn).collect(Collectors.toSet()) : Collections.emptySet();
     }
 
     @Override
@@ -85,11 +70,11 @@ public class TileCompressor extends AbstractTileEntity {
 
         if ((world == null) || (world.isClientSide)) return;
 
-        if ((electronicPower > 0) && (this.getRecipe(stackInSlot0, stackInSlot1) != null)) {
+        if ((electronicPower > 0) && (Recipes.getRecipe(this, stackInSlot0, stackInSlot1) != null)) {
             if (this.canCompress) {
                 this.energyRequired = getEnergyRequired(stackInSlot0, stackInSlot1);
                 this.compressingTime = getCompressingTime(stackInSlot0, stackInSlot1);
-                ItemStack output = this.getRecipe(stackInSlot0, stackInSlot1).getResultItem();
+                ItemStack output = Recipes.getRecipe(this, stackInSlot0, stackInSlot1).getResultItem();
                 double energyPerSecond = (double) this.energyRequired / this.compressingTime;
 
                 if (this.currentCompressingTime < (this.compressingTime * 20)) {
@@ -120,54 +105,21 @@ public class TileCompressor extends AbstractTileEntity {
         t.getTileData().putInt("CompressingTime", this.compressingTime);
 
         t.setChanged();
-        world.sendBlockUpdated(blockPos, state, state, Block.UPDATE_CLIENTS);
+        world.sendBlockUpdated(blockPos, state, state, 3);
     }
 
-    protected void canCompress(@Nullable Recipe<?> recipe) {
-        if (!this.inventory.getStackInSlot(0).isEmpty() && recipe != null) {
-            ItemStack resultItem = recipe.getResultItem();
-            if (resultItem.isEmpty()) {
-                this.canCompress = false;
-            } else {
-                ItemStack stackInSlot = this.inventory.getStackInSlot(2);
-                if (stackInSlot.isEmpty()) {
-                    this.canCompress = true;
-                } else if (!stackInSlot.sameItem(resultItem)) {
-                    this.canCompress = false;
-                } else if (stackInSlot.getCount() + resultItem.getCount() <= 64 && stackInSlot.getCount() + resultItem.getCount() <= stackInSlot.getMaxStackSize()) { // Forge fix: make furnace respect stack sizes in furnace recipes
-                    this.canCompress = true;
-                } else {
-                    this.canCompress = stackInSlot.getCount() + resultItem.getCount() <= resultItem.getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
-                }
-            }
-        } else {
-            this.canCompress = false;
-        }
+    public void setCompress(boolean canCompress) {
+        this.canCompress = canCompress;
     }
 
     public int getCompressingTime(ItemStack stack, ItemStack stack1) {
         if (ItemStack.EMPTY == stack || ItemStack.EMPTY == stack1) return 0;
-        return this.getRecipe(stack, stack1).getCompressingTime();
+        return Recipes.getRecipe(this, stack, stack1).getCompressingTime();
     }
 
     public int getEnergyRequired(ItemStack stack, ItemStack stack1) {
         if (ItemStack.EMPTY == stack || ItemStack.EMPTY == stack1) return 0;
-        return this.getRecipe(stack, stack1).getEnergyRequired();
-    }
-
-    @Nullable
-    private CompressorRecipe getRecipe(ItemStack stack, ItemStack stack2) {
-        if (stack == null || stack2 == null) return null;
-
-        Set<Recipe<?>> recipes = findRecipesByType(Electrona.COMPRESSING, this.level);
-        for (Recipe<?> iRecipe : recipes) {
-            CompressorRecipe recipe = (CompressorRecipe) iRecipe;
-            if (recipe.matches(new RecipeWrapper(this.inventory), this.level)) {
-                canCompress(recipe);
-                return recipe;
-            }
-        }
-        return null;
+        return Recipes.getRecipe(this, stack, stack1).getEnergyRequired();
     }
 
     @Override
