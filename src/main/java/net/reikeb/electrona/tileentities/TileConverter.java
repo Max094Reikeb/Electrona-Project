@@ -10,7 +10,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
@@ -119,7 +118,7 @@ public class TileConverter extends AbstractTileEntity {
             EnergyFunction.transferEnergyWithItemSlot(this.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), inventory, false, electronicPower, 0, 4);
 
             this.setChanged();
-            world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), Block.UPDATE_NEIGHBORS);
+            world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
         }
     }
 

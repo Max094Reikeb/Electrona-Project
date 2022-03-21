@@ -10,7 +10,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
@@ -71,7 +70,7 @@ public class TileBattery extends AbstractTileEntity {
             EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), t.getTileData(), 6, electronicPower, false);
 
             t.setChanged();
-            world.sendBlockUpdated(blockPos, t.getBlockState(), t.getBlockState(), Block.UPDATE_NEIGHBORS);
+            world.sendBlockUpdated(blockPos, t.getBlockState(), t.getBlockState(), 3);
         }
     }
 

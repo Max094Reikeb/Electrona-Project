@@ -5,7 +5,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
@@ -40,7 +39,7 @@ public class TileConveyor extends BlockEntity {
             this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.05));
 
             this.setChanged();
-            world.sendBlockUpdated(blockPos, state, state, Block.UPDATE_CLIENTS);
+            world.sendBlockUpdated(blockPos, state, state, 3);
         }
     }
 

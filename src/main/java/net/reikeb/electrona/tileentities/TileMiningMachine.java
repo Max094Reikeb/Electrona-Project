@@ -139,7 +139,7 @@ public class TileMiningMachine extends AbstractTileEntity {
             }
 
             this.setChanged();
-            world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), Block.UPDATE_NEIGHBORS);
+            world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
         }
     }
 

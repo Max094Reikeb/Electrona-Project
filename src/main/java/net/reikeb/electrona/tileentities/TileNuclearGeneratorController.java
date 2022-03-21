@@ -131,7 +131,7 @@ public class TileNuclearGeneratorController extends AbstractTileEntity {
         EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 10, electronicPower, true);
 
         this.setChanged();
-        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), Block.UPDATE_ALL);
+        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
     }
 
     @Override
