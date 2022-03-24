@@ -9,8 +9,8 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -22,12 +22,13 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.reikeb.electrona.containers.PurificatorContainer;
 import net.reikeb.electrona.events.local.PurificationEvent;
-import net.reikeb.electrona.init.ContainerInit;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.misc.vm.FluidFunction;
 import net.reikeb.electrona.recipes.Recipes;
@@ -52,6 +53,42 @@ public class TilePurificator extends AbstractTileEntity {
     };
     public int purifyingTime;
     public int currentPurifyingTime;
+    protected final ContainerData dataAccess = new ContainerData() {
+        @Override
+        public int get(int p_39284_) {
+            switch (p_39284_) {
+                case 0:
+                    AtomicInteger waterLevel = new AtomicInteger();
+                    TilePurificator.this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+                            .ifPresent(cap -> waterLevel.set(cap.getFluidInTank(1).getAmount()));
+                    return waterLevel.get();
+                case 1:
+                    return TilePurificator.this.purifyingTime;
+                case 2:
+                    return TilePurificator.this.currentPurifyingTime;
+                default:
+                    return 0;
+            }
+        }
+
+        @Override
+        public void set(int p_39285_, int p_39286_) {
+            switch (p_39285_) {
+                case 0:
+                    TilePurificator.this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+                            .ifPresent(cap -> cap.fill(new FluidStack(Fluids.WATER, p_39286_), IFluidHandler.FluidAction.EXECUTE));
+                case 1:
+                    TilePurificator.this.purifyingTime = p_39286_;
+                case 2:
+                    TilePurificator.this.currentPurifyingTime = p_39286_;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+    };
     private int waterRequired;
     private boolean canPurify;
 
@@ -70,13 +107,8 @@ public class TilePurificator extends AbstractTileEntity {
     }
 
     @Override
-    public AbstractContainerMenu createMenu(final int windowID, final Inventory playerInv, final Player playerIn) {
-        return new PurificatorContainer(windowID, playerInv, this);
-    }
-
-    @Override
     public AbstractContainerMenu createMenu(int id, Inventory player) {
-        return new PurificatorContainer(ContainerInit.PURIFICATOR_CONTAINER.get(), id);
+        return new PurificatorContainer(id, player, this, dataAccess);
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {

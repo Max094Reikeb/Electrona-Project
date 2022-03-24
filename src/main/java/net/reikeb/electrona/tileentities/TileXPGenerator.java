@@ -6,8 +6,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.blocks.XPGenerator;
 import net.reikeb.electrona.containers.XPGeneratorContainer;
-import net.reikeb.electrona.init.ContainerInit;
 
 import static net.reikeb.electrona.init.TileEntityInit.TILE_XP_GENERATOR;
 
@@ -27,6 +26,34 @@ public class TileXPGenerator extends AbstractTileEntity {
     private int maxStorage;
     private int wait;
     private int xpLevels;
+    protected final ContainerData dataAccess = new ContainerData() {
+        @Override
+        public int get(int p_39284_) {
+            return switch (p_39284_) {
+                case 0 -> (int) TileXPGenerator.this.electronicPower;
+                case 1 -> TileXPGenerator.this.wait;
+                case 2 -> TileXPGenerator.this.xpLevels;
+                default -> 0;
+            };
+        }
+
+        @Override
+        public void set(int p_39285_, int p_39286_) {
+            switch (p_39285_) {
+                case 0:
+                    TileXPGenerator.this.electronicPower = p_39286_;
+                case 1:
+                    TileXPGenerator.this.wait = p_39286_;
+                case 2:
+                    TileXPGenerator.this.xpLevels = p_39286_;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+    };
 
     public TileXPGenerator(BlockPos pos, BlockState state) {
         super(TILE_XP_GENERATOR.get(), pos, state, 1);
@@ -43,13 +70,8 @@ public class TileXPGenerator extends AbstractTileEntity {
     }
 
     @Override
-    public AbstractContainerMenu createMenu(final int windowID, final Inventory playerInv, final Player playerIn) {
-        return new XPGeneratorContainer(windowID, playerInv, this);
-    }
-
-    @Override
     public AbstractContainerMenu createMenu(int id, Inventory player) {
-        return new XPGeneratorContainer(ContainerInit.XP_GENERATOR_CONTAINER.get(), id);
+        return new XPGeneratorContainer(id, player, this, dataAccess);
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {

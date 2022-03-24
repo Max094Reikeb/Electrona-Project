@@ -1,47 +1,32 @@
 package net.reikeb.electrona.containers;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.MenuType;
-
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
-
-import net.reikeb.electrona.tileentities.TileBiomassGenerator;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
 
 import static net.reikeb.electrona.init.ContainerInit.BIOMASS_GENERATOR_CONTAINER;
 
 public class BiomassGeneratorContainer extends AbstractContainer {
 
-    public TileBiomassGenerator tileEntity;
+    private final ContainerData biomassGeneratorData;
 
-    public BiomassGeneratorContainer(MenuType<?> type, int id) {
-        super(type, id, 1);
+    public BiomassGeneratorContainer(int id, Inventory inv) {
+        this(id, inv, new SimpleContainer(1), new SimpleContainerData(1));
     }
 
-    // Client
-    public BiomassGeneratorContainer(int id, Inventory inv, FriendlyByteBuf buf) {
+    public BiomassGeneratorContainer(int id, Inventory inv, Container container, ContainerData containerData) {
         super(BIOMASS_GENERATOR_CONTAINER.get(), id, 1);
-        this.init(inv, this.tileEntity = (TileBiomassGenerator) inv.player.level.getBlockEntity(buf.readBlockPos()));
+
+        this.biomassGeneratorData = containerData;
+
+        this.addSlot(new Slots.BasicInputSlot(container, 0, 80, 36));
+
+        this.layoutPlayerInventorySlots(inv);
     }
 
-    // Server
-    public BiomassGeneratorContainer(int id, Inventory inv, TileBiomassGenerator tile) {
-        super(BIOMASS_GENERATOR_CONTAINER.get(), id, 1);
-        this.init(inv, this.tileEntity = tile);
-    }
-
-    public void init(Inventory playerInv, TileBiomassGenerator tile) {
-
-        if (tileEntity != null) {
-            tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                addSlot(new SlotItemHandler(h, 0, 80, 36));
-            });
-        }
-        this.layoutPlayerInventorySlots(playerInv);
-    }
-
-    public TileBiomassGenerator getTileEntity() {
-        return this.tileEntity;
+    public int getElectronicPower() {
+        return this.biomassGeneratorData.get(0);
     }
 }

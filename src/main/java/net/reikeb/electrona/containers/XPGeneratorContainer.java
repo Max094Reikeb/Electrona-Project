@@ -1,54 +1,58 @@
 package net.reikeb.electrona.containers;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
-
-import net.reikeb.electrona.tileentities.TileXPGenerator;
 
 import static net.reikeb.electrona.init.ContainerInit.XP_GENERATOR_CONTAINER;
 
 public class XPGeneratorContainer extends AbstractContainer {
 
-    public TileXPGenerator tileEntity;
+    private final ContainerData xpGeneratorData;
 
-    public XPGeneratorContainer(MenuType<?> type, int id) {
-        super(type, id, 1);
+    public XPGeneratorContainer(int id, Inventory inv) {
+        this(id, inv, new SimpleContainer(1), new SimpleContainerData(3));
     }
 
-    // Client
-    public XPGeneratorContainer(int id, Inventory inv, FriendlyByteBuf buf) {
+    public XPGeneratorContainer(int id, Inventory inv, Container container, ContainerData containerData) {
         super(XP_GENERATOR_CONTAINER.get(), id, 1);
-        this.init(inv, this.tileEntity = (TileXPGenerator) inv.player.level.getBlockEntity(buf.readBlockPos()));
+
+        this.xpGeneratorData = containerData;
+
+        this.addSlot(new EmeraldSlot(container, 0, 81, 19));
+
+        this.layoutPlayerInventorySlots(inv);
     }
 
-    // Server
-    public XPGeneratorContainer(int id, Inventory inv, TileXPGenerator tile) {
-        super(XP_GENERATOR_CONTAINER.get(), id, 1);
-        this.init(inv, this.tileEntity = tile);
+    public int getElectronicPower() {
+        return this.xpGeneratorData.get(0);
     }
 
-    public void init(Inventory playerInv, TileXPGenerator tile) {
+    public int getWait() {
+        return this.xpGeneratorData.get(1);
+    }
 
-        if (tileEntity != null) {
-            tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                addSlot(new SlotItemHandler(h, 0, 81, 19) {
-                    @Override
-                    public boolean mayPlace(ItemStack itemStack) {
-                        return (itemStack.getItem() == Items.EMERALD);
-                    }
-                });
-            });
+    public int getXpLevels() {
+        return this.xpGeneratorData.get(2);
+    }
+
+    public void setXpLevels(int level) {
+        this.xpGeneratorData.set(2, level);
+    }
+
+    static class EmeraldSlot extends Slot {
+        public EmeraldSlot(Container container, int id, int x, int y) {
+            super(container, id, x, y);
         }
-        this.layoutPlayerInventorySlots(playerInv);
-    }
 
-    public TileXPGenerator getTileEntity() {
-        return this.tileEntity;
+        public boolean mayPlace(ItemStack itemStack) {
+            return (itemStack.getItem() == Items.EMERALD);
+        }
+
     }
 }

@@ -8,8 +8,8 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -18,12 +18,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.reikeb.electrona.blocks.NuclearGeneratorController;
 import net.reikeb.electrona.containers.NuclearGeneratorControllerContainer;
 import net.reikeb.electrona.init.BlockInit;
-import net.reikeb.electrona.init.ContainerInit;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
@@ -41,10 +41,80 @@ public class TileNuclearGeneratorController extends AbstractTileEntity {
     public double electronicPower;
     private int maxStorage;
     private int temperature;
-
     private boolean powered;
     private boolean ubIn;
     private boolean alert;
+    private boolean isOverCooler;
+    private int posXUnder;
+    private int posYUnder;
+    private int posZUnder;
+    protected final ContainerData dataAccess = new ContainerData() {
+        @Override
+        public int get(int p_39284_) {
+            switch (p_39284_) {
+                case 0:
+                    return (int) TileNuclearGeneratorController.this.electronicPower;
+                case 1:
+                    BlockEntity tileUnder = TileNuclearGeneratorController.this.getLevel()
+                            .getBlockEntity(TileNuclearGeneratorController.this.getBlockPos().below());
+                    AtomicInteger underWater = new AtomicInteger();
+                    if (tileUnder instanceof TileCooler) {
+                        tileUnder.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+                                .ifPresent(cap -> underWater.set(cap.getFluidInTank(1).getAmount()));
+                        return underWater.get();
+                    }
+                    return 0;
+                case 2:
+                    return TileNuclearGeneratorController.this.temperature;
+                case 3:
+                    return TileNuclearGeneratorController.this.powered ? 1 : 0;
+                case 4:
+                    return TileNuclearGeneratorController.this.ubIn ? 1 : 0;
+                case 5:
+                    return TileNuclearGeneratorController.this.alert ? 1 : 0;
+                case 6:
+                    return TileNuclearGeneratorController.this.isOverCooler ? 1 : 0;
+                case 7:
+                    return TileNuclearGeneratorController.this.posXUnder;
+                case 8:
+                    return TileNuclearGeneratorController.this.posYUnder;
+                case 9:
+                    return TileNuclearGeneratorController.this.posZUnder;
+                default:
+                    return 0;
+            }
+        }
+
+        @Override
+        public void set(int p_39285_, int p_39286_) {
+            switch (p_39285_) {
+                case 0:
+                    TileNuclearGeneratorController.this.electronicPower = p_39286_;
+                case 2:
+                    TileNuclearGeneratorController.this.temperature = p_39286_;
+                case 3:
+                    TileNuclearGeneratorController.this.powered = (p_39286_ == 1);
+                case 4:
+                    TileNuclearGeneratorController.this.ubIn = (p_39286_ == 1);
+                case 5:
+                    TileNuclearGeneratorController.this.alert = (p_39286_ == 1);
+                case 6:
+                    TileNuclearGeneratorController.this.isOverCooler = (p_39286_ == 1);
+                case 7:
+                    TileNuclearGeneratorController.this.posXUnder = p_39286_;
+                case 8:
+                    TileNuclearGeneratorController.this.posYUnder = p_39286_;
+                case 9:
+                    TileNuclearGeneratorController.this.posZUnder = p_39286_;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 10;
+        }
+    };
+    private int wait;
 
     public TileNuclearGeneratorController(BlockPos pos, BlockState state) {
         super(TILE_NUCLEAR_GENERATOR_CONTROLLER.get(), pos, state, 2);
@@ -61,22 +131,21 @@ public class TileNuclearGeneratorController extends AbstractTileEntity {
     }
 
     @Override
-    public AbstractContainerMenu createMenu(final int windowID, final Inventory playerInv, final Player playerIn) {
-        return new NuclearGeneratorControllerContainer(windowID, playerInv, this);
-    }
-
-    @Override
     public AbstractContainerMenu createMenu(int id, Inventory player) {
-        return new NuclearGeneratorControllerContainer(ContainerInit.NUCLEAR_GENERATOR_CONTAINER.get(), id);
+        return new NuclearGeneratorControllerContainer(id, player, this, dataAccess);
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         if (world == null) return;
         ItemStack stackInSlot0 = this.inventory.getStackInSlot(0);
 
-        BlockPos posUnder = new BlockPos(blockPos.getX(), (blockPos.getY() - 1), blockPos.getZ());
-        BlockEntity tileUnder = world.getBlockEntity(posUnder);
-        Block blockUnder = world.getBlockState(posUnder).getBlock();
+        BlockEntity tileUnder = world.getBlockEntity(blockPos.below());
+        Block blockUnder = world.getBlockState(blockPos.below()).getBlock();
+
+        this.isOverCooler = blockUnder == BlockInit.COOLER.get();
+        this.posXUnder = blockPos.below().getX();
+        this.posYUnder = blockPos.below().getY();
+        this.posZUnder = blockPos.below().getZ();
 
         double electronicPower = this.getTileData().getDouble("ElectronicPower");
         int temperature = this.getTileData().getInt("temperature");

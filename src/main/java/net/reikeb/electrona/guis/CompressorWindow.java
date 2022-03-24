@@ -9,16 +9,13 @@ import net.minecraft.world.entity.player.Inventory;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.CompressorContainer;
-import net.reikeb.electrona.tileentities.TileCompressor;
 
 public class CompressorWindow extends AbstractWindow<CompressorContainer> {
 
     private static final ResourceLocation COMPRESSOR_GUI = Electrona.RL("textures/guis/compressor_gui.png");
-    public TileCompressor tileEntity;
 
     public CompressorWindow(CompressorContainer container, Inventory inv, Component title) {
         super(container, inv, title, COMPRESSOR_GUI);
-        this.tileEntity = container.getTileEntity();
     }
 
     @Override
@@ -26,8 +23,8 @@ public class CompressorWindow extends AbstractWindow<CompressorContainer> {
         this.renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(matrixStack, mouseX, mouseY);
-        int currentCompress = tileEntity.getTileData().getInt("CurrentCompressingTime");
-        int compressTime = tileEntity.getTileData().getInt("CompressingTime");
+        int currentCompress = this.menu.getCurrentCompressingTime();
+        int compressTime = this.menu.getCompressingTime();
         int percentage = (currentCompress * 5) / (compressTime == 0 ? 100 : compressTime);
         int XposT1 = leftPos + 107;
         int XposT2 = leftPos + 125;
@@ -43,6 +40,6 @@ public class CompressorWindow extends AbstractWindow<CompressorContainer> {
     protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.compressor.name"), 50, 6, -16777216);
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.power"), 126, 6, -16777216);
-        this.font.draw(matrixStack, "" + ((int) this.tileEntity.getTileData().getDouble("ElectronicPower")) + " ELs", 126, 16, -3407821);
+        this.font.draw(matrixStack, "" + this.menu.getElectronicPower() + " ELs", 126, 16, -3407821);
     }
 }

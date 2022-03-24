@@ -9,16 +9,13 @@ import net.minecraft.world.entity.player.Inventory;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.SteelCrateContainer;
-import net.reikeb.electrona.tileentities.TileSteelCrate;
 
 public class SteelCrateWindow extends AbstractWindow<SteelCrateContainer> {
 
     private static final ResourceLocation STEEL_CRATE_GUI = Electrona.RL("textures/guis/steel_crate_gui.png");
-    public TileSteelCrate tileEntity;
 
     public SteelCrateWindow(SteelCrateContainer container, Inventory inv, Component title) {
         super(container, inv, title, STEEL_CRATE_GUI);
-        this.tileEntity = container.getTileEntity();
     }
 
     @Override

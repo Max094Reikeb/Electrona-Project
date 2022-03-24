@@ -14,17 +14,14 @@ import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.DimensionLinkerContainer;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.DimensionIDPacket;
-import net.reikeb.electrona.tileentities.TileDimensionLinker;
 
 public class DimensionLinkerWindow extends AbstractWindow<DimensionLinkerContainer> {
 
     private static final ResourceLocation DIMENSION_LINKER_GUI = Electrona.RL("textures/guis/dimension_linker_gui.png");
-    public TileDimensionLinker tileEntity;
     EditBox dimension_id;
 
     public DimensionLinkerWindow(DimensionLinkerContainer container, Inventory inv, Component title) {
         super(container, inv, title, DIMENSION_LINKER_GUI);
-        this.tileEntity = container.getTileEntity();
     }
 
     @Override
@@ -52,7 +49,7 @@ public class DimensionLinkerWindow extends AbstractWindow<DimensionLinkerContain
     }
 
     public String getDimensionID() {
-        String id = tileEntity.getTileData().getString("dimensionID");
+        String id = this.menu.getDimensionID();
         return ((id.equals("")) ? "minecraft:overworld" : id);
     }
 

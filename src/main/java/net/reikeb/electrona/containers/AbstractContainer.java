@@ -7,6 +7,8 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
+
 public abstract class AbstractContainer extends AbstractContainerMenu {
 
     private final int slotCount;
@@ -17,7 +19,7 @@ public abstract class AbstractContainer extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player playerEntity) {
+    public boolean stillValid(@NotNull Player playerEntity) {
         return true;
     }
 
@@ -32,7 +34,7 @@ public abstract class AbstractContainer extends AbstractContainerMenu {
     }
 
     @Override
-    public ItemStack quickMoveStack(Player playerIn, int index) {
+    public @NotNull ItemStack quickMoveStack(@NotNull Player playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if (slot.hasItem()) {

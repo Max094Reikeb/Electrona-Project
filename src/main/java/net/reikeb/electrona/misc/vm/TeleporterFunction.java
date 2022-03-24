@@ -51,21 +51,19 @@ public class TeleporterFunction {
         BlockState state = world.getBlockState(pos);
         BlockPos posBelow = new BlockPos(x, (y - 1), z);
         BlockEntity tile = world.getBlockEntity(pos);
-        if (!(tile instanceof TileTeleporter)) return;
-        TileTeleporter tileEntity = (TileTeleporter) tile;
+        if (!(tile instanceof TileTeleporter tileEntity)) return;
         boolean isTeleporter = false;
-        boolean autoDeletion = tileEntity.getTileData().getBoolean("autoDeletion");
-        double teleportXCo = tileEntity.getTileData().getDouble("teleportX");
-        double teleportYCo = tileEntity.getTileData().getDouble("teleportY");
-        double teleportZCo = tileEntity.getTileData().getDouble("teleportZ");
+        boolean autoDeletion = tileEntity.isAutoDeletion();
+        double teleportXCo = tileEntity.getTeleportX();
+        double teleportYCo = tileEntity.getTeleportY();
+        double teleportZCo = tileEntity.getTeleportZ();
         BlockPos teleportPos = new BlockPos(teleportXCo, teleportYCo, teleportZCo);
-        double electronicPower = tileEntity.getTileData().getDouble("ElectronicPower");
+        double electronicPower = tileEntity.getElectronicPower();
         if (electronicPower >= 1000) {
             if (BlockInit.DIMENSION_LINKER.get() == world.getBlockState(posBelow).getBlock()) {
                 BlockEntity tileBelow = world.getBlockEntity(posBelow);
-                if (!(tileBelow instanceof TileDimensionLinker)) return;
-                TileDimensionLinker tileEntityBelow = (TileDimensionLinker) tileBelow;
-                String dimension = tileEntityBelow.getTileData().getString("dimensionID");
+                if (!(tileBelow instanceof TileDimensionLinker tileEntityBelow)) return;
+                String dimension = tileEntityBelow.getDimensionID();
                 if (world instanceof ServerLevel) {
                     ResourceKey<Level> key = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dimension));
                     if ((!dimension.equals("")) && (((ServerLevel) world).getServer().getLevel(key) != null)) {
@@ -106,11 +104,11 @@ public class TeleporterFunction {
                             teleport(_newWorld, pos, teleportPos, entity);
                             MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(world, _newWorld, pos, teleportPos, entity));
                             if (!world.isClientSide()) {
-                                tileEntity.getTileData().putDouble("ElectronicPower", (electronicPower - 1000));
+                                tileEntity.setElectronicPower(electronicPower - 1000);
                                 if (autoDeletion) {
-                                    tileEntity.getTileData().putDouble("teleportX", 0);
-                                    tileEntity.getTileData().putDouble("teleportY", 0);
-                                    tileEntity.getTileData().putDouble("teleportZ", 0);
+                                    tileEntity.setTeleportX(0);
+                                    tileEntity.setTeleportY(0);
+                                    tileEntity.setTeleportZ(0);
                                 }
                                 world.sendBlockUpdated(pos, state, state, 3);
                             }
@@ -127,11 +125,11 @@ public class TeleporterFunction {
                     teleport(world, pos, teleportPos, entity);
                     MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(world, world, pos, teleportPos, entity));
                     if (!world.isClientSide()) {
-                        tileEntity.getTileData().putDouble("ElectronicPower", (electronicPower - 1000));
+                        tileEntity.setElectronicPower(electronicPower - 1000);
                         if (autoDeletion) {
-                            tileEntity.getTileData().putDouble("teleportX", 0);
-                            tileEntity.getTileData().putDouble("teleportY", 0);
-                            tileEntity.getTileData().putDouble("teleportZ", 0);
+                            tileEntity.setTeleportX(0);
+                            tileEntity.setTeleportY(0);
+                            tileEntity.setTeleportZ(0);
                         }
                         world.sendBlockUpdated(pos, state, state, 3);
                     }
@@ -170,7 +168,6 @@ public class TeleporterFunction {
         SoundEvent teleportSound = SoundEvents.ENDERMAN_TELEPORT;
         teleportParticles(world, pos, 300);
         teleportParticles(world, teleportPos, 300);
-        if (teleportSound == null) return;
         world.playSound(null, pos, teleportSound, SoundSource.NEUTRAL,
                 0.6F, 1.0F);
         world.playSound(null, teleportPos, teleportSound, SoundSource.NEUTRAL,

@@ -1,56 +1,56 @@
 package net.reikeb.electrona.containers;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.ItemStack;
-
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
-
-import net.reikeb.electrona.tileentities.TileConverter;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
 
 import static net.reikeb.electrona.init.ContainerInit.CONVERTER_CONTAINER;
 
 public class ConverterContainer extends AbstractContainer {
 
-    public TileConverter tileEntity;
+    private final ContainerData converterData;
 
-    public ConverterContainer(MenuType<?> type, int id) {
-        super(type, id, 1);
+    public ConverterContainer(int id, Inventory inv) {
+        this(id, inv, new SimpleContainer(1), new SimpleContainerData(5));
     }
 
-    // Client
-    public ConverterContainer(int id, Inventory inv, FriendlyByteBuf buf) {
+    public ConverterContainer(int id, Inventory inv, Container container, ContainerData containerData) {
         super(CONVERTER_CONTAINER.get(), id, 1);
-        this.init(inv, this.tileEntity = (TileConverter) inv.player.level.getBlockEntity(buf.readBlockPos()));
+
+        this.converterData = containerData;
+
+        this.addSlot(new Slots.BatterySlot(container, 0, 81, 31));
+
+        this.layoutPlayerInventorySlots(inv);
     }
 
-    // Server
-    public ConverterContainer(int id, Inventory inv, TileConverter tile) {
-        super(CONVERTER_CONTAINER.get(), id, 1);
-        this.init(inv, this.tileEntity = tile);
+    public int getElectronicPower() {
+        return this.converterData.get(0);
     }
 
-    public void init(Inventory playerInv, TileConverter tile) {
-
-        if (tileEntity != null) {
-            tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                addSlot(new SlotItemHandler(h, 0, 81, 31) {
-                    public boolean mayPlace(ItemStack itemStack) {
-                        return true;
-                    }
-
-                    public int getMaxStackSize() {
-                        return 1;
-                    }
-                });
-            });
-        }
-        this.layoutPlayerInventorySlots(playerInv);
+    public int getFE() {
+        return this.converterData.get(1);
     }
 
-    public TileConverter getTileEntity() {
-        return this.tileEntity;
+    public int getVP() {
+        return this.converterData.get(2);
+    }
+
+    public boolean isToVP() {
+        return this.converterData.get(3) == 1;
+    }
+
+    public void setToVP(boolean isToVP) {
+        this.converterData.set(3, (isToVP ? 1 : 0));
+    }
+
+    public boolean isToOthers() {
+        return this.converterData.get(4) == 1;
+    }
+
+    public void setToOthers(boolean isToOthers) {
+        this.converterData.set(4, (isToOthers ? 1 : 0));
     }
 }

@@ -9,22 +9,19 @@ import net.minecraft.world.entity.player.Inventory;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.MiningMachineContainer;
-import net.reikeb.electrona.tileentities.TileMiningMachine;
 
 public class MiningMachineWindow extends AbstractWindow<MiningMachineContainer> {
 
     private static final ResourceLocation MINING_MACHINE_GUI = Electrona.RL("textures/guis/mining_machine_gui.png");
-    public TileMiningMachine tileEntity;
 
     public MiningMachineWindow(MiningMachineContainer container, Inventory inv, Component title) {
         super(container, inv, title, MINING_MACHINE_GUI);
-        this.tileEntity = container.getTileEntity();
     }
 
     @Override
     protected void renderLabels(PoseStack ms, int mouseX, int mouseY) {
         this.font.draw(ms, new TranslatableComponent("gui.electrona.mining_machine.name"), 6, 8, -16777216);
         this.font.draw(ms, new TranslatableComponent("gui.electrona.generic.power"), 125, 8, -16777216);
-        this.font.draw(ms, "" + ((int) tileEntity.getTileData().getDouble("ElectronicPower")) + " ELs", 125, 18, -3407821);
+        this.font.draw(ms, "" + this.menu.getElectronicPower() + " ELs", 125, 18, -3407821);
     }
 }

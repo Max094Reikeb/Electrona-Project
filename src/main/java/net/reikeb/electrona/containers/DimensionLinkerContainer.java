@@ -1,10 +1,8 @@
 package net.reikeb.electrona.containers;
 
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.MenuType;
-
-import net.reikeb.electrona.tileentities.TileDimensionLinker;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
 
 import java.util.HashMap;
 
@@ -12,31 +10,27 @@ import static net.reikeb.electrona.init.ContainerInit.DIMENSION_LINKER_CONTAINER
 
 public class DimensionLinkerContainer extends AbstractContainer {
 
-    public TileDimensionLinker tileEntity;
     public static HashMap textFieldWidget = new HashMap();
+    private final ContainerData dimensionLinkerData;
 
-    public DimensionLinkerContainer(MenuType<?> type, int id) {
-        super(type, id, 0);
+    public DimensionLinkerContainer(int id, Inventory inv) {
+        this(id, inv, new SimpleContainerData(1));
     }
 
-    // Client
-    public DimensionLinkerContainer(int id, Inventory inv, FriendlyByteBuf buf) {
+    public DimensionLinkerContainer(int id, Inventory inv, ContainerData containerData) {
         super(DIMENSION_LINKER_CONTAINER.get(), id, 0);
-        this.init(inv, this.tileEntity = (TileDimensionLinker) inv.player.level.getBlockEntity(buf.readBlockPos()));
+
+        this.dimensionLinkerData = containerData;
+
+        this.layoutPlayerInventorySlots(inv);
     }
 
-    // Server
-    public DimensionLinkerContainer(int id, Inventory inv, TileDimensionLinker tile) {
-        super(DIMENSION_LINKER_CONTAINER.get(), id, 0);
-        this.init(inv, this.tileEntity = tile);
+    public String getDimensionID() {
+        return String.valueOf(this.dimensionLinkerData.get(0));
     }
 
-    public void init(Inventory playerInv, TileDimensionLinker tile) {
-        this.layoutPlayerInventorySlots(playerInv);
-    }
-
-    public TileDimensionLinker getTileEntity() {
-        return this.tileEntity;
+    public void setDimensionID(String dimensionID) {
+        this.dimensionLinkerData.set(0, Integer.parseInt(dimensionID));
     }
 
     public HashMap getTextFieldWidget() {

@@ -7,8 +7,8 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -20,7 +20,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.reikeb.electrona.blocks.Compressor;
 import net.reikeb.electrona.containers.CompressorContainer;
 import net.reikeb.electrona.events.local.CompressionEvent;
-import net.reikeb.electrona.init.ContainerInit;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.recipes.Recipes;
 
@@ -32,9 +31,36 @@ public class TileCompressor extends AbstractTileEntity {
     public double electronicPower;
     public int compressingTime;
     public int currentCompressingTime;
+    protected final ContainerData dataAccess = new ContainerData() {
+        @Override
+        public int get(int p_39284_) {
+            return switch (p_39284_) {
+                case 0 -> (int) TileCompressor.this.electronicPower;
+                case 1 -> TileCompressor.this.compressingTime;
+                case 2 -> TileCompressor.this.currentCompressingTime;
+                default -> 0;
+            };
+        }
+
+        @Override
+        public void set(int p_39285_, int p_39286_) {
+            switch (p_39285_) {
+                case 0:
+                    TileCompressor.this.electronicPower = p_39286_;
+                case 1:
+                    TileCompressor.this.compressingTime = p_39286_;
+                case 2:
+                    TileCompressor.this.currentCompressingTime = p_39286_;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+    };
     private int maxStorage;
     private int energyRequired;
-
     private boolean canCompress;
 
     public TileCompressor(BlockPos pos, BlockState state) {
@@ -52,13 +78,8 @@ public class TileCompressor extends AbstractTileEntity {
     }
 
     @Override
-    public AbstractContainerMenu createMenu(final int windowID, final Inventory playerInv, final Player playerIn) {
-        return new CompressorContainer(windowID, playerInv, this);
-    }
-
-    @Override
     public AbstractContainerMenu createMenu(int id, Inventory player) {
-        return new CompressorContainer(ContainerInit.COMPRESSOR_CONTAINER.get(), id);
+        return new CompressorContainer(id, player, this, dataAccess);
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {

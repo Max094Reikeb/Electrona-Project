@@ -1,71 +1,102 @@
 package net.reikeb.electrona.containers;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
-
-import net.reikeb.electrona.tileentities.TileNuclearGeneratorController;
 
 import static net.reikeb.electrona.init.ContainerInit.NUCLEAR_GENERATOR_CONTAINER;
 
 public class NuclearGeneratorControllerContainer extends AbstractContainer {
 
-    public TileNuclearGeneratorController tileEntity;
+    private final ContainerData nuclearGeneratorControllerData;
 
-    public NuclearGeneratorControllerContainer(MenuType<?> type, int id) {
-        super(type, id, 2);
+    public NuclearGeneratorControllerContainer(int id, Inventory inv) {
+        this(id, inv, new SimpleContainer(2), new SimpleContainerData(10));
     }
 
-    // Client
-    public NuclearGeneratorControllerContainer(int id, Inventory inv, FriendlyByteBuf buf) {
+    public NuclearGeneratorControllerContainer(int id, Inventory inv, Container container, ContainerData containerData) {
         super(NUCLEAR_GENERATOR_CONTAINER.get(), id, 2);
-        this.init(inv, this.tileEntity = (TileNuclearGeneratorController) inv.player.level.getBlockEntity(buf.readBlockPos()));
+
+        this.nuclearGeneratorControllerData = containerData;
+
+        this.addSlot(new Slots.WaterBucketSlot(container, 0, 27, 32));
+        this.addSlot(new UraniumSlot(container, containerData, 1, 55, 32));
+
+        this.layoutPlayerInventorySlots(inv);
     }
 
-    // Server
-    public NuclearGeneratorControllerContainer(int id, Inventory inv, TileNuclearGeneratorController tile) {
-        super(NUCLEAR_GENERATOR_CONTAINER.get(), id, 2);
-        this.init(inv, this.tileEntity = tile);
+    public int getElectronicPower() {
+        return this.nuclearGeneratorControllerData.get(0);
     }
 
-    public void init(Inventory playerInv, TileNuclearGeneratorController tile) {
+    public int getUnderWater() {
+        return this.nuclearGeneratorControllerData.get(1);
+    }
 
-        if (tileEntity != null) {
-            tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                addSlot(new SlotItemHandler(h, 0, 27, 32) {
-                    public boolean mayPlace(ItemStack itemStack) {
-                        return itemStack.getItem() == Items.WATER_BUCKET;
-                    }
+    public int getTemperature() {
+        return this.nuclearGeneratorControllerData.get(2);
+    }
 
-                    public int getMaxStackSize() {
-                        return 1;
-                    }
-                });
-                addSlot(new SlotItemHandler(h, 1, 55, 32) {
-                    public boolean mayPlace(ItemStack itemStack) {
-                        return !tileEntity.getTileData().getBoolean("UBIn");
-                    }
+    public boolean isPowered() {
+        return this.nuclearGeneratorControllerData.get(3) == 1;
+    }
 
-                    public boolean mayPickup(Player playerEntity) {
-                        return !tileEntity.getTileData().getBoolean("UBIn");
-                    }
+    public void setPowered(boolean powered) {
+        this.nuclearGeneratorControllerData.set(3, (powered ? 1 : 0));
+    }
 
-                    public int getMaxStackSize() {
-                        return 1;
-                    }
-                });
-            });
+    public boolean areUBIn() {
+        return this.nuclearGeneratorControllerData.get(4) == 1;
+    }
+
+    public void setUBIn(boolean ubIn) {
+        this.nuclearGeneratorControllerData.set(4, (ubIn ? 1 : 0));
+    }
+
+    public boolean alert() {
+        return this.nuclearGeneratorControllerData.get(5) == 1;
+    }
+
+    public boolean isAboveCooler() {
+        return this.nuclearGeneratorControllerData.get(6) == 1;
+    }
+
+    public int getPosXUnder() {
+        return this.nuclearGeneratorControllerData.get(7);
+    }
+
+    public int getPosYUnder() {
+        return this.nuclearGeneratorControllerData.get(8);
+    }
+
+    public int getPosZUnder() {
+        return this.nuclearGeneratorControllerData.get(9);
+    }
+
+    static class UraniumSlot extends Slot {
+
+        private final ContainerData containerData;
+
+        public UraniumSlot(Container container, ContainerData containerData, int id, int x, int y) {
+            super(container, id, x, y);
+            this.containerData = containerData;
         }
-        this.layoutPlayerInventorySlots(playerInv);
-    }
 
-    public TileNuclearGeneratorController getTileEntity() {
-        return this.tileEntity;
+        public boolean mayPlace(ItemStack itemStack) {
+            return containerData.get(4) == 0;
+        }
+
+        public boolean mayPickup(Player player) {
+            return containerData.get(4) == 0;
+        }
+
+        public int getMaxStackSize() {
+            return 1;
+        }
     }
 }

@@ -9,16 +9,13 @@ import net.minecraft.world.entity.player.Inventory;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.LeadCrateContainer;
-import net.reikeb.electrona.tileentities.TileLeadCrate;
 
 public class LeadCrateWindow extends AbstractWindow<LeadCrateContainer> {
 
     private static final ResourceLocation LEAD_CRATE_GUI = Electrona.RL("textures/guis/lead_crate_gui.png");
-    public TileLeadCrate tileEntity;
 
     public LeadCrateWindow(LeadCrateContainer container, Inventory inv, Component title) {
         super(container, inv, title, LEAD_CRATE_GUI);
-        this.tileEntity = container.getTileEntity();
     }
 
     @Override

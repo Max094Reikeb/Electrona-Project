@@ -4,15 +4,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.network.NetworkEvent;
 
 import net.reikeb.electrona.containers.NuclearGeneratorControllerContainer;
-import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.tileentities.TileCooler;
+import net.reikeb.electrona.tileentities.TileNuclearGeneratorController;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
@@ -34,25 +33,26 @@ public class NuclearBarStatusPacket {
             Player playerEntity = context.get().getSender();
             if ((playerEntity == null) || (!(playerEntity.containerMenu instanceof NuclearGeneratorControllerContainer)))
                 return;
-            BlockEntity tileEntity = ((NuclearGeneratorControllerContainer) playerEntity.containerMenu).getTileEntity();
-            BlockPos posUnder = new BlockPos(tileEntity.getBlockPos().getX(),
-                    (tileEntity.getBlockPos().getY() - 1), tileEntity.getBlockPos().getZ());
-            Block blockUnder = (tileEntity.getLevel().getBlockState(posUnder)).getBlock();
+            BlockPos posUnder = new BlockPos(((NuclearGeneratorControllerContainer) playerEntity.containerMenu).getPosXUnder(),
+                    ((NuclearGeneratorControllerContainer) playerEntity.containerMenu).getPosYUnder(),
+                    ((NuclearGeneratorControllerContainer) playerEntity.containerMenu).getPosZUnder());
+            BlockPos blockPos = posUnder.above();
+            BlockEntity blockEntity = playerEntity.level.getBlockEntity(blockPos);
             BlockEntity tileUnder = playerEntity.level.getBlockEntity(posUnder);
-            if (!(tileUnder instanceof TileCooler)) return;
+            if ((!(tileUnder instanceof TileCooler)) || (!(blockEntity instanceof TileNuclearGeneratorController))) return;
+
             AtomicReference<ItemStack> stackInSlot1 = new AtomicReference<>();
-            tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                 stackInSlot1.set(h.getStackInSlot(1));
             });
 
-            if (tileEntity.getTileData().getBoolean("UBIn")) {
-                tileEntity.getTileData().putBoolean("UBIn", false);
+            if (((NuclearGeneratorControllerContainer) playerEntity.containerMenu).areUBIn()) {
+                ((NuclearGeneratorControllerContainer) playerEntity.containerMenu).setUBIn(false);
                 tileUnder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                     h.extractItem(0, 1, false);
                 });
-            } else if ((!tileEntity.getTileData().getBoolean("UBIn"))
-                    && (blockUnder == BlockInit.COOLER.get())) {
-                tileEntity.getTileData().putBoolean("UBIn", true);
+            } else if (((NuclearGeneratorControllerContainer) playerEntity.containerMenu).isAboveCooler()) {
+                ((NuclearGeneratorControllerContainer) playerEntity.containerMenu).setUBIn(true);
                 tileUnder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                     h.insertItem(0, stackInSlot1.get(), false);
                 });

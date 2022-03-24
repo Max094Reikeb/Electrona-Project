@@ -1,65 +1,33 @@
 package net.reikeb.electrona.containers;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.ItemStack;
-
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
-
-import net.reikeb.electrona.tileentities.TileBattery;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
 
 import static net.reikeb.electrona.init.ContainerInit.BATTERY_CONTAINER;
 
 public class BatteryContainer extends AbstractContainer {
 
-    public TileBattery tileEntity;
+    private final ContainerData batteryData;
 
-    public BatteryContainer(MenuType<?> type, int id) {
-        super(type, id, 2);
+    public BatteryContainer(int id, Inventory inv) {
+        this(id, inv, new SimpleContainer(2), new SimpleContainerData(1));
     }
 
-    // Client
-    public BatteryContainer(int id, Inventory inv, FriendlyByteBuf buf) {
+    public BatteryContainer(int id, Inventory inv, Container container, ContainerData containerData) {
         super(BATTERY_CONTAINER.get(), id, 2);
-        this.init(inv, this.tileEntity = (TileBattery) inv.player.level.getBlockEntity(buf.readBlockPos()));
+
+        this.batteryData = containerData;
+
+        this.addSlot(new Slots.BatterySlot(container, 0, 45, 33));
+        this.addSlot(new Slots.BatterySlot(container, 1, 117, 33));
+
+        this.layoutPlayerInventorySlots(inv);
     }
 
-    // Server
-    public BatteryContainer(int id, Inventory inv, TileBattery tile) {
-        super(BATTERY_CONTAINER.get(), id, 2);
-        this.init(inv, this.tileEntity = tile);
-    }
-
-    public void init(Inventory playerInv, TileBattery tile) {
-
-        if (tileEntity != null) {
-            tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                addSlot(new SlotItemHandler(h, 0, 45, 33) {
-                    public boolean mayPlace(ItemStack itemStack) {
-                        return true;
-                    }
-
-                    public int getMaxStackSize() {
-                        return 1;
-                    }
-                });
-                addSlot(new SlotItemHandler(h, 1, 117, 33) {
-                    public boolean mayPlace(ItemStack itemStack) {
-                        return true;
-                    }
-
-                    public int getMaxStackSize() {
-                        return 1;
-                    }
-                });
-            });
-        }
-        this.layoutPlayerInventorySlots(playerInv);
-    }
-
-    public TileBattery getTileEntity() {
-        return this.tileEntity;
+    public int getElectronicPower() {
+        return this.batteryData.get(0);
     }
 }

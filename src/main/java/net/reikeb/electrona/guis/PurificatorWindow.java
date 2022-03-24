@@ -9,19 +9,11 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.PurificatorContainer;
-import net.reikeb.electrona.tileentities.TilePurificator;
 import net.reikeb.electrona.utils.ElectronaUtils;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class PurificatorWindow extends AbstractWindow<PurificatorContainer> {
-
-    private static final ResourceLocation PURIFICATOR_GUI = Electrona.RL("textures/guis/purificator_gui.png");
-    public TilePurificator tileEntity;
 
     /**
      * Texture position of the thermometer
@@ -32,7 +24,6 @@ public class PurificatorWindow extends AbstractWindow<PurificatorContainer> {
     final static int THERMOMETER_ICON_V = 0;
     final static int THERMOMETER_WIDTH = 6;
     final static int THERMOMETER_HEIGHT = 20;
-
     /**
      * Texture position of the water
      */
@@ -42,10 +33,10 @@ public class PurificatorWindow extends AbstractWindow<PurificatorContainer> {
     final static int WATER_ICON_V = 0;
     final static int WATER_WIDTH = 16;
     final static int WATER_HEIGHT = 52;
+    private static final ResourceLocation PURIFICATOR_GUI = Electrona.RL("textures/guis/purificator_gui.png");
 
     public PurificatorWindow(PurificatorContainer container, Inventory inv, Component title) {
         super(container, inv, title, PURIFICATOR_GUI);
-        this.tileEntity = container.getTileEntity();
     }
 
     @Override
@@ -54,17 +45,14 @@ public class PurificatorWindow extends AbstractWindow<PurificatorContainer> {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(matrixStack, mouseX, mouseY);
         // Water level
-        AtomicInteger currentWater = new AtomicInteger();
-        tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
-                .ifPresent(cap -> currentWater.set(cap.getFluidInTank(1).getAmount()));
         int XposT1 = leftPos + 6;
         int XposT2 = leftPos + 23;
         int YposT1 = topPos + 6;
         int YposT2 = topPos + 60;
-        String string = (currentWater.get() + " mb");
+        String string = (this.menu.getCurrentWater() + " mb");
         // Purifying percentage
-        int currentPurify = tileEntity.getTileData().getInt("CurrentPurifyingTime");
-        int purifyTime = tileEntity.getTileData().getInt("PurifyingTime");
+        int currentPurify = this.menu.getCurrentPurifyingTime();
+        int purifyTime = this.menu.getPurifyingTime();
         int percentage = (currentPurify * 5) / (purifyTime == 0 ? 100 : purifyTime);
         int XperT1 = leftPos + 100;
         int XperT2 = leftPos + 108;
@@ -91,8 +79,8 @@ public class PurificatorWindow extends AbstractWindow<PurificatorContainer> {
         int k = (this.width - this.imageWidth) / 2;
         int l = (this.height - this.imageHeight) / 2;
         this.blit(matrixStack, k, l, 0, 0, this.imageWidth, this.imageHeight);
-        double purifyingTime = tileEntity.getTileData().getDouble("PurifyingTime");
-        double currentPurifyingTime = tileEntity.getTileData().getDouble("CurrentPurifyingTime");
+        double purifyingTime = this.menu.getPurifyingTime();
+        double currentPurifyingTime = this.menu.getCurrentPurifyingTime();
         // get purifying progress as an int
         double purifyingProgress = (currentPurifyingTime * 0.05) / purifyingTime;
         int yOffset = (int) ((1 - purifyingProgress) * THERMOMETER_HEIGHT);
@@ -102,16 +90,12 @@ public class PurificatorWindow extends AbstractWindow<PurificatorContainer> {
             this.blit(matrixStack, this.leftPos + THERMOMETER_XPOS, this.topPos + THERMOMETER_YPOS + yOffset, THERMOMETER_ICON_U,
                     THERMOMETER_ICON_V + yOffset, THERMOMETER_WIDTH, THERMOMETER_HEIGHT - yOffset);
         }
-        // get current water
-        AtomicInteger currentWater = new AtomicInteger();
-        tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
-                .ifPresent(cap -> currentWater.set(cap.getFluidInTank(1).getAmount()));
         // get water progress as a double between 0 and 1
-        double waterProgress = (currentWater.get() / 10000.0);
+        double waterProgress = (this.menu.getCurrentWater() / 10000.0);
         int yOffsetWater = (int) ((1 - waterProgress) * WATER_HEIGHT);
         // draw water bar
         RenderSystem.setShaderTexture(0, PURIFICATOR_GUI);
-        if (currentWater.get() > 0) {
+        if (this.menu.getCurrentWater() > 0) {
             this.blit(matrixStack, this.leftPos + WATER_XPOS, this.topPos + WATER_YPOS + yOffsetWater, WATER_ICON_U, WATER_ICON_V + yOffsetWater,
                     WATER_WIDTH, WATER_HEIGHT - yOffsetWater);
         }

@@ -5,12 +5,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.containers.NuclearBombContainer;
-import net.reikeb.electrona.init.ContainerInit;
 import net.reikeb.electrona.init.ItemInit;
 
 import static net.reikeb.electrona.init.TileEntityInit.TILE_NUCLEAR_BOMB;
@@ -32,13 +30,8 @@ public class TileNuclearBomb extends AbstractTileEntity {
     }
 
     @Override
-    public AbstractContainerMenu createMenu(final int windowID, final Inventory playerInv, final Player playerIn) {
-        return new NuclearBombContainer(windowID, playerInv, this);
-    }
-
-    @Override
     public AbstractContainerMenu createMenu(int id, Inventory player) {
-        return new NuclearBombContainer(ContainerInit.NUCLEAR_BOMB_CONTAINER.get(), id);
+        return new NuclearBombContainer(id, player, this);
     }
 
     public boolean isCharged() {
