@@ -5,6 +5,7 @@ import fr.firstmegagame4.electrona.screenhandlers.LeadCrateScreenHandler;
 import fr.firstmegagame4.electrona.screenhandlers.SteelCrateScreenHandler;
 
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+
 import net.minecraft.screen.ScreenHandlerType;
 
 public class ScreenHandlers {
