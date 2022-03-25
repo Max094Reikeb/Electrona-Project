@@ -1,6 +1,7 @@
 package fr.firstmegagame4.electrona;
 
 import net.fabricmc.api.ModInitializer;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,7 @@ public class Electrona implements ModInitializer {
 
         Registers.registerItems();
         Registers.registerBlocks();
+        Registers.registerBlockEntities();
         Registers.registerOres();
     }
 

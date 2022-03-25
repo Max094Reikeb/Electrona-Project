@@ -2,24 +2,15 @@
   "group": "electrona",
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "01",
-    "23",
-    " 5"
+    "II",
+    "IS",
+    " S"
   ],
   "key": {
-    "0": {
-      "tag": "forge:ingots/steel"
+    "I": {
+      "tag": "c:steel_ingots"
     },
-    "1": {
-      "tag": "forge:ingots/steel"
-    },
-    "2": {
-      "tag": "forge:ingots/steel"
-    },
-    "3": {
-      "item": "minecraft:stick"
-    },
-    "5": {
+    "S": {
       "item": "minecraft:stick"
     }
   },

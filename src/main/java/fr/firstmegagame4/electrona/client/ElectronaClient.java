@@ -1,5 +1,7 @@
 package fr.firstmegagame4.electrona.client;
 
+import fr.firstmegagame4.electrona.Registers;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -8,6 +10,6 @@ import net.fabricmc.api.Environment;
 public class ElectronaClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-
+        Registers.registerScreens();
     }
 }

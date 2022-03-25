@@ -1,6 +1,7 @@
 package fr.firstmegagame4.electrona.toolmaterials;
 
 import fr.firstmegagame4.electrona.Items;
+
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
 

@@ -1,6 +1,7 @@
 package fr.firstmegagame4.electrona;
 
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 
