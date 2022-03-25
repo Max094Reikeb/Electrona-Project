@@ -4,7 +4,9 @@ import fr.firstmegagame4.electrona.items.CustomAxeItem;
 import fr.firstmegagame4.electrona.items.CustomHoeItem;
 import fr.firstmegagame4.electrona.items.CustomPickaxeItem;
 import fr.firstmegagame4.electrona.toolmaterials.SteelToolMaterial;
+
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 

@@ -3,9 +3,11 @@ package fr.firstmegagame4.electrona;
 import fr.firstmegagame4.electrona.blockentities.LeadCrateEntity;
 import fr.firstmegagame4.electrona.blockentities.SteelCrateEntity;
 import fr.firstmegagame4.electrona.screens.CrateScreen;
+
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.loader.api.FabricLoader;
+
 import net.minecraft.util.registry.Registry;
 
 public class Registers {
