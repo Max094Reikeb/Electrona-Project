@@ -14,6 +14,7 @@ public class Electrona implements ModInitializer {
 
         Registers.registerItems();
         Registers.registerBlocks();
+        Registers.registerBlockEntities();
         Registers.registerOres();
     }
 

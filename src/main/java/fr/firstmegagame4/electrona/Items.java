@@ -5,10 +5,8 @@ import fr.firstmegagame4.electrona.items.CustomHoeItem;
 import fr.firstmegagame4.electrona.items.CustomPickaxeItem;
 import fr.firstmegagame4.electrona.toolmaterials.SteelToolMaterial;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.minecraft.item.Item;
-import net.minecraft.item.ShovelItem;
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.ToolItem;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.*;
 
 public class Items {
 
@@ -34,5 +32,10 @@ public class Items {
     public static final ToolItem STEEL_HOE = new CustomHoeItem(
             SteelToolMaterial.INSTANCE, 0, 0.0F, new FabricItemSettings().group(Tabs.ELECTRONA_TOOLS)
     );
+
+    public static final Item LEAD_HELMET = new ArmorItem(ArmorMaterials.LEAD_ARMOR_MATERIAL, EquipmentSlot.HEAD, new FabricItemSettings().group(Tabs.ELECTRONA_TOOLS));
+    public static final Item LEAD_CHESTPLATE = new ArmorItem(ArmorMaterials.LEAD_ARMOR_MATERIAL, EquipmentSlot.CHEST, new FabricItemSettings().group(Tabs.ELECTRONA_TOOLS));
+    public static final Item LEAD_LEGGINGS = new ArmorItem(ArmorMaterials.LEAD_ARMOR_MATERIAL, EquipmentSlot.LEGS, new FabricItemSettings().group(Tabs.ELECTRONA_TOOLS));
+    public static final Item LEAD_BOOTS = new ArmorItem(ArmorMaterials.LEAD_ARMOR_MATERIAL, EquipmentSlot.FEET, new FabricItemSettings().group(Tabs.ELECTRONA_TOOLS));
 
 }

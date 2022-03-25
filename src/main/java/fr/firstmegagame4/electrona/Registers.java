@@ -1,6 +1,12 @@
 package fr.firstmegagame4.electrona;
 
+import fr.firstmegagame4.electrona.blockentities.LeadCrateEntity;
+import fr.firstmegagame4.electrona.blockentities.SteelCrateEntity;
+import fr.firstmegagame4.electrona.screens.CrateScreen;
+import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.util.registry.Registry;
 
 public class Registers {
 
@@ -20,6 +26,11 @@ public class Registers {
         Utils.registerItem("steel_axe", Items.STEEL_AXE);
         Utils.registerItem("steel_shovel", Items.STEEL_SHOVEL);
         Utils.registerItem("steel_hoe", Items.STEEL_HOE);
+
+        Utils.registerItem("lead_helmet", Items.LEAD_HELMET);
+        Utils.registerItem("lead_chestplate", Items.LEAD_CHESTPLATE);
+        Utils.registerItem("lead_leggings", Items.LEAD_LEGGINGS);
+        Utils.registerItem("lead_boots", Items.LEAD_BOOTS);
     }
 
     public static void registerBlocks() {
@@ -29,6 +40,27 @@ public class Registers {
             Utils.registerBlock("steel_block", Blocks.STEEL_BLOCK, Blocks.STEEL_BLOCK_ITEM);
             Utils.registerBlock("gravitonium_block", Blocks.GRAVITONIUM_BLOCK, Blocks.GRAVITONIUM_BLOCK_ITEM);
         }
+
+        Utils.registerBlock("lead_crate", Blocks.LEAD_CRATE, Blocks.LEAD_CRATE_ITEM);
+        Utils.registerBlock("steel_crate", Blocks.STEEL_CRATE, Blocks.STEEL_CRATE_ITEM);
+    }
+
+    public static void registerBlockEntities() {
+        BlockEntities.STEEL_CRATE_ENTITY = Registry.register(
+                Registry.BLOCK_ENTITY_TYPE,
+                Utils.modIdentifier+":"+"steel_crate_entity",
+                FabricBlockEntityTypeBuilder.create(SteelCrateEntity::new, Blocks.STEEL_CRATE).build(null)
+        );
+        BlockEntities.LEAD_CRATE_ENTITY = Registry.register(
+                Registry.BLOCK_ENTITY_TYPE,
+                Utils.modIdentifier+":"+"lead_crate_entity",
+                FabricBlockEntityTypeBuilder.create(LeadCrateEntity::new, Blocks.LEAD_CRATE).build(null)
+        );
+    }
+
+    public static void registerScreens() {
+        ScreenRegistry.register(ScreenHandlers.STEEL_CRATE_SCREEN_HANDLER, CrateScreen::new);
+        ScreenRegistry.register(ScreenHandlers.LEAD_CRATE_SCREEN_HANDLER, CrateScreen::new);
     }
 
     public static void registerOres() {

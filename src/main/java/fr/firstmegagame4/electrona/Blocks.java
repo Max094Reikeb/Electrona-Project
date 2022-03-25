@@ -1,5 +1,8 @@
 package fr.firstmegagame4.electrona;
 
+import fr.firstmegagame4.electrona.blocks.Crate;
+import fr.firstmegagame4.electrona.blocks.LeadCrate;
+import fr.firstmegagame4.electrona.blocks.SteelCrate;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
@@ -63,6 +66,20 @@ public class Blocks {
             .sounds(BlockSoundGroup.METAL)
             .requiresTool());
     public static final BlockItem GRAVITONIUM_BLOCK_ITEM = new BlockItem(GRAVITONIUM_BLOCK,
+            new FabricItemSettings().group(Tabs.ELECTRONA_BLOCKS));
+
+    public static final Block LEAD_CRATE = new LeadCrate(FabricBlockSettings.of(Material.METAL)
+            .hardness(5.0F)
+            .sounds(BlockSoundGroup.METAL)
+            .requiresTool());
+    public static final BlockItem LEAD_CRATE_ITEM = new BlockItem(LEAD_CRATE,
+            new FabricItemSettings().group(Tabs.ELECTRONA_BLOCKS));
+
+    public static final Block STEEL_CRATE = new SteelCrate(FabricBlockSettings.of(Material.METAL)
+            .hardness(5.0F)
+            .sounds(BlockSoundGroup.METAL)
+            .requiresTool());
+    public static final BlockItem STEEL_CRATE_ITEM = new BlockItem(STEEL_CRATE,
             new FabricItemSettings().group(Tabs.ELECTRONA_BLOCKS));
 
 }

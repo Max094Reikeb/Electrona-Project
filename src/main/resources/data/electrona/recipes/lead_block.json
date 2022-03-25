@@ -1,35 +1,16 @@
 {
   "group": "electrona",
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "tag": "forge:ingots/lead"
-    },
-    {
-      "tag": "forge:ingots/lead"
-    },
-    {
-      "tag": "forge:ingots/lead"
-    },
-    {
-      "tag": "forge:ingots/lead"
-    },
-    {
-      "tag": "forge:ingots/lead"
-    },
-    {
-      "tag": "forge:ingots/lead"
-    },
-    {
-      "tag": "forge:ingots/lead"
-    },
-    {
-      "tag": "forge:ingots/lead"
-    },
-    {
-      "tag": "forge:ingots/lead"
-    }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LLL",
+    "LLL",
+    "LLL"
   ],
+  "key": {
+    "L": {
+      "tag": "c:lead_ingots"
+    }
+  },
   "result": {
     "item": "electrona:lead_block",
     "count": 1

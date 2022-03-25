@@ -2,37 +2,16 @@
   "group": "electrona",
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "012",
-    "345",
-    "678"
+    "LLL",
+    "LCL",
+    "LLL"
   ],
   "key": {
-    "0": {
-      "tag": "forge:ingots/lead"
+    "L": {
+      "tag": "c:lead_ingots"
     },
-    "1": {
-      "tag": "forge:ingots/lead"
-    },
-    "2": {
-      "tag": "forge:ingots/lead"
-    },
-    "3": {
-      "tag": "forge:ingots/lead"
-    },
-    "4": {
+    "C": {
       "item": "minecraft:chest"
-    },
-    "5": {
-      "tag": "forge:ingots/lead"
-    },
-    "6": {
-      "tag": "forge:ingots/lead"
-    },
-    "7": {
-      "tag": "forge:ingots/lead"
-    },
-    "8": {
-      "tag": "forge:ingots/lead"
     }
   },
   "result": {
