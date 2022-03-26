@@ -1,8 +1,7 @@
-package fr.firstmegagame4.electrona.init;
+package fr.firstmegagame4.electrona;
 
 import fr.firstmegagame4.electrona.blocks.LeadCrate;
 import fr.firstmegagame4.electrona.blocks.SteelCrate;
-import fr.firstmegagame4.electrona.setup.Tabs;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;

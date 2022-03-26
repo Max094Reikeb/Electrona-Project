@@ -1,6 +1,6 @@
-package fr.firstmegagame4.electrona.init;
+package fr.firstmegagame4.electrona;
 
-import fr.firstmegagame4.electrona.materials.LeadArmorMaterial;
+import fr.firstmegagame4.electrona.armormaterials.LeadArmorMaterial;
 
 import net.minecraft.item.ArmorMaterial;
 

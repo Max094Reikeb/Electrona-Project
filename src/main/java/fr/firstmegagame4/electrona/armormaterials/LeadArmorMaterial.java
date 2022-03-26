@@ -1,6 +1,6 @@
-package fr.firstmegagame4.electrona.materials;
+package fr.firstmegagame4.electrona.armormaterials;
 
-import fr.firstmegagame4.electrona.init.Items;
+import fr.firstmegagame4.electrona.Items;
 
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorMaterial;

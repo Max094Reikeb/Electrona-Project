@@ -1,14 +1,9 @@
-package fr.firstmegagame4.electrona.setup;
+package fr.firstmegagame4.electrona;
 
 import fr.firstmegagame4.electrona.blockentities.LeadCrateEntity;
 import fr.firstmegagame4.electrona.blockentities.SteelCrateEntity;
-import fr.firstmegagame4.electrona.init.BlockEntities;
-import fr.firstmegagame4.electrona.init.Blocks;
-import fr.firstmegagame4.electrona.init.Items;
-import fr.firstmegagame4.electrona.init.ScreenHandlers;
 import fr.firstmegagame4.electrona.screens.CrateScreen;
 
-import fr.firstmegagame4.electrona.utils.Utils;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.loader.api.FabricLoader;

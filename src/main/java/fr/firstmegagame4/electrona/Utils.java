@@ -1,4 +1,4 @@
-package fr.firstmegagame4.electrona.utils;
+package fr.firstmegagame4.electrona;
 
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;

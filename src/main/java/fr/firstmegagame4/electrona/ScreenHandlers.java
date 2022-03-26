@@ -1,6 +1,5 @@
-package fr.firstmegagame4.electrona.init;
+package fr.firstmegagame4.electrona;
 
-import fr.firstmegagame4.electrona.utils.Utils;
 import fr.firstmegagame4.electrona.screenhandlers.CrateScreenHandler;
 import fr.firstmegagame4.electrona.screenhandlers.LeadCrateScreenHandler;
 import fr.firstmegagame4.electrona.screenhandlers.SteelCrateScreenHandler;
