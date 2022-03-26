@@ -1,8 +1,9 @@
-package fr.firstmegagame4.electrona;
+package fr.firstmegagame4.electrona.init;
 
 import fr.firstmegagame4.electrona.items.CustomAxeItem;
 import fr.firstmegagame4.electrona.items.CustomHoeItem;
 import fr.firstmegagame4.electrona.items.CustomPickaxeItem;
+import fr.firstmegagame4.electrona.setup.Tabs;
 import fr.firstmegagame4.electrona.toolmaterials.SteelToolMaterial;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
@@ -35,9 +36,9 @@ public class Items {
             SteelToolMaterial.INSTANCE, 0, 0.0F, new FabricItemSettings().group(Tabs.ELECTRONA_TOOLS)
     );
 
-    public static final Item LEAD_HELMET = new ArmorItem(ArmorMaterials.LEAD_ARMOR_MATERIAL, EquipmentSlot.HEAD, new FabricItemSettings().group(Tabs.ELECTRONA_TOOLS));
-    public static final Item LEAD_CHESTPLATE = new ArmorItem(ArmorMaterials.LEAD_ARMOR_MATERIAL, EquipmentSlot.CHEST, new FabricItemSettings().group(Tabs.ELECTRONA_TOOLS));
-    public static final Item LEAD_LEGGINGS = new ArmorItem(ArmorMaterials.LEAD_ARMOR_MATERIAL, EquipmentSlot.LEGS, new FabricItemSettings().group(Tabs.ELECTRONA_TOOLS));
+    public static final Item LEAD_HELMET = new ArmorItem(fr.firstmegagame4.electrona.init.ArmorMaterials.LEAD_ARMOR_MATERIAL, EquipmentSlot.HEAD, new FabricItemSettings().group(Tabs.ELECTRONA_TOOLS));
+    public static final Item LEAD_CHESTPLATE = new ArmorItem(fr.firstmegagame4.electrona.init.ArmorMaterials.LEAD_ARMOR_MATERIAL, EquipmentSlot.CHEST, new FabricItemSettings().group(Tabs.ELECTRONA_TOOLS));
+    public static final Item LEAD_LEGGINGS = new ArmorItem(fr.firstmegagame4.electrona.init.ArmorMaterials.LEAD_ARMOR_MATERIAL, EquipmentSlot.LEGS, new FabricItemSettings().group(Tabs.ELECTRONA_TOOLS));
     public static final Item LEAD_BOOTS = new ArmorItem(ArmorMaterials.LEAD_ARMOR_MATERIAL, EquipmentSlot.FEET, new FabricItemSettings().group(Tabs.ELECTRONA_TOOLS));
 
 }

@@ -2,7 +2,7 @@ package fr.firstmegagame4.electrona.screens;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import fr.firstmegagame4.electrona.Utils;
+import fr.firstmegagame4.electrona.utils.Utils;
 import fr.firstmegagame4.electrona.screenhandlers.CrateScreenHandler;
 
 import net.minecraft.client.gui.screen.ingame.HandledScreen;

@@ -1,4 +1,8 @@
-package fr.firstmegagame4.electrona;
+package fr.firstmegagame4.electrona.setup;
+
+import fr.firstmegagame4.electrona.init.Blocks;
+import fr.firstmegagame4.electrona.init.Items;
+import fr.firstmegagame4.electrona.utils.Utils;
 
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 

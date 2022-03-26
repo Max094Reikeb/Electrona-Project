@@ -1,4 +1,4 @@
-package fr.firstmegagame4.electrona;
+package fr.firstmegagame4.electrona.init;
 
 import fr.firstmegagame4.electrona.blockentities.LeadCrateEntity;
 import fr.firstmegagame4.electrona.blockentities.SteelCrateEntity;

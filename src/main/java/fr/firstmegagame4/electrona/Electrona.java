@@ -1,5 +1,7 @@
 package fr.firstmegagame4.electrona;
 
+import fr.firstmegagame4.electrona.setup.Registers;
+
 import net.fabricmc.api.ModInitializer;
 
 import org.slf4j.Logger;

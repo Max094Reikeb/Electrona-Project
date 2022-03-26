@@ -1,6 +1,6 @@
 package fr.firstmegagame4.electrona.blockentities;
 
-import fr.firstmegagame4.electrona.BlockEntities;
+import fr.firstmegagame4.electrona.init.BlockEntities;
 import fr.firstmegagame4.electrona.screenhandlers.LeadCrateScreenHandler;
 
 import net.minecraft.block.BlockState;
