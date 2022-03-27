@@ -12,7 +12,7 @@ import net.reikeb.electrona.containers.LeadCrateContainer;
 
 public class LeadCrateWindow extends AbstractWindow<LeadCrateContainer> {
 
-    private static final ResourceLocation LEAD_CRATE_GUI = Electrona.RL("textures/guis/lead_crate_gui.png");
+    private static final ResourceLocation LEAD_CRATE_GUI = Electrona.RL("textures/guis/crate_gui.png");
 
     public LeadCrateWindow(LeadCrateContainer container, Inventory inv, Component title) {
         super(container, inv, title, LEAD_CRATE_GUI);

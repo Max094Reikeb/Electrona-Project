@@ -12,7 +12,7 @@ import net.reikeb.electrona.containers.SteelCrateContainer;
 
 public class SteelCrateWindow extends AbstractWindow<SteelCrateContainer> {
 
-    private static final ResourceLocation STEEL_CRATE_GUI = Electrona.RL("textures/guis/steel_crate_gui.png");
+    private static final ResourceLocation STEEL_CRATE_GUI = Electrona.RL("textures/guis/crate_gui.png");
 
     public SteelCrateWindow(SteelCrateContainer container, Inventory inv, Component title) {
         super(container, inv, title, STEEL_CRATE_GUI);
