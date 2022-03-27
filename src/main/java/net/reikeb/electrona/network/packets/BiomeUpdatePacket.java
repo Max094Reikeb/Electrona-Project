@@ -74,7 +74,7 @@ public class BiomeUpdatePacket {
                             int dist = (int) Math.sqrt(YY);
                             if (dist < radius || dist < onepointfiveradius) {
                                 newPos.set(xx, yy, zz);
-                                BiomeUtil.setBiomeKeyAtPos(world, newPos, BiomeInit.NUCLEAR_BIOME_KEY);
+                                BiomeUtil.setBiomeKeyAtPos(world, newPos, BiomeInit.NUCLEAR);
                             }
                         }
                     }

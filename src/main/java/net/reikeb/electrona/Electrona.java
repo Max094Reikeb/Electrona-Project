@@ -4,8 +4,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
-
-import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.Registry;
@@ -20,11 +18,9 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.FlatLevelSource;
 import net.minecraft.world.level.levelgen.StructureSettings;
-import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
@@ -56,22 +52,16 @@ import net.reikeb.electrona.villages.Villagers;
 import net.reikeb.electrona.world.Gamerules;
 import net.reikeb.electrona.world.gen.ConfiguredStructures;
 import net.reikeb.electrona.world.gen.Structures;
-import net.reikeb.electrona.world.gen.biomes.OverworldBiomes;
-import net.reikeb.electrona.world.gen.biomes.SurfaceRuleData;
 import net.reikeb.electrona.world.structures.RuinsStructure;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import terrablender.api.BiomeProvider;
 import terrablender.api.BiomeProviders;
-import terrablender.worldgen.TBClimate;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
-import java.util.function.Consumer;
 
 @Mod(Electrona.MODID)
 public class Electrona {
@@ -85,6 +75,7 @@ public class Electrona {
     // Creates a new recipe type. This is used for storing recipes in the map, and looking them up.
     public static final RecipeType<CompressorRecipe> COMPRESSING = new RecipeTypeCompressor();
     public static final RecipeType<PurificatorRecipe> PURIFYING = new RecipeTypePurificator();
+    private static Method GETCODEC_METHOD;
 
     public Electrona() {
 
@@ -113,6 +104,25 @@ public class Electrona {
         return new ResourceLocation(MODID, path);
     }
 
+    private static void associateBiomeToConfiguredStructure(Map<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> STStructureToMultiMap, ConfiguredStructureFeature<?, ?> configuredStructureFeature, ResourceKey<Biome> biomeRegistryKey) {
+        STStructureToMultiMap.putIfAbsent(configuredStructureFeature.feature, HashMultimap.create());
+        HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>> configuredStructureToBiomeMultiMap = STStructureToMultiMap.get(configuredStructureFeature.feature);
+        if (configuredStructureToBiomeMultiMap.containsValue(biomeRegistryKey)) {
+            Electrona.LOGGER.error("""
+                                Detected 2 ConfiguredStructureFeatures that share the same base StructureFeature trying to be added to same biome. One will be prevented from spawning.
+                                This issue happens with vanilla too and is why a Snowy Village and Plains Village cannot spawn in the same biome because they both use the Village base structure.
+                                The two conflicting ConfiguredStructures are: {}, {}
+                                The biome that is attempting to be shared: {}
+                            """,
+                    BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(configuredStructureFeature),
+                    BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(configuredStructureToBiomeMultiMap.entries().stream().filter(e -> e.getValue() == biomeRegistryKey).findFirst().get().getKey()),
+                    biomeRegistryKey
+            );
+        } else {
+            configuredStructureToBiomeMultiMap.put(configuredStructureFeature, biomeRegistryKey);
+        }
+    }
+
     public void setup(final FMLCommonSetupEvent event) {
         POIFixup.fixup();
 
@@ -121,19 +131,7 @@ public class Electrona {
             Structures.setupStructures();
             ConfiguredStructures.registerConfiguredStructures();
 
-            BiomeProviders.register(new BiomeProvider(RL("nuclear"), 5) {
-                @Override
-                public void addOverworldBiomes(Registry<Biome> registry, Consumer<Pair<TBClimate.ParameterPoint, ResourceKey<Biome>>> mapper) {
-                    this.addBiomeSimilar(mapper, Biomes.DESERT, BiomeInit.NUCLEAR_BIOME_KEY);
-                }
-
-                @Override
-                public Optional<SurfaceRules.RuleSource> getOverworldSurfaceRules() {
-                    return Optional.of(SurfaceRuleData.makeRules());
-                }
-            });
-
-            BuiltinRegistries.registerMapping(BuiltinRegistries.BIOME, BiomeInit.NUCLEAR_BIOME_KEY, OverworldBiomes.nuclear());
+            BiomeProviders.register(new net.reikeb.electrona.world.gen.biomes.BiomeProvider(RL("nuclear"), 1));
         });
 
         /**
@@ -147,8 +145,6 @@ public class Electrona {
                 new ItemStack(ItemInit.CONCENTRATED_URANIUM.get()));
     }
 
-    private static Method GETCODEC_METHOD;
-
     public void addDimensionalSpacing(final WorldEvent.Load event) {
         if (event.getWorld() instanceof ServerLevel serverLevel) {
             ChunkGenerator chunkGenerator = serverLevel.getChunkSource().getGenerator();
@@ -159,7 +155,7 @@ public class Electrona {
             HashMap<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> STStructureToMultiMap = new HashMap<>();
 
             ImmutableSet<ResourceKey<Biome>> overworldBiomes = ImmutableSet.<ResourceKey<Biome>>builder()
-                    .add(BiomeInit.NUCLEAR_BIOME_KEY).build();
+                    .add(BiomeInit.NUCLEAR).build();
             overworldBiomes.forEach(biomeKey -> associateBiomeToConfiguredStructure(STStructureToMultiMap, ConfiguredStructures.CONFIGURED_RUINS, biomeKey));
 
             ImmutableMap.Builder<StructureFeature<?>, ImmutableMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> tempStructureToMultiMap = ImmutableMap.builder();
@@ -181,25 +177,6 @@ public class Electrona {
             Map<StructureFeature<?>, StructureFeatureConfiguration> tempMap = new HashMap<>(worldStructureConfig.structureConfig());
             tempMap.putIfAbsent(Structures.RUINS.get(), StructureSettings.DEFAULTS.get(Structures.RUINS.get()));
             worldStructureConfig.structureConfig = tempMap;
-        }
-    }
-
-    private static void associateBiomeToConfiguredStructure(Map<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> STStructureToMultiMap, ConfiguredStructureFeature<?, ?> configuredStructureFeature, ResourceKey<Biome> biomeRegistryKey) {
-        STStructureToMultiMap.putIfAbsent(configuredStructureFeature.feature, HashMultimap.create());
-        HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>> configuredStructureToBiomeMultiMap = STStructureToMultiMap.get(configuredStructureFeature.feature);
-        if (configuredStructureToBiomeMultiMap.containsValue(biomeRegistryKey)) {
-            Electrona.LOGGER.error("""
-                                Detected 2 ConfiguredStructureFeatures that share the same base StructureFeature trying to be added to same biome. One will be prevented from spawning.
-                                This issue happens with vanilla too and is why a Snowy Village and Plains Village cannot spawn in the same biome because they both use the Village base structure.
-                                The two conflicting ConfiguredStructures are: {}, {}
-                                The biome that is attempting to be shared: {}
-                            """,
-                    BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(configuredStructureFeature),
-                    BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(configuredStructureToBiomeMultiMap.entries().stream().filter(e -> e.getValue() == biomeRegistryKey).findFirst().get().getKey()),
-                    biomeRegistryKey
-            );
-        } else {
-            configuredStructureToBiomeMultiMap.put(configuredStructureFeature, biomeRegistryKey);
         }
     }
 

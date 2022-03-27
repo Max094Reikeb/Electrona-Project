@@ -4,6 +4,7 @@ import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.*;
 
@@ -29,6 +30,7 @@ public class OverworldBiomes {
 
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
         spawnBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityInit.RADIOACTIVE_ZOMBIE.get(), 2, 2, 4));
+        spawnBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 2, 4, 4));
         spawnBuilder.addSpawn(MobCategory.MISC, new MobSpawnSettings.SpawnerData(EntityInit.ENERGETIC_LIGHTNING_BOLT.get(), 1, 1, 1));
         BiomeDefaultFeatures.commonSpawns(spawnBuilder);
 

@@ -152,7 +152,7 @@ public class NuclearExplosion {
                             }
                             if (flag) {
                                 Gravity.applyGravity(world, blockPos);
-                                BiomeUtil.setBiomeKeyAtPos(world, blockPos, BiomeInit.NUCLEAR_BIOME_KEY);
+                                BiomeUtil.setBiomeKeyAtPos(world, blockPos, BiomeInit.NUCLEAR);
                             }
                         }
                     }
@@ -161,7 +161,7 @@ public class NuclearExplosion {
         }
         world.playSound(null, new BlockPos(x, y, z), SoundsInit.NUCLEAR_EXPLOSION.get(),
                 SoundSource.WEATHER, 0.6F, 1.0F);
-        NetworkManager.INSTANCE.send(PacketDistributor.ALL.noArg(), new BiomeUpdatePacket(new BlockPos(x, y, z), BiomeInit.NUCLEAR_BIOME_KEY.location(), radius));
+        NetworkManager.INSTANCE.send(PacketDistributor.ALL.noArg(), new BiomeUpdatePacket(new BlockPos(x, y, z), BiomeInit.NUCLEAR.location(), radius));
     }
 
     private void pushAndHurtEntities(Level world, int x, int y, int z, int radius) {

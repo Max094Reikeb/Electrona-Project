@@ -16,6 +16,6 @@ public class RegisterBiomeEvent {
     @SubscribeEvent
     public static void registerBiomes(RegistryEvent.Register<Biome> event) {
         IForgeRegistry<Biome> registry = event.getRegistry();
-        registry.register(OverworldBiomes.nuclear().setRegistryName(BiomeInit.NUCLEAR_BIOME_KEY.location()));
+        registry.register(OverworldBiomes.nuclear().setRegistryName(BiomeInit.NUCLEAR.location()));
     }
 }

@@ -14,7 +14,7 @@ public class SurfaceRuleData {
         SurfaceRules.RuleSource grassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, RADIOACTIVE_DIRT), RADIOACTIVE_DIRT);
 
         return SurfaceRules.sequence(
-                SurfaceRules.ifTrue(SurfaceRules.isBiome(BiomeInit.NUCLEAR_BIOME_KEY), RADIOACTIVE_DIRT),
+                SurfaceRules.ifTrue(SurfaceRules.isBiome(BiomeInit.NUCLEAR), RADIOACTIVE_DIRT),
 
                 // Default to a grass and dirt surface
                 SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, grassSurface)
