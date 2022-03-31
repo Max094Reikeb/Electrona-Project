@@ -7,8 +7,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -57,50 +57,6 @@ public class TileConverter extends AbstractTileEntity {
     private boolean toVP;
     private boolean toOthers;
     private double vp;
-    protected final ContainerData dataAccess = new ContainerData() {
-        @Override
-        public int get(int p_39284_) {
-            switch (p_39284_) {
-                case 0:
-                    return (int) TileConverter.this.electronicPower;
-                case 1:
-                    AtomicInteger energy = new AtomicInteger();
-                    TileConverter.this.getCapability(CapabilityEnergy.ENERGY, null)
-                            .ifPresent(cap -> energy.set(cap.getEnergyStored()));
-                    return energy.get();
-                case 2:
-                    return (int) TileConverter.this.vp;
-                case 3:
-                    return (TileConverter.this.toVP ? 1 : 0);
-                case 4:
-                    return (TileConverter.this.toOthers ? 1 : 0);
-                default:
-                    return 0;
-            }
-        }
-
-        @Override
-        public void set(int p_39285_, int p_39286_) {
-            switch (p_39285_) {
-                case 0:
-                    TileConverter.this.electronicPower = p_39286_;
-                case 1:
-                    TileConverter.this.getCapability(CapabilityEnergy.ENERGY, null)
-                            .ifPresent(cap -> cap.receiveEnergy(p_39286_, false));
-                case 2:
-                    TileConverter.this.vp = p_39286_;
-                case 3:
-                    TileConverter.this.toVP = (p_39286_ == 1);
-                case 4:
-                    TileConverter.this.toOthers = (p_39286_ == 1);
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return 5;
-        }
-    };
     private int wait;
 
     public TileConverter(BlockPos pos, BlockState state) {
@@ -118,8 +74,8 @@ public class TileConverter extends AbstractTileEntity {
     }
 
     @Override
-    public AbstractContainerMenu createMenu(int id, Inventory player) {
-        return new ConverterContainer(id, player, this, dataAccess);
+    public AbstractContainerMenu createMenu(int id, Inventory playerInventory, Player player) {
+        return new ConverterContainer(id, this.getBlockPos(), playerInventory, player);
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
@@ -160,6 +116,51 @@ public class TileConverter extends AbstractTileEntity {
             this.setChanged();
             world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
         }
+    }
+
+    public int getElectronicPower() {
+        return (int) this.electronicPower;
+    }
+
+    public void setElectronicPower(double electronicPower) {
+        this.electronicPower = electronicPower;
+    }
+
+    public int getForgeEnergy() {
+        AtomicInteger energy = new AtomicInteger();
+        this.getCapability(CapabilityEnergy.ENERGY, null).ifPresent(cap -> energy.set(cap.getEnergyStored()));
+        return energy.get();
+    }
+
+    public void setForgeEnergy(int energy) {
+        AtomicInteger energyStored = new AtomicInteger();
+        this.getCapability(CapabilityEnergy.ENERGY, null).ifPresent(cap -> energyStored.set(cap.getEnergyStored()));
+        this.getCapability(CapabilityEnergy.ENERGY, null).ifPresent(cap -> cap.extractEnergy(energyStored.get(), false));
+        this.getCapability(CapabilityEnergy.ENERGY, null).ifPresent(cap -> cap.receiveEnergy(energy, false));
+    }
+
+    public int getVP() {
+        return (int) this.vp;
+    }
+
+    public void setVP(int vp) {
+        this.vp = vp;
+    }
+
+    public int isToVP() {
+        return this.toVP ? 1 : 0;
+    }
+
+    public void setToVP(int vp) {
+        this.toVP = vp == 1;
+    }
+
+    public int isToOthers() {
+        return this.toOthers ? 1 : 0;
+    }
+
+    public void setToOthers(int toOthers) {
+        this.toOthers = toOthers == 1;
     }
 
     @Override

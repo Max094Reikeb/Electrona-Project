@@ -28,7 +28,8 @@ public class ContainerInit {
     public static final RegistryObject<MenuType<CompressorContainer>> COMPRESSOR_CONTAINER = CONTAINERS.register("compressor",
             () -> IForgeMenuType.create((id, inv, data) -> new CompressorContainer(id, data.readBlockPos(), inv, inv.player)));
 
-    public static final RegistryObject<MenuType<ConverterContainer>> CONVERTER_CONTAINER = CONTAINERS.register("el_converter", () -> registerContainer(ConverterContainer::new));
+    public static final RegistryObject<MenuType<ConverterContainer>> CONVERTER_CONTAINER = CONTAINERS.register("el_converter",
+            () -> IForgeMenuType.create((id, inv, data) -> new ConverterContainer(id, data.readBlockPos(), inv, inv.player)));
 
     public static final RegistryObject<MenuType<DimensionLinkerContainer>> DIMENSION_LINKER_CONTAINER = CONTAINERS.register("dimension_linker", () -> registerContainer(DimensionLinkerContainer::new));
 
