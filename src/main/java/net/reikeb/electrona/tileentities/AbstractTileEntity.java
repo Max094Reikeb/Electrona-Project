@@ -6,7 +6,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -44,11 +43,13 @@ public abstract class AbstractTileEntity extends BaseContainerBlockEntity {
     }
 
     public ItemStack removeItem(int index, int count) {
-        return ContainerHelper.removeItem(this.inventory.toNonNullList(), index, count);
+        return this.inventory.extractItem(index, count, false);
     }
 
     public ItemStack removeItemNoUpdate(int index) {
-        return ContainerHelper.takeItem(this.inventory.toNonNullList(), index);
+        ItemStack stack = this.inventory.getStackInSlot(index);
+        this.inventory.removeStackFromSlot(index);
+        return stack;
     }
 
     public void setItem(int slot, ItemStack itemStack) {
@@ -128,13 +129,7 @@ public abstract class AbstractTileEntity extends BaseContainerBlockEntity {
     }
 
     public boolean isEmpty() {
-        for (ItemStack itemstack : this.inventory.toNonNullList()) {
-            if (!itemstack.isEmpty()) {
-                return false;
-            }
-        }
-
-        return true;
+        return this.inventory.isEmpty();
     }
 
     @Override

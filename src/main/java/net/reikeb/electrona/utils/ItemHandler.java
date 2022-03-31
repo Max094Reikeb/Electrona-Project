@@ -44,14 +44,6 @@ public class ItemHandler extends ItemStackHandler {
         this.onContentsChanged(index);
     }
 
-    public NonNullList<ItemStack> toNonNullList() {
-        NonNullList<ItemStack> items = NonNullList.create();
-        for (ItemStack stack : this.stacks) {
-            items.add(stack);
-        }
-        return items;
-    }
-
     public void setNonNullList(NonNullList<ItemStack> items) {
         if (items.size() == 0)
             return;
