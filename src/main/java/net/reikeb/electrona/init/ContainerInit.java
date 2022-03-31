@@ -22,7 +22,8 @@ public class ContainerInit {
     public static final RegistryObject<MenuType<BatteryContainer>> BATTERY_CONTAINER = CONTAINERS.register("battery",
             () -> IForgeMenuType.create((id, inv, data) -> new BatteryContainer(id, data.readBlockPos(), inv, inv.player)));
 
-    public static final RegistryObject<MenuType<BiomassGeneratorContainer>> BIOMASS_GENERATOR_CONTAINER = CONTAINERS.register("biomass_generator", () -> registerContainer(BiomassGeneratorContainer::new));
+    public static final RegistryObject<MenuType<BiomassGeneratorContainer>> BIOMASS_GENERATOR_CONTAINER = CONTAINERS.register("biomass_generator",
+            () -> IForgeMenuType.create((id, inv, data) -> new BiomassGeneratorContainer(id, data.readBlockPos(), inv, inv.player)));
 
     public static final RegistryObject<MenuType<CompressorContainer>> COMPRESSOR_CONTAINER = CONTAINERS.register("compressor", () -> registerContainer(CompressorContainer::new));
 

@@ -22,9 +22,9 @@ public class MiningMachineContainer extends AbstractContainer {
         if (tileMiningMachine == null) return;
 
         tileMiningMachine.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            addSlot(new Slots.BasicInputSlot(h, 0, 91, 12));
-            addSlot(new Slots.BucketSlot(h, 1, 74, 51));
-            addSlot(new Slots.BucketSlot(h, 2, 108, 51));
+            addSlot(new BasicInputSlot(h, 0, 91, 12));
+            addSlot(new BucketSlot(h, 1, 74, 51));
+            addSlot(new BucketSlot(h, 2, 108, 51));
         });
 
         this.layoutPlayerInventorySlots(inv);

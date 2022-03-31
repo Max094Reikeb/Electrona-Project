@@ -22,8 +22,8 @@ public class BatteryContainer extends AbstractContainer {
         if (tileBattery == null) return;
 
         tileBattery.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            addSlot(new Slots.BatterySlot(h, 0, 45, 33));
-            addSlot(new Slots.BatterySlot(h, 1, 117, 33));
+            addSlot(new BatterySlot(h, 0, 45, 33));
+            addSlot(new BatterySlot(h, 1, 117, 33));
         });
 
         this.layoutPlayerInventorySlots(inv);
