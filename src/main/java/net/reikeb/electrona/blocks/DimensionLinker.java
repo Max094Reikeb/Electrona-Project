@@ -22,7 +22,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import net.minecraftforge.network.NetworkHooks;
 
-import net.reikeb.electrona.tileentities.TileDimensionLinker;
+import net.reikeb.electrona.blockentities.TileDimensionLinker;
 
 import java.util.Collections;
 import java.util.List;

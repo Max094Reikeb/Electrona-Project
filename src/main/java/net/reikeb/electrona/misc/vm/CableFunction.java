@@ -10,8 +10,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+import net.reikeb.electrona.blockentities.TileWaterCable;
 import net.reikeb.electrona.misc.Keys;
-import net.reikeb.electrona.tileentities.TileWaterCable;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

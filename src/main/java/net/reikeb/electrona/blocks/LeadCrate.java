@@ -21,7 +21,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import net.minecraftforge.network.NetworkHooks;
 
-import net.reikeb.electrona.tileentities.TileLeadCrate;
+import net.reikeb.electrona.blockentities.TileLeadCrate;
 
 import java.util.Collections;
 import java.util.List;

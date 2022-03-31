@@ -9,7 +9,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 import net.reikeb.electrona.init.ItemInit;
-import net.reikeb.electrona.tileentities.TileTeleporter;
+import net.reikeb.electrona.blockentities.TileTeleporter;
 
 import static net.reikeb.electrona.init.ContainerInit.TELEPORTER_CONTAINER;
 

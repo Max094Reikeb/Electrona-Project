@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Player;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import net.reikeb.electrona.tileentities.TileMiningMachine;
+import net.reikeb.electrona.blockentities.TileMiningMachine;
 
 import static net.reikeb.electrona.init.ContainerInit.MINING_MACHINE_CONTAINER;
 

@@ -16,8 +16,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 import net.minecraftforge.common.util.Lazy;
 
+import net.reikeb.electrona.blockentities.TileGravitor;
 import net.reikeb.electrona.init.BlockInit;
-import net.reikeb.electrona.tileentities.TileGravitor;
 
 import java.util.function.Supplier;
 
@@ -28,6 +28,10 @@ public class BEWLR extends BlockEntityWithoutLevelRenderer {
     public BEWLR(Supplier<TileGravitor> gravitor) {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
         this.gravitor = Lazy.of(gravitor);
+    }
+
+    public static BlockEntityWithoutLevelRenderer create() {
+        return new BEWLR(() -> new TileGravitor(BlockPos.ZERO, Blocks.CONDUIT.defaultBlockState()));
     }
 
     @Override
@@ -45,9 +49,5 @@ public class BEWLR extends BlockEntityWithoutLevelRenderer {
 
             Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(blockentity, poseStack, bufferSource, x, y);
         }
-    }
-
-    public static BlockEntityWithoutLevelRenderer create() {
-        return new BEWLR(() -> new TileGravitor(BlockPos.ZERO, Blocks.CONDUIT.defaultBlockState()));
     }
 }

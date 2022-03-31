@@ -13,10 +13,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 
+import net.reikeb.electrona.blockentities.TileNuclearGeneratorController;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.misc.Keys;
-import net.reikeb.electrona.tileentities.TileNuclearGeneratorController;
 import net.reikeb.electrona.world.Gamerules;
 import net.reikeb.electrona.world.NuclearExplosion;
 
@@ -147,13 +147,13 @@ public class NuclearFunction {
         double y = pos.getY();
         double z = pos.getZ();
         List<LivingEntity> livingEntities = world.getEntitiesOfClass(LivingEntity.class,
-                        new AABB(x - 5, y - 5, z - 5,
-                                x + 5, y + 5, z + 5),
-                        EntitySelector.LIVING_ENTITY_STILL_ALIVE).stream().sorted(new Object() {
-                            Comparator<Entity> compareDistOf(double x, double y, double z) {
-                                return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(x, y, z));
-                            }
-                        }.compareDistOf(x, y, z)).collect(Collectors.toList());
+                new AABB(x - 5, y - 5, z - 5,
+                        x + 5, y + 5, z + 5),
+                EntitySelector.LIVING_ENTITY_STILL_ALIVE).stream().sorted(new Object() {
+            Comparator<Entity> compareDistOf(double x, double y, double z) {
+                return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(x, y, z));
+            }
+        }.compareDistOf(x, y, z)).collect(Collectors.toList());
         for (LivingEntity entityiterator : livingEntities) {
             if (entityiterator instanceof ServerPlayer) {
                 Advancement advancement = ((ServerPlayer) entityiterator).server.getAdvancements().getAdvancement(Keys.I_AM_INEVITABLE_ADVANCEMENT);

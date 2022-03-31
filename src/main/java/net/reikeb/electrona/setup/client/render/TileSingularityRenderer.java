@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.DyeColor;
 
-import net.reikeb.electrona.tileentities.TileSingularity;
+import net.reikeb.electrona.blockentities.TileSingularity;
 
 public class TileSingularityRenderer implements BlockEntityRenderer<TileSingularity> {
 

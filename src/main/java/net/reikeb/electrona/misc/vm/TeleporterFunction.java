@@ -27,11 +27,11 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraftforge.common.MinecraftForge;
 
+import net.reikeb.electrona.blockentities.TileDimensionLinker;
+import net.reikeb.electrona.blockentities.TileTeleporter;
 import net.reikeb.electrona.events.local.TeleporterUseEvent;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
-import net.reikeb.electrona.tileentities.TileDimensionLinker;
-import net.reikeb.electrona.tileentities.TileTeleporter;
 
 import java.util.Collections;
 

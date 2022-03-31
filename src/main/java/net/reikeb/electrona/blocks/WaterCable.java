@@ -25,10 +25,10 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import net.reikeb.electrona.blockentities.TileWaterCable;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.TileEntityInit;
 import net.reikeb.electrona.misc.Keys;
-import net.reikeb.electrona.tileentities.TileWaterCable;
 
 import javax.annotation.Nullable;
 import java.util.Collections;

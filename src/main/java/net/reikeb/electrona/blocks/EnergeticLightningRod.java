@@ -19,9 +19,9 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.reikeb.electrona.blockentities.TileEnergeticLightningRod;
 import net.reikeb.electrona.init.TileEntityInit;
 import net.reikeb.electrona.misc.vm.CustomShapes;
-import net.reikeb.electrona.tileentities.TileEnergeticLightningRod;
 import net.reikeb.electrona.utils.ElectronaUtils;
 
 import javax.annotation.Nullable;
@@ -50,28 +50,21 @@ public class EnergeticLightningRod extends AbstractWaterLoggableBlock implements
         return Collections.singletonList(new ItemStack(this, 1));
     }
 
-    VoxelShape upShape = CustomShapes.EnergeticLightningRodUp;
-    VoxelShape downShape = CustomShapes.EnergeticLightningRodDown;
-    VoxelShape northShape = CustomShapes.EnergeticLightningRod;
-    VoxelShape westShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.WEST, northShape);
-    VoxelShape eastShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.EAST, northShape);
-    VoxelShape southShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.SOUTH, northShape);
-
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         Direction facing = state.getValue(FACING);
         if (facing == Direction.DOWN) {
-            return downShape;
+            return CustomShapes.EnergeticLightningRodDown;
         } else if (facing == Direction.NORTH) {
-            return northShape;
+            return CustomShapes.EnergeticLightningRod;
         } else if (facing == Direction.SOUTH) {
-            return southShape;
+            return ElectronaUtils.rotateShape(Direction.NORTH, Direction.SOUTH, CustomShapes.EnergeticLightningRod);
         } else if (facing == Direction.EAST) {
-            return eastShape;
+            return ElectronaUtils.rotateShape(Direction.NORTH, Direction.EAST, CustomShapes.EnergeticLightningRod);
         } else if (facing == Direction.WEST) {
-            return westShape;
+            return ElectronaUtils.rotateShape(Direction.NORTH, Direction.WEST, CustomShapes.EnergeticLightningRod);
         }
-        return upShape;
+        return CustomShapes.EnergeticLightningRodUp;
     }
 
     @Override

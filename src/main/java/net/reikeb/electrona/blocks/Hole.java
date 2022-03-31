@@ -22,8 +22,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.reikeb.electrona.blockentities.TileHole;
 import net.reikeb.electrona.init.TileEntityInit;
-import net.reikeb.electrona.tileentities.TileHole;
 
 import javax.annotation.Nullable;
 import java.util.Collections;

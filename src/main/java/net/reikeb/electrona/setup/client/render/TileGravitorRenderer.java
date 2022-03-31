@@ -20,7 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.tileentities.TileGravitor;
+import net.reikeb.electrona.blockentities.TileGravitor;
 
 public class TileGravitorRenderer implements BlockEntityRenderer<TileGravitor> {
 

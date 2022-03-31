@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Player;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import net.reikeb.electrona.tileentities.TileCompressor;
+import net.reikeb.electrona.blockentities.TileCompressor;
 
 import static net.reikeb.electrona.init.ContainerInit.COMPRESSOR_CONTAINER;
 

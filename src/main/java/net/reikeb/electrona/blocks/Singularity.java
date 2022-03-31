@@ -28,10 +28,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.reikeb.electrona.blockentities.TileSingularity;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.TileEntityInit;
 import net.reikeb.electrona.misc.Keys;
-import net.reikeb.electrona.tileentities.TileSingularity;
 import net.reikeb.electrona.world.Gamerules;
 
 import javax.annotation.Nullable;
@@ -50,6 +50,22 @@ public class Singularity extends AbstractWaterLoggableBlock implements EntityBlo
                 .isRedstoneConductor((bs, br, bp) -> false));
         this.registerDefaultState(this.getStateDefinition().any()
                 .setValue(WATERLOGGED, false));
+    }
+
+    public static void singularitySpawn(Level world, BlockPos pos) {
+        if (world.isClientSide) return;
+        TagCollection<Block> tagCollection = BlockTags.getAllTags();
+        Tag<Block> stopsHoleTag = tagCollection.getTagOrEmpty(Keys.STOPS_BLACK_HOLES_TAG);
+
+        if (world.getLevelData().getGameRules().getBoolean(Gamerules.DO_BLACK_HOLES_EXIST)) {
+
+            for (BlockPos testPos : BlockPos.spiralAround(pos, 1000, Direction.EAST, Direction.SOUTH)) {
+                if (!stopsHoleTag.contains(world.getBlockState(testPos).getBlock())) {
+                    world.setBlockAndUpdate(testPos, BlockInit.HOLE.get().defaultBlockState());
+                    return;
+                }
+            }
+        }
     }
 
     @Override
@@ -101,22 +117,6 @@ public class Singularity extends AbstractWaterLoggableBlock implements EntityBlo
     @Override
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack itemstack) {
         singularitySpawn(world, pos);
-    }
-
-    public static void singularitySpawn(Level world, BlockPos pos) {
-        if (world.isClientSide) return;
-        TagCollection<Block> tagCollection = BlockTags.getAllTags();
-        Tag<Block> stopsHoleTag = tagCollection.getTagOrEmpty(Keys.STOPS_BLACK_HOLES_TAG);
-
-        if (world.getLevelData().getGameRules().getBoolean(Gamerules.DO_BLACK_HOLES_EXIST)) {
-
-            for (BlockPos testPos : BlockPos.spiralAround(pos, 1000, Direction.EAST, Direction.SOUTH)) {
-                if (!stopsHoleTag.contains(world.getBlockState(testPos).getBlock())) {
-                    world.setBlockAndUpdate(testPos, BlockInit.HOLE.get().defaultBlockState());
-                    return;
-                }
-            }
-        }
     }
 
     @Nullable

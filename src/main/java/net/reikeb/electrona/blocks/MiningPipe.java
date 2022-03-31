@@ -25,8 +25,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.reikeb.electrona.blockentities.TileMiningPipe;
 import net.reikeb.electrona.init.TileEntityInit;
-import net.reikeb.electrona.tileentities.TileMiningPipe;
 
 import javax.annotation.Nullable;
 import java.util.Collections;

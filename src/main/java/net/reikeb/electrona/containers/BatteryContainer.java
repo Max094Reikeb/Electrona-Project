@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Player;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import net.reikeb.electrona.tileentities.TileBattery;
+import net.reikeb.electrona.blockentities.TileBattery;
 
 import static net.reikeb.electrona.init.ContainerInit.BATTERY_CONTAINER;
 

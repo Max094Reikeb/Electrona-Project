@@ -29,8 +29,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import net.reikeb.electrona.blockentities.TileHeatGenerator;
 import net.reikeb.electrona.init.TileEntityInit;
-import net.reikeb.electrona.tileentities.TileHeatGenerator;
 
 import javax.annotation.Nullable;
 import java.util.Collections;

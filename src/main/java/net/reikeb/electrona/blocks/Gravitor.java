@@ -25,8 +25,8 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.reikeb.electrona.blockentities.TileGravitor;
 import net.reikeb.electrona.init.TileEntityInit;
-import net.reikeb.electrona.tileentities.TileGravitor;
 
 import javax.annotation.Nullable;
 

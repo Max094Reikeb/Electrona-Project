@@ -22,8 +22,8 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import net.reikeb.electrona.blockentities.TileSolarPanelT2;
 import net.reikeb.electrona.init.TileEntityInit;
-import net.reikeb.electrona.tileentities.TileSolarPanelT2;
 
 import javax.annotation.Nullable;
 import java.util.Collections;

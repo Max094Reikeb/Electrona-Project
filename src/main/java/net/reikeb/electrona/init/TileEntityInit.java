@@ -7,7 +7,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.tileentities.*;
+import net.reikeb.electrona.blockentities.*;
 
 public class TileEntityInit {
 

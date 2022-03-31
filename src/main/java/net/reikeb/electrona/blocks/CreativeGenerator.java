@@ -21,8 +21,8 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import net.reikeb.electrona.blockentities.TileCreativeGenerator;
 import net.reikeb.electrona.init.TileEntityInit;
-import net.reikeb.electrona.tileentities.TileCreativeGenerator;
 
 import javax.annotation.Nullable;
 import java.util.Collections;

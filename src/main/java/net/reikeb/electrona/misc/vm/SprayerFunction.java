@@ -15,8 +15,8 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
+import net.reikeb.electrona.blockentities.TileSprayer;
 import net.reikeb.electrona.init.ItemInit;
-import net.reikeb.electrona.tileentities.TileSprayer;
 import net.reikeb.electrona.utils.ItemHandler;
 
 import java.util.Comparator;
@@ -55,9 +55,9 @@ public class SprayerFunction {
                     new AABB(x - radiusEffect, y - radiusEffect, z - radiusEffect,
                             x + radiusEffect, y + radiusEffect, z + radiusEffect),
                     EntitySelector.LIVING_ENTITY_STILL_ALIVE).stream().sorted(new Object() {
-                        Comparator<Entity> compareDistOf(double x, double y, double z) {
-                            return Comparator.comparing(axis -> axis.distanceToSqr(x, y, z));
-                        }
+                Comparator<Entity> compareDistOf(double x, double y, double z) {
+                    return Comparator.comparing(axis -> axis.distanceToSqr(x, y, z));
+                }
             }.compareDistOf(x, y, z)).collect(Collectors.toList());
             for (LivingEntity entityiterator : livingEntities) {
                 if (inv.getStackInSlot(0).getItem().isEdible()) {

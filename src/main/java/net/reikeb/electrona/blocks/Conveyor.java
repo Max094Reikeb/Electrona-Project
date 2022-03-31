@@ -29,9 +29,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import net.reikeb.electrona.blockentities.TileConveyor;
 import net.reikeb.electrona.init.TileEntityInit;
 import net.reikeb.electrona.misc.vm.CustomShapes;
-import net.reikeb.electrona.tileentities.TileConveyor;
 import net.reikeb.electrona.utils.ElectronaUtils;
 
 import javax.annotation.Nullable;
@@ -70,22 +70,17 @@ public class Conveyor extends AbstractWaterLoggableBlock implements EntityBlock 
         return true;
     }
 
-    VoxelShape shape = CustomShapes.Conveyor;
-    VoxelShape northShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.SOUTH, shape);
-    VoxelShape westShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.EAST, shape);
-    VoxelShape eastShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.WEST, shape);
-
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         Direction facing = state.getValue(FACING);
         if (facing == Direction.NORTH) {
-            return northShape;
+            return ElectronaUtils.rotateShape(Direction.NORTH, Direction.SOUTH, CustomShapes.Conveyor);
         } else if (facing == Direction.EAST) {
-            return eastShape;
+            return ElectronaUtils.rotateShape(Direction.NORTH, Direction.WEST, CustomShapes.Conveyor);
         } else if (facing == Direction.WEST) {
-            return westShape;
+            return ElectronaUtils.rotateShape(Direction.NORTH, Direction.EAST, CustomShapes.Conveyor);
         }
-        return shape;
+        return CustomShapes.Conveyor;
     }
 
     @Override

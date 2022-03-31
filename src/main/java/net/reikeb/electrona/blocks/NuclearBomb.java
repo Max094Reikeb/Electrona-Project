@@ -28,10 +28,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.minecraftforge.network.NetworkHooks;
 
+import net.reikeb.electrona.blockentities.TileNuclearBomb;
 import net.reikeb.electrona.entity.BombFallingEntity;
 import net.reikeb.electrona.misc.vm.CustomShapes;
-import net.reikeb.electrona.tileentities.TileNuclearBomb;
-import net.reikeb.electrona.utils.ElectronaUtils;
 import net.reikeb.electrona.world.Gamerules;
 import net.reikeb.electrona.world.NuclearExplosion;
 
@@ -60,22 +59,10 @@ public class NuclearBomb extends FallingBlock implements EntityBlock {
         return true;
     }
 
-    VoxelShape shape = CustomShapes.NuclearBomb;
-    VoxelShape southShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.SOUTH, shape);
-    VoxelShape eastShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.EAST, shape);
-    VoxelShape westShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.WEST, shape);
-
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         Direction facing = state.getValue(FACING);
-        if (facing == Direction.SOUTH) {
-            return southShape;
-        } else if (facing == Direction.EAST) {
-            return eastShape;
-        } else if (facing == Direction.WEST) {
-            return westShape;
-        }
-        return shape;
+        return CustomShapes.getVoxelShape(facing, CustomShapes.NuclearBomb);
     }
 
     @Override

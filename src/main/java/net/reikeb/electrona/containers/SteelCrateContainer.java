@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Player;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import net.reikeb.electrona.tileentities.TileSteelCrate;
+import net.reikeb.electrona.blockentities.TileSteelCrate;
 
 import static net.reikeb.electrona.init.ContainerInit.STEEL_CRATE_CONTAINER;
 

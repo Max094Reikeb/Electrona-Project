@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Player;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import net.reikeb.electrona.tileentities.TileBiomassGenerator;
+import net.reikeb.electrona.blockentities.TileBiomassGenerator;
 
 import static net.reikeb.electrona.init.ContainerInit.BIOMASS_GENERATOR_CONTAINER;
 

@@ -33,10 +33,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 
+import net.reikeb.electrona.blockentities.TileTeleporter;
 import net.reikeb.electrona.init.TileEntityInit;
 import net.reikeb.electrona.misc.vm.CustomShapes;
 import net.reikeb.electrona.misc.vm.TeleporterFunction;
-import net.reikeb.electrona.tileentities.TileTeleporter;
 
 import javax.annotation.Nullable;
 import java.util.Collections;

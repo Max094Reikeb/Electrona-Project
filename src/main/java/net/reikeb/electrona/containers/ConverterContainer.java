@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Player;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import net.reikeb.electrona.tileentities.TileConverter;
+import net.reikeb.electrona.blockentities.TileConverter;
 
 import static net.reikeb.electrona.init.ContainerInit.CONVERTER_CONTAINER;
 

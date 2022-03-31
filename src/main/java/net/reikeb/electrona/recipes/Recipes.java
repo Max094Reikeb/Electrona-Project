@@ -8,8 +8,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.tileentities.TileCompressor;
-import net.reikeb.electrona.tileentities.TilePurificator;
+import net.reikeb.electrona.blockentities.TileCompressor;
+import net.reikeb.electrona.blockentities.TilePurificator;
 
 import javax.annotation.Nullable;
 import java.util.Collections;

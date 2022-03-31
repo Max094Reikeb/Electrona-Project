@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Player;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import net.reikeb.electrona.tileentities.TileLeadCrate;
+import net.reikeb.electrona.blockentities.TileLeadCrate;
 
 import static net.reikeb.electrona.init.ContainerInit.LEAD_CRATE_CONTAINER;
 

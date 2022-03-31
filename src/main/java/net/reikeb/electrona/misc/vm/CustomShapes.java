@@ -1,9 +1,12 @@
 package net.reikeb.electrona.misc.vm;
 
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import net.reikeb.electrona.utils.ElectronaUtils;
 
 import java.util.stream.Stream;
 
@@ -19,7 +22,6 @@ public class CustomShapes {
     ).reduce((v1, v2) -> {
         return Shapes.join(v1, v2, BooleanOp.OR);
     }).get();
-
     /**
      * VoxelShapes of the Energetic Lightning Rod
      */
@@ -27,17 +29,14 @@ public class CustomShapes {
             Block.box(6, 12, 6, 10, 16, 10),
             Block.box(7, 0, 7, 9, 12, 9),
             BooleanOp.OR);
-
     public static VoxelShape EnergeticLightningRodDown = Shapes.join(
             Block.box(6, 0, 6, 10, 4, 10),
             Block.box(7, 4, 7, 9, 16, 9),
             BooleanOp.OR);
-
     public static VoxelShape EnergeticLightningRod = Shapes.join(
             Block.box(6, 6, 0, 10, 10, 4),
             Block.box(7, 7, 4, 9, 9, 16),
             BooleanOp.OR);
-
     /**
      * VoxelShape of the Nuclear Bomb
      */
@@ -51,7 +50,6 @@ public class CustomShapes {
     ).reduce((v1, v2) -> {
         return Shapes.join(v1, v2, BooleanOp.OR);
     }).get();
-
     /**
      * VoxelShape of the Nuclear Generator Controller
      */
@@ -126,7 +124,6 @@ public class CustomShapes {
     ).reduce((v1, v2) -> {
         return Shapes.join(v1, v2, BooleanOp.OR);
     }).get();
-
     /**
      * VoxelShape of the Purificator
      */
@@ -138,7 +135,6 @@ public class CustomShapes {
     ).reduce((v1, v2) -> {
         return Shapes.join(v1, v2, BooleanOp.OR);
     }).get();
-
     /**
      * VoxelShape of the Teleporter
      */
@@ -146,7 +142,6 @@ public class CustomShapes {
             Block.box(-2, 0, -2, 18, 3, 18),
             Block.box(0, 3, 0, 16, 6, 16),
             BooleanOp.OR);
-
     /**
      * VoxelShape of the Water Turbine
      */
@@ -159,4 +154,22 @@ public class CustomShapes {
     ).reduce((v1, v2) -> {
         return Shapes.join(v1, v2, BooleanOp.OR);
     }).get();
+
+    /**
+     * Rotates the CustomShape depending on the direction
+     *
+     * @param facing Direction of the block
+     * @param shape  CustomShape of the block
+     * @return Rotated CustomShape
+     */
+    public static VoxelShape getVoxelShape(Direction facing, VoxelShape shape) {
+        if (facing == Direction.SOUTH) {
+            return ElectronaUtils.rotateShape(Direction.NORTH, Direction.SOUTH, shape);
+        } else if (facing == Direction.EAST) {
+            return ElectronaUtils.rotateShape(Direction.NORTH, Direction.EAST, shape);
+        } else if (facing == Direction.WEST) {
+            return ElectronaUtils.rotateShape(Direction.NORTH, Direction.WEST, shape);
+        }
+        return shape;
+    }
 }

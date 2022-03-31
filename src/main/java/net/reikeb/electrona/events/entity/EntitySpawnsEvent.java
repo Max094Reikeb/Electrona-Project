@@ -10,9 +10,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import net.reikeb.electrona.Electrona;
+import net.reikeb.electrona.blockentities.TileEnergeticLightningRod;
 import net.reikeb.electrona.entity.EnergeticLightningBolt;
 import net.reikeb.electrona.init.BlockInit;
-import net.reikeb.electrona.tileentities.TileEnergeticLightningRod;
 
 @Mod.EventBusSubscriber(modid = Electrona.MODID)
 public class EntitySpawnsEvent {

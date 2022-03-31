@@ -21,7 +21,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import net.reikeb.electrona.tileentities.TileCooler;
+import net.reikeb.electrona.blockentities.TileCooler;
 
 import java.util.Collections;
 import java.util.List;

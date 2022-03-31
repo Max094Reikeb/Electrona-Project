@@ -11,10 +11,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.common.util.NonNullLazy;
 
+import net.reikeb.electrona.blockentities.TileGravitor;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.setup.ItemGroups;
 import net.reikeb.electrona.setup.client.render.BEWLR;
-import net.reikeb.electrona.tileentities.TileGravitor;
 
 import java.util.function.Consumer;
 

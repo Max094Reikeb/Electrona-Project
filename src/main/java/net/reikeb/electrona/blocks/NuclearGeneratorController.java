@@ -30,17 +30,14 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
-
+import net.reikeb.electrona.blockentities.TileNuclearGeneratorController;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.TileEntityInit;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.misc.vm.CustomShapes;
-import net.reikeb.electrona.tileentities.TileNuclearGeneratorController;
-import net.reikeb.electrona.utils.ElectronaUtils;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -72,22 +69,10 @@ public class NuclearGeneratorController extends Block implements EntityBlock {
         list.add(new TranslatableComponent("block.electrona.ngc.desc2"));
     }
 
-    VoxelShape shape = CustomShapes.NuclearGenerator;
-    VoxelShape southShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.SOUTH, shape);
-    VoxelShape eastShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.EAST, shape);
-    VoxelShape westShape = ElectronaUtils.rotateShape(Direction.NORTH, Direction.WEST, shape);
-
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         Direction facing = state.getValue(FACING);
-        if (facing == Direction.SOUTH) {
-            return southShape;
-        } else if (facing == Direction.EAST) {
-            return eastShape;
-        } else if (facing == Direction.WEST) {
-            return westShape;
-        }
-        return shape;
+        return CustomShapes.getVoxelShape(facing, CustomShapes.NuclearGenerator);
     }
 
     @Override
