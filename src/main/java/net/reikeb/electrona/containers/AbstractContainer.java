@@ -11,6 +11,9 @@ import net.minecraft.world.item.Items;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import net.reikeb.electrona.network.NetworkManager;
+import net.reikeb.electrona.network.packets.CompressionPacket;
+
 import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractContainer extends AbstractContainerMenu {
@@ -123,6 +126,21 @@ public abstract class AbstractContainer extends AbstractContainerMenu {
 
         public int getMaxStackSize() {
             return 1;
+        }
+    }
+
+    static class CompressorOutputSlot extends SlotItemHandler {
+        public CompressorOutputSlot(IItemHandler itemHandler, int id, int x, int y) {
+            super(itemHandler, id, x, y);
+        }
+
+        public boolean mayPlace(ItemStack itemStack) {
+            return false;
+        }
+
+        public void onTake(Player playerEntity, ItemStack stack) {
+            // Trigger Advancement
+            NetworkManager.INSTANCE.sendToServer(new CompressionPacket());
         }
     }
 }
