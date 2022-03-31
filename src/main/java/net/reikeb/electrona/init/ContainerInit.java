@@ -3,6 +3,7 @@ package net.reikeb.electrona.init;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 
+import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -24,7 +25,8 @@ public class ContainerInit {
     public static final RegistryObject<MenuType<ConverterContainer>> CONVERTER_CONTAINER = CONTAINERS.register("el_converter", () -> registerContainer(ConverterContainer::new));
     public static final RegistryObject<MenuType<DimensionLinkerContainer>> DIMENSION_LINKER_CONTAINER = CONTAINERS.register("dimension_linker", () -> registerContainer(DimensionLinkerContainer::new));
     public static final RegistryObject<MenuType<LeadCrateContainer>> LEAD_CRATE_CONTAINER = CONTAINERS.register("lead_crate", () -> registerContainer(LeadCrateContainer::new));
-    public static final RegistryObject<MenuType<MiningMachineContainer>> MINING_MACHINE_CONTAINER = CONTAINERS.register("mining_machine", () -> registerContainer(MiningMachineContainer::new));
+    public static final RegistryObject<MenuType<MiningMachineContainer>> MINING_MACHINE_CONTAINER = CONTAINERS.register("mining_machine",
+            () -> IForgeMenuType.create((id, inv, data) -> new MiningMachineContainer(id, data.readBlockPos(), inv, inv.player)));
     public static final RegistryObject<MenuType<NuclearBombContainer>> NUCLEAR_BOMB_CONTAINER = CONTAINERS.register("nuclear_bomb", () -> registerContainer(NuclearBombContainer::new));
     public static final RegistryObject<MenuType<NuclearGeneratorControllerContainer>> NUCLEAR_GENERATOR_CONTAINER = CONTAINERS.register("nuclear_generator_controller", () -> registerContainer(NuclearGeneratorControllerContainer::new));
     public static final RegistryObject<MenuType<PurificatorContainer>> PURIFICATOR_CONTAINER = CONTAINERS.register("purificator", () -> registerContainer(PurificatorContainer::new));

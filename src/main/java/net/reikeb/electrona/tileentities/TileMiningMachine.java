@@ -7,8 +7,8 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -29,28 +29,7 @@ import static net.reikeb.electrona.init.TileEntityInit.TILE_MINING_MACHINE;
 public class TileMiningMachine extends AbstractTileEntity {
 
     public static final BlockEntityTicker<TileMiningMachine> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
-    public double electronicPower;
-    protected final ContainerData dataAccess = new ContainerData() {
-        @Override
-        public int get(int p_39284_) {
-            if (p_39284_ == 0) {
-                return (int) TileMiningMachine.this.electronicPower;
-            }
-            return 0;
-        }
-
-        @Override
-        public void set(int p_39285_, int p_39286_) {
-            if (p_39285_ == 0) {
-                TileMiningMachine.this.electronicPower = p_39286_;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return 1;
-        }
-    };
+    public  double electronicPower;
     private int maxStorage;
     private int wait;
 
@@ -69,8 +48,8 @@ public class TileMiningMachine extends AbstractTileEntity {
     }
 
     @Override
-    public AbstractContainerMenu createMenu(int id, Inventory player) {
-        return new MiningMachineContainer(id, player, this, dataAccess);
+    public AbstractContainerMenu createMenu(int id, Inventory playerInventory, Player player) {
+        return new MiningMachineContainer(id, this.getBlockPos(), playerInventory, player);
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
@@ -158,10 +137,18 @@ public class TileMiningMachine extends AbstractTileEntity {
         }
     }
 
+    public double getElectronicPower() {
+        return electronicPower;
+    }
+
+    public void setElectronicPower(double electronicPower) {
+        this.electronicPower = electronicPower;
+    }
+
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
-        this.electronicPower = compound.getDouble("ElectronicPower");
+        electronicPower = compound.getDouble("ElectronicPower");
         this.maxStorage = compound.getInt("MaxStorage");
         this.wait = compound.getInt("wait");
         if (compound.contains("Inventory")) {
@@ -172,7 +159,7 @@ public class TileMiningMachine extends AbstractTileEntity {
     @Override
     public void saveAdditional(CompoundTag compound) {
         super.saveAdditional(compound);
-        compound.putDouble("ElectronicPower", this.electronicPower);
+        compound.putDouble("ElectronicPower", electronicPower);
         compound.putInt("MaxStorage", this.maxStorage);
         compound.putInt("wait", this.wait);
         compound.put("Inventory", inventory.serializeNBT());

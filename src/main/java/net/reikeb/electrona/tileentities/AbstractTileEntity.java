@@ -2,7 +2,6 @@ package net.reikeb.electrona.tileentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
@@ -28,49 +27,47 @@ import net.reikeb.electrona.utils.ItemHandler;
 
 import java.util.Objects;
 
-public class AbstractTileEntity extends BaseContainerBlockEntity {
+public abstract class AbstractTileEntity extends BaseContainerBlockEntity {
 
     public final ItemHandler inventory;
     public int slots;
-    public NonNullList<ItemStack> items;
 
     protected AbstractTileEntity(BlockEntityType<?> tileEntity, BlockPos pos, BlockState state, int slots) {
         super(tileEntity, pos, state);
 
         this.slots = slots;
         this.inventory = new ItemHandler(slots);
-        this.items = NonNullList.withSize(slots, ItemStack.EMPTY);
     }
 
-    public ItemStack getItem(int itemStack) {
-        return this.items.get(itemStack);
+    public ItemStack getItem(int slot) {
+        return this.inventory.getStackInSlot(slot);
     }
 
-    public ItemStack removeItem(int p_58330_, int p_58331_) {
-        return ContainerHelper.removeItem(this.items, p_58330_, p_58331_);
+    public ItemStack removeItem(int index, int count) {
+        return ContainerHelper.removeItem(this.inventory.toNonNullList(), index, count);
     }
 
-    public ItemStack removeItemNoUpdate(int p_58387_) {
-        return ContainerHelper.takeItem(this.items, p_58387_);
+    public ItemStack removeItemNoUpdate(int index) {
+        return ContainerHelper.takeItem(this.inventory.toNonNullList(), index);
     }
 
     public void setItem(int slot, ItemStack itemStack) {
-        this.items.set(slot, itemStack);
+        this.inventory.setStackInSlot(slot, itemStack);
         if (itemStack.getCount() > this.getMaxStackSize()) {
             itemStack.setCount(this.getMaxStackSize());
         }
     }
 
-    public boolean stillValid(Player p_58340_) {
+    public boolean stillValid(Player player) {
         if (this.level.getBlockEntity(this.worldPosition) != this) {
             return false;
         } else {
-            return p_58340_.distanceToSqr((double) this.worldPosition.getX() + 0.5D, (double) this.worldPosition.getY() + 0.5D, (double) this.worldPosition.getZ() + 0.5D) <= 64.0D;
+            return player.distanceToSqr((double) this.worldPosition.getX() + 0.5D, (double) this.worldPosition.getY() + 0.5D, (double) this.worldPosition.getZ() + 0.5D) <= 64.0D;
         }
     }
 
     public void clearContent() {
-        this.items.clear();
+        this.inventory.clear();
     }
 
     @Override
@@ -131,7 +128,7 @@ public class AbstractTileEntity extends BaseContainerBlockEntity {
     }
 
     public boolean isEmpty() {
-        for (ItemStack itemstack : this.items) {
+        for (ItemStack itemstack : this.inventory.toNonNullList()) {
             if (!itemstack.isEmpty()) {
                 return false;
             }

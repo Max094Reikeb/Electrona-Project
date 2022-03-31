@@ -1,34 +1,65 @@
 package net.reikeb.electrona.containers;
 
-import net.minecraft.world.Container;
-import net.minecraft.world.SimpleContainer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.DataSlot;
+
+import net.minecraftforge.items.CapabilityItemHandler;
+
+import net.reikeb.electrona.tileentities.TileMiningMachine;
 
 import static net.reikeb.electrona.init.ContainerInit.MINING_MACHINE_CONTAINER;
 
 public class MiningMachineContainer extends AbstractContainer {
 
-    private final ContainerData miningMachineData;
+    public TileMiningMachine tileMiningMachine;
 
-    public MiningMachineContainer(int id, Inventory inv) {
-        this(id, inv, new SimpleContainer(3), new SimpleContainerData(1));
-    }
-
-    public MiningMachineContainer(int id, Inventory inv, Container container, ContainerData containerData) {
+    public MiningMachineContainer(int id, BlockPos pos, Inventory inv, Player player) {
         super(MINING_MACHINE_CONTAINER.get(), id, 3);
 
-        this.miningMachineData = containerData;
+        this.tileMiningMachine = (TileMiningMachine) player.getCommandSenderWorld().getBlockEntity(pos);
 
-        this.addSlot(new Slots.BasicInputSlot(container, 0, 91, 12));
-        this.addSlot(new Slots.BucketSlot(container, 1, 74, 51));
-        this.addSlot(new Slots.BucketSlot(container, 2, 180, 51));
+        if (tileMiningMachine == null) return;
+
+        tileMiningMachine.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            addSlot(new Slots.BasicInputSlot(h, 0, 91, 12));
+            addSlot(new Slots.BucketSlot(h, 1, 74, 51));
+            addSlot(new Slots.BucketSlot(h, 2, 108, 51));
+        });
 
         this.layoutPlayerInventorySlots(inv);
+        this.trackData();
     }
 
     public int getElectronicPower() {
-        return this.miningMachineData.get(0);
+        return (int) tileMiningMachine.getElectronicPower();
+    }
+
+    private void trackData() {
+        addDataSlot(new DataSlot() {
+            @Override
+            public int get() {
+                return getElectronicPower() & 0xffff;
+            }
+
+            @Override
+            public void set(int value) {
+                int energyStored = getElectronicPower() & 0xffff0000;
+                tileMiningMachine.setElectronicPower(energyStored + (value & 0xffff));
+            }
+        });
+        addDataSlot(new DataSlot() {
+            @Override
+            public int get() {
+                return (getElectronicPower() >> 16) & 0xffff;
+            }
+
+            @Override
+            public void set(int value) {
+                int energyStored = getElectronicPower() & 0x0000ffff;
+                tileMiningMachine.setElectronicPower(energyStored | (value << 16));
+            }
+        });
     }
 }

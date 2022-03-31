@@ -52,25 +52,25 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void init(final FMLClientSetupEvent event) {
-        // Connect Containers and Windows
-        MenuScreens.register(BIOMASS_GENERATOR_CONTAINER.get(), BiomassGeneratorWindow::new);
-        MenuScreens.register(NUCLEAR_GENERATOR_CONTAINER.get(), NuclearGeneratorControllerWindow::new);
-        MenuScreens.register(BATTERY_CONTAINER.get(), BatteryWindow::new);
-        MenuScreens.register(CONVERTER_CONTAINER.get(), ConverterWindow::new);
-        MenuScreens.register(COMPRESSOR_CONTAINER.get(), CompressorWindow::new);
-        MenuScreens.register(XP_GENERATOR_CONTAINER.get(), XPGeneratorWindow::new);
-        MenuScreens.register(TELEPORTER_CONTAINER.get(), TeleporterWindow::new);
-        MenuScreens.register(WATER_PUMP_CONTAINER.get(), WaterPumpWindow::new);
-        MenuScreens.register(PURIFICATOR_CONTAINER.get(), PurificatorWindow::new);
-        MenuScreens.register(MINING_MACHINE_CONTAINER.get(), MiningMachineWindow::new);
-        MenuScreens.register(SPRAYER_CONTAINER.get(), SprayerWindow::new);
-        MenuScreens.register(DIMENSION_LINKER_CONTAINER.get(), DimensionLinkerWindow::new);
-        MenuScreens.register(STEEL_CRATE_CONTAINER.get(), SteelCrateWindow::new);
-        MenuScreens.register(LEAD_CRATE_CONTAINER.get(), LeadCrateWindow::new);
-        MenuScreens.register(NUCLEAR_BOMB_CONTAINER.get(), NuclearBombWindow::new);
-
         // Make this deferred for unsafe threads
         event.enqueueWork(() -> {
+            // Connect Containers and Windows
+            MenuScreens.register(BIOMASS_GENERATOR_CONTAINER.get(), BiomassGeneratorWindow::new);
+            MenuScreens.register(NUCLEAR_GENERATOR_CONTAINER.get(), NuclearGeneratorControllerWindow::new);
+            MenuScreens.register(BATTERY_CONTAINER.get(), BatteryWindow::new);
+            MenuScreens.register(CONVERTER_CONTAINER.get(), ConverterWindow::new);
+            MenuScreens.register(COMPRESSOR_CONTAINER.get(), CompressorWindow::new);
+            MenuScreens.register(XP_GENERATOR_CONTAINER.get(), XPGeneratorWindow::new);
+            MenuScreens.register(TELEPORTER_CONTAINER.get(), TeleporterWindow::new);
+            MenuScreens.register(WATER_PUMP_CONTAINER.get(), WaterPumpWindow::new);
+            MenuScreens.register(PURIFICATOR_CONTAINER.get(), PurificatorWindow::new);
+            MenuScreens.register(MINING_MACHINE_CONTAINER.get(), MiningMachineWindow::new);
+            MenuScreens.register(SPRAYER_CONTAINER.get(), SprayerWindow::new);
+            MenuScreens.register(DIMENSION_LINKER_CONTAINER.get(), DimensionLinkerWindow::new);
+            MenuScreens.register(STEEL_CRATE_CONTAINER.get(), SteelCrateWindow::new);
+            MenuScreens.register(LEAD_CRATE_CONTAINER.get(), LeadCrateWindow::new);
+            MenuScreens.register(NUCLEAR_BOMB_CONTAINER.get(), NuclearBombWindow::new);
+
             // Cutout
             ItemBlockRenderTypes.setRenderLayer(BlockInit.SINGULARITY.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(BlockInit.PURIFICATOR.get(), RenderType.cutout());

@@ -103,7 +103,8 @@ public class MiningMachine extends Block implements EntityBlock {
             BlockEntity tile = worldIn.getBlockEntity(pos);
             if (tile instanceof TileMiningMachine) {
                 NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) tile, pos);
-                return InteractionResult.SUCCESS;
+            } else {
+                throw new IllegalStateException("Our named container provider is missing!");
             }
         }
         return InteractionResult.SUCCESS;
