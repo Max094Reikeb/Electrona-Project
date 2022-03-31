@@ -3,6 +3,7 @@ package net.reikeb.electrona.containers;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -15,6 +16,9 @@ import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.CompressionPacket;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.function.IntConsumer;
+import java.util.function.IntSupplier;
 
 public abstract class AbstractContainer extends AbstractContainerMenu {
 
@@ -75,6 +79,33 @@ public abstract class AbstractContainer extends AbstractContainerMenu {
             slot.onTake(playerIn, itemstack1);
         }
         return itemstack;
+    }
+
+    public void addSyncedInt(IntConsumer intConsumer, IntSupplier intSupplier) {
+        addDataSlot(new DataSlot() {
+            @Override
+            public int get() {
+                return intSupplier.getAsInt() & 0xffff;
+            }
+
+            @Override
+            public void set(int value) {
+                int stored = intSupplier.getAsInt() & 0xffff0000;
+                intConsumer.accept(stored + (value & 0xffff));
+            }
+        });
+        addDataSlot(new DataSlot() {
+            @Override
+            public int get() {
+                return (intSupplier.getAsInt() >> 16) & 0xffff;
+            }
+
+            @Override
+            public void set(int value) {
+                int stored = intSupplier.getAsInt() & 0x0000ffff;
+                intConsumer.accept(stored | (value << 16));
+            }
+        });
     }
 
     public static class BatterySlot extends SlotItemHandler {

@@ -137,8 +137,8 @@ public class TileMiningMachine extends AbstractTileEntity {
         }
     }
 
-    public double getElectronicPower() {
-        return electronicPower;
+    public int getElectronicPower() {
+        return (int) this.electronicPower;
     }
 
     public void setElectronicPower(double electronicPower) {

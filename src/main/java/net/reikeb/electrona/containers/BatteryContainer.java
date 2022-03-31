@@ -3,7 +3,6 @@ package net.reikeb.electrona.containers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.DataSlot;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -27,37 +26,10 @@ public class BatteryContainer extends AbstractContainer {
         });
 
         this.layoutPlayerInventorySlots(inv);
-        this.trackData();
+        this.addSyncedInt(tileBattery::setElectronicPower, tileBattery::getElectronicPower);
     }
 
     public int getElectronicPower() {
-        return (int) tileBattery.getElectronicPower();
-    }
-
-    private void trackData() {
-        addDataSlot(new DataSlot() {
-            @Override
-            public int get() {
-                return getElectronicPower() & 0xffff;
-            }
-
-            @Override
-            public void set(int value) {
-                int energyStored = getElectronicPower() & 0xffff0000;
-                tileBattery.setElectronicPower(energyStored + (value & 0xffff));
-            }
-        });
-        addDataSlot(new DataSlot() {
-            @Override
-            public int get() {
-                return (getElectronicPower() >> 16) & 0xffff;
-            }
-
-            @Override
-            public void set(int value) {
-                int energyStored = getElectronicPower() & 0x0000ffff;
-                tileBattery.setElectronicPower(energyStored | (value << 16));
-            }
-        });
+        return tileBattery.getElectronicPower();
     }
 }

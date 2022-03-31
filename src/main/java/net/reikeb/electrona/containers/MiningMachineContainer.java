@@ -3,7 +3,6 @@ package net.reikeb.electrona.containers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.DataSlot;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -28,37 +27,10 @@ public class MiningMachineContainer extends AbstractContainer {
         });
 
         this.layoutPlayerInventorySlots(inv);
-        this.trackData();
+        this.addSyncedInt(tileMiningMachine::setElectronicPower, tileMiningMachine::getElectronicPower);
     }
 
     public int getElectronicPower() {
-        return (int) tileMiningMachine.getElectronicPower();
-    }
-
-    private void trackData() {
-        addDataSlot(new DataSlot() {
-            @Override
-            public int get() {
-                return getElectronicPower() & 0xffff;
-            }
-
-            @Override
-            public void set(int value) {
-                int energyStored = getElectronicPower() & 0xffff0000;
-                tileMiningMachine.setElectronicPower(energyStored + (value & 0xffff));
-            }
-        });
-        addDataSlot(new DataSlot() {
-            @Override
-            public int get() {
-                return (getElectronicPower() >> 16) & 0xffff;
-            }
-
-            @Override
-            public void set(int value) {
-                int energyStored = getElectronicPower() & 0x0000ffff;
-                tileMiningMachine.setElectronicPower(energyStored | (value << 16));
-            }
-        });
+        return tileMiningMachine.getElectronicPower();
     }
 }

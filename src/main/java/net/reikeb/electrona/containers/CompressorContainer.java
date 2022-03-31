@@ -3,7 +3,6 @@ package net.reikeb.electrona.containers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.DataSlot;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -28,7 +27,9 @@ public class CompressorContainer extends AbstractContainer {
         });
 
         this.layoutPlayerInventorySlots(inv);
-        this.trackData();
+        this.addSyncedInt(tileCompressor::setElectronicPower, tileCompressor::getElectronicPower);
+        this.addSyncedInt(tileCompressor::setCompressingTime, tileCompressor::getCompressingTime);
+        this.addSyncedInt(tileCompressor::setCurrentCompressingTime, tileCompressor::getCurrentCompressingTime);
     }
 
     public int getElectronicPower() {
@@ -41,83 +42,5 @@ public class CompressorContainer extends AbstractContainer {
 
     public int getCurrentCompressingTime() {
         return tileCompressor.getCurrentCompressingTime();
-    }
-
-    private void trackData() {
-        // ElectronicPower
-        addDataSlot(new DataSlot() {
-            @Override
-            public int get() {
-                return getElectronicPower() & 0xffff;
-            }
-
-            @Override
-            public void set(int value) {
-                int energyStored = getElectronicPower() & 0xffff0000;
-                tileCompressor.setElectronicPower(energyStored + (value & 0xffff));
-            }
-        });
-        addDataSlot(new DataSlot() {
-            @Override
-            public int get() {
-                return (getElectronicPower() >> 16) & 0xffff;
-            }
-
-            @Override
-            public void set(int value) {
-                int energyStored = getElectronicPower() & 0x0000ffff;
-                tileCompressor.setElectronicPower(energyStored | (value << 16));
-            }
-        });
-        // CompressingTime
-        addDataSlot(new DataSlot() {
-            @Override
-            public int get() {
-                return getCompressingTime() & 0xffff;
-            }
-
-            @Override
-            public void set(int value) {
-                int compressingTime = getCompressingTime() & 0xffff0000;
-                tileCompressor.setCompressingTime(compressingTime + (value & 0xffff));
-            }
-        });
-        addDataSlot(new DataSlot() {
-            @Override
-            public int get() {
-                return (getCompressingTime() >> 16) & 0xffff;
-            }
-
-            @Override
-            public void set(int value) {
-                int compressingTime = getCompressingTime() & 0x0000ffff;
-                tileCompressor.setCompressingTime(compressingTime | (value << 16));
-            }
-        });
-        // CurrentCompressingTime
-        addDataSlot(new DataSlot() {
-            @Override
-            public int get() {
-                return getCurrentCompressingTime() & 0xffff;
-            }
-
-            @Override
-            public void set(int value) {
-                int currentCompressingTime = getCurrentCompressingTime() & 0xffff0000;
-                tileCompressor.setCurrentCompressingTime(currentCompressingTime + (value & 0xffff));
-            }
-        });
-        addDataSlot(new DataSlot() {
-            @Override
-            public int get() {
-                return (getCurrentCompressingTime() >> 16) & 0xffff;
-            }
-
-            @Override
-            public void set(int value) {
-                int currentCompressingTime = getCurrentCompressingTime() & 0x0000ffff;
-                tileCompressor.setCurrentCompressingTime(currentCompressingTime | (value << 16));
-            }
-        });
     }
 }
