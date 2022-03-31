@@ -10,6 +10,8 @@ import net.minecraft.sound.SoundEvents;
 
 public class LeadArmorMaterial implements ArmorMaterial {
 
+    public static final ArmorMaterial INSTANCE = new LeadArmorMaterial();
+
     @Override
     public int getDurability(EquipmentSlot slot) {
         return new int[] {13, 15, 16, 11} [slot.getEntitySlotId()] * 25;
