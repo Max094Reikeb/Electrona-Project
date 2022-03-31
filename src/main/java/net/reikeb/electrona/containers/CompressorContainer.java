@@ -27,9 +27,9 @@ public class CompressorContainer extends AbstractContainer {
 
         this.compressorData = containerData;
 
-        this.addSlot(new Slots.BasicInputSlot(container, 0, 27, 39));
-        this.addSlot(new Slots.BasicInputSlot(container, 1, 81, 39));
-        this.addSlot(new OutputSlot(container, 2, 135, 39));
+        // this.addSlot(new Slots.BasicInputSlot(container, 0, 27, 39));
+        // this.addSlot(new Slots.BasicInputSlot(container, 1, 81, 39));
+        // this.addSlot(new OutputSlot(container, 2, 135, 39));
 
         this.layoutPlayerInventorySlots(inv);
     }

@@ -21,8 +21,8 @@ public class WaterPumpContainer extends AbstractContainer {
 
         this.waterPumpData = containerData;
 
-        this.addSlot(new Slots.BucketSlot(container, 0, 36, 35));
-        this.addSlot(new Slots.BatterySlot(container, 1, 137, 29));
+        // this.addSlot(new Slots.BucketSlot(container, 0, 36, 35));
+        // this.addSlot(new Slots.BatterySlot(container, 1, 137, 29));
 
         this.layoutPlayerInventorySlots(inv);
     }

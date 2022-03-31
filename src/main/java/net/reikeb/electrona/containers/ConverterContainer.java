@@ -21,7 +21,7 @@ public class ConverterContainer extends AbstractContainer {
 
         this.converterData = containerData;
 
-        this.addSlot(new Slots.BatterySlot(container, 0, 81, 31));
+        // this.addSlot(new Slots.BatterySlot(container, 0, 81, 31));
 
         this.layoutPlayerInventorySlots(inv);
     }

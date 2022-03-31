@@ -7,8 +7,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -24,27 +24,6 @@ public class TileBattery extends AbstractTileEntity {
 
     public static final BlockEntityTicker<TileBattery> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     public double electronicPower;
-    protected final ContainerData dataAccess = new ContainerData() {
-        @Override
-        public int get(int p_39284_) {
-            if (p_39284_ == 0) {
-                return (int) TileBattery.this.electronicPower;
-            }
-            return 0;
-        }
-
-        @Override
-        public void set(int p_39285_, int p_39286_) {
-            if (p_39285_ == 0) {
-                TileBattery.this.electronicPower = p_39286_;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return 1;
-        }
-    };
     private int maxStorage;
 
     public TileBattery(BlockPos pos, BlockState state) {
@@ -62,8 +41,8 @@ public class TileBattery extends AbstractTileEntity {
     }
 
     @Override
-    public AbstractContainerMenu createMenu(int id, Inventory player) {
-        return new BatteryContainer(id, player, this, dataAccess);
+    public AbstractContainerMenu createMenu(int id, Inventory playerInventory, Player player) {
+        return new BatteryContainer(id, this.getBlockPos(), playerInventory, player);
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
@@ -87,6 +66,14 @@ public class TileBattery extends AbstractTileEntity {
             t.setChanged();
             world.sendBlockUpdated(blockPos, t.getBlockState(), t.getBlockState(), 3);
         }
+    }
+
+    public double getElectronicPower() {
+        return electronicPower;
+    }
+
+    public void setElectronicPower(double electronicPower) {
+        this.electronicPower = electronicPower;
     }
 
     @Override

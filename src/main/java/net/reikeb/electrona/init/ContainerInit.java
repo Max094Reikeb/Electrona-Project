@@ -19,20 +19,37 @@ public class ContainerInit {
         return new MenuType<>(menuSupplier);
     }
 
-    public static final RegistryObject<MenuType<BatteryContainer>> BATTERY_CONTAINER = CONTAINERS.register("battery", () -> registerContainer(BatteryContainer::new));
+    public static final RegistryObject<MenuType<BatteryContainer>> BATTERY_CONTAINER = CONTAINERS.register("battery",
+            () -> IForgeMenuType.create((id, inv, data) -> new BatteryContainer(id, data.readBlockPos(), inv, inv.player)));
+
     public static final RegistryObject<MenuType<BiomassGeneratorContainer>> BIOMASS_GENERATOR_CONTAINER = CONTAINERS.register("biomass_generator", () -> registerContainer(BiomassGeneratorContainer::new));
+
     public static final RegistryObject<MenuType<CompressorContainer>> COMPRESSOR_CONTAINER = CONTAINERS.register("compressor", () -> registerContainer(CompressorContainer::new));
+
     public static final RegistryObject<MenuType<ConverterContainer>> CONVERTER_CONTAINER = CONTAINERS.register("el_converter", () -> registerContainer(ConverterContainer::new));
+
     public static final RegistryObject<MenuType<DimensionLinkerContainer>> DIMENSION_LINKER_CONTAINER = CONTAINERS.register("dimension_linker", () -> registerContainer(DimensionLinkerContainer::new));
-    public static final RegistryObject<MenuType<LeadCrateContainer>> LEAD_CRATE_CONTAINER = CONTAINERS.register("lead_crate", () -> registerContainer(LeadCrateContainer::new));
+
+    public static final RegistryObject<MenuType<LeadCrateContainer>> LEAD_CRATE_CONTAINER = CONTAINERS.register("lead_crate",
+            () -> IForgeMenuType.create((id, inv, data) -> new LeadCrateContainer(id, data.readBlockPos(), inv, inv.player)));
+
     public static final RegistryObject<MenuType<MiningMachineContainer>> MINING_MACHINE_CONTAINER = CONTAINERS.register("mining_machine",
             () -> IForgeMenuType.create((id, inv, data) -> new MiningMachineContainer(id, data.readBlockPos(), inv, inv.player)));
+
     public static final RegistryObject<MenuType<NuclearBombContainer>> NUCLEAR_BOMB_CONTAINER = CONTAINERS.register("nuclear_bomb", () -> registerContainer(NuclearBombContainer::new));
+
     public static final RegistryObject<MenuType<NuclearGeneratorControllerContainer>> NUCLEAR_GENERATOR_CONTAINER = CONTAINERS.register("nuclear_generator_controller", () -> registerContainer(NuclearGeneratorControllerContainer::new));
+
     public static final RegistryObject<MenuType<PurificatorContainer>> PURIFICATOR_CONTAINER = CONTAINERS.register("purificator", () -> registerContainer(PurificatorContainer::new));
+
     public static final RegistryObject<MenuType<SprayerContainer>> SPRAYER_CONTAINER = CONTAINERS.register("sprayer", () -> registerContainer(SprayerContainer::new));
-    public static final RegistryObject<MenuType<SteelCrateContainer>> STEEL_CRATE_CONTAINER = CONTAINERS.register("steel_crate", () -> registerContainer(SteelCrateContainer::new));
+
+    public static final RegistryObject<MenuType<SteelCrateContainer>> STEEL_CRATE_CONTAINER = CONTAINERS.register("steel_crate",
+            () -> IForgeMenuType.create((id, inv, data) -> new SteelCrateContainer(id, data.readBlockPos(), inv, inv.player)));
+
     public static final RegistryObject<MenuType<TeleporterContainer>> TELEPORTER_CONTAINER = CONTAINERS.register("teleporter", () -> registerContainer(TeleporterContainer::new));
+
     public static final RegistryObject<MenuType<XPGeneratorContainer>> XP_GENERATOR_CONTAINER = CONTAINERS.register("xp_generator", () -> registerContainer(XPGeneratorContainer::new));
+
     public static final RegistryObject<MenuType<WaterPumpContainer>> WATER_PUMP_CONTAINER = CONTAINERS.register("water_pump", () -> registerContainer(WaterPumpContainer::new));
 }

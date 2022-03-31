@@ -21,7 +21,7 @@ public class BiomassGeneratorContainer extends AbstractContainer {
 
         this.biomassGeneratorData = containerData;
 
-        this.addSlot(new Slots.BasicInputSlot(container, 0, 80, 36));
+        // this.addSlot(new Slots.BasicInputSlot(container, 0, 80, 36));
 
         this.layoutPlayerInventorySlots(inv);
     }

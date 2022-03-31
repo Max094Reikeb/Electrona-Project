@@ -28,9 +28,9 @@ public class PurificatorContainer extends AbstractContainer {
 
         this.purificatorData = containerData;
 
-        this.addSlot(new Slots.WaterBucketSlot(container, 0, 27, 27));
-        this.addSlot(new Slots.BasicInputSlot(container, 1, 56, 40));
-        this.addSlot(new InputSlot(container, 2, 136, 40));
+        // this.addSlot(new Slots.WaterBucketSlot(container, 0, 27, 27));
+        // this.addSlot(new Slots.BasicInputSlot(container, 1, 56, 40));
+        // this.addSlot(new InputSlot(container, 2, 136, 40));
 
         this.layoutPlayerInventorySlots(inv);
     }

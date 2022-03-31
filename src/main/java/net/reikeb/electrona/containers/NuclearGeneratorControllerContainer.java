@@ -24,7 +24,7 @@ public class NuclearGeneratorControllerContainer extends AbstractContainer {
 
         this.nuclearGeneratorControllerData = containerData;
 
-        this.addSlot(new Slots.WaterBucketSlot(container, 0, 27, 32));
+        // this.addSlot(new Slots.WaterBucketSlot(container, 0, 27, 32));
         this.addSlot(new UraniumSlot(container, containerData, 1, 55, 32));
 
         this.layoutPlayerInventorySlots(inv);

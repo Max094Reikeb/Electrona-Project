@@ -25,10 +25,10 @@ public class SprayerContainer extends AbstractContainer {
 
         this.sprayerData = containerData;
 
-        this.addSlot(new Slots.BasicInputSlot(container, 0, 80, 14));
-        this.addSlot(new WirelessSlot(container, 1, 20, 44));
-        this.addSlot(new WirelessSlot(container, 2, 50, 44));
-        this.addSlot(new WirelessSlot(container, 3, 80, 44));
+        // this.addSlot(new Slots.BasicInputSlot(container, 0, 80, 14));
+        // this.addSlot(new WirelessSlot(container, 1, 20, 44));
+        // this.addSlot(new WirelessSlot(container, 2, 50, 44));
+        // this.addSlot(new WirelessSlot(container, 3, 80, 44));
 
         this.layoutPlayerInventorySlots(inv);
     }

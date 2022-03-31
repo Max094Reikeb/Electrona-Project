@@ -15,8 +15,8 @@ public class NuclearBombContainer extends AbstractContainer {
     public NuclearBombContainer(int id, Inventory inv, Container container) {
         super(NUCLEAR_BOMB_CONTAINER.get(), id, 2);
 
-        this.addSlot(new Slots.BasicInputSlot(container, 0, 53, 36));
-        this.addSlot(new Slots.BasicInputSlot(container, 1, 96, 36));
+        // this.addSlot(new Slots.BasicInputSlot(container, 0, 53, 36));
+        // this.addSlot(new Slots.BasicInputSlot(container, 1, 96, 36));
 
         this.layoutPlayerInventorySlots(inv);
     }

@@ -5,6 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -29,7 +30,7 @@ public class TileLeadCrate extends AbstractTileEntity {
     }
 
     @Override
-    public AbstractContainerMenu createMenu(int id, Inventory player) {
-        return new LeadCrateContainer(id, player, this);
+    public AbstractContainerMenu createMenu(int id, Inventory playerInventory, Player player) {
+        return new LeadCrateContainer(id, this.getBlockPos(), playerInventory, player);
     }
 }
