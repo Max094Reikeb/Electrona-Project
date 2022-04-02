@@ -77,7 +77,8 @@ public class BiomassGenerator extends Block implements EntityBlock {
             BlockEntity blockEntity = worldIn.getBlockEntity(pos);
             if (blockEntity instanceof BiomassGeneratorBlockEntity) {
                 NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) blockEntity, pos);
-                return InteractionResult.SUCCESS;
+            } else {
+                throw new IllegalStateException("Our named container provider is missing!");
             }
         }
         return InteractionResult.SUCCESS;

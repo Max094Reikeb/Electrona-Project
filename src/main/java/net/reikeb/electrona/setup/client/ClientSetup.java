@@ -14,7 +14,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -37,6 +36,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.guis.*;
 import net.reikeb.electrona.init.*;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.particles.DarkMatter;
 import net.reikeb.electrona.particles.Gravitorium;
 import net.reikeb.electrona.particles.RadioactiveFallout;
@@ -82,7 +82,7 @@ public class ClientSetup {
             ItemBlockRenderTypes.setRenderLayer(BlockInit.HOLE.get(), RenderType.translucent());
 
             // Item Properties
-            ItemProperties.register(ItemInit.GEIGER_POINTER.get(), new ResourceLocation("angle"), new ClampedItemPropertyFunction() {
+            ItemProperties.register(ItemInit.GEIGER_POINTER.get(), Keys.ANGLE_PROPERTY, new ClampedItemPropertyFunction() {
                 private final ItemProperties.CompassWobble wobble = new ItemProperties.CompassWobble();
                 private final ItemProperties.CompassWobble wobbleRandom = new ItemProperties.CompassWobble();
 
@@ -128,7 +128,7 @@ public class ClientSetup {
                         }
 
                         double d0 = this.wobbleRandom.rotation + (double) ((float) this.hash(hash) / 2.14748365E9F);
-                        return Mth.positiveModulo((float)d0, 1.0F);
+                        return Mth.positiveModulo((float) d0, 1.0F);
                     }
                 }
 
@@ -146,10 +146,10 @@ public class ClientSetup {
                     boolean flag = tag.contains("LodestonePos");
                     boolean flag1 = tag.contains("LodestoneDimension");
                     if (flag && flag1) {
-                       Optional<ResourceKey<Level>> optional = CompassItem.getLodestoneDimension(tag);
-                       if (optional.isPresent() && world.dimension() == optional.get()) {
-                          return NbtUtils.readBlockPos(tag.getCompound("LodestonePos"));
-                       }
+                        Optional<ResourceKey<Level>> optional = CompassItem.getLodestoneDimension(tag);
+                        if (optional.isPresent() && world.dimension() == optional.get()) {
+                            return NbtUtils.readBlockPos(tag.getCompound("LodestonePos"));
+                        }
                     }
 
                     return null;
@@ -180,19 +180,19 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityInit.RADIOACTIVE_ZOMBIE_TYPE, RadioactiveZombieRenderer::new);
         event.registerEntityRenderer(EntityInit.ENERGETIC_LIGHTNING_BOLT_TYPE, EnergeticLightningBoltRenderer::new);
 
-        event.registerBlockEntityRenderer(BlockEntityInit.SINGULARITY_BLOCK_ENTITY.get(), TileSingularityRenderer::new);
-        event.registerBlockEntityRenderer(BlockEntityInit.GRAVITOR_BLOCK_ENTITY.get(), TileGravitorRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntityInit.SINGULARITY_BLOCK_ENTITY.get(), SingularityBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntityInit.GRAVITOR_BLOCK_ENTITY.get(), GravitorBlockEntityRenderer::new);
     }
 
     @SubscribeEvent
     public static void textureSwitchEvent(TextureStitchEvent.Pre event) {
         if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
-            event.addSprite(new ResourceLocation(Electrona.MODID, "entity/gravitor/base"));
-            event.addSprite(new ResourceLocation(Electrona.MODID, "entity/gravitor/cage"));
-            event.addSprite(new ResourceLocation(Electrona.MODID, "entity/gravitor/wind"));
-            event.addSprite(new ResourceLocation(Electrona.MODID, "entity/gravitor/wind_vertical"));
-            event.addSprite(new ResourceLocation(Electrona.MODID, "entity/gravitor/open_eye"));
-            event.addSprite(new ResourceLocation(Electrona.MODID, "entity/gravitor/closed_eye"));
+            event.addSprite(Keys.GRAVITOR_BASE);
+            event.addSprite(Keys.GRAVITOR_CAGE);
+            event.addSprite(Keys.GRAVITOR_WIND);
+            event.addSprite(Keys.GRAVITOR_WIND_VERTICAL);
+            event.addSprite(Keys.GRAVITOR_OPEN_EYE);
+            event.addSprite(Keys.GRAVITOR_CLOSED_EYE);
         }
     }
 

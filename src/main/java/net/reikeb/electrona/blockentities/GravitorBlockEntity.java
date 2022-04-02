@@ -45,8 +45,8 @@ public class GravitorBlockEntity extends BlockEntity {
         this(BlockEntityInit.GRAVITOR_BLOCK_ENTITY.get(), pos, state);
     }
 
-    public GravitorBlockEntity(BlockEntityType<?> tileEntityType, BlockPos pos, BlockState state) {
-        super(tileEntityType, pos, state);
+    public GravitorBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
+        super(blockEntityType, pos, state);
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {

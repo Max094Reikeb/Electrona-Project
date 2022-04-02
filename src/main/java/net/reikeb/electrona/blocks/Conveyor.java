@@ -115,11 +115,10 @@ public class Conveyor extends AbstractWaterLoggableBlock implements EntityBlock 
     @Override
     public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
         super.stepOn(world, pos, state, entity);
-        BlockEntity tile = world.getBlockEntity(pos);
-        if (!(tile instanceof ConveyorBlockEntity)) return;
-        ConveyorBlockEntity tileConveyor = (ConveyorBlockEntity) tile;
-        double electronicPower = tileConveyor.getTileData().getDouble("ElectronicPower");
-        Direction facing = tileConveyor.getBlockState().getValue(FACING);
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (!(blockEntity instanceof ConveyorBlockEntity conveyorBlockEntity)) return;
+        double electronicPower = conveyorBlockEntity.getTileData().getDouble("ElectronicPower");
+        Direction facing = conveyorBlockEntity.getBlockState().getValue(FACING);
         if ((electronicPower > 0) && ((entity instanceof ItemEntity) || (entity instanceof LivingEntity))) {
             if (facing == Direction.NORTH) {
                 entity.setDeltaMovement(0, 0, 0.3);
@@ -135,8 +134,8 @@ public class Conveyor extends AbstractWaterLoggableBlock implements EntityBlock 
 
     @Override
     public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
-        BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-        return tileEntity instanceof MenuProvider ? (MenuProvider) tileEntity : null;
+        BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+        return blockEntity instanceof MenuProvider ? (MenuProvider) blockEntity : null;
     }
 
     @Override
@@ -147,8 +146,8 @@ public class Conveyor extends AbstractWaterLoggableBlock implements EntityBlock 
     @Override
     public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
         super.triggerEvent(state, world, pos, eventID, eventParam);
-        BlockEntity tileentity = world.getBlockEntity(pos);
-        return tileentity != null && tileentity.triggerEvent(eventID, eventParam);
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        return blockEntity != null && blockEntity.triggerEvent(eventID, eventParam);
     }
 
     @Nullable

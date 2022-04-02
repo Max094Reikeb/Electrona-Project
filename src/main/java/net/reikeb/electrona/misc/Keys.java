@@ -51,6 +51,15 @@ public class Keys {
     public static final ResourceLocation HAS_WATER_TANK_TAG = new ResourceLocation("forge", "electrona/has_water_tank");
     public static final ResourceLocation GENERATORS_TAG = new ResourceLocation("forge", "electrona/generators");
 
+    // Entities
+    public static final ResourceLocation GRAVITOR_BASE = Electrona.RL("entity/gravitor/base");
+    public static final ResourceLocation GRAVITOR_CAGE = Electrona.RL("entity/gravitor/cage");
+    public static final ResourceLocation GRAVITOR_WIND = Electrona.RL("entity/gravitor/wind");
+    public static final ResourceLocation GRAVITOR_WIND_VERTICAL = Electrona.RL("entity/gravitor/wind_vertical");
+    public static final ResourceLocation GRAVITOR_OPEN_EYE = Electrona.RL("entity/gravitor/open_eye");
+    public static final ResourceLocation GRAVITOR_CLOSED_EYE = Electrona.RL("entity/gravitor/closed_eye");
+    public static final ResourceLocation SINGULARITY_BEAM_LOCATION = new ResourceLocation("textures/entity/beacon_beam.png");
+
     // GUIs
     public static final ResourceLocation BATTERY_GUI = Electrona.RL("textures/guis/battery_gui.png");
     public static final ResourceLocation BIOMASS_GENERATOR_GUI = Electrona.RL("textures/guis/biomass_generator_gui.png");
@@ -66,4 +75,7 @@ public class Keys {
     public static final ResourceLocation TELEPORTER_GUI = Electrona.RL("textures/guis/teleporter_gui.png");
     public static final ResourceLocation WATER_PUMP_GUI = Electrona.RL("textures/guis/water_pump_gui.png");
     public static final ResourceLocation XP_GENERATOR_GUI = Electrona.RL("textures/guis/xp_generator_gui.png");
+
+    // ItemProperties
+    public static final ResourceLocation ANGLE_PROPERTY = new ResourceLocation("angle");
 }

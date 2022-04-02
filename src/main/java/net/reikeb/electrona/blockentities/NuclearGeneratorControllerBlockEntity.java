@@ -72,7 +72,7 @@ public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity {
         if (world == null) return;
         ItemStack stackInSlot0 = this.inventory.getStackInSlot(0);
 
-        BlockEntity tileUnder = world.getBlockEntity(blockPos.below());
+        BlockEntity blockEntityUnder = world.getBlockEntity(blockPos.below());
         Block blockUnder = world.getBlockState(blockPos.below()).getBlock();
 
         this.isOverCooler = blockUnder == BlockInit.COOLER.get();
@@ -88,21 +88,21 @@ public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity {
         world.setBlockAndUpdate(blockPos, this.getBlockState()
                 .setValue(NuclearGeneratorController.ACTIVATED, this.getTileData().getBoolean("powered")));
 
-        if (tileUnder instanceof CoolerBlockEntity) {
+        if (blockEntityUnder instanceof CoolerBlockEntity coolerBlockEntity) {
             AtomicReference<ItemStack> stackInSlot1 = new AtomicReference<>();
-            tileUnder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            coolerBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                 stackInSlot1.set(h.getStackInSlot(0));
             });
 
-            AtomicInteger waterLevel = FluidFunction.getFluidAmount(tileUnder);
-            AtomicInteger tankCapacity = FluidFunction.getTankCapacity(tileUnder);
+            AtomicInteger waterLevel = FluidFunction.getFluidAmount(coolerBlockEntity);
+            AtomicInteger tankCapacity = FluidFunction.getTankCapacity(coolerBlockEntity);
 
             // Input slot - Handling slots
             if ((stackInSlot0.getItem() == Items.WATER_BUCKET)
                     && (waterLevel.get() <= (tankCapacity.get() - 1000)) && (blockUnder == BlockInit.COOLER.get())) {
                 this.inventory.decrStackSize(0, 1);
                 this.inventory.insertItem(0, new ItemStack(Items.BUCKET, 1), false);
-                FluidFunction.fillWater(tileUnder, 1000);
+                FluidFunction.fillWater(coolerBlockEntity, 1000);
             }
 
             if (blockUnder == BlockInit.COOLER.get()) {
@@ -121,7 +121,7 @@ public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity {
             }
 
             // Generation function
-            NuclearFunction.nuclearGeneration(this, tileUnder, stackInSlot1.get(), this.inventory.getStackInSlot(1), electronicPower, temperature, waterLevel.get());
+            NuclearFunction.nuclearGeneration(this, coolerBlockEntity, stackInSlot1.get(), this.inventory.getStackInSlot(1), electronicPower, temperature, waterLevel.get());
         }
 
         if ((this.getTileData().getBoolean("alert")) && (this.level.getGameTime() % 20 == 0)) {
@@ -145,19 +145,19 @@ public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity {
     }
 
     public int getUnderWater() {
-        BlockEntity tileUnder = this.getLevel().getBlockEntity(this.getBlockPos().below());
-        if (tileUnder instanceof CoolerBlockEntity) {
-            return FluidFunction.getFluidAmount(tileUnder).get();
+        BlockEntity underBlockEntity = this.getLevel().getBlockEntity(this.getBlockPos().below());
+        if (underBlockEntity instanceof CoolerBlockEntity coolerBlockEntity) {
+            return FluidFunction.getFluidAmount(coolerBlockEntity).get();
         }
         return 0;
     }
 
     public void setUnderWater(int amount) {
-        BlockEntity tileUnder = this.getLevel().getBlockEntity(this.getBlockPos().below());
-        if (!(tileUnder instanceof CoolerBlockEntity)) return;
-        AtomicInteger waterLevel = FluidFunction.getFluidAmount(tileUnder);
-        FluidFunction.drainWater(tileUnder, waterLevel.get());
-        FluidFunction.fillWater(tileUnder, amount);
+        BlockEntity underBlockEntity = this.getLevel().getBlockEntity(this.getBlockPos().below());
+        if (!(underBlockEntity instanceof CoolerBlockEntity)) return;
+        AtomicInteger waterLevel = FluidFunction.getFluidAmount(underBlockEntity);
+        FluidFunction.drainWater(underBlockEntity, waterLevel.get());
+        FluidFunction.fillWater(underBlockEntity, amount);
     }
 
     public int getTemperature() {

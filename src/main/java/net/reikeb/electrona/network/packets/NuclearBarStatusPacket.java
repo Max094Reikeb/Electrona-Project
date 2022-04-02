@@ -38,8 +38,8 @@ public class NuclearBarStatusPacket {
                     ((NuclearGeneratorControllerContainer) playerEntity.containerMenu).getPosZUnder());
             BlockPos blockPos = posUnder.above();
             BlockEntity blockEntity = playerEntity.level.getBlockEntity(blockPos);
-            BlockEntity tileUnder = playerEntity.level.getBlockEntity(posUnder);
-            if ((!(tileUnder instanceof CoolerBlockEntity)) || (!(blockEntity instanceof NuclearGeneratorControllerBlockEntity)))
+            BlockEntity blockEntityUnder = playerEntity.level.getBlockEntity(posUnder);
+            if ((!(blockEntityUnder instanceof CoolerBlockEntity)) || (!(blockEntity instanceof NuclearGeneratorControllerBlockEntity)))
                 return;
 
             AtomicReference<ItemStack> stackInSlot1 = new AtomicReference<>();
@@ -49,12 +49,12 @@ public class NuclearBarStatusPacket {
 
             if (((NuclearGeneratorControllerContainer) playerEntity.containerMenu).areUBIn()) {
                 ((NuclearGeneratorControllerContainer) playerEntity.containerMenu).setUBIn(false);
-                tileUnder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                blockEntityUnder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                     h.extractItem(0, 1, false);
                 });
             } else if (((NuclearGeneratorControllerContainer) playerEntity.containerMenu).isAboveCooler()) {
                 ((NuclearGeneratorControllerContainer) playerEntity.containerMenu).setUBIn(true);
-                tileUnder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                blockEntityUnder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                     h.insertItem(0, stackInSlot1.get(), false);
                 });
             }

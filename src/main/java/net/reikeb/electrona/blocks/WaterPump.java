@@ -61,9 +61,9 @@ public class WaterPump extends Block implements EntityBlock {
     @Override
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            BlockEntity tileentity = world.getBlockEntity(pos);
-            if (tileentity instanceof WaterPumpBlockEntity) {
-                ((WaterPumpBlockEntity) tileentity).dropItems(world, pos);
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof WaterPumpBlockEntity) {
+                ((WaterPumpBlockEntity) blockEntity).dropItems(world, pos);
                 world.updateNeighbourForOutputSignal(pos, this);
             }
             super.onRemove(state, world, pos, newState, isMoving);
@@ -86,10 +86,11 @@ public class WaterPump extends Block implements EntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (!worldIn.isClientSide) {
-            BlockEntity tile = worldIn.getBlockEntity(pos);
-            if (tile instanceof WaterPumpBlockEntity) {
-                NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) tile, pos);
-                return InteractionResult.SUCCESS;
+            BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+            if (blockEntity instanceof WaterPumpBlockEntity) {
+                NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) blockEntity, pos);
+            } else {
+                throw new IllegalStateException("Our named container provider is missing!");
             }
         }
         return InteractionResult.SUCCESS;
@@ -97,8 +98,8 @@ public class WaterPump extends Block implements EntityBlock {
 
     @Override
     public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
-        BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-        return tileEntity instanceof MenuProvider ? (MenuProvider) tileEntity : null;
+        BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+        return blockEntity instanceof MenuProvider ? (MenuProvider) blockEntity : null;
     }
 
     @Override
@@ -109,8 +110,8 @@ public class WaterPump extends Block implements EntityBlock {
     @Override
     public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
         super.triggerEvent(state, world, pos, eventID, eventParam);
-        BlockEntity tileentity = world.getBlockEntity(pos);
-        return tileentity != null && tileentity.triggerEvent(eventID, eventParam);
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        return blockEntity != null && blockEntity.triggerEvent(eventID, eventParam);
     }
 
     @Nullable

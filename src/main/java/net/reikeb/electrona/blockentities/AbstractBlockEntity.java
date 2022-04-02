@@ -31,8 +31,8 @@ public abstract class AbstractBlockEntity extends BaseContainerBlockEntity {
     public final ItemHandler inventory;
     public int slots;
 
-    protected AbstractBlockEntity(BlockEntityType<?> tileEntity, BlockPos pos, BlockState state, int slots) {
-        super(tileEntity, pos, state);
+    protected AbstractBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state, int slots) {
+        super(blockEntityType, pos, state);
 
         this.slots = slots;
         this.inventory = new ItemHandler(slots);

@@ -37,28 +37,28 @@ public class CableFunction {
 
         for (Direction dir : directions) {
             if (cablePower > 0) {
-                BlockEntity tileEntity = world.getBlockEntity(pos.relative(dir));
+                BlockEntity blockEntity = world.getBlockEntity(pos.relative(dir));
                 Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
-                if (tileEntity == null) continue;
+                if (blockEntity == null) continue;
                 if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
 
-                double machinePower = tileEntity.getTileData().getDouble("ElectronicPower");
-                int machineMax = tileEntity.getTileData().getInt("MaxStorage");
-                boolean machineLogic = tileEntity.getTileData().getBoolean("logic");
+                double machinePower = blockEntity.getTileData().getDouble("ElectronicPower");
+                int machineMax = blockEntity.getTileData().getInt("MaxStorage");
+                boolean machineLogic = blockEntity.getTileData().getBoolean("logic");
 
                 if (machineTag.contains(offsetBlock)) {
                     if (machinePower < (machineMax - cablePower)) {
-                        tileEntity.getTileData().putDouble("ElectronicPower", (machinePower + transferPerTick));
+                        blockEntity.getTileData().putDouble("ElectronicPower", (machinePower + transferPerTick));
                         cableNBT.putDouble("ElectronicPower", (cablePower - transferPerTick));
                     } else {
-                        tileEntity.getTileData().putDouble("ElectronicPower", machineMax);
+                        blockEntity.getTileData().putDouble("ElectronicPower", machineMax);
                     }
                 } else if (cableTag.contains(offsetBlock)) {
                     if ((!machineLogic) && ((transferPerTick + machinePower) < machineMax)) {
-                        tileEntity.getTileData().putDouble("ElectronicPower", (machinePower + transferPerTick));
+                        blockEntity.getTileData().putDouble("ElectronicPower", (machinePower + transferPerTick));
                         cableNBT.putDouble("ElectronicPower", (cablePower - transferPerTick));
                         cableNBT.putBoolean("logic", !(cableNBT.getDouble("ElectronicPower") > 0));
-                        tileEntity.getTileData().putBoolean("logic", false);
+                        blockEntity.getTileData().putBoolean("logic", false);
                     }
                 }
             } else {
@@ -71,14 +71,14 @@ public class CableFunction {
     /**
      * This method is used by Cables to transfer fluid to Machines or other cables
      *
-     * @param world             The world the blocks are in
-     * @param pos               The blockpos of the Cable
-     * @param directions        The directions of the Cable
-     * @param cable             The Tile Entity of the Cable
-     * @param cableFLuid        The amount of fluid in the Cable
-     * @param transferPerSecond The amount of fluid transfered each second by the Cable
+     * @param world                 The world the blocks are in
+     * @param pos                   The blockpos of the Cable
+     * @param directions            The directions of the Cable
+     * @param waterCableBlockEntity The Block Entity of the Cable
+     * @param cableFLuid            The amount of fluid in the Cable
+     * @param transferPerSecond     The amount of fluid transfered each second by the Cable
      */
-    public static void cableTransferFluid(Level world, BlockPos pos, Direction[] directions, WaterCableBlockEntity cable, double cableFLuid, int transferPerSecond) {
+    public static void cableTransferFluid(Level world, BlockPos pos, Direction[] directions, WaterCableBlockEntity waterCableBlockEntity, double cableFLuid, int transferPerSecond) {
         double transferPerTick = transferPerSecond * 0.05;
 
         TagCollection<Block> tagCollection = BlockTags.getAllTags();
@@ -88,32 +88,32 @@ public class CableFunction {
 
         for (Direction dir : directions) {
             if (cableFLuid > 0) {
-                BlockEntity tileEntity = world.getBlockEntity(pos.relative(dir));
+                BlockEntity blockEntity = world.getBlockEntity(pos.relative(dir));
                 Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
-                if (tileEntity == null) continue;
+                if (blockEntity == null) continue;
                 if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
 
-                AtomicInteger machineFluid = FluidFunction.getFluidAmount(tileEntity);
-                AtomicInteger machineMax = FluidFunction.getTankCapacity(tileEntity);
-                boolean machineLogic = tileEntity.getTileData().getBoolean("logic");
+                AtomicInteger machineFluid = FluidFunction.getFluidAmount(blockEntity);
+                AtomicInteger machineMax = FluidFunction.getTankCapacity(blockEntity);
+                boolean machineLogic = blockEntity.getTileData().getBoolean("logic");
 
                 if (machineTag.contains(offsetBlock)) {
                     if (machineFluid.get() < (machineMax.get() - cableFLuid)) {
-                        FluidFunction.fillWater(tileEntity, (int) transferPerTick);
-                        FluidFunction.drainWater(cable, (int) transferPerTick);
+                        FluidFunction.fillWater(blockEntity, (int) transferPerTick);
+                        FluidFunction.drainWater(waterCableBlockEntity, (int) transferPerTick);
                     } else {
-                        FluidFunction.fillWater(tileEntity, (machineMax.get() - machineFluid.get()));
+                        FluidFunction.fillWater(blockEntity, (machineMax.get() - machineFluid.get()));
                     }
                 } else if (cableTag.contains(offsetBlock)) {
                     if ((!machineLogic) && ((transferPerTick + machineFluid.get()) < machineMax.get())) {
-                        FluidFunction.fillWater(tileEntity, (int) transferPerTick);
-                        FluidFunction.drainWater(cable, (int) transferPerTick);
-                        cable.getTileData().putBoolean("logic", !(cable.getTileData().getDouble("ElectronicPower") > 0));
-                        tileEntity.getTileData().putBoolean("logic", false);
+                        FluidFunction.fillWater(blockEntity, (int) transferPerTick);
+                        FluidFunction.drainWater(waterCableBlockEntity, (int) transferPerTick);
+                        waterCableBlockEntity.getTileData().putBoolean("logic", !(waterCableBlockEntity.getTileData().getDouble("ElectronicPower") > 0));
+                        blockEntity.getTileData().putBoolean("logic", false);
                     }
                 }
             } else {
-                cable.getTileData().putBoolean("logic", false);
+                waterCableBlockEntity.getTileData().putBoolean("logic", false);
                 return; // we have no more fluid
             }
         }

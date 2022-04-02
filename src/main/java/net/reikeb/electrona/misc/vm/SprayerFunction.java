@@ -28,16 +28,16 @@ public class SprayerFunction {
     /**
      * Method that handles the way the Sprayer gives an effect to entities around it
      *
-     * @param inv             The inventory of the Sprayer
-     * @param tileSprayer     The TileEntity of the Sprayer
-     * @param electronicPower The energy of the Sprayer
+     * @param inv                The inventory of the Sprayer
+     * @param sprayerBlockEntity The BlockEntity of the Sprayer
+     * @param electronicPower    The energy of the Sprayer
      */
-    public static void mainSprayer(ItemHandler inv, SprayerBlockEntity tileSprayer, double electronicPower) {
+    public static void mainSprayer(ItemHandler inv, SprayerBlockEntity sprayerBlockEntity, double electronicPower) {
         int boostCount = 0;
-        Level world = tileSprayer.getLevel();
-        double x = tileSprayer.getBlockPos().getX();
-        double y = tileSprayer.getBlockPos().getY();
-        double z = tileSprayer.getBlockPos().getZ();
+        Level world = sprayerBlockEntity.getLevel();
+        double x = sprayerBlockEntity.getBlockPos().getX();
+        double y = sprayerBlockEntity.getBlockPos().getY();
+        double z = sprayerBlockEntity.getBlockPos().getZ();
         if (inv.getStackInSlot(1).getItem() == ItemInit.WIRELESS_BOOSTER.get()) {
             boostCount += 1;
         }
@@ -47,9 +47,9 @@ public class SprayerFunction {
         if (inv.getStackInSlot(3).getItem() == ItemInit.WIRELESS_BOOSTER.get()) {
             boostCount += 1;
         }
-        tileSprayer.getTileData().putInt("radius", 5 + (boostCount * 3));
+        sprayerBlockEntity.getTileData().putInt("radius", 5 + (boostCount * 3));
         if ((!(inv.getStackInSlot(0).isEmpty())) && (electronicPower >= 200)) {
-            double radiusEffect = tileSprayer.getTileData().getInt("radius");
+            double radiusEffect = sprayerBlockEntity.getTileData().getInt("radius");
             if (world == null) return;
             List<LivingEntity> livingEntities = world.getEntitiesOfClass(LivingEntity.class,
                     new AABB(x - radiusEffect, y - radiusEffect, z - radiusEffect,
@@ -61,7 +61,7 @@ public class SprayerFunction {
             }.compareDistOf(x, y, z)).collect(Collectors.toList());
             for (LivingEntity entityiterator : livingEntities) {
                 if (inv.getStackInSlot(0).getItem().isEdible()) {
-                    tileSprayer.getTileData().putDouble("ElectronicPower", (electronicPower - 200));
+                    sprayerBlockEntity.getTileData().putDouble("ElectronicPower", (electronicPower - 200));
                     FoodProperties usedFood = inv.getStackInSlot(0).getItem().getFoodProperties();
                     if (usedFood == null) return;
                     for (Pair<MobEffectInstance, Float> pairiterator : usedFood.getEffects()) {
@@ -71,7 +71,7 @@ public class SprayerFunction {
                     }
                     inv.decrStackSize(0, 1);
                 } else if (inv.getStackInSlot(0).getItem() instanceof PotionItem) {
-                    tileSprayer.getTileData().putDouble("ElectronicPower", (electronicPower - 200));
+                    sprayerBlockEntity.getTileData().putDouble("ElectronicPower", (electronicPower - 200));
                     for (MobEffectInstance effectiterator : PotionUtils.getMobEffects(inv.getStackInSlot(0))) {
                         entityiterator.addEffect(new MobEffectInstance(effectiterator));
                     }
@@ -84,15 +84,15 @@ public class SprayerFunction {
     /**
      * Method that handles Sprayer's particles
      *
-     * @param world       The world of the Sprayer
-     * @param tileSprayer The TileEntity of the Sprayer
-     * @param pos         The position of the Sprayer
+     * @param world              The world of the Sprayer
+     * @param sprayerBlockEntity The BlockEntity of the Sprayer
+     * @param pos                The position of the Sprayer
      */
-    public static void sprayerParticles(Level world, SprayerBlockEntity tileSprayer, BlockPos pos) {
+    public static void sprayerParticles(Level world, SprayerBlockEntity sprayerBlockEntity, BlockPos pos) {
         if (world.isClientSide) return;
-        double xRadius = tileSprayer.getTileData().getInt("radius");
+        double xRadius = sprayerBlockEntity.getTileData().getInt("radius");
         double loop = 0;
-        double zRadius = tileSprayer.getTileData().getInt("radius");
+        double zRadius = sprayerBlockEntity.getTileData().getInt("radius");
         double particleAmount = (xRadius) * 4;
         while (loop < particleAmount) {
             if (world instanceof ServerLevel) {

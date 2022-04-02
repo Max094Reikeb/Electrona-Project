@@ -40,18 +40,18 @@ public class EnergyFunction {
         for (Direction dir : directions) {
             if (generatorPower <= 0) return; // we have no more power
 
-            BlockEntity tileEntity = world.getBlockEntity(pos.relative(dir));
+            BlockEntity blockEntity = world.getBlockEntity(pos.relative(dir));
             Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
-            if (tileEntity == null) continue;
+            if (blockEntity == null) continue;
             if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
 
-            double machinePower = tileEntity.getTileData().getDouble("ElectronicPower");
-            int machineMax = tileEntity.getTileData().getInt("MaxStorage");
+            double machinePower = blockEntity.getTileData().getDouble("ElectronicPower");
+            int machineMax = blockEntity.getTileData().getInt("MaxStorage");
             double headroom = machineMax - machinePower;
             double actualTransfer = Math.min(Math.min(transferPerTick, generatorPower), headroom);
 
             generatorNBT.putDouble("ElectronicPower", (generatorPower -= actualTransfer));
-            tileEntity.getTileData().putDouble("ElectronicPower", (machinePower + actualTransfer));
+            blockEntity.getTileData().putDouble("ElectronicPower", (machinePower + actualTransfer));
         }
     }
 

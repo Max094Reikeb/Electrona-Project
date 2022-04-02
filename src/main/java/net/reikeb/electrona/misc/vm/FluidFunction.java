@@ -26,11 +26,11 @@ public class FluidFunction {
      * @param world             The world of the blocks
      * @param pos               The blockpos of the generator
      * @param directions        The directions of the generator
-     * @param generatorTE       The TileEntity of the generator
+     * @param generatorBE       The BlockEntity of the generator
      * @param generatorLevel    The current fluid amount of the generator
      * @param transferPerSecond The amount of fluid transfered per second
      */
-    public static void generatorTransferFluid(Level world, BlockPos pos, Direction[] directions, BlockEntity generatorTE, int generatorLevel, int transferPerSecond) {
+    public static void generatorTransferFluid(Level world, BlockPos pos, Direction[] directions, BlockEntity generatorBE, int generatorLevel, int transferPerSecond) {
         double transferPerTick = transferPerSecond * 0.05;
 
         TagCollection<Block> tagCollection = BlockTags.getAllTags();
@@ -41,65 +41,65 @@ public class FluidFunction {
         for (Direction dir : directions) {
             if (generatorLevel <= 0) return; // we have no more fluid
 
-            BlockEntity tileEntity = world.getBlockEntity(pos.relative(dir));
+            BlockEntity blockEntity = world.getBlockEntity(pos.relative(dir));
             Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
-            if (tileEntity == null) continue;
+            if (blockEntity == null) continue;
             if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
 
-            AtomicInteger machineLevel = getFluidAmount(tileEntity);
-            AtomicInteger machineCapacity = getTankCapacity(tileEntity);
+            AtomicInteger machineLevel = getFluidAmount(blockEntity);
+            AtomicInteger machineCapacity = getTankCapacity(blockEntity);
             double headroom = machineCapacity.get() - machineLevel.get();
             double actualTransfer = Math.min(Math.min(transferPerTick, generatorLevel), headroom);
 
-            drainWater(generatorTE, (int) actualTransfer);
-            fillWater(tileEntity, (int) actualTransfer);
+            drainWater(generatorBE, (int) actualTransfer);
+            fillWater(blockEntity, (int) actualTransfer);
         }
     }
 
     /**
-     * Small method to drain water from a TileEntity
+     * Small method to drain water from a BlockEntity
      *
-     * @param te     The TileEntity we drain water from
+     * @param be     The BlockEntity we drain water from
      * @param amount The amount of water drained
      */
-    public static void drainWater(BlockEntity te, int amount) {
-        te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+    public static void drainWater(BlockEntity be, int amount) {
+        be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
                 .ifPresent(cap -> cap.drain(amount, IFluidHandler.FluidAction.EXECUTE));
     }
 
     /**
-     * Small method to fill water into a TileEntity
+     * Small method to fill water into a BlockEntity
      *
-     * @param te     The TileEntity we give water to
+     * @param be     The BlockEntity we give water to
      * @param amount The amount of water given
      */
-    public static void fillWater(BlockEntity te, int amount) {
-        te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+    public static void fillWater(BlockEntity be, int amount) {
+        be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
                 .ifPresent(cap -> cap.fill(new FluidStack(Fluids.WATER, amount), IFluidHandler.FluidAction.EXECUTE));
     }
 
     /**
-     * Small method to get the amount of fluid in a TileEntity
+     * Small method to get the amount of fluid in a BlockEntity
      *
-     * @param te The TileEntity to check
+     * @param be The BlockEntity to check
      * @return The amount of fluid
      */
-    public static AtomicInteger getFluidAmount(BlockEntity te) {
+    public static AtomicInteger getFluidAmount(BlockEntity be) {
         AtomicInteger amount = new AtomicInteger();
-        te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+        be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
                 .ifPresent(cap -> amount.set(cap.getFluidInTank(1).getAmount()));
         return amount;
     }
 
     /**
-     * Small method to get the capacity of a tank in a TileEntity
+     * Small method to get the capacity of a tank in a BlockEntity
      *
-     * @param te The TileEntity to check
+     * @param be The BlockEntity to check
      * @return The tank capacity
      */
-    public static AtomicInteger getTankCapacity(BlockEntity te) {
+    public static AtomicInteger getTankCapacity(BlockEntity be) {
         AtomicInteger capacity = new AtomicInteger();
-        te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+        be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
                 .ifPresent(cap -> capacity.set(cap.getTankCapacity(1)));
         return capacity;
     }

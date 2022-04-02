@@ -6,17 +6,15 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.DyeColor;
 
 import net.reikeb.electrona.blockentities.SingularityBlockEntity;
+import net.reikeb.electrona.misc.Keys;
 
-public class TileSingularityRenderer implements BlockEntityRenderer<SingularityBlockEntity> {
+public class SingularityBlockEntityRenderer implements BlockEntityRenderer<SingularityBlockEntity> {
 
-    public static final ResourceLocation BEAM_LOCATION = new ResourceLocation("textures/entity/beacon_beam.png");
-
-    public TileSingularityRenderer(BlockEntityRendererProvider.Context context) {
+    public SingularityBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
         super();
     }
 
@@ -27,7 +25,7 @@ public class TileSingularityRenderer implements BlockEntityRenderer<SingularityB
         int i = Mth.floor((double) f * d0);
         float[] afloat = DyeColor.MAGENTA.getTextureDiffuseColors();
         long j = singularity.getLevel().getGameTime();
-        BeaconRenderer.renderBeaconBeam(matrixStack, buffer, BEAM_LOCATION, n, f, j, 0, i, afloat, 0.15F, 0.175F);
-        BeaconRenderer.renderBeaconBeam(matrixStack, buffer, BEAM_LOCATION, n, f, j, 0, -i, afloat, 0.15F, 0.175F);
+        BeaconRenderer.renderBeaconBeam(matrixStack, buffer, Keys.SINGULARITY_BEAM_LOCATION, n, f, j, 0, i, afloat, 0.15F, 0.175F);
+        BeaconRenderer.renderBeaconBeam(matrixStack, buffer, Keys.SINGULARITY_BEAM_LOCATION, n, f, j, 0, -i, afloat, 0.15F, 0.175F);
     }
 }

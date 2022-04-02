@@ -56,9 +56,9 @@ public class Cooler extends AbstractWaterLoggableBlock implements EntityBlock {
     @Override
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            BlockEntity tileentity = world.getBlockEntity(pos);
-            if (tileentity instanceof CoolerBlockEntity) {
-                ((CoolerBlockEntity) tileentity).dropItems(world, pos);
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof CoolerBlockEntity) {
+                ((CoolerBlockEntity) blockEntity).dropItems(world, pos);
                 world.updateNeighbourForOutputSignal(pos, this);
             }
             super.onRemove(state, world, pos, newState, isMoving);

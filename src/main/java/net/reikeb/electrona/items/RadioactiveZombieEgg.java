@@ -52,11 +52,11 @@ public class RadioactiveZombieEgg extends SpawnEggItem {
             BlockPos blockpos = context.getClickedPos();
             Direction direction = context.getClickedFace();
             BlockState blockstate = world.getBlockState(blockpos);
-            BlockEntity tileentity = world.getBlockEntity(blockpos);
-            if (tileentity instanceof SpawnerBlockEntity) {
-                BaseSpawner abstractspawner = ((SpawnerBlockEntity) tileentity).getSpawner();
+            BlockEntity blockEntity = world.getBlockEntity(blockpos);
+            if (blockEntity instanceof SpawnerBlockEntity spawnerBlockEntity) {
+                BaseSpawner abstractspawner = spawnerBlockEntity.getSpawner();
                 abstractspawner.setEntityId(EntityInit.RADIOACTIVE_ZOMBIE.get());
-                tileentity.setChanged();
+                spawnerBlockEntity.setChanged();
                 world.sendBlockUpdated(blockpos, blockstate, blockstate, Block.UPDATE_CLIENTS + Block.UPDATE_NEIGHBORS);
                 itemstack.shrink(1);
                 return InteractionResult.SUCCESS;

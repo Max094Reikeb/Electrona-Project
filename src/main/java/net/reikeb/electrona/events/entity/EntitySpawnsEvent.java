@@ -35,9 +35,9 @@ public class EntitySpawnsEvent {
                     for (int cz = -32; cz < 32; cz++) {
                         if (world.getBlockState(new BlockPos(x + cx, y + cy, z + cz)).getBlock() == BlockInit.ENERGETIC_LIGHTNING_ROD.get()) {
                             lightning.teleportTo(x + cx, y + cy, z + cz);
-                            BlockEntity tile = world.getBlockEntity(new BlockPos(x + cx, y + cy, z + cz));
-                            if (tile instanceof EnergeticLightningRodBlockEntity) {
-                                ((EnergeticLightningRodBlockEntity) tile).struckByLightning();
+                            BlockEntity blockEntity = world.getBlockEntity(new BlockPos(x + cx, y + cy, z + cz));
+                            if (blockEntity instanceof EnergeticLightningRodBlockEntity energeticLightningRodBlockEntity) {
+                                energeticLightningRodBlockEntity.struckByLightning();
                             }
                             return;
                         }

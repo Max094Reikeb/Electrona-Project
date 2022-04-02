@@ -50,20 +50,20 @@ public class TeleporterFunction {
         int z = pos.getZ();
         BlockState state = world.getBlockState(pos);
         BlockPos posBelow = new BlockPos(x, (y - 1), z);
-        BlockEntity tile = world.getBlockEntity(pos);
-        if (!(tile instanceof TeleporterBlockEntity tileEntity)) return;
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (!(blockEntity instanceof TeleporterBlockEntity teleporterBlockEntity)) return;
         boolean isTeleporter = false;
-        boolean autoDeletion = tileEntity.isAutoDeletion() == 1;
-        double teleportXCo = tileEntity.getTeleportX();
-        double teleportYCo = tileEntity.getTeleportY();
-        double teleportZCo = tileEntity.getTeleportZ();
+        boolean autoDeletion = teleporterBlockEntity.isAutoDeletion() == 1;
+        double teleportXCo = teleporterBlockEntity.getTeleportX();
+        double teleportYCo = teleporterBlockEntity.getTeleportY();
+        double teleportZCo = teleporterBlockEntity.getTeleportZ();
         BlockPos teleportPos = new BlockPos(teleportXCo, teleportYCo, teleportZCo);
-        double electronicPower = tileEntity.getElectronicPower();
+        double electronicPower = teleporterBlockEntity.getElectronicPower();
         if (electronicPower >= 1000) {
             if (BlockInit.DIMENSION_LINKER.get() == world.getBlockState(posBelow).getBlock()) {
-                BlockEntity tileBelow = world.getBlockEntity(posBelow);
-                if (!(tileBelow instanceof DimensionLinkerBlockEntity tileEntityBelow)) return;
-                String dimension = tileEntityBelow.getDimensionID();
+                BlockEntity blockEntityBelow = world.getBlockEntity(posBelow);
+                if (!(blockEntityBelow instanceof DimensionLinkerBlockEntity dimensionLinkerBlockEntity)) return;
+                String dimension = dimensionLinkerBlockEntity.getDimensionID();
                 if (world instanceof ServerLevel) {
                     ResourceKey<Level> key = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dimension));
                     if ((!dimension.equals("")) && (((ServerLevel) world).getServer().getLevel(key) != null)) {
@@ -104,11 +104,11 @@ public class TeleporterFunction {
                             teleport(_newWorld, pos, teleportPos, entity);
                             MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(world, _newWorld, pos, teleportPos, entity));
                             if (!world.isClientSide()) {
-                                tileEntity.setElectronicPower((int) (electronicPower - 1000));
+                                teleporterBlockEntity.setElectronicPower((int) (electronicPower - 1000));
                                 if (autoDeletion) {
-                                    tileEntity.setTeleportX(0);
-                                    tileEntity.setTeleportY(0);
-                                    tileEntity.setTeleportZ(0);
+                                    teleporterBlockEntity.setTeleportX(0);
+                                    teleporterBlockEntity.setTeleportY(0);
+                                    teleporterBlockEntity.setTeleportZ(0);
                                 }
                                 world.sendBlockUpdated(pos, state, state, 3);
                             }
@@ -125,11 +125,11 @@ public class TeleporterFunction {
                     teleport(world, pos, teleportPos, entity);
                     MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(world, world, pos, teleportPos, entity));
                     if (!world.isClientSide()) {
-                        tileEntity.setElectronicPower((int) (electronicPower - 1000));
+                        teleporterBlockEntity.setElectronicPower((int) (electronicPower - 1000));
                         if (autoDeletion) {
-                            tileEntity.setTeleportX(0);
-                            tileEntity.setTeleportY(0);
-                            tileEntity.setTeleportZ(0);
+                            teleporterBlockEntity.setTeleportX(0);
+                            teleporterBlockEntity.setTeleportY(0);
+                            teleporterBlockEntity.setTeleportZ(0);
                         }
                         world.sendBlockUpdated(pos, state, state, 3);
                     }

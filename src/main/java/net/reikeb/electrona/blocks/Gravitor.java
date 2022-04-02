@@ -88,9 +88,9 @@ public class Gravitor extends BaseEntityBlock implements SimpleWaterloggedBlock 
     @Override
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
         if (stack.hasCustomHoverName()) {
-            BlockEntity tileentity = world.getBlockEntity(pos);
-            if (tileentity instanceof BeaconBlockEntity) {
-                ((BeaconBlockEntity) tileentity).setCustomName(stack.getHoverName());
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof BeaconBlockEntity beaconBlockEntity) {
+                beaconBlockEntity.setCustomName(stack.getHoverName());
             }
         }
 
