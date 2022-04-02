@@ -22,7 +22,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import net.minecraftforge.network.NetworkHooks;
 
-import net.reikeb.electrona.blockentities.TileDimensionLinker;
+import net.reikeb.electrona.blockentities.DimensionLinkerBlockEntity;
 
 import java.util.Collections;
 import java.util.List;
@@ -53,8 +53,8 @@ public class DimensionLinker extends AbstractWaterLoggableBlock implements Entit
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity tileentity = world.getBlockEntity(pos);
-            if (tileentity instanceof TileDimensionLinker) {
-                ((TileDimensionLinker) tileentity).dropItems(world, pos);
+            if (tileentity instanceof DimensionLinkerBlockEntity) {
+                ((DimensionLinkerBlockEntity) tileentity).dropItems(world, pos);
                 world.updateNeighbourForOutputSignal(pos, this);
             }
             super.onRemove(state, world, pos, newState, isMoving);
@@ -94,7 +94,7 @@ public class DimensionLinker extends AbstractWaterLoggableBlock implements Entit
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (!worldIn.isClientSide) {
             BlockEntity tile = worldIn.getBlockEntity(pos);
-            if (tile instanceof TileDimensionLinker) {
+            if (tile instanceof DimensionLinkerBlockEntity) {
                 NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) tile, pos);
                 return InteractionResult.SUCCESS;
             }
@@ -110,7 +110,7 @@ public class DimensionLinker extends AbstractWaterLoggableBlock implements Entit
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileDimensionLinker(pos, state);
+        return new DimensionLinkerBlockEntity(pos, state);
     }
 
     @Override

@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.common.util.NonNullLazy;
 
-import net.reikeb.electrona.blockentities.TileGravitor;
+import net.reikeb.electrona.blockentities.GravitorBlockEntity;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.setup.ItemGroups;
 import net.reikeb.electrona.setup.client.render.BEWLR;
@@ -43,7 +43,7 @@ public class GravitorItem extends BlockItem {
     @Override
     public void initializeClient(Consumer<IItemRenderProperties> consumer) {
         consumer.accept(new IItemRenderProperties() {
-            private final NonNullLazy<BlockEntityWithoutLevelRenderer> bewlr = NonNullLazy.of(() -> new BEWLR(() -> new TileGravitor(BlockPos.ZERO, Blocks.CONDUIT.defaultBlockState())));
+            private final NonNullLazy<BlockEntityWithoutLevelRenderer> bewlr = NonNullLazy.of(() -> new BEWLR(() -> new GravitorBlockEntity(BlockPos.ZERO, Blocks.CONDUIT.defaultBlockState())));
 
             @Override
             public BlockEntityWithoutLevelRenderer getItemStackRenderer() {

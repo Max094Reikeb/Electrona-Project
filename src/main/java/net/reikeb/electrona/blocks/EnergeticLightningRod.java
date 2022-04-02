@@ -19,8 +19,8 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.reikeb.electrona.blockentities.TileEnergeticLightningRod;
-import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.blockentities.EnergeticLightningRodBlockEntity;
+import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.misc.vm.CustomShapes;
 import net.reikeb.electrona.utils.ElectronaUtils;
 
@@ -99,12 +99,12 @@ public class EnergeticLightningRod extends AbstractWaterLoggableBlock implements
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileEnergeticLightningRod(pos, state);
+        return new EnergeticLightningRodBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
-        return blockEntityType == TileEntityInit.TILE_ENERGETIC_LIGHTNING_ROD.get() ? (BlockEntityTicker<T>) TileEnergeticLightningRod.TICKER : null;
+        return blockEntityType == BlockEntityInit.ENERGETIC_LIGHTNING_ROD_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) EnergeticLightningRodBlockEntity.TICKER : null;
     }
 }

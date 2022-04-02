@@ -180,8 +180,8 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityInit.RADIOACTIVE_ZOMBIE_TYPE, RadioactiveZombieRenderer::new);
         event.registerEntityRenderer(EntityInit.ENERGETIC_LIGHTNING_BOLT_TYPE, EnergeticLightningBoltRenderer::new);
 
-        event.registerBlockEntityRenderer(TileEntityInit.TILE_SINGULARITY.get(), TileSingularityRenderer::new);
-        event.registerBlockEntityRenderer(TileEntityInit.TILE_GRAVITOR.get(), TileGravitorRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntityInit.SINGULARITY_BLOCK_ENTITY.get(), TileSingularityRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntityInit.GRAVITOR_BLOCK_ENTITY.get(), TileGravitorRenderer::new);
     }
 
     @SubscribeEvent

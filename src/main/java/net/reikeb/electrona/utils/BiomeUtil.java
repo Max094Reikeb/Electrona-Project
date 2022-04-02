@@ -9,8 +9,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraftforge.network.PacketDistributor;
 
+import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.BiomeSingleUpdatePacket;
 
@@ -43,21 +46,33 @@ public class BiomeUtil {
      * @param biomeKey The biome's ResourceKey to replace with
      */
     public static void setBiomeKeyAtPos(Level world, BlockPos pos, ResourceKey<Biome> biomeKey) {
-        /*
         Biome biome = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).get(biomeKey);
         if (biome == null) return;
-        ChunkBiomeContainer bc = world.getChunk(pos).getBiomes();
-        ChunkAccess chunk = world.getChunk(pos);
+        ChunkAccess chunkAccess = world.getChunk(pos);
+        LevelChunkSection[] bc = chunkAccess.getSections();
+        int biomeIndex = getBiomeIndex(pos.getX(), pos.getY(), pos.getZ(), 0L);
+        Biome[] biomeArray = new Biome[100];
+        if (biomeIndex < bc.length) {
+            biomeArray[biomeIndex] = biome;
+        } else {
+            Electrona.LOGGER.error(String.format("Failed to set biome at pos: %s; to biome: %s", pos, biome));
+        }
+        chunkAccess.setUnsaved(true);
+        /*
+        Biome biome = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).get(biomeKey); // get the biome from the biomeKey
+        if (biome == null) return; // check the biome isn't null
+        ChunkBiomeContainer bc = world.getChunk(pos).getBiomes(); // get a container of all biomes in the chunk at the location
+        ChunkAccess chunkAccess = world.getChunk(pos); // get access to the chunk at location
         if (bc != null) {
-            Biome[] biomeArray = bc.biomes;
-            int biomeIndex = getBiomeIndex(pos.getX(), pos.getY(), pos.getZ(), 0L);
+            Biome[] biomeArray = bc.biomes; // set all biomes in an array
+            int biomeIndex = getBiomeIndex(pos.getX(), pos.getY(), pos.getZ(), 0L); // get the index of a biome at x y z
             if (biomeIndex < biomeArray.length) {
-                biomeArray[biomeIndex] = biome;
+                biomeArray[biomeIndex] = biome; // change the biome in the array at index by our wanted biome
             } else {
                 Electrona.LOGGER.error(String.format("Failed to set biome at pos: %s; to biome: %s", pos, biome));
             }
         }
-        chunk.setUnsaved(true);
+        chunkAccess.setUnsaved(true); // set unsave so it saves again
          */
     }
 

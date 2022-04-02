@@ -1,45 +1,49 @@
 package net.reikeb.electrona.containers;
 
-import net.minecraft.world.Container;
-import net.minecraft.world.SimpleContainer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.entity.player.Player;
+
+import net.minecraftforge.items.CapabilityItemHandler;
+
+import net.reikeb.electrona.blockentities.WaterPumpBlockEntity;
 
 import static net.reikeb.electrona.init.ContainerInit.WATER_PUMP_CONTAINER;
 
 public class WaterPumpContainer extends AbstractContainer {
 
-    private final ContainerData waterPumpData;
+    public WaterPumpBlockEntity waterPumpBlockEntity;
 
-    public WaterPumpContainer(int id, Inventory inv) {
-        this(id, inv, new SimpleContainer(2), new SimpleContainerData(3));
-    }
-
-    public WaterPumpContainer(int id, Inventory inv, Container container, ContainerData containerData) {
+    public WaterPumpContainer(int id, BlockPos pos, Inventory inv, Player player) {
         super(WATER_PUMP_CONTAINER.get(), id, 2);
 
-        this.waterPumpData = containerData;
+        this.waterPumpBlockEntity = (WaterPumpBlockEntity) player.getCommandSenderWorld().getBlockEntity(pos);
+        if (waterPumpBlockEntity == null) return;
 
-        // this.addSlot(new Slots.BucketSlot(container, 0, 36, 35));
-        // this.addSlot(new Slots.BatterySlot(container, 1, 137, 29));
+        waterPumpBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            addSlot(new BucketSlot(h, 0, 36, 35));
+            addSlot(new BatterySlot(h, 1, 137, 29));
+        });
 
         this.layoutPlayerInventorySlots(inv);
+        this.addSyncedInt(waterPumpBlockEntity::setElectronicPower, waterPumpBlockEntity::getElectronicPower);
+        this.addSyncedInt(waterPumpBlockEntity::setWaterLevel, waterPumpBlockEntity::getWaterLevel);
+        this.addSyncedInt(waterPumpBlockEntity::setOn, waterPumpBlockEntity::isOn);
     }
 
     public int getElectronicPower() {
-        return this.waterPumpData.get(0);
+        return waterPumpBlockEntity.getElectronicPower();
     }
 
     public int getWaterLevel() {
-        return this.waterPumpData.get(1);
+        return waterPumpBlockEntity.getWaterLevel();
     }
 
     public boolean isOn() {
-        return this.waterPumpData.get(2) == 1;
+        return waterPumpBlockEntity.isOn() == 1;
     }
 
     public void setOn(boolean isOn) {
-        this.waterPumpData.set(2, (isOn ? 1 : 0));
+        waterPumpBlockEntity.setOn(isOn ? 1 : 0);
     }
 }

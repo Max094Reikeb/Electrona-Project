@@ -22,8 +22,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.reikeb.electrona.blockentities.TileHole;
-import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.blockentities.HoleBlockEntity;
+import net.reikeb.electrona.init.BlockEntityInit;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -77,12 +77,12 @@ public class Hole extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileHole(pos, state);
+        return new HoleBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
-        return blockEntityType == TileEntityInit.TILE_HOLE.get() ? (BlockEntityTicker<T>) TileHole.TICKER : null;
+        return blockEntityType == BlockEntityInit.HOLE_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) HoleBlockEntity.TICKER : null;
     }
 }

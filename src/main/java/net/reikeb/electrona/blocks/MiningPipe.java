@@ -25,8 +25,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.reikeb.electrona.blockentities.TileMiningPipe;
-import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.blockentities.MiningPipeBlockEntity;
+import net.reikeb.electrona.init.BlockEntityInit;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -93,12 +93,12 @@ public class MiningPipe extends AbstractWaterLoggableBlock implements EntityBloc
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileMiningPipe(pos, state);
+        return new MiningPipeBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
-        return blockEntityType == TileEntityInit.TILE_MINING_PIPE.get() ? (BlockEntityTicker<T>) TileMiningPipe.TICKER : null;
+        return blockEntityType == BlockEntityInit.MINING_PIPE_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) MiningPipeBlockEntity.TICKER : null;
     }
 }

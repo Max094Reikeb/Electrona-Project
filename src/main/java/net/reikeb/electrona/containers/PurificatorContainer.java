@@ -1,66 +1,46 @@
 package net.reikeb.electrona.containers;
 
-import net.minecraft.world.Container;
-import net.minecraft.world.SimpleContainer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.SimpleContainerData;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
 
-import net.reikeb.electrona.init.ItemInit;
-import net.reikeb.electrona.network.NetworkManager;
-import net.reikeb.electrona.network.packets.PurificationPacket;
+import net.minecraftforge.items.CapabilityItemHandler;
+
+import net.reikeb.electrona.blockentities.PurificatorBlockEntity;
 
 import static net.reikeb.electrona.init.ContainerInit.PURIFICATOR_CONTAINER;
 
 public class PurificatorContainer extends AbstractContainer {
 
-    private final ContainerData purificatorData;
+    public PurificatorBlockEntity purificatorBlockEntity;
 
-    public PurificatorContainer(int id, Inventory inv) {
-        this(id, inv, new SimpleContainer(3), new SimpleContainerData(3));
-    }
-
-    public PurificatorContainer(int id, Inventory inv, Container container, ContainerData containerData) {
+    public PurificatorContainer(int id, BlockPos pos, Inventory inv, Player player) {
         super(PURIFICATOR_CONTAINER.get(), id, 3);
 
-        this.purificatorData = containerData;
+        this.purificatorBlockEntity = (PurificatorBlockEntity) player.getCommandSenderWorld().getBlockEntity(pos);
+        if (purificatorBlockEntity == null) return;
 
-        // this.addSlot(new Slots.WaterBucketSlot(container, 0, 27, 27));
-        // this.addSlot(new Slots.BasicInputSlot(container, 1, 56, 40));
-        // this.addSlot(new InputSlot(container, 2, 136, 40));
+        purificatorBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            addSlot(new WaterBucketSlot(h, 0, 27, 27));
+            addSlot(new BasicInputSlot(h, 1, 56, 40));
+            addSlot(new PurificatorOutputSlot(h, 2, 136, 40));
+        });
 
         this.layoutPlayerInventorySlots(inv);
+        this.addSyncedInt(purificatorBlockEntity::setWaterLevel, purificatorBlockEntity::getWaterLevel);
+        this.addSyncedInt(purificatorBlockEntity::setPurifyingTime, purificatorBlockEntity::getPurifyingTime);
+        this.addSyncedInt(purificatorBlockEntity::setCurrentPurifyingTime, purificatorBlockEntity::getCurrentPurifyingTime);
     }
 
     public int getCurrentWater() {
-        return this.purificatorData.get(0);
+        return purificatorBlockEntity.getWaterLevel();
     }
 
     public int getPurifyingTime() {
-        return this.purificatorData.get(1);
+        return purificatorBlockEntity.getPurifyingTime();
     }
 
     public int getCurrentPurifyingTime() {
-        return this.purificatorData.get(2);
-    }
-
-    static class InputSlot extends Slot {
-        public InputSlot(Container container, int id, int x, int y) {
-            super(container, id, x, y);
-        }
-
-        public boolean mayPlace(ItemStack itemStack) {
-            return false;
-        }
-
-        public void onTake(Player playerEntity, ItemStack stack) {
-            if (stack.getItem() == ItemInit.PURIFIED_URANIUM.get()) {
-                // Trigger Advancement
-                NetworkManager.INSTANCE.sendToServer(new PurificationPacket());
-            }
-        }
+        return purificatorBlockEntity.getCurrentPurifyingTime();
     }
 }

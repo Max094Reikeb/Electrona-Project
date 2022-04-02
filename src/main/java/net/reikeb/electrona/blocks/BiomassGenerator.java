@@ -27,8 +27,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 
-import net.reikeb.electrona.blockentities.TileBiomassGenerator;
-import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.blockentities.BiomassGeneratorBlockEntity;
+import net.reikeb.electrona.init.BlockEntityInit;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -54,9 +54,9 @@ public class BiomassGenerator extends Block implements EntityBlock {
     @Override
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            BlockEntity tileentity = world.getBlockEntity(pos);
-            if (tileentity instanceof TileBiomassGenerator) {
-                ((TileBiomassGenerator) tileentity).dropItems(world, pos);
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof BiomassGeneratorBlockEntity) {
+                ((BiomassGeneratorBlockEntity) blockEntity).dropItems(world, pos);
                 world.updateNeighbourForOutputSignal(pos, this);
             }
             super.onRemove(state, world, pos, newState, isMoving);
@@ -74,9 +74,9 @@ public class BiomassGenerator extends Block implements EntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (!worldIn.isClientSide) {
-            BlockEntity tile = worldIn.getBlockEntity(pos);
-            if (tile instanceof TileBiomassGenerator) {
-                NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) tile, pos);
+            BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+            if (blockEntity instanceof BiomassGeneratorBlockEntity) {
+                NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) blockEntity, pos);
                 return InteractionResult.SUCCESS;
             }
         }
@@ -85,25 +85,25 @@ public class BiomassGenerator extends Block implements EntityBlock {
 
     @Override
     public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
-        BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-        return tileEntity instanceof MenuProvider ? (MenuProvider) tileEntity : null;
+        BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+        return blockEntity instanceof MenuProvider ? (MenuProvider) blockEntity : null;
     }
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileBiomassGenerator(pos, state);
+        return new BiomassGeneratorBlockEntity(pos, state);
     }
 
     @Override
     public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
         super.triggerEvent(state, world, pos, eventID, eventParam);
-        BlockEntity tileentity = world.getBlockEntity(pos);
-        return tileentity != null && tileentity.triggerEvent(eventID, eventParam);
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        return blockEntity != null && blockEntity.triggerEvent(eventID, eventParam);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
-        return blockEntityType == TileEntityInit.TILE_BIOMASS_GENERATOR.get() ? (BlockEntityTicker<T>) TileBiomassGenerator.TICKER : null;
+        return blockEntityType == BlockEntityInit.BIOMASS_GENERATOR_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) BiomassGeneratorBlockEntity.TICKER : null;
     }
 }

@@ -6,41 +6,41 @@ import net.minecraft.world.entity.player.Player;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import net.reikeb.electrona.blockentities.TileCompressor;
+import net.reikeb.electrona.blockentities.CompressorBlockEntity;
 
 import static net.reikeb.electrona.init.ContainerInit.COMPRESSOR_CONTAINER;
 
 public class CompressorContainer extends AbstractContainer {
 
-    public TileCompressor tileCompressor;
+    public CompressorBlockEntity compressorBlockEntity;
 
     public CompressorContainer(int id, BlockPos pos, Inventory inv, Player player) {
         super(COMPRESSOR_CONTAINER.get(), id, 3);
 
-        this.tileCompressor = (TileCompressor) player.getCommandSenderWorld().getBlockEntity(pos);
-        if (tileCompressor == null) return;
+        this.compressorBlockEntity = (CompressorBlockEntity) player.getCommandSenderWorld().getBlockEntity(pos);
+        if (compressorBlockEntity == null) return;
 
-        tileCompressor.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+        compressorBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             addSlot(new BasicInputSlot(h, 0, 27, 39));
             addSlot(new BasicInputSlot(h, 1, 81, 39));
             addSlot(new CompressorOutputSlot(h, 2, 135, 39));
         });
 
         this.layoutPlayerInventorySlots(inv);
-        this.addSyncedInt(tileCompressor::setElectronicPower, tileCompressor::getElectronicPower);
-        this.addSyncedInt(tileCompressor::setCompressingTime, tileCompressor::getCompressingTime);
-        this.addSyncedInt(tileCompressor::setCurrentCompressingTime, tileCompressor::getCurrentCompressingTime);
+        this.addSyncedInt(compressorBlockEntity::setElectronicPower, compressorBlockEntity::getElectronicPower);
+        this.addSyncedInt(compressorBlockEntity::setCompressingTime, compressorBlockEntity::getCompressingTime);
+        this.addSyncedInt(compressorBlockEntity::setCurrentCompressingTime, compressorBlockEntity::getCurrentCompressingTime);
     }
 
     public int getElectronicPower() {
-        return tileCompressor.getElectronicPower();
+        return compressorBlockEntity.getElectronicPower();
     }
 
     public int getCompressingTime() {
-        return tileCompressor.getCompressingTime();
+        return compressorBlockEntity.getCompressingTime();
     }
 
     public int getCurrentCompressingTime() {
-        return tileCompressor.getCurrentCompressingTime();
+        return compressorBlockEntity.getCurrentCompressingTime();
     }
 }

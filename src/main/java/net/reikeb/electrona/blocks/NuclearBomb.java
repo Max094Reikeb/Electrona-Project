@@ -28,7 +28,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.minecraftforge.network.NetworkHooks;
 
-import net.reikeb.electrona.blockentities.TileNuclearBomb;
+import net.reikeb.electrona.blockentities.NuclearBombBlockEntity;
 import net.reikeb.electrona.entity.BombFallingEntity;
 import net.reikeb.electrona.misc.vm.CustomShapes;
 import net.reikeb.electrona.world.Gamerules;
@@ -69,7 +69,7 @@ public class NuclearBomb extends FallingBlock implements EntityBlock {
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity tileentity = world.getBlockEntity(pos);
-            if (tileentity instanceof TileNuclearBomb) {
+            if (tileentity instanceof NuclearBombBlockEntity) {
                 world.updateNeighbourForOutputSignal(pos, this);
             }
             super.onRemove(state, world, pos, newState, isMoving);
@@ -96,8 +96,8 @@ public class NuclearBomb extends FallingBlock implements EntityBlock {
     public void wasExploded(Level world, BlockPos pos, Explosion explosion) {
         if (!world.isClientSide) {
             BlockEntity tile = world.getBlockEntity(pos);
-            if (tile instanceof TileNuclearBomb) {
-                new NuclearExplosion(world, pos.getX(), pos.getY(), pos.getZ(), ((TileNuclearBomb) tile).getNuclearCharge());
+            if (tile instanceof NuclearBombBlockEntity) {
+                new NuclearExplosion(world, pos.getX(), pos.getY(), pos.getZ(), ((NuclearBombBlockEntity) tile).getNuclearCharge());
             }
         }
     }
@@ -111,8 +111,8 @@ public class NuclearBomb extends FallingBlock implements EntityBlock {
 
     private void explode(ServerLevel world, BlockPos pos) {
         BlockEntity tile = world.getBlockEntity(pos);
-        if (tile instanceof TileNuclearBomb) {
-            BombFallingEntity bombFallingEntity = new BombFallingEntity(world, (double) pos.getX() + 0.5D, pos.getY(), (double) pos.getZ() + 0.5D, world.getBlockState(pos), ((TileNuclearBomb) tile).isCharged(), ((TileNuclearBomb) tile).getNuclearCharge());
+        if (tile instanceof NuclearBombBlockEntity) {
+            BombFallingEntity bombFallingEntity = new BombFallingEntity(world, (double) pos.getX() + 0.5D, pos.getY(), (double) pos.getZ() + 0.5D, world.getBlockState(pos), ((NuclearBombBlockEntity) tile).isCharged(), ((NuclearBombBlockEntity) tile).getNuclearCharge());
             this.falling(bombFallingEntity);
             world.addFreshEntity(bombFallingEntity);
         }
@@ -146,20 +146,20 @@ public class NuclearBomb extends FallingBlock implements EntityBlock {
                 worldIn.removeBlock(pos, true);
                 return InteractionResult.SUCCESS;
             } else if (player.getItemInHand(handIn).getItem() == Items.FLINT_AND_STEEL) {
-                if (tile instanceof TileNuclearBomb) {
-                    if (((TileNuclearBomb) tile).isCharged()
+                if (tile instanceof NuclearBombBlockEntity) {
+                    if (((NuclearBombBlockEntity) tile).isCharged()
                             && worldIn.getLevelData().getGameRules().getBoolean(Gamerules.DO_NUCLEAR_BOMBS_EXPLODE)) {
                         if (!player.isCreative()) {
                             player.getItemInHand(handIn).hurtAndBreak(1, player, (p_220287_1_) -> {
                                 p_220287_1_.broadcastBreakEvent(handIn);
                             });
                         }
-                        new NuclearExplosion(worldIn, pos.getX(), pos.getY(), pos.getZ(), ((TileNuclearBomb) tile).getNuclearCharge());
+                        new NuclearExplosion(worldIn, pos.getX(), pos.getY(), pos.getZ(), ((NuclearBombBlockEntity) tile).getNuclearCharge());
                         return InteractionResult.SUCCESS;
                     }
                 }
             } else {
-                if (tile instanceof TileNuclearBomb) {
+                if (tile instanceof NuclearBombBlockEntity) {
                     NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) tile, pos);
                     return InteractionResult.SUCCESS;
                 }
@@ -176,7 +176,7 @@ public class NuclearBomb extends FallingBlock implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileNuclearBomb(pos, state);
+        return new NuclearBombBlockEntity(pos, state);
     }
 
     @Override

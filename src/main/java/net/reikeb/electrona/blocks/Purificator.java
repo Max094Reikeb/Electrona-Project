@@ -29,8 +29,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
-import net.reikeb.electrona.blockentities.TilePurificator;
-import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.blockentities.PurificatorBlockEntity;
+import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.misc.vm.CustomShapes;
 
 import javax.annotation.Nullable;
@@ -76,8 +76,8 @@ public class Purificator extends AbstractWaterLoggableBlock implements EntityBlo
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity tileentity = world.getBlockEntity(pos);
-            if (tileentity instanceof TilePurificator) {
-                ((TilePurificator) tileentity).dropItems(world, pos);
+            if (tileentity instanceof PurificatorBlockEntity) {
+                ((PurificatorBlockEntity) tileentity).dropItems(world, pos);
                 world.updateNeighbourForOutputSignal(pos, this);
             }
             super.onRemove(state, world, pos, newState, isMoving);
@@ -117,7 +117,7 @@ public class Purificator extends AbstractWaterLoggableBlock implements EntityBlo
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (!worldIn.isClientSide) {
             BlockEntity tile = worldIn.getBlockEntity(pos);
-            if (tile instanceof TilePurificator) {
+            if (tile instanceof PurificatorBlockEntity) {
                 NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) tile, pos);
                 return InteractionResult.SUCCESS;
             }
@@ -133,7 +133,7 @@ public class Purificator extends AbstractWaterLoggableBlock implements EntityBlo
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TilePurificator(pos, state);
+        return new PurificatorBlockEntity(pos, state);
     }
 
     @Override
@@ -146,6 +146,6 @@ public class Purificator extends AbstractWaterLoggableBlock implements EntityBlo
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
-        return blockEntityType == TileEntityInit.TILE_PURIFICATOR.get() ? (BlockEntityTicker<T>) TilePurificator.TICKER : null;
+        return blockEntityType == BlockEntityInit.PURIFICATOR_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) PurificatorBlockEntity.TICKER : null;
     }
 }

@@ -10,9 +10,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.DyeColor;
 
-import net.reikeb.electrona.blockentities.TileSingularity;
+import net.reikeb.electrona.blockentities.SingularityBlockEntity;
 
-public class TileSingularityRenderer implements BlockEntityRenderer<TileSingularity> {
+public class TileSingularityRenderer implements BlockEntityRenderer<SingularityBlockEntity> {
 
     public static final ResourceLocation BEAM_LOCATION = new ResourceLocation("textures/entity/beacon_beam.png");
 
@@ -20,7 +20,7 @@ public class TileSingularityRenderer implements BlockEntityRenderer<TileSingular
         super();
     }
 
-    public void render(TileSingularity singularity, float n, PoseStack matrixStack, MultiBufferSource buffer, int x, int y) {
+    public void render(SingularityBlockEntity singularity, float n, PoseStack matrixStack, MultiBufferSource buffer, int x, int y) {
         if (singularity.getLevel() == null) return;
         double d0 = 256.0D;
         float f = Mth.sin((float) (0.9 * Math.PI));

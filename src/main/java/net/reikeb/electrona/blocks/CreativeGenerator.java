@@ -21,8 +21,8 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import net.reikeb.electrona.blockentities.TileCreativeGenerator;
-import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.blockentities.CreativeGeneratorBlockEntity;
+import net.reikeb.electrona.init.BlockEntityInit;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -58,12 +58,12 @@ public class CreativeGenerator extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileCreativeGenerator(pos, state);
+        return new CreativeGeneratorBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
-        return blockEntityType == TileEntityInit.TILE_CREATIVE_GENERATOR.get() ? (BlockEntityTicker<T>) TileCreativeGenerator.TICKER : null;
+        return blockEntityType == BlockEntityInit.CREATIVE_GENERATOR_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) CreativeGeneratorBlockEntity.TICKER : null;
     }
 }

@@ -29,8 +29,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 
-import net.reikeb.electrona.blockentities.TileBattery;
-import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.blockentities.BatteryBlockEntity;
+import net.reikeb.electrona.init.BlockEntityInit;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -64,9 +64,9 @@ public class Battery extends AbstractWaterLoggableBlock implements EntityBlock {
     @Override
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            BlockEntity tileentity = world.getBlockEntity(pos);
-            if (tileentity instanceof TileBattery) {
-                ((TileBattery) tileentity).dropItems(world, pos);
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof BatteryBlockEntity) {
+                ((BatteryBlockEntity) blockEntity).dropItems(world, pos);
                 world.updateNeighbourForOutputSignal(pos, this);
             }
             super.onRemove(state, world, pos, newState, isMoving);
@@ -105,9 +105,9 @@ public class Battery extends AbstractWaterLoggableBlock implements EntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (!worldIn.isClientSide) {
-            BlockEntity tile = worldIn.getBlockEntity(pos);
-            if (tile instanceof TileBattery) {
-                NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) tile, pos);
+            BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+            if (blockEntity instanceof BatteryBlockEntity) {
+                NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) blockEntity, pos);
                 return InteractionResult.SUCCESS;
             }
         }
@@ -116,25 +116,25 @@ public class Battery extends AbstractWaterLoggableBlock implements EntityBlock {
 
     @Override
     public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
-        BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-        return tileEntity instanceof MenuProvider ? (MenuProvider) tileEntity : null;
+        BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+        return blockEntity instanceof MenuProvider ? (MenuProvider) blockEntity : null;
     }
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileBattery(pos, state);
+        return new BatteryBlockEntity(pos, state);
     }
 
     @Override
     public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
         super.triggerEvent(state, world, pos, eventID, eventParam);
-        BlockEntity tileentity = world.getBlockEntity(pos);
-        return tileentity != null && tileentity.triggerEvent(eventID, eventParam);
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        return blockEntity != null && blockEntity.triggerEvent(eventID, eventParam);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
-        return blockEntityType == TileEntityInit.TILE_BATTERY.get() ? (BlockEntityTicker<T>) TileBattery.TICKER : null;
+        return blockEntityType == BlockEntityInit.BATTERY_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) BatteryBlockEntity.TICKER : null;
     }
 }

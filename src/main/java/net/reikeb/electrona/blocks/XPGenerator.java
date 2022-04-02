@@ -30,8 +30,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 
-import net.reikeb.electrona.blockentities.TileXPGenerator;
-import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.blockentities.XPGeneratorBlockEntity;
+import net.reikeb.electrona.init.BlockEntityInit;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -65,8 +65,8 @@ public class XPGenerator extends Block implements EntityBlock {
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity tileentity = world.getBlockEntity(pos);
-            if (tileentity instanceof TileXPGenerator) {
-                ((TileXPGenerator) tileentity).dropItems(world, pos);
+            if (tileentity instanceof XPGeneratorBlockEntity) {
+                ((XPGeneratorBlockEntity) tileentity).dropItems(world, pos);
                 world.updateNeighbourForOutputSignal(pos, this);
             }
             super.onRemove(state, world, pos, newState, isMoving);
@@ -103,7 +103,7 @@ public class XPGenerator extends Block implements EntityBlock {
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (!worldIn.isClientSide) {
             BlockEntity tile = worldIn.getBlockEntity(pos);
-            if (tile instanceof TileXPGenerator) {
+            if (tile instanceof XPGeneratorBlockEntity) {
                 NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) tile, pos);
                 return InteractionResult.SUCCESS;
             }
@@ -119,7 +119,7 @@ public class XPGenerator extends Block implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileXPGenerator(pos, state);
+        return new XPGeneratorBlockEntity(pos, state);
     }
 
     @Override
@@ -132,6 +132,6 @@ public class XPGenerator extends Block implements EntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
-        return blockEntityType == TileEntityInit.TILE_XP_GENERATOR.get() ? (BlockEntityTicker<T>) TileXPGenerator.TICKER : null;
+        return blockEntityType == BlockEntityInit.XP_GENERATOR_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) XPGeneratorBlockEntity.TICKER : null;
     }
 }

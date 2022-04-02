@@ -22,8 +22,8 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import net.reikeb.electrona.blockentities.TileSolarPanelT1;
-import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.blockentities.SolarPanelT1BlockEntity;
+import net.reikeb.electrona.init.BlockEntityInit;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -78,12 +78,12 @@ public class SolarPanelT1 extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileSolarPanelT1(pos, state);
+        return new SolarPanelT1BlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
-        return blockEntityType == TileEntityInit.TILE_SOLAR_PANEL_T_1.get() ? (BlockEntityTicker<T>) TileSolarPanelT1.TICKER : null;
+        return blockEntityType == BlockEntityInit.SOLAR_PANEL_T_1_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) SolarPanelT1BlockEntity.TICKER : null;
     }
 }

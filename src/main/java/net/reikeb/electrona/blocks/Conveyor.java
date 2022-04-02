@@ -29,8 +29,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import net.reikeb.electrona.blockentities.TileConveyor;
-import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.blockentities.ConveyorBlockEntity;
+import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.misc.vm.CustomShapes;
 import net.reikeb.electrona.utils.ElectronaUtils;
 
@@ -116,8 +116,8 @@ public class Conveyor extends AbstractWaterLoggableBlock implements EntityBlock 
     public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
         super.stepOn(world, pos, state, entity);
         BlockEntity tile = world.getBlockEntity(pos);
-        if (!(tile instanceof TileConveyor)) return;
-        TileConveyor tileConveyor = (TileConveyor) tile;
+        if (!(tile instanceof ConveyorBlockEntity)) return;
+        ConveyorBlockEntity tileConveyor = (ConveyorBlockEntity) tile;
         double electronicPower = tileConveyor.getTileData().getDouble("ElectronicPower");
         Direction facing = tileConveyor.getBlockState().getValue(FACING);
         if ((electronicPower > 0) && ((entity instanceof ItemEntity) || (entity instanceof LivingEntity))) {
@@ -141,7 +141,7 @@ public class Conveyor extends AbstractWaterLoggableBlock implements EntityBlock 
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileConveyor(pos, state);
+        return new ConveyorBlockEntity(pos, state);
     }
 
     @Override
@@ -154,6 +154,6 @@ public class Conveyor extends AbstractWaterLoggableBlock implements EntityBlock 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
-        return blockEntityType == TileEntityInit.TILE_CONVEYOR.get() ? (BlockEntityTicker<T>) TileConveyor.TICKER : null;
+        return blockEntityType == BlockEntityInit.CONVEYOR_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) ConveyorBlockEntity.TICKER : null;
     }
 }

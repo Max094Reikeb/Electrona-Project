@@ -16,6 +16,6 @@ public class RegistryHandler {
         ItemInit.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ParticleInit.PARTICLES.register(FMLJavaModLoadingContext.get().getModEventBus());
         SoundsInit.SOUNDS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        TileEntityInit.TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        BlockEntityInit.BLOCK_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 }

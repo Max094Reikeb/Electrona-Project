@@ -20,9 +20,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.blockentities.TileGravitor;
+import net.reikeb.electrona.blockentities.GravitorBlockEntity;
 
-public class TileGravitorRenderer implements BlockEntityRenderer<TileGravitor> {
+public class TileGravitorRenderer implements BlockEntityRenderer<GravitorBlockEntity> {
 
     public static final Material SHELL_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, new ResourceLocation(Electrona.MODID, "entity/gravitor/base"));
     public static final Material ACTIVE_SHELL_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, new ResourceLocation(Electrona.MODID, "entity/gravitor/cage"));
@@ -72,7 +72,7 @@ public class TileGravitorRenderer implements BlockEntityRenderer<TileGravitor> {
         return LayerDefinition.create(meshdefinition, 32, 16);
     }
 
-    public void render(TileGravitor tileGravitor, float n, PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int x, int y) {
+    public void render(GravitorBlockEntity tileGravitor, float n, PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int x, int y) {
         float f = (float) tileGravitor.tickCount + n;
         if (!tileGravitor.isActive()) {
             float f5 = tileGravitor.getActiveRotation(0.0F);

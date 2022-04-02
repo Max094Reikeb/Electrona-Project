@@ -25,8 +25,8 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.reikeb.electrona.blockentities.TileGravitor;
-import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.blockentities.GravitorBlockEntity;
+import net.reikeb.electrona.init.BlockEntityInit;
 
 import javax.annotation.Nullable;
 
@@ -98,12 +98,12 @@ public class Gravitor extends BaseEntityBlock implements SimpleWaterloggedBlock 
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileGravitor(pos, state);
+        return new GravitorBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
-        return blockEntityType == TileEntityInit.TILE_GRAVITOR.get() ? (BlockEntityTicker<T>) TileGravitor.TICKER : null;
+        return blockEntityType == BlockEntityInit.GRAVITOR_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) GravitorBlockEntity.TICKER : null;
     }
 }

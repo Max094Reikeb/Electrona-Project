@@ -25,9 +25,9 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import net.reikeb.electrona.blockentities.TileWaterCable;
+import net.reikeb.electrona.blockentities.WaterCableBlockEntity;
 import net.reikeb.electrona.init.BlockInit;
-import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.misc.Keys;
 
 import javax.annotation.Nullable;
@@ -81,12 +81,12 @@ public class WaterCable extends AbstractCable implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileWaterCable(pos, state);
+        return new WaterCableBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
-        return blockEntityType == TileEntityInit.TILE_WATER_CABLE.get() ? (BlockEntityTicker<T>) TileWaterCable.TICKER : null;
+        return blockEntityType == BlockEntityInit.WATER_CABLE_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) WaterCableBlockEntity.TICKER : null;
     }
 }

@@ -10,7 +10,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.blockentities.TileEnergeticLightningRod;
+import net.reikeb.electrona.blockentities.EnergeticLightningRodBlockEntity;
 import net.reikeb.electrona.entity.EnergeticLightningBolt;
 import net.reikeb.electrona.init.BlockInit;
 
@@ -36,8 +36,8 @@ public class EntitySpawnsEvent {
                         if (world.getBlockState(new BlockPos(x + cx, y + cy, z + cz)).getBlock() == BlockInit.ENERGETIC_LIGHTNING_ROD.get()) {
                             lightning.teleportTo(x + cx, y + cy, z + cz);
                             BlockEntity tile = world.getBlockEntity(new BlockPos(x + cx, y + cy, z + cz));
-                            if (tile instanceof TileEnergeticLightningRod) {
-                                ((TileEnergeticLightningRod) tile).struckByLightning();
+                            if (tile instanceof EnergeticLightningRodBlockEntity) {
+                                ((EnergeticLightningRodBlockEntity) tile).struckByLightning();
                             }
                             return;
                         }

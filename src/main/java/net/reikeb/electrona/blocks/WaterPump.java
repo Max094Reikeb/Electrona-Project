@@ -29,8 +29,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 
-import net.reikeb.electrona.blockentities.TileWaterPump;
-import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.blockentities.WaterPumpBlockEntity;
+import net.reikeb.electrona.init.BlockEntityInit;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -62,8 +62,8 @@ public class WaterPump extends Block implements EntityBlock {
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity tileentity = world.getBlockEntity(pos);
-            if (tileentity instanceof TileWaterPump) {
-                ((TileWaterPump) tileentity).dropItems(world, pos);
+            if (tileentity instanceof WaterPumpBlockEntity) {
+                ((WaterPumpBlockEntity) tileentity).dropItems(world, pos);
                 world.updateNeighbourForOutputSignal(pos, this);
             }
             super.onRemove(state, world, pos, newState, isMoving);
@@ -87,7 +87,7 @@ public class WaterPump extends Block implements EntityBlock {
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (!worldIn.isClientSide) {
             BlockEntity tile = worldIn.getBlockEntity(pos);
-            if (tile instanceof TileWaterPump) {
+            if (tile instanceof WaterPumpBlockEntity) {
                 NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) tile, pos);
                 return InteractionResult.SUCCESS;
             }
@@ -103,7 +103,7 @@ public class WaterPump extends Block implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileWaterPump(pos, state);
+        return new WaterPumpBlockEntity(pos, state);
     }
 
     @Override
@@ -116,6 +116,6 @@ public class WaterPump extends Block implements EntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
-        return blockEntityType == TileEntityInit.TILE_WATER_PUMP.get() ? (BlockEntityTicker<T>) TileWaterPump.TICKER : null;
+        return blockEntityType == BlockEntityInit.WATER_PUMP_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) WaterPumpBlockEntity.TICKER : null;
     }
 }

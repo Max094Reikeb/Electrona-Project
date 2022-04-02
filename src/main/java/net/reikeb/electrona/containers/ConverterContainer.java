@@ -6,57 +6,57 @@ import net.minecraft.world.entity.player.Player;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import net.reikeb.electrona.blockentities.TileConverter;
+import net.reikeb.electrona.blockentities.ConverterBlockEntity;
 
 import static net.reikeb.electrona.init.ContainerInit.CONVERTER_CONTAINER;
 
 public class ConverterContainer extends AbstractContainer {
 
-    public TileConverter tileConverter;
+    public ConverterBlockEntity converterBlockEntity;
 
     public ConverterContainer(int id, BlockPos pos, Inventory inv, Player player) {
         super(CONVERTER_CONTAINER.get(), id, 1);
 
-        this.tileConverter = (TileConverter) player.getCommandSenderWorld().getBlockEntity(pos);
-        if (tileConverter == null) return;
+        this.converterBlockEntity = (ConverterBlockEntity) player.getCommandSenderWorld().getBlockEntity(pos);
+        if (converterBlockEntity == null) return;
 
-        tileConverter.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+        converterBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             addSlot(new BatterySlot(h, 0, 81, 31));
         });
 
         this.layoutPlayerInventorySlots(inv);
-        this.addSyncedInt(tileConverter::setElectronicPower, tileConverter::getElectronicPower);
-        this.addSyncedInt(tileConverter::setForgeEnergy, tileConverter::getForgeEnergy);
-        this.addSyncedInt(tileConverter::setVP, tileConverter::getVP);
-        this.addSyncedInt(tileConverter::setToVP, tileConverter::isToVP);
-        this.addSyncedInt(tileConverter::setToOthers, tileConverter::isToOthers);
+        this.addSyncedInt(converterBlockEntity::setElectronicPower, converterBlockEntity::getElectronicPower);
+        this.addSyncedInt(converterBlockEntity::setForgeEnergy, converterBlockEntity::getForgeEnergy);
+        this.addSyncedInt(converterBlockEntity::setVP, converterBlockEntity::getVP);
+        this.addSyncedInt(converterBlockEntity::setToVP, converterBlockEntity::isToVP);
+        this.addSyncedInt(converterBlockEntity::setToOthers, converterBlockEntity::isToOthers);
     }
 
     public int getElectronicPower() {
-        return tileConverter.getElectronicPower();
+        return converterBlockEntity.getElectronicPower();
     }
 
     public int getFE() {
-        return tileConverter.getForgeEnergy();
+        return converterBlockEntity.getForgeEnergy();
     }
 
     public int getVP() {
-        return tileConverter.getVP();
+        return converterBlockEntity.getVP();
     }
 
     public boolean isToVP() {
-        return tileConverter.isToVP() == 1;
+        return converterBlockEntity.isToVP() == 1;
     }
 
     public void setToVP(boolean isToVP) {
-        tileConverter.setToVP(isToVP ? 1 : 0);
+        converterBlockEntity.setToVP(isToVP ? 1 : 0);
     }
 
     public boolean isToOthers() {
-        return tileConverter.isToOthers() == 1;
+        return converterBlockEntity.isToOthers() == 1;
     }
 
     public void setToOthers(boolean isToOthers) {
-        tileConverter.setToOthers(isToOthers ? 1 : 0);
+        converterBlockEntity.setToOthers(isToOthers ? 1 : 0);
     }
 }

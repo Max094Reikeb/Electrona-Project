@@ -1,58 +1,48 @@
 package net.reikeb.electrona.containers;
 
-import net.minecraft.world.Container;
-import net.minecraft.world.SimpleContainer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.SimpleContainerData;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.entity.player.Player;
+
+import net.minecraftforge.items.CapabilityItemHandler;
+
+import net.reikeb.electrona.blockentities.XPGeneratorBlockEntity;
 
 import static net.reikeb.electrona.init.ContainerInit.XP_GENERATOR_CONTAINER;
 
 public class XPGeneratorContainer extends AbstractContainer {
 
-    private final ContainerData xpGeneratorData;
+    public XPGeneratorBlockEntity xpGeneratorBlockEntity;
 
-    public XPGeneratorContainer(int id, Inventory inv) {
-        this(id, inv, new SimpleContainer(1), new SimpleContainerData(3));
-    }
-
-    public XPGeneratorContainer(int id, Inventory inv, Container container, ContainerData containerData) {
+    public XPGeneratorContainer(int id, BlockPos pos, Inventory inv, Player player) {
         super(XP_GENERATOR_CONTAINER.get(), id, 1);
 
-        this.xpGeneratorData = containerData;
+        this.xpGeneratorBlockEntity = (XPGeneratorBlockEntity) player.getCommandSenderWorld().getBlockEntity(pos);
+        if (xpGeneratorBlockEntity == null) return;
 
-        this.addSlot(new EmeraldSlot(container, 0, 81, 19));
+        xpGeneratorBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            addSlot(new EmeraldSlot(h, 0, 81, 19));
+        });
 
         this.layoutPlayerInventorySlots(inv);
+        this.addSyncedInt(xpGeneratorBlockEntity::setElectronicPower, xpGeneratorBlockEntity::getElectronicPower);
+        this.addSyncedInt(xpGeneratorBlockEntity::setWait, xpGeneratorBlockEntity::getWait);
+        this.addSyncedInt(xpGeneratorBlockEntity::setXpLevels, xpGeneratorBlockEntity::getXpLevels);
     }
 
     public int getElectronicPower() {
-        return this.xpGeneratorData.get(0);
+        return xpGeneratorBlockEntity.getElectronicPower();
     }
 
     public int getWait() {
-        return this.xpGeneratorData.get(1);
+        return xpGeneratorBlockEntity.getWait();
     }
 
     public int getXpLevels() {
-        return this.xpGeneratorData.get(2);
+        return xpGeneratorBlockEntity.getXpLevels();
     }
 
     public void setXpLevels(int level) {
-        this.xpGeneratorData.set(2, level);
-    }
-
-    static class EmeraldSlot extends Slot {
-        public EmeraldSlot(Container container, int id, int x, int y) {
-            super(container, id, x, y);
-        }
-
-        public boolean mayPlace(ItemStack itemStack) {
-            return (itemStack.getItem() == Items.EMERALD);
-        }
-
+        xpGeneratorBlockEntity.setXpLevels(level);
     }
 }

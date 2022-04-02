@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 
-import net.reikeb.electrona.blockentities.TileNuclearGeneratorController;
+import net.reikeb.electrona.blockentities.NuclearGeneratorControllerBlockEntity;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.misc.Keys;
@@ -38,7 +38,7 @@ public class NuclearFunction {
      * @param temperature     The temperature of the Nuclear Generator
      * @param waterLevel      The water level of the tank inside the Cooler
      */
-    public static void nuclearGeneration(TileNuclearGeneratorController tileEntity, BlockEntity tileCooler, ItemStack slotCooler, ItemStack slotGenerator, double electronicPower, int temperature, int waterLevel) {
+    public static void nuclearGeneration(NuclearGeneratorControllerBlockEntity tileEntity, BlockEntity tileCooler, ItemStack slotCooler, ItemStack slotGenerator, double electronicPower, int temperature, int waterLevel) {
         if ((slotCooler.getItem() == ItemInit.URANIUM_BAR.get())
                 || (slotCooler.getItem() == ItemInit.URANIUM_DUAL_BAR.get())
                 || (slotCooler.getItem() == ItemInit.URANIUM_QUAD_BAR.get())) {

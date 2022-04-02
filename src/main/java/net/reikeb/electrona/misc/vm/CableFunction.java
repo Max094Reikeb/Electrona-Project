@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-import net.reikeb.electrona.blockentities.TileWaterCable;
+import net.reikeb.electrona.blockentities.WaterCableBlockEntity;
 import net.reikeb.electrona.misc.Keys;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -78,7 +78,7 @@ public class CableFunction {
      * @param cableFLuid        The amount of fluid in the Cable
      * @param transferPerSecond The amount of fluid transfered each second by the Cable
      */
-    public static void cableTransferFluid(Level world, BlockPos pos, Direction[] directions, TileWaterCable cable, double cableFLuid, int transferPerSecond) {
+    public static void cableTransferFluid(Level world, BlockPos pos, Direction[] directions, WaterCableBlockEntity cable, double cableFLuid, int transferPerSecond) {
         double transferPerTick = transferPerSecond * 0.05;
 
         TagCollection<Block> tagCollection = BlockTags.getAllTags();

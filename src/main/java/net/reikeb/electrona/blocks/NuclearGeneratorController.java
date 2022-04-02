@@ -33,9 +33,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
-import net.reikeb.electrona.blockentities.TileNuclearGeneratorController;
+import net.reikeb.electrona.blockentities.NuclearGeneratorControllerBlockEntity;
 import net.reikeb.electrona.init.BlockInit;
-import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.misc.vm.CustomShapes;
 
@@ -96,8 +96,8 @@ public class NuclearGeneratorController extends Block implements EntityBlock {
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity tileentity = world.getBlockEntity(pos);
-            if (tileentity instanceof TileNuclearGeneratorController) {
-                ((TileNuclearGeneratorController) tileentity).dropItems(world, pos);
+            if (tileentity instanceof NuclearGeneratorControllerBlockEntity) {
+                ((NuclearGeneratorControllerBlockEntity) tileentity).dropItems(world, pos);
                 world.updateNeighbourForOutputSignal(pos, this);
             }
             super.onRemove(state, world, pos, newState, isMoving);
@@ -134,7 +134,7 @@ public class NuclearGeneratorController extends Block implements EntityBlock {
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (!worldIn.isClientSide) {
             BlockEntity tile = worldIn.getBlockEntity(pos);
-            if (tile instanceof TileNuclearGeneratorController) {
+            if (tile instanceof NuclearGeneratorControllerBlockEntity) {
                 NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) tile, pos);
                 return InteractionResult.SUCCESS;
             }
@@ -150,7 +150,7 @@ public class NuclearGeneratorController extends Block implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileNuclearGeneratorController(pos, state);
+        return new NuclearGeneratorControllerBlockEntity(pos, state);
     }
 
     @Override
@@ -163,6 +163,6 @@ public class NuclearGeneratorController extends Block implements EntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
-        return blockEntityType == TileEntityInit.TILE_NUCLEAR_GENERATOR_CONTROLLER.get() ? (BlockEntityTicker<T>) TileNuclearGeneratorController.TICKER : null;
+        return blockEntityType == BlockEntityInit.NUCLEAR_GENERATOR_CONTROLLER_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) NuclearGeneratorControllerBlockEntity.TICKER : null;
     }
 }

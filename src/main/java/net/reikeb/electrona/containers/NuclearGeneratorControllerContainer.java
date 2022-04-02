@@ -1,98 +1,109 @@
 package net.reikeb.electrona.containers;
 
-import net.minecraft.world.Container;
-import net.minecraft.world.SimpleContainer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.SimpleContainerData;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
+
+import net.reikeb.electrona.blockentities.NuclearGeneratorControllerBlockEntity;
 
 import static net.reikeb.electrona.init.ContainerInit.NUCLEAR_GENERATOR_CONTAINER;
 
 public class NuclearGeneratorControllerContainer extends AbstractContainer {
 
-    private final ContainerData nuclearGeneratorControllerData;
+    public NuclearGeneratorControllerBlockEntity nuclearGeneratorControllerBlockEntity;
 
-    public NuclearGeneratorControllerContainer(int id, Inventory inv) {
-        this(id, inv, new SimpleContainer(2), new SimpleContainerData(10));
-    }
-
-    public NuclearGeneratorControllerContainer(int id, Inventory inv, Container container, ContainerData containerData) {
+    public NuclearGeneratorControllerContainer(int id, BlockPos pos, Inventory inv, Player player) {
         super(NUCLEAR_GENERATOR_CONTAINER.get(), id, 2);
 
-        this.nuclearGeneratorControllerData = containerData;
+        this.nuclearGeneratorControllerBlockEntity = (NuclearGeneratorControllerBlockEntity) player.getCommandSenderWorld().getBlockEntity(pos);
+        if (nuclearGeneratorControllerBlockEntity == null) return;
 
-        // this.addSlot(new Slots.WaterBucketSlot(container, 0, 27, 32));
-        this.addSlot(new UraniumSlot(container, containerData, 1, 55, 32));
+        nuclearGeneratorControllerBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            addSlot(new WaterBucketSlot(h, 0, 27, 32));
+            addSlot(new UraniumSlot(h, nuclearGeneratorControllerBlockEntity, 1, 55, 32));
+        });
 
         this.layoutPlayerInventorySlots(inv);
+        this.addSyncedInt(nuclearGeneratorControllerBlockEntity::setElectronicPower, nuclearGeneratorControllerBlockEntity::getElectronicPower);
+        this.addSyncedInt(nuclearGeneratorControllerBlockEntity::setUnderWater, nuclearGeneratorControllerBlockEntity::getUnderWater);
+        this.addSyncedInt(nuclearGeneratorControllerBlockEntity::setTemperature, nuclearGeneratorControllerBlockEntity::getTemperature);
+        this.addSyncedInt(nuclearGeneratorControllerBlockEntity::setPowered, nuclearGeneratorControllerBlockEntity::isPowered);
+        this.addSyncedInt(nuclearGeneratorControllerBlockEntity::setUbIn, nuclearGeneratorControllerBlockEntity::areUbIn);
+        this.addSyncedInt(nuclearGeneratorControllerBlockEntity::setAlert, nuclearGeneratorControllerBlockEntity::isAlert);
+        this.addSyncedInt(nuclearGeneratorControllerBlockEntity::setOverCooler, nuclearGeneratorControllerBlockEntity::isOverCooler);
+        this.addSyncedInt(nuclearGeneratorControllerBlockEntity::setPosXUnder, nuclearGeneratorControllerBlockEntity::getPosXUnder);
+        this.addSyncedInt(nuclearGeneratorControllerBlockEntity::setPosYUnder, nuclearGeneratorControllerBlockEntity::getPosYUnder);
+        this.addSyncedInt(nuclearGeneratorControllerBlockEntity::setPosZUnder, nuclearGeneratorControllerBlockEntity::getPosZUnder);
     }
 
     public int getElectronicPower() {
-        return this.nuclearGeneratorControllerData.get(0);
+        return nuclearGeneratorControllerBlockEntity.getElectronicPower();
     }
 
     public int getUnderWater() {
-        return this.nuclearGeneratorControllerData.get(1);
+        return nuclearGeneratorControllerBlockEntity.getUnderWater();
     }
 
     public int getTemperature() {
-        return this.nuclearGeneratorControllerData.get(2);
+        return nuclearGeneratorControllerBlockEntity.getTemperature();
     }
 
     public boolean isPowered() {
-        return this.nuclearGeneratorControllerData.get(3) == 1;
+        return nuclearGeneratorControllerBlockEntity.isPowered() == 1;
     }
 
     public void setPowered(boolean powered) {
-        this.nuclearGeneratorControllerData.set(3, (powered ? 1 : 0));
+        nuclearGeneratorControllerBlockEntity.setPowered(powered ? 1 : 0);
     }
 
     public boolean areUBIn() {
-        return this.nuclearGeneratorControllerData.get(4) == 1;
+        return this.nuclearGeneratorControllerBlockEntity.areUbIn() == 1;
     }
 
     public void setUBIn(boolean ubIn) {
-        this.nuclearGeneratorControllerData.set(4, (ubIn ? 1 : 0));
+        nuclearGeneratorControllerBlockEntity.setUbIn(ubIn ? 1 : 0);
     }
 
     public boolean alert() {
-        return this.nuclearGeneratorControllerData.get(5) == 1;
+        return nuclearGeneratorControllerBlockEntity.isAlert() == 1;
     }
 
     public boolean isAboveCooler() {
-        return this.nuclearGeneratorControllerData.get(6) == 1;
+        return nuclearGeneratorControllerBlockEntity.isOverCooler() == 1;
     }
 
     public int getPosXUnder() {
-        return this.nuclearGeneratorControllerData.get(7);
+        return nuclearGeneratorControllerBlockEntity.getPosXUnder();
     }
 
     public int getPosYUnder() {
-        return this.nuclearGeneratorControllerData.get(8);
+        return nuclearGeneratorControllerBlockEntity.getPosYUnder();
     }
 
     public int getPosZUnder() {
-        return this.nuclearGeneratorControllerData.get(9);
+        return nuclearGeneratorControllerBlockEntity.getPosZUnder();
     }
 
-    static class UraniumSlot extends Slot {
+    static class UraniumSlot extends SlotItemHandler {
 
-        private final ContainerData containerData;
+        public NuclearGeneratorControllerBlockEntity nuclearGeneratorControllerBlockEntity;
 
-        public UraniumSlot(Container container, ContainerData containerData, int id, int x, int y) {
-            super(container, id, x, y);
-            this.containerData = containerData;
+        public UraniumSlot(IItemHandler itemHandler, NuclearGeneratorControllerBlockEntity nuclearGeneratorControllerBlockEntity, int id, int x, int y) {
+            super(itemHandler, id, x, y);
+            this.nuclearGeneratorControllerBlockEntity = nuclearGeneratorControllerBlockEntity;
         }
 
         public boolean mayPlace(ItemStack itemStack) {
-            return containerData.get(4) == 0;
+            return nuclearGeneratorControllerBlockEntity.areUbIn() == 0;
         }
 
         public boolean mayPickup(Player player) {
-            return containerData.get(4) == 0;
+            return nuclearGeneratorControllerBlockEntity.areUbIn() == 0;
         }
 
         public int getMaxStackSize() {

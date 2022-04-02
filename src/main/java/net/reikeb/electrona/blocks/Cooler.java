@@ -21,7 +21,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import net.reikeb.electrona.blockentities.TileCooler;
+import net.reikeb.electrona.blockentities.CoolerBlockEntity;
 
 import java.util.Collections;
 import java.util.List;
@@ -57,8 +57,8 @@ public class Cooler extends AbstractWaterLoggableBlock implements EntityBlock {
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity tileentity = world.getBlockEntity(pos);
-            if (tileentity instanceof TileCooler) {
-                ((TileCooler) tileentity).dropItems(world, pos);
+            if (tileentity instanceof CoolerBlockEntity) {
+                ((CoolerBlockEntity) tileentity).dropItems(world, pos);
                 world.updateNeighbourForOutputSignal(pos, this);
             }
             super.onRemove(state, world, pos, newState, isMoving);
@@ -87,6 +87,6 @@ public class Cooler extends AbstractWaterLoggableBlock implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileCooler(pos, state);
+        return new CoolerBlockEntity(pos, state);
     }
 }

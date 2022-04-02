@@ -6,21 +6,21 @@ import net.minecraft.world.entity.player.Player;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import net.reikeb.electrona.blockentities.TileLeadCrate;
+import net.reikeb.electrona.blockentities.LeadCrateBlockEntity;
 
 import static net.reikeb.electrona.init.ContainerInit.LEAD_CRATE_CONTAINER;
 
 public class LeadCrateContainer extends AbstractContainer {
 
-    public TileLeadCrate tileLeadCrate;
+    public LeadCrateBlockEntity leadCrateBlockEntity;
 
     public LeadCrateContainer(int id, BlockPos pos, Inventory inv, Player player) {
         super(LEAD_CRATE_CONTAINER.get(), id, 27);
 
-        this.tileLeadCrate = (TileLeadCrate) player.getCommandSenderWorld().getBlockEntity(pos);
-        if (tileLeadCrate == null) return;
+        this.leadCrateBlockEntity = (LeadCrateBlockEntity) player.getCommandSenderWorld().getBlockEntity(pos);
+        if (leadCrateBlockEntity == null) return;
 
-        tileLeadCrate.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+        leadCrateBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             addSlot(new BasicInputSlot(h, 0, 8, 18));
             addSlot(new BasicInputSlot(h, 1, 26, 18));
             addSlot(new BasicInputSlot(h, 2, 44, 18));

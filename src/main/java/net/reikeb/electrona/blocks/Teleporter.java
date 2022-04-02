@@ -33,8 +33,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 
-import net.reikeb.electrona.blockentities.TileTeleporter;
-import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.blockentities.TeleporterBlockEntity;
+import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.misc.vm.CustomShapes;
 import net.reikeb.electrona.misc.vm.TeleporterFunction;
 
@@ -82,8 +82,8 @@ public class Teleporter extends AbstractWaterLoggableBlock implements EntityBloc
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity tileentity = world.getBlockEntity(pos);
-            if (tileentity instanceof TileTeleporter) {
-                ((TileTeleporter) tileentity).dropItems(world, pos);
+            if (tileentity instanceof TeleporterBlockEntity) {
+                ((TeleporterBlockEntity) tileentity).dropItems(world, pos);
                 world.updateNeighbourForOutputSignal(pos, this);
             }
             super.onRemove(state, world, pos, newState, isMoving);
@@ -139,7 +139,7 @@ public class Teleporter extends AbstractWaterLoggableBlock implements EntityBloc
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (!worldIn.isClientSide) {
             BlockEntity tile = worldIn.getBlockEntity(pos);
-            if (tile instanceof TileTeleporter) {
+            if (tile instanceof TeleporterBlockEntity) {
                 NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) tile, pos);
                 TeleporterFunction.rightClick(pos, player);
                 return InteractionResult.SUCCESS;
@@ -156,7 +156,7 @@ public class Teleporter extends AbstractWaterLoggableBlock implements EntityBloc
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileTeleporter(pos, state);
+        return new TeleporterBlockEntity(pos, state);
     }
 
     @Override
@@ -169,6 +169,6 @@ public class Teleporter extends AbstractWaterLoggableBlock implements EntityBloc
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
-        return blockEntityType == TileEntityInit.TILE_TELEPORTER.get() ? (BlockEntityTicker<T>) TileTeleporter.TICKER : null;
+        return blockEntityType == BlockEntityInit.TELEPORTER_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) TeleporterBlockEntity.TICKER : null;
     }
 }

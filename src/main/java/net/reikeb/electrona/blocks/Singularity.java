@@ -28,9 +28,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.reikeb.electrona.blockentities.TileSingularity;
+import net.reikeb.electrona.blockentities.SingularityBlockEntity;
 import net.reikeb.electrona.init.BlockInit;
-import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.world.Gamerules;
 
@@ -122,12 +122,12 @@ public class Singularity extends AbstractWaterLoggableBlock implements EntityBlo
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileSingularity(pos, state);
+        return new SingularityBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
-        return blockEntityType == TileEntityInit.TILE_SINGULARITY.get() ? (BlockEntityTicker<T>) TileSingularity.TICKER : null;
+        return blockEntityType == BlockEntityInit.SINGULARITY_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) SingularityBlockEntity.TICKER : null;
     }
 }

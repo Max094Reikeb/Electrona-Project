@@ -27,8 +27,8 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import net.reikeb.electrona.blockentities.TileBlueCable;
-import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.blockentities.BlueCableBlockEntity;
+import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.misc.DamageSources;
 import net.reikeb.electrona.misc.Keys;
 
@@ -84,10 +84,9 @@ public class BlueCable extends AbstractCable implements EntityBlock {
     @Override
     public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
         BlockState stateIn = worldIn.getBlockState(pos);
-        BlockEntity tile = worldIn.getBlockEntity(pos);
-        if (tile instanceof TileBlueCable) {
-            TileBlueCable tileBlueCable = (TileBlueCable) tile;
-            if ((hasOpenEnd(stateIn)) && (entityIn instanceof LivingEntity) && (tileBlueCable.getTileData().getDouble("ElectronicPower") > 0)) {
+        BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+        if (blockEntity instanceof BlueCableBlockEntity blueCableBlockEntity) {
+            if ((hasOpenEnd(stateIn)) && (entityIn instanceof LivingEntity) && (blueCableBlockEntity.getTileData().getDouble("ElectronicPower") > 0)) {
                 double damage = Math.random() * 10;
                 if (damage > 0) entityIn.hurt(DamageSources.ELECTRIC_SHOCK.bypassArmor(), (float) damage);
             }
@@ -97,12 +96,12 @@ public class BlueCable extends AbstractCable implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileBlueCable(pos, state);
+        return new BlueCableBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
-        return blockEntityType == TileEntityInit.TILE_BLUE_CABLE.get() ? (BlockEntityTicker<T>) TileBlueCable.TICKER : null;
+        return blockEntityType == BlockEntityInit.BLUE_CABLE_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) BlueCableBlockEntity.TICKER : null;
     }
 }

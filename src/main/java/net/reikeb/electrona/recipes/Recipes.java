@@ -8,8 +8,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.blockentities.TileCompressor;
-import net.reikeb.electrona.blockentities.TilePurificator;
+import net.reikeb.electrona.blockentities.CompressorBlockEntity;
+import net.reikeb.electrona.blockentities.PurificatorBlockEntity;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -24,14 +24,14 @@ public class Recipes {
     }
 
     @Nullable
-    public static CompressorRecipe getRecipe(TileCompressor tileCompressor, ItemStack stack, ItemStack stack2) {
+    public static CompressorRecipe getRecipe(CompressorBlockEntity compressorBlockEntity, ItemStack stack, ItemStack stack2) {
         if (stack == null || stack2 == null) return null;
 
-        Set<Recipe<?>> recipes = findRecipesByType(Electrona.COMPRESSING, tileCompressor.getLevel());
+        Set<Recipe<?>> recipes = findRecipesByType(Electrona.COMPRESSING, compressorBlockEntity.getLevel());
         for (Recipe<?> iRecipe : recipes) {
             CompressorRecipe recipe = (CompressorRecipe) iRecipe;
-            if (recipe.matches(new RecipeWrapper(tileCompressor.inventory), tileCompressor.getLevel())) {
-                canCompress(tileCompressor, recipe);
+            if (recipe.matches(new RecipeWrapper(compressorBlockEntity.inventory), compressorBlockEntity.getLevel())) {
+                canCompress(compressorBlockEntity, recipe);
                 return recipe;
             }
         }
@@ -39,61 +39,61 @@ public class Recipes {
     }
 
     @Nullable
-    public static PurificatorRecipe getRecipe(TilePurificator tilePurificator, ItemStack stack) {
+    public static PurificatorRecipe getRecipe(PurificatorBlockEntity purificatorBlockEntity, ItemStack stack) {
         if (stack == null) return null;
 
-        Set<Recipe<?>> recipes = findRecipesByType(Electrona.PURIFYING, tilePurificator.getLevel());
+        Set<Recipe<?>> recipes = findRecipesByType(Electrona.PURIFYING, purificatorBlockEntity.getLevel());
         for (Recipe<?> iRecipe : recipes) {
             PurificatorRecipe recipe = (PurificatorRecipe) iRecipe;
-            if (recipe.matches(new RecipeWrapper(tilePurificator.inventory), tilePurificator.getLevel())) {
-                canPurify(tilePurificator, recipe);
+            if (recipe.matches(new RecipeWrapper(purificatorBlockEntity.inventory), purificatorBlockEntity.getLevel())) {
+                canPurify(purificatorBlockEntity, recipe);
                 return recipe;
             }
         }
         return null;
     }
 
-    private static void canCompress(TileCompressor tileCompressor, @Nullable Recipe<?> recipe) {
-        if (!tileCompressor.inventory.getStackInSlot(0).isEmpty() && recipe != null) {
+    private static void canCompress(CompressorBlockEntity compressorBlockEntity, @Nullable Recipe<?> recipe) {
+        if (!compressorBlockEntity.inventory.getStackInSlot(0).isEmpty() && recipe != null) {
             ItemStack resultItem = recipe.getResultItem();
             if (resultItem.isEmpty()) {
-                tileCompressor.setCompress(false);
+                compressorBlockEntity.setCompress(false);
             } else {
-                ItemStack stackInSlot = tileCompressor.inventory.getStackInSlot(2);
+                ItemStack stackInSlot = compressorBlockEntity.inventory.getStackInSlot(2);
                 if (stackInSlot.isEmpty()) {
-                    tileCompressor.setCompress(true);
+                    compressorBlockEntity.setCompress(true);
                 } else if (!stackInSlot.sameItem(resultItem)) {
-                    tileCompressor.setCompress(false);
+                    compressorBlockEntity.setCompress(false);
                 } else if (stackInSlot.getCount() + resultItem.getCount() <= 64 && stackInSlot.getCount() + resultItem.getCount() <= stackInSlot.getMaxStackSize()) { // Forge fix: make furnace respect stack sizes in furnace recipes
-                    tileCompressor.setCompress(true);
+                    compressorBlockEntity.setCompress(true);
                 } else {
-                    tileCompressor.setCompress(stackInSlot.getCount() + resultItem.getCount() <= resultItem.getMaxStackSize()); // Forge fix: make furnace respect stack sizes in furnace recipes
+                    compressorBlockEntity.setCompress(stackInSlot.getCount() + resultItem.getCount() <= resultItem.getMaxStackSize()); // Forge fix: make furnace respect stack sizes in furnace recipes
                 }
             }
         } else {
-            tileCompressor.setCompress(false);
+            compressorBlockEntity.setCompress(false);
         }
     }
 
-    private static void canPurify(TilePurificator tilePurificator, @Nullable Recipe<?> recipe) {
-        if (!tilePurificator.inventory.getStackInSlot(1).isEmpty() && recipe != null) {
+    private static void canPurify(PurificatorBlockEntity purificatorBlockEntity, @Nullable Recipe<?> recipe) {
+        if (!purificatorBlockEntity.inventory.getStackInSlot(1).isEmpty() && recipe != null) {
             ItemStack resultItem = recipe.getResultItem();
             if (resultItem.isEmpty()) {
-                tilePurificator.setPurify(false);
+                purificatorBlockEntity.setPurify(false);
             } else {
-                ItemStack stackInSlot = tilePurificator.inventory.getStackInSlot(2);
+                ItemStack stackInSlot = purificatorBlockEntity.inventory.getStackInSlot(2);
                 if (stackInSlot.isEmpty()) {
-                    tilePurificator.setPurify(true);
+                    purificatorBlockEntity.setPurify(true);
                 } else if (!stackInSlot.sameItem(resultItem)) {
-                    tilePurificator.setPurify(false);
+                    purificatorBlockEntity.setPurify(false);
                 } else if (stackInSlot.getCount() + resultItem.getCount() <= 64 && stackInSlot.getCount() + resultItem.getCount() <= stackInSlot.getMaxStackSize()) { // Forge fix: make furnace respect stack sizes in furnace recipes
-                    tilePurificator.setPurify(true);
+                    purificatorBlockEntity.setPurify(true);
                 } else {
-                    tilePurificator.setPurify(stackInSlot.getCount() + resultItem.getCount() <= resultItem.getMaxStackSize()); // Forge fix: make furnace respect stack sizes in furnace recipes
+                    purificatorBlockEntity.setPurify(stackInSlot.getCount() + resultItem.getCount() <= resultItem.getMaxStackSize()); // Forge fix: make furnace respect stack sizes in furnace recipes
                 }
             }
         } else {
-            tilePurificator.setPurify(false);
+            purificatorBlockEntity.setPurify(false);
         }
     }
 }

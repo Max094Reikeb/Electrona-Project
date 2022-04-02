@@ -29,8 +29,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import net.reikeb.electrona.blockentities.TileHeatGenerator;
-import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.blockentities.HeatGeneratorBlockEntity;
+import net.reikeb.electrona.init.BlockEntityInit;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -88,10 +88,10 @@ public class HeatGenerator extends Block implements EntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
         BlockEntity tile = world.getBlockEntity(pos);
-        if (tile instanceof TileHeatGenerator) {
+        if (tile instanceof HeatGeneratorBlockEntity) {
             if (player instanceof ServerPlayer) {
                 ServerPlayer serverPlayer = (ServerPlayer) player;
-                TileHeatGenerator tileHeatGenerator = (TileHeatGenerator) tile;
+                HeatGeneratorBlockEntity tileHeatGenerator = (HeatGeneratorBlockEntity) tile;
                 double electronicPower = tileHeatGenerator.getTileData().getDouble("ElectronicPower");
                 if ((serverPlayer.getMainHandItem().getItem() == Items.LAVA_BUCKET) && (electronicPower <= 800)) {
                     if (!world.isClientSide()) {
@@ -119,12 +119,12 @@ public class HeatGenerator extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileHeatGenerator(pos, state);
+        return new HeatGeneratorBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
-        return blockEntityType == TileEntityInit.TILE_HEAT_GENERATOR.get() ? (BlockEntityTicker<T>) TileHeatGenerator.TICKER : null;
+        return blockEntityType == BlockEntityInit.HEAT_GENERATOR_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) HeatGeneratorBlockEntity.TICKER : null;
     }
 }

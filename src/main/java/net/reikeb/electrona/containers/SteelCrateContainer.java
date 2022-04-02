@@ -6,21 +6,21 @@ import net.minecraft.world.entity.player.Player;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import net.reikeb.electrona.blockentities.TileSteelCrate;
+import net.reikeb.electrona.blockentities.SteelCrateBlockEntity;
 
 import static net.reikeb.electrona.init.ContainerInit.STEEL_CRATE_CONTAINER;
 
 public class SteelCrateContainer extends AbstractContainer {
 
-    public TileSteelCrate tileSteelCrate;
+    public SteelCrateBlockEntity steelCrateBlockEntity;
 
     public SteelCrateContainer(int id, BlockPos pos, Inventory inv, Player player) {
         super(STEEL_CRATE_CONTAINER.get(), id, 27);
 
-        this.tileSteelCrate = (TileSteelCrate) player.getCommandSenderWorld().getBlockEntity(pos);
-        if (tileSteelCrate == null) return;
+        this.steelCrateBlockEntity = (SteelCrateBlockEntity) player.getCommandSenderWorld().getBlockEntity(pos);
+        if (steelCrateBlockEntity == null) return;
 
-        tileSteelCrate.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+        steelCrateBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             addSlot(new BasicInputSlot(h, 0, 8, 18));
             addSlot(new BasicInputSlot(h, 1, 26, 18));
             addSlot(new BasicInputSlot(h, 2, 44, 18));

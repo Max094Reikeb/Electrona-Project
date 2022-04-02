@@ -15,7 +15,7 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
-import net.reikeb.electrona.blockentities.TileSprayer;
+import net.reikeb.electrona.blockentities.SprayerBlockEntity;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.utils.ItemHandler;
 
@@ -32,7 +32,7 @@ public class SprayerFunction {
      * @param tileSprayer     The TileEntity of the Sprayer
      * @param electronicPower The energy of the Sprayer
      */
-    public static void mainSprayer(ItemHandler inv, TileSprayer tileSprayer, double electronicPower) {
+    public static void mainSprayer(ItemHandler inv, SprayerBlockEntity tileSprayer, double electronicPower) {
         int boostCount = 0;
         Level world = tileSprayer.getLevel();
         double x = tileSprayer.getBlockPos().getX();
@@ -88,7 +88,7 @@ public class SprayerFunction {
      * @param tileSprayer The TileEntity of the Sprayer
      * @param pos         The position of the Sprayer
      */
-    public static void sprayerParticles(Level world, TileSprayer tileSprayer, BlockPos pos) {
+    public static void sprayerParticles(Level world, SprayerBlockEntity tileSprayer, BlockPos pos) {
         if (world.isClientSide) return;
         double xRadius = tileSprayer.getTileData().getInt("radius");
         double loop = 0;

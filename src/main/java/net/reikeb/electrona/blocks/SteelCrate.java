@@ -21,7 +21,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import net.minecraftforge.network.NetworkHooks;
 
-import net.reikeb.electrona.blockentities.TileSteelCrate;
+import net.reikeb.electrona.blockentities.SteelCrateBlockEntity;
 
 import java.util.Collections;
 import java.util.List;
@@ -63,8 +63,8 @@ public class SteelCrate extends Block implements EntityBlock {
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity tileentity = world.getBlockEntity(pos);
-            if (tileentity instanceof TileSteelCrate) {
-                ((TileSteelCrate) tileentity).dropItems(world, pos);
+            if (tileentity instanceof SteelCrateBlockEntity) {
+                ((SteelCrateBlockEntity) tileentity).dropItems(world, pos);
                 world.updateNeighbourForOutputSignal(pos, this);
             }
             super.onRemove(state, world, pos, newState, isMoving);
@@ -83,7 +83,7 @@ public class SteelCrate extends Block implements EntityBlock {
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (!worldIn.isClientSide) {
             BlockEntity tile = worldIn.getBlockEntity(pos);
-            if (tile instanceof TileSteelCrate) {
+            if (tile instanceof SteelCrateBlockEntity) {
                 NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) tile, pos);
                 return InteractionResult.SUCCESS;
             }
@@ -99,7 +99,7 @@ public class SteelCrate extends Block implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileSteelCrate(pos, state);
+        return new SteelCrateBlockEntity(pos, state);
     }
 
     @Override

@@ -9,8 +9,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.network.NetworkEvent;
 
-import net.reikeb.electrona.blockentities.TileCooler;
-import net.reikeb.electrona.blockentities.TileNuclearGeneratorController;
+import net.reikeb.electrona.blockentities.CoolerBlockEntity;
+import net.reikeb.electrona.blockentities.NuclearGeneratorControllerBlockEntity;
 import net.reikeb.electrona.containers.NuclearGeneratorControllerContainer;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -39,7 +39,7 @@ public class NuclearBarStatusPacket {
             BlockPos blockPos = posUnder.above();
             BlockEntity blockEntity = playerEntity.level.getBlockEntity(blockPos);
             BlockEntity tileUnder = playerEntity.level.getBlockEntity(posUnder);
-            if ((!(tileUnder instanceof TileCooler)) || (!(blockEntity instanceof TileNuclearGeneratorController)))
+            if ((!(tileUnder instanceof CoolerBlockEntity)) || (!(blockEntity instanceof NuclearGeneratorControllerBlockEntity)))
                 return;
 
             AtomicReference<ItemStack> stackInSlot1 = new AtomicReference<>();

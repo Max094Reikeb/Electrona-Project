@@ -1,121 +1,111 @@
 package net.reikeb.electrona.containers;
 
-import net.minecraft.world.Container;
-import net.minecraft.world.SimpleContainer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.SimpleContainerData;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
 
-import net.reikeb.electrona.init.ItemInit;
-import net.reikeb.electrona.blockentities.TileTeleporter;
+import net.minecraftforge.items.CapabilityItemHandler;
+
+import net.reikeb.electrona.blockentities.TeleporterBlockEntity;
 
 import static net.reikeb.electrona.init.ContainerInit.TELEPORTER_CONTAINER;
 
 public class TeleporterContainer extends AbstractContainer {
 
-    private final ContainerData teleporterData;
-    public TileTeleporter tileEntity;
+    public TeleporterBlockEntity teleporterBlockEntity;
 
-    public TeleporterContainer(int id, Inventory inv) {
-        this(id, inv, new SimpleContainer(1), new SimpleContainerData(10));
-    }
-
-    public TeleporterContainer(int id, Inventory inv, Container container, ContainerData containerData) {
+    public TeleporterContainer(int id, BlockPos pos, Inventory inv, Player player) {
         super(TELEPORTER_CONTAINER.get(), id, 1);
 
-        this.teleporterData = containerData;
+        this.teleporterBlockEntity = (TeleporterBlockEntity) player.getCommandSenderWorld().getBlockEntity(pos);
+        if (teleporterBlockEntity == null) return;
 
-        this.addSlot(new TeleportSlot(container, 0, 81, 27));
+        teleporterBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            addSlot(new TeleportSlot(h, 0, 81, 27));
+        });
 
         this.layoutPlayerInventorySlots(inv);
+        this.addSyncedInt(teleporterBlockEntity::setElectronicPower, teleporterBlockEntity::getElectronicPower);
+        this.addSyncedInt(teleporterBlockEntity::setTeleportX, teleporterBlockEntity::getTeleportX);
+        this.addSyncedInt(teleporterBlockEntity::setTeleportY, teleporterBlockEntity::getTeleportY);
+        this.addSyncedInt(teleporterBlockEntity::setTeleportZ, teleporterBlockEntity::getTeleportZ);
+        this.addSyncedInt(teleporterBlockEntity::setAutoDeletion, teleporterBlockEntity::isAutoDeletion);
+        this.addSyncedInt(teleporterBlockEntity::setItemTeleportX, teleporterBlockEntity::getItemTeleportX);
+        this.addSyncedInt(teleporterBlockEntity::setItemTeleportY, teleporterBlockEntity::getItemTeleportY);
+        this.addSyncedInt(teleporterBlockEntity::setItemTeleportZ, teleporterBlockEntity::getItemTeleportZ);
+        this.addSyncedInt(teleporterBlockEntity::setTeleportSaver, teleporterBlockEntity::isTeleportSaver);
+        this.addSyncedInt(teleporterBlockEntity::setTeleporter, teleporterBlockEntity::isTeleporter);
     }
 
     public int getElectronicPower() {
-        return this.teleporterData.get(0);
+        return teleporterBlockEntity.getElectronicPower();
     }
 
     public int getTeleportX() {
-        return this.teleporterData.get(1);
+        return teleporterBlockEntity.getTeleportX();
     }
 
     public void setTeleportX(int teleportX) {
-        this.teleporterData.set(1, teleportX);
+        teleporterBlockEntity.setTeleportX(teleportX);
     }
 
     public int getItemTeleportX() {
-        return this.teleporterData.get(5);
+        return teleporterBlockEntity.getItemTeleportX();
     }
 
     public void setItemTeleportX(int itemTeleportX) {
-        this.teleporterData.set(5, itemTeleportX);
+        teleporterBlockEntity.setItemTeleportX(itemTeleportX);
     }
 
     public int getTeleportY() {
-        return this.teleporterData.get(2);
+        return teleporterBlockEntity.getTeleportY();
     }
 
     public void setTeleportY(int teleportY) {
-        this.teleporterData.set(2, teleportY);
+        teleporterBlockEntity.setTeleportY(teleportY);
     }
 
     public int getItemTeleportY() {
-        return this.teleporterData.get(6);
+        return teleporterBlockEntity.getItemTeleportY();
     }
 
     public void setItemTeleportY(int itemTeleportY) {
-        this.teleporterData.set(6, itemTeleportY);
+        teleporterBlockEntity.setItemTeleportY(itemTeleportY);
     }
 
     public int getTeleportZ() {
-        return this.teleporterData.get(3);
+        return teleporterBlockEntity.getTeleportZ();
     }
 
     public void setTeleportZ(int teleportZ) {
-        this.teleporterData.set(3, teleportZ);
+        teleporterBlockEntity.setTeleportZ(teleportZ);
     }
 
     public int getItemTeleportZ() {
-        return this.teleporterData.get(7);
+        return teleporterBlockEntity.getItemTeleportZ();
     }
 
     public void setItemTeleportZ(int itemTeleportZ) {
-        this.teleporterData.set(7, itemTeleportZ);
+        teleporterBlockEntity.setItemTeleportZ(itemTeleportZ);
     }
 
     public boolean isAutoDelete() {
-        return this.teleporterData.get(4) == 1;
+        return teleporterBlockEntity.isAutoDeletion() == 1;
     }
 
     public void setAutoDelete(boolean isAutoDelete) {
-        this.teleporterData.set(4, (isAutoDelete ? 1 : 0));
+        teleporterBlockEntity.setAutoDeletion(isAutoDelete ? 1 : 0);
     }
 
     public boolean isTeleportSaver() {
-        return this.teleporterData.get(8) == 1;
+        return teleporterBlockEntity.isTeleportSaver() == 1;
     }
 
     public boolean isTeleporter() {
-        return this.teleporterData.get(9) == 1;
+        return teleporterBlockEntity.isTeleporter() == 1;
     }
 
-    public TileTeleporter getTileEntity() {
-        return this.tileEntity;
-    }
-
-    static class TeleportSlot extends Slot {
-        public TeleportSlot(Container container, int id, int x, int y) {
-            super(container, id, x, y);
-        }
-
-        public boolean mayPlace(ItemStack itemStack) {
-            return ((itemStack.getItem() == ItemInit.TELEPORT_SAVER.get())
-                    || (itemStack.getItem() == ItemInit.PORTABLE_TELEPORTER.get()));
-        }
-
-        public int getMaxStackSize() {
-            return 1;
-        }
+    public TeleporterBlockEntity getBlockEntity() {
+        return this.teleporterBlockEntity;
     }
 }

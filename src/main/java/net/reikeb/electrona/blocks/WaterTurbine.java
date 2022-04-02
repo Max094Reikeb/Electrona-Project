@@ -24,8 +24,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import net.reikeb.electrona.blockentities.TileWaterTurbine;
-import net.reikeb.electrona.init.TileEntityInit;
+import net.reikeb.electrona.blockentities.WaterTurbineBlockEntity;
+import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.misc.vm.CustomShapes;
 import net.reikeb.electrona.utils.ElectronaUtils;
 
@@ -100,12 +100,12 @@ public class WaterTurbine extends AbstractWaterLoggableBlock implements EntityBl
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileWaterTurbine(pos, state);
+        return new WaterTurbineBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
-        return blockEntityType == TileEntityInit.TILE_WATER_TURBINE.get() ? (BlockEntityTicker<T>) TileWaterTurbine.TICKER : null;
+        return blockEntityType == BlockEntityInit.WATER_TURBINE_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) WaterTurbineBlockEntity.TICKER : null;
     }
 }
