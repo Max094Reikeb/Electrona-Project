@@ -5,20 +5,17 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.XPGeneratorContainer;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.ExperienceHarvestPacket;
 
 public class XPGeneratorWindow extends AbstractWindow<XPGeneratorContainer> {
 
-    private static final ResourceLocation XP_GENERATOR_GUI = Electrona.RL("textures/guis/xp_generator_gui.png");
-
     public XPGeneratorWindow(XPGeneratorContainer container, Inventory inv, Component title) {
-        super(container, inv, title, XP_GENERATOR_GUI);
+        super(container, inv, title, Keys.XP_GENERATOR_GUI);
     }
 
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {

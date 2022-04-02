@@ -5,21 +5,18 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.TeleporterContainer;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.TeleporterAutoDeletePacket;
 import net.reikeb.electrona.network.packets.TeleporterLinkPacket;
 
 public class TeleporterWindow extends AbstractWindow<TeleporterContainer> {
 
-    private static final ResourceLocation TELEPORTER_GUI = Electrona.RL("textures/guis/teleporter_gui.png");
-
     public TeleporterWindow(TeleporterContainer container, Inventory inv, Component title) {
-        super(container, inv, title, TELEPORTER_GUI);
+        super(container, inv, title, Keys.TELEPORTER_GUI);
     }
 
     @Override

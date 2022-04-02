@@ -4,18 +4,15 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.BatteryContainer;
+import net.reikeb.electrona.misc.Keys;
 
 public class BatteryWindow extends AbstractWindow<BatteryContainer> {
 
-    private static final ResourceLocation BATTERY_GUI = Electrona.RL("textures/guis/battery_gui.png");
-
     public BatteryWindow(BatteryContainer container, Inventory inv, Component title) {
-        super(container, inv, title, BATTERY_GUI);
+        super(container, inv, title, Keys.BATTERY_GUI);
     }
 
     @Override

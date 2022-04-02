@@ -7,21 +7,19 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.DimensionLinkerContainer;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.DimensionIDPacket;
 
 public class DimensionLinkerWindow extends AbstractWindow<DimensionLinkerContainer> {
 
-    private static final ResourceLocation DIMENSION_LINKER_GUI = Electrona.RL("textures/guis/dimension_linker_gui.png");
     EditBox dimension_id;
 
     public DimensionLinkerWindow(DimensionLinkerContainer container, Inventory inv, Component title) {
-        super(container, inv, title, DIMENSION_LINKER_GUI);
+        super(container, inv, title, Keys.DIMENSION_LINKER_GUI);
     }
 
     @Override

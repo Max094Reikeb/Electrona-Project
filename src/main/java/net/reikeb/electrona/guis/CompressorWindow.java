@@ -4,18 +4,15 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.CompressorContainer;
+import net.reikeb.electrona.misc.Keys;
 
 public class CompressorWindow extends AbstractWindow<CompressorContainer> {
 
-    private static final ResourceLocation COMPRESSOR_GUI = Electrona.RL("textures/guis/compressor_gui.png");
-
     public CompressorWindow(CompressorContainer container, Inventory inv, Component title) {
-        super(container, inv, title, COMPRESSOR_GUI);
+        super(container, inv, title, Keys.COMPRESSOR_GUI);
     }
 
     @Override

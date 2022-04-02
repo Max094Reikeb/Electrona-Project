@@ -10,8 +10,8 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.WaterPumpContainer;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.WaterPumpActivationPacket;
 import net.reikeb.electrona.utils.ElectronaUtils;
@@ -27,10 +27,9 @@ public class WaterPumpWindow extends AbstractWindow<WaterPumpContainer> {
     final static int WATER_ICON_V = 0;
     final static int WATER_WIDTH = 16;
     final static int WATER_HEIGHT = 52;
-    private static final ResourceLocation WATER_PUMP_GUI = Electrona.RL("textures/guis/water_pump_gui.png");
 
     public WaterPumpWindow(WaterPumpContainer container, Inventory inv, Component title) {
-        super(container, inv, title, WATER_PUMP_GUI);
+        super(container, inv, title, Keys.WATER_PUMP_GUI);
     }
 
     @Override
@@ -62,7 +61,7 @@ public class WaterPumpWindow extends AbstractWindow<WaterPumpContainer> {
     protected void renderBg(PoseStack matrixStack, float par1, int par2, int par3) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        ElectronaUtils.bind(WATER_PUMP_GUI);
+        ElectronaUtils.bind(Keys.WATER_PUMP_GUI);
         int k = (this.width - this.imageWidth) / 2;
         int l = (this.height - this.imageHeight) / 2;
         this.blit(matrixStack, k, l, 0, 0, this.imageWidth, this.imageHeight);

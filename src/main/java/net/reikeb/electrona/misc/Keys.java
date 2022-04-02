@@ -2,27 +2,20 @@ package net.reikeb.electrona.misc;
 
 import net.minecraft.resources.ResourceLocation;
 
+import net.reikeb.electrona.Electrona;
+
 public class Keys {
 
     public static final ResourceLocation DEFAULT_NULL = new ResourceLocation("");
 
-    // Cable & machines tags
-    public static final ResourceLocation CABLE_TAG = new ResourceLocation("forge", "electrona/cable");
-    public static final ResourceLocation CABLE_MACHINE_TAG = new ResourceLocation("forge", "electrona/machines_all");
-    public static final ResourceLocation BLUE_CABLE_TAG = new ResourceLocation("forge", "electrona/blue_cable");
-    public static final ResourceLocation BLUE_CABLE_MACHINE_TAG = new ResourceLocation("forge", "electrona/machines");
-    public static final ResourceLocation WATER_CABLE_TAG = new ResourceLocation("forge", "electrona/water_cable");
-    public static final ResourceLocation HAS_WATER_TANK_TAG = new ResourceLocation("forge", "electrona/has_water_tank");
-    public static final ResourceLocation GENERATORS_TAG = new ResourceLocation("forge", "electrona/generators");
-
-    // Advancements tags
+    // Advancements
     public static final ResourceLocation A_WHOLE_NEW_WORLD_ADVANCEMENT = new ResourceLocation("electrona:a_whole_new_world");
     public static final ResourceLocation I_AM_INEVITABLE_ADVANCEMENT = new ResourceLocation("electrona:i_am_inevitable");
     public static final ResourceLocation LEADER_ADVANCEMENT = new ResourceLocation("electrona:leader");
     public static final ResourceLocation UNLOCKED_POTENTIAL_ADVANCEMENT = new ResourceLocation("electrona:unlocked_potential");
     public static final ResourceLocation SKY_HIGH_ADVANCEMENT = new ResourceLocation("electrona:sky_high");
 
-    // Biomes tags
+    // Biomes
     public static final ResourceLocation DESERT_BIOME = new ResourceLocation("desert");
     public static final ResourceLocation NETHER_WASTES_BIOME = new ResourceLocation("nether_wastes");
     public static final ResourceLocation WARM_OCEAN_BIOME = new ResourceLocation("warm_ocean");
@@ -48,4 +41,29 @@ public class Keys {
     public static final ResourceLocation MINECRAFT_ORES = new ResourceLocation("minecraft:ores");
     public static final ResourceLocation FORGE_ORES = new ResourceLocation("forge:ores");
     public static final ResourceLocation ELECTRONA_ORES = new ResourceLocation("forge:electrona/ores");
+
+    // Cable & machines tags
+    public static final ResourceLocation CABLE_TAG = new ResourceLocation("forge", "electrona/cable");
+    public static final ResourceLocation CABLE_MACHINE_TAG = new ResourceLocation("forge", "electrona/machines_all");
+    public static final ResourceLocation BLUE_CABLE_TAG = new ResourceLocation("forge", "electrona/blue_cable");
+    public static final ResourceLocation BLUE_CABLE_MACHINE_TAG = new ResourceLocation("forge", "electrona/machines");
+    public static final ResourceLocation WATER_CABLE_TAG = new ResourceLocation("forge", "electrona/water_cable");
+    public static final ResourceLocation HAS_WATER_TANK_TAG = new ResourceLocation("forge", "electrona/has_water_tank");
+    public static final ResourceLocation GENERATORS_TAG = new ResourceLocation("forge", "electrona/generators");
+
+    // GUIs
+    public static final ResourceLocation BATTERY_GUI = Electrona.RL("textures/guis/battery_gui.png");
+    public static final ResourceLocation BIOMASS_GENERATOR_GUI = Electrona.RL("textures/guis/biomass_generator_gui.png");
+    public static final ResourceLocation COMPRESSOR_GUI = Electrona.RL("textures/guis/compressor_gui.png");
+    public static final ResourceLocation CONVERTER_GUI = Electrona.RL("textures/guis/converter_gui.png");
+    public static final ResourceLocation CRATE_GUI = Electrona.RL("textures/guis/crate_gui.png");
+    public static final ResourceLocation DIMENSION_LINKER_GUI = Electrona.RL("textures/guis/dimension_linker_gui.png");
+    public static final ResourceLocation MINING_MACHINE_GUI = Electrona.RL("textures/guis/mining_machine_gui.png");
+    public static final ResourceLocation NUCLEAR_BOMB_GUI = Electrona.RL("textures/guis/nuclear_bomb_gui.png");
+    public static final ResourceLocation NUCLEAR_GENERATOR_CONTROLLER_GUI = Electrona.RL("textures/guis/nuclear_generator_controller_gui.png");
+    public static final ResourceLocation PURIFICATOR_GUI = Electrona.RL("textures/guis/purificator_gui.png");
+    public static final ResourceLocation SPRAYER_GUI = Electrona.RL("textures/guis/sprayer_gui.png");
+    public static final ResourceLocation TELEPORTER_GUI = Electrona.RL("textures/guis/teleporter_gui.png");
+    public static final ResourceLocation WATER_PUMP_GUI = Electrona.RL("textures/guis/water_pump_gui.png");
+    public static final ResourceLocation XP_GENERATOR_GUI = Electrona.RL("textures/guis/xp_generator_gui.png");
 }

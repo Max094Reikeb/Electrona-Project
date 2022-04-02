@@ -5,20 +5,17 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.ConverterContainer;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.ConverterPacket;
 
 public class ConverterWindow extends AbstractWindow<ConverterContainer> {
 
-    private static final ResourceLocation CONVERTER_GUI = Electrona.RL("textures/guis/converter_gui.png");
-
     public ConverterWindow(ConverterContainer container, Inventory inv, Component title) {
-        super(container, inv, title, CONVERTER_GUI);
+        super(container, inv, title, Keys.CONVERTER_GUI);
     }
 
     @Override
