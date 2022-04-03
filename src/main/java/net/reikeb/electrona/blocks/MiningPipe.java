@@ -76,8 +76,7 @@ public class MiningPipe extends AbstractWaterLoggableBlock implements EntityBloc
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState replaceState = context.getLevel().getBlockState(context.getClickedPos());
-        return this.defaultBlockState()
-                .setValue(WATERLOGGED, replaceState.getBlock() == Blocks.WATER);
+        return this.defaultBlockState().setValue(WATERLOGGED, replaceState.getBlock() == Blocks.WATER);
     }
 
     @Override

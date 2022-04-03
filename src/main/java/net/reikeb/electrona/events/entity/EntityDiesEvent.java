@@ -31,9 +31,8 @@ public class EntityDiesEvent {
     public static void onEntityDies(LivingDeathEvent event) {
         if (event == null) return;
 
-        if (event.getEntity() instanceof Player) {
+        if (event.getEntity() instanceof Player player) {
             if (!event.getSource().isBypassInvul()) {
-                Player player = (Player) event.getEntity();
                 if (!(player.getMainHandItem().getItem().equals(ItemInit.ADVANCED_TOTEM_OF_UNDYING.get())
                         || player.getOffhandItem().getItem().equals(ItemInit.ADVANCED_TOTEM_OF_UNDYING.get()))) return;
                 InteractionHand hand = (player.getMainHandItem().getItem().equals(ItemInit.ADVANCED_TOTEM_OF_UNDYING.get()) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);

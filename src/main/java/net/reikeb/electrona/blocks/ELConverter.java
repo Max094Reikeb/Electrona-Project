@@ -56,8 +56,8 @@ public class ELConverter extends Block implements EntityBlock {
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof ConverterBlockEntity) {
-                ((ConverterBlockEntity) blockEntity).dropItems(world, pos);
+            if (blockEntity instanceof ConverterBlockEntity converterBlockEntity) {
+                converterBlockEntity.dropItems(world, pos);
                 world.updateNeighbourForOutputSignal(pos, this);
             }
             super.onRemove(state, world, pos, newState, isMoving);

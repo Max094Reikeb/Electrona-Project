@@ -31,6 +31,10 @@ public class SoundFiles implements DataProvider {
         this.generator = generator;
     }
 
+    public static Path getPath(Path path, String modid) {
+        return path.resolve("assets/" + modid + "/sounds/sounds" + ".json");
+    }
+
     @Override
     public void run(HashCache cache) throws IOException {
 
@@ -65,10 +69,6 @@ public class SoundFiles implements DataProvider {
             builder.withSound(new SoundBuilder(resourcePath));
         }
         this.root.add(getSoundName(soundEvent), builder.toJson());
-    }
-
-    public static Path getPath(Path path, String modid) {
-        return path.resolve("assets/" + modid + "/sounds/sounds" + ".json");
     }
 
     public String getSoundName(SoundEvent sound) {

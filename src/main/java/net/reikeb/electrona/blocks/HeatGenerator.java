@@ -88,10 +88,8 @@ public class HeatGenerator extends Block implements EntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
         BlockEntity tile = world.getBlockEntity(pos);
-        if (tile instanceof HeatGeneratorBlockEntity) {
-            if (player instanceof ServerPlayer) {
-                ServerPlayer serverPlayer = (ServerPlayer) player;
-                HeatGeneratorBlockEntity tileHeatGenerator = (HeatGeneratorBlockEntity) tile;
+        if (tile instanceof HeatGeneratorBlockEntity tileHeatGenerator) {
+            if (player instanceof ServerPlayer serverPlayer) {
                 double electronicPower = tileHeatGenerator.getTileData().getDouble("ElectronicPower");
                 if ((serverPlayer.getMainHandItem().getItem() == Items.LAVA_BUCKET) && (electronicPower <= 800)) {
                     if (!world.isClientSide()) {

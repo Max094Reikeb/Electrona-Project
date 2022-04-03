@@ -17,9 +17,8 @@ import net.reikeb.electrona.Electrona;
  */
 public class SoundBuilder {
 
-    private boolean nonDefault = false;
-
     private final String path;
+    private boolean nonDefault = false;
     private float volume = 1;
     private float pitch = 1;
     private int weight = 1;

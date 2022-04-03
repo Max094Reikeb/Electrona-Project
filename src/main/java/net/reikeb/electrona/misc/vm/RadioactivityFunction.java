@@ -58,10 +58,10 @@ public class RadioactivityFunction {
      */
     public static void radioactiveItemInInventory(Level world, Entity entity, int duration, int power) {
         List<LivingEntity> livingEntities = world.getEntitiesOfClass(LivingEntity.class,
-                new AABB(entity.getX() - (10 / 2d),
-                        entity.getY() - (10 / 2d), entity.getZ() - (10 / 2d),
-                        entity.getX() + (10 / 2d), entity.getY() + (10 / 2d),
-                        entity.getZ() + (10 / 2d)), EntitySelector.LIVING_ENTITY_STILL_ALIVE)
+                        new AABB(entity.getX() - (10 / 2d),
+                                entity.getY() - (10 / 2d), entity.getZ() - (10 / 2d),
+                                entity.getX() + (10 / 2d), entity.getY() + (10 / 2d),
+                                entity.getZ() + (10 / 2d)), EntitySelector.LIVING_ENTITY_STILL_ALIVE)
                 .stream().sorted(new Object() {
                     Comparator<Entity> compareDistOf(double x, double y, double z) {
                         return Comparator.comparing(axis -> axis.distanceToSqr(x, y, z));

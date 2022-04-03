@@ -1,6 +1,5 @@
 package net.reikeb.electrona.init;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
 import net.minecraftforge.registries.DeferredRegister;
@@ -33,6 +32,6 @@ public class SoundsInit {
             .register("block.water_pump.pump", () -> setupSound("block.water_pump.pump"));
 
     private static SoundEvent setupSound(String soundName) {
-        return new SoundEvent(new ResourceLocation(Electrona.MODID, soundName));
+        return new SoundEvent(Electrona.RL(soundName));
     }
 }

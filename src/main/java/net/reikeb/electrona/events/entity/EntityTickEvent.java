@@ -31,14 +31,14 @@ public class EntityTickEvent {
                     entity.getPersistentData().putInt("nextRad", radio);
                 }
                 // Leader advancement
-                if (entity instanceof ServerPlayer && RadioactivityFunction.isEntityWearingLeadArmor(entity)) {
-                    Advancement advancement = ((ServerPlayer) entity).server.getAdvancements().getAdvancement(Keys.LEADER_ADVANCEMENT);
+                if ((entity instanceof ServerPlayer serverPlayer) && RadioactivityFunction.isEntityWearingLeadArmor(entity)) {
+                    Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(Keys.LEADER_ADVANCEMENT);
                     if (advancement == null) System.out.println("Advancement Leader! seems to be null");
                     if (advancement == null) return;
-                    AdvancementProgress advancementProgress = ((ServerPlayer) entity).getAdvancements().getOrStartProgress(advancement);
+                    AdvancementProgress advancementProgress = serverPlayer.getAdvancements().getOrStartProgress(advancement);
                     if (!advancementProgress.isDone()) {
                         for (String criteria : advancementProgress.getRemainingCriteria()) {
-                            ((ServerPlayer) entity).getAdvancements().award(advancement, criteria);
+                            serverPlayer.getAdvancements().award(advancement, criteria);
                         }
                     }
                 }

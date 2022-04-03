@@ -30,8 +30,8 @@ import java.util.List;
 
 public class EnergeticLightningBolt extends Entity {
 
-    private int life;
     public long seed;
+    private int life;
     private int flashes;
     private boolean visualOnly;
     @Nullable
@@ -53,8 +53,8 @@ public class EnergeticLightningBolt extends Entity {
         return SoundSource.WEATHER;
     }
 
-    public void setCause(@Nullable ServerPlayer p_204809_1_) {
-        this.cause = p_204809_1_;
+    public void setCause(@Nullable ServerPlayer serverPlayer) {
+        this.cause = serverPlayer;
     }
 
     public void tick() {

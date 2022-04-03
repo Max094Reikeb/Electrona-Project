@@ -22,8 +22,8 @@ import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplie
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.event.world.StructureSpawnListGatherEvent;
 
-import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.EntityInit;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.world.gen.Structures;
 
 import java.util.List;
@@ -31,18 +31,13 @@ import java.util.Optional;
 
 public class RuinsStructure extends StructureFeature<JigsawConfiguration> {
 
-    public RuinsStructure(Codec<JigsawConfiguration> codec) {
-        super(codec, RuinsStructure::createPiecesGenerator, PostPlacementProcessor.NONE);
-    }
-
-    @Override
-    public GenerationStep.Decoration step() {
-        return GenerationStep.Decoration.SURFACE_STRUCTURES;
-    }
-
     private static final Lazy<List<MobSpawnSettings.SpawnerData>> STRUCTURE_MONSTERS = Lazy.of(() -> ImmutableList.of(
             new MobSpawnSettings.SpawnerData(EntityInit.RADIOACTIVE_ZOMBIE.get(), 100, 4, 9)
     ));
+
+    public RuinsStructure(Codec<JigsawConfiguration> codec) {
+        super(codec, RuinsStructure::createPiecesGenerator, PostPlacementProcessor.NONE);
+    }
 
     public static void setupStructureSpawns(final StructureSpawnListGatherEvent event) {
         if (event.getStructure() == Structures.RUINS.get()) {
@@ -66,7 +61,7 @@ public class RuinsStructure extends StructureFeature<JigsawConfiguration> {
         }
         JigsawConfiguration newConfig = new JigsawConfiguration(() ->
                 context.registryAccess().ownedRegistryOrThrow(Registry.TEMPLATE_POOL_REGISTRY)
-                        .get(Electrona.RL("ruins/start_pool")), 10);
+                        .get(Keys.RUINS_START_POOL), 10);
 
         PieceGeneratorSupplier.Context<JigsawConfiguration> newContext = new PieceGeneratorSupplier.Context<>(
                 context.chunkGenerator(),
@@ -94,5 +89,10 @@ public class RuinsStructure extends StructureFeature<JigsawConfiguration> {
         );
 
         return structurePiecesGenerator;
+    }
+
+    @Override
+    public GenerationStep.Decoration step() {
+        return GenerationStep.Decoration.SURFACE_STRUCTURES;
     }
 }

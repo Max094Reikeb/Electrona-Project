@@ -41,6 +41,7 @@ import net.reikeb.electrona.advancements.TTriggers;
 import net.reikeb.electrona.events.entity.EntityDiesEvent;
 import net.reikeb.electrona.init.BiomeInit;
 import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.recipes.CompressorRecipe;
 import net.reikeb.electrona.recipes.PurificatorRecipe;
 import net.reikeb.electrona.recipes.types.RecipeTypeCompressor;
@@ -131,7 +132,7 @@ public class Electrona {
             Structures.setupStructures();
             ConfiguredStructures.registerConfiguredStructures();
 
-            BiomeProviders.register(new net.reikeb.electrona.world.gen.biomes.BiomeProvider(RL("nuclear"), 1));
+            BiomeProviders.register(new net.reikeb.electrona.world.gen.biomes.BiomeProvider(Keys.NUCLEAR_BIOME, 1));
         });
 
         /**

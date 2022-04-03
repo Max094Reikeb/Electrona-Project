@@ -96,8 +96,8 @@ public class NuclearBomb extends FallingBlock implements EntityBlock {
     public void wasExploded(Level world, BlockPos pos, Explosion explosion) {
         if (!world.isClientSide) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof NuclearBombBlockEntity) {
-                new NuclearExplosion(world, pos.getX(), pos.getY(), pos.getZ(), ((NuclearBombBlockEntity) blockEntity).getNuclearCharge());
+            if (blockEntity instanceof NuclearBombBlockEntity nuclearBombBlockEntity) {
+                new NuclearExplosion(world, pos.getX(), pos.getY(), pos.getZ(), nuclearBombBlockEntity.getNuclearCharge());
             }
         }
     }
@@ -110,9 +110,9 @@ public class NuclearBomb extends FallingBlock implements EntityBlock {
     }
 
     private void explode(ServerLevel world, BlockPos pos) {
-        BlockEntity tile = world.getBlockEntity(pos);
-        if (tile instanceof NuclearBombBlockEntity) {
-            BombFallingEntity bombFallingEntity = new BombFallingEntity(world, (double) pos.getX() + 0.5D, pos.getY(), (double) pos.getZ() + 0.5D, world.getBlockState(pos), ((NuclearBombBlockEntity) tile).isCharged(), ((NuclearBombBlockEntity) tile).getNuclearCharge());
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (blockEntity instanceof NuclearBombBlockEntity nuclearBombBlockEntity) {
+            BombFallingEntity bombFallingEntity = new BombFallingEntity(world, (double) pos.getX() + 0.5D, pos.getY(), (double) pos.getZ() + 0.5D, world.getBlockState(pos), nuclearBombBlockEntity.isCharged(), nuclearBombBlockEntity.getNuclearCharge());
             this.falling(bombFallingEntity);
             world.addFreshEntity(bombFallingEntity);
         }
@@ -146,15 +146,15 @@ public class NuclearBomb extends FallingBlock implements EntityBlock {
                 worldIn.removeBlock(pos, true);
                 return InteractionResult.SUCCESS;
             } else if (player.getItemInHand(handIn).getItem() == Items.FLINT_AND_STEEL) {
-                if (blockEntity instanceof NuclearBombBlockEntity) {
-                    if (((NuclearBombBlockEntity) blockEntity).isCharged()
+                if (blockEntity instanceof NuclearBombBlockEntity nuclearBombBlockEntity) {
+                    if (nuclearBombBlockEntity.isCharged()
                             && worldIn.getLevelData().getGameRules().getBoolean(Gamerules.DO_NUCLEAR_BOMBS_EXPLODE)) {
                         if (!player.isCreative()) {
                             player.getItemInHand(handIn).hurtAndBreak(1, player, (p_220287_1_) -> {
                                 p_220287_1_.broadcastBreakEvent(handIn);
                             });
                         }
-                        new NuclearExplosion(worldIn, pos.getX(), pos.getY(), pos.getZ(), ((NuclearBombBlockEntity) blockEntity).getNuclearCharge());
+                        new NuclearExplosion(worldIn, pos.getX(), pos.getY(), pos.getZ(), nuclearBombBlockEntity.getNuclearCharge());
                         return InteractionResult.SUCCESS;
                     }
                 }

@@ -30,6 +30,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.utils.ElectronaUtils;
 import net.reikeb.electrona.utils.GemPower;
 
@@ -115,7 +116,7 @@ public class CosmicGemFunction {
                 if (world instanceof ServerLevel) {
                     ResourceKey<Level> key = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dimension));
                     if ((!dimension.equals("")) && (((ServerLevel) world).getServer().getLevel(key) != null)) {
-                        ResourceKey<Level> newKey = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation("minecraft:overworld"));
+                        ResourceKey<Level> newKey = ResourceKey.create(Registry.DIMENSION_REGISTRY, Keys.OVERWORLD);
                         ServerLevel _newWorld = ((ServerLevel) world).getServer().getLevel(key);
                         ServerLevel _defaultWorld = ((ServerLevel) world).getServer().getLevel(newKey);
                         if (world == _defaultWorld) {
@@ -230,10 +231,10 @@ public class CosmicGemFunction {
                     new AABB(x - 5, y - 5, z - 5,
                             x + 5, y + 5, z + 5),
                     EntitySelector.LIVING_ENTITY_STILL_ALIVE).stream().sorted(new Object() {
-                        Comparator<Entity> compareDistOf(double x, double y, double z) {
-                            return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(x, y, z));
-                        }
-                    }.compareDistOf(x, y, z)).collect(Collectors.toList());
+                Comparator<Entity> compareDistOf(double x, double y, double z) {
+                    return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(x, y, z));
+                }
+            }.compareDistOf(x, y, z)).collect(Collectors.toList());
             for (LivingEntity entityiterator : livingEntities) {
                 if (entityiterator != playerEntity) {
                     flag = true;

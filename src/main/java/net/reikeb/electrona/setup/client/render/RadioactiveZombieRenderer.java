@@ -7,15 +7,12 @@ import net.minecraft.client.renderer.entity.AbstractZombieRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.entity.RadioactiveZombie;
+import net.reikeb.electrona.misc.Keys;
 
 import javax.annotation.Nullable;
 
 public class RadioactiveZombieRenderer extends AbstractZombieRenderer<RadioactiveZombie, ZombieModel<RadioactiveZombie>> {
-
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Electrona.MODID, "textures/entity/radioactive_zombie.png");
-
 
     public RadioactiveZombieRenderer(EntityRendererProvider.Context context) {
         this(context, ModelLayers.ZOMBIE, ModelLayers.ZOMBIE_INNER_ARMOR, ModelLayers.ZOMBIE_OUTER_ARMOR);
@@ -28,6 +25,6 @@ public class RadioactiveZombieRenderer extends AbstractZombieRenderer<Radioactiv
     @Nullable
     @Override
     public ResourceLocation getTextureLocation(RadioactiveZombie entity) {
-        return TEXTURE;
+        return Keys.RADIOACTIVE_ZOMBIE;
     }
 }

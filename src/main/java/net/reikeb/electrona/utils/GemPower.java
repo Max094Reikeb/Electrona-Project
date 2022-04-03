@@ -14,30 +14,17 @@ public enum GemPower {
     KNOCKBACK(5, "knockback", 600),
     FLYING(6, "flying", 200);
 
-    private final int id;
-    private final String name;
-    private final int cooldown;
-
     private static final List<GemPower> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
     private static final int SIZE = VALUES.size();
     private static final Random RANDOM = new Random();
+    private final int id;
+    private final String name;
+    private final int cooldown;
 
     GemPower(int p_345843475_0, String p_345843475_1, int p_345843475_2) {
         this.id = p_345843475_0;
         this.name = p_345843475_1;
         this.cooldown = p_345843475_2;
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public int getCooldown() {
-        return this.cooldown;
     }
 
     public static GemPower randomPower() {
@@ -90,6 +77,18 @@ public enum GemPower {
             }
         }
         return p_345843482_1;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public int getCooldown() {
+        return this.cooldown;
     }
 
     /**

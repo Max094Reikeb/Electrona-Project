@@ -80,13 +80,13 @@ public class BlackHoleFunction {
         AreaEffectCloud areaEffectCloudEntity = new AreaEffectCloud(world, x, y, z);
 
         List<LivingEntity> livingEntities = world.getEntitiesOfClass(LivingEntity.class,
-                        new AABB(x - 100, y - 100, z - 100,
-                            x + 100, y + 100, z + 100),
+                new AABB(x - 100, y - 100, z - 100,
+                        x + 100, y + 100, z + 100),
                 EntitySelector.LIVING_ENTITY_STILL_ALIVE).stream().sorted(new Object() {
-                    Comparator<Entity> compareDistOf(double x, double y, double z) {
-                        return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(x, y, z));
-                    }
-                }.compareDistOf(x, y, z)).collect(Collectors.toList());
+            Comparator<Entity> compareDistOf(double x, double y, double z) {
+                return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(x, y, z));
+            }
+        }.compareDistOf(x, y, z)).collect(Collectors.toList());
         for (LivingEntity entityiterator : livingEntities) {
             areaEffectCloudEntity.setOwner(entityiterator);
         }

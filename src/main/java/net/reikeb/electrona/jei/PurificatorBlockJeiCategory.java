@@ -27,13 +27,13 @@ public class PurificatorBlockJeiCategory implements IRecipeCategory<PurificatorB
 
     private final IDrawable background;
 
+    public PurificatorBlockJeiCategory(IGuiHelper guiHelper) {
+        this.background = guiHelper.createDrawable(Electrona.RL("textures/guis/purificator_gui.png"), 0, 0, 166, 73);
+    }
+
     public void draw(PurificatorBlockRecipeWrapper recipe, PoseStack matrixStack, double mouseX, double mouseY) {
         Font fontRenderer = Minecraft.getInstance().font;
         fontRenderer.draw(matrixStack, new TranslatableComponent("gui.electrona.purificator.name"), 52, 12, -16777216);
-    }
-
-    public PurificatorBlockJeiCategory(IGuiHelper guiHelper) {
-        this.background = guiHelper.createDrawable(Electrona.RL("textures/guis/purificator_gui.png"), 0, 0, 166, 73);
     }
 
     @Override

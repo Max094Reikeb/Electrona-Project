@@ -26,6 +26,7 @@ public class Keys {
     public static final ResourceLocation WARPED_FOREST_BIOME = new ResourceLocation("warped_forest");
     public static final ResourceLocation SOUL_SAND_VALLEY_BIOME = new ResourceLocation("soul_sand_valley");
     public static final ResourceLocation BASALT_DELTAS_BIOME = new ResourceLocation("basalt_deltas");
+    public static final ResourceLocation NUCLEAR_BIOME = Electrona.RL("nuclear");
 
     // Blocks tags
     public static final ResourceLocation STOPS_BLACK_HOLES_TAG = new ResourceLocation("forge", "electrona/stops_black_hole");
@@ -51,6 +52,20 @@ public class Keys {
     public static final ResourceLocation HAS_WATER_TANK_TAG = new ResourceLocation("forge", "electrona/has_water_tank");
     public static final ResourceLocation GENERATORS_TAG = new ResourceLocation("forge", "electrona/generators");
 
+    // Configured structures
+    public static final ResourceLocation CONFIGURED_RUINS = Electrona.RL("configured_ruins");
+    public static final ResourceLocation RUINS_START_POOL = Electrona.RL("ruins/start_pool");
+
+    // Dimensions
+    public static final ResourceLocation OVERWORLD = new ResourceLocation("minecraft:overworld");
+
+    // Engineer House
+    public static final ResourceLocation ENGINEER_HOUSE_PLAINS = Electrona.RL("villages/engineer_house_plains");
+    public static final ResourceLocation ENGINEER_HOUSE_SAVANNA = Electrona.RL("villages/engineer_house_savanna");
+    public static final ResourceLocation ENGINEER_HOUSE_DESERT = Electrona.RL("villages/engineer_house_desert");
+    public static final ResourceLocation ENGINEER_HOUSE_TAIGA = Electrona.RL("villages/engineer_house_taiga");
+    public static final ResourceLocation ENGINEER_HOUSE_SNOWY = Electrona.RL("villages/engineer_house_snowy");
+
     // Entities
     public static final ResourceLocation GRAVITOR_BASE = Electrona.RL("entity/gravitor/base");
     public static final ResourceLocation GRAVITOR_CAGE = Electrona.RL("entity/gravitor/cage");
@@ -58,6 +73,9 @@ public class Keys {
     public static final ResourceLocation GRAVITOR_WIND_VERTICAL = Electrona.RL("entity/gravitor/wind_vertical");
     public static final ResourceLocation GRAVITOR_OPEN_EYE = Electrona.RL("entity/gravitor/open_eye");
     public static final ResourceLocation GRAVITOR_CLOSED_EYE = Electrona.RL("entity/gravitor/closed_eye");
+    public static final ResourceLocation MECHANIC_WINGS = Electrona.RL( "textures/models/mechanic_wings.png");
+    public static final ResourceLocation PLAYER = new ResourceLocation("minecraft:player");
+    public static final ResourceLocation RADIOACTIVE_ZOMBIE = Electrona.RL("textures/entity/radioactive_zombie.png");
     public static final ResourceLocation SINGULARITY_BEAM_LOCATION = new ResourceLocation("textures/entity/beacon_beam.png");
 
     // GUIs
@@ -78,4 +96,11 @@ public class Keys {
 
     // ItemProperties
     public static final ResourceLocation ANGLE_PROPERTY = new ResourceLocation("angle");
+
+    // Potions
+    public static final ResourceLocation RADIOACTIVITY_EFFECT = new ResourceLocation("electrona:textures/mob_effect/radioactivity.png");
+
+    // Recipes
+    public static final ResourceLocation COMPRESSING = Electrona.RL("compressing");
+    public static final ResourceLocation PURIFYING = Electrona.RL("purifying");
 }

@@ -82,8 +82,8 @@ public class Teleporter extends AbstractWaterLoggableBlock implements EntityBloc
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof TeleporterBlockEntity) {
-                ((TeleporterBlockEntity) blockEntity).dropItems(world, pos);
+            if (blockEntity instanceof TeleporterBlockEntity teleporterBlockEntity) {
+                teleporterBlockEntity.dropItems(world, pos);
                 world.updateNeighbourForOutputSignal(pos, this);
             }
             super.onRemove(state, world, pos, newState, isMoving);

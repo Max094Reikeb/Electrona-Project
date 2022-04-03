@@ -17,6 +17,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.BlockInit;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.recipes.contexts.CompressingContext;
 import net.reikeb.electrona.utils.SingletonInventory;
 
@@ -47,6 +48,14 @@ public class CompressorRecipe implements Recipe<Container> {
         System.out.println("Loaded " + this.toString());
     }
 
+    public static Optional<CompressorRecipe> getRecipe(Level world, @Nullable BlockPos pos, ItemStack stack) {
+        return getRecipe(world, new CompressingContext(new SingletonInventory(stack), null, pos != null ? () -> Vec3.atCenterOf(pos) : null, null));
+    }
+
+    public static Optional<CompressorRecipe> getRecipe(Level world, CompressingContext ctx) {
+        return world.getRecipeManager().getRecipeFor(Electrona.COMPRESSING, ctx, world);
+    }
+
     @Override
     public String toString() {
 
@@ -60,14 +69,6 @@ public class CompressorRecipe implements Recipe<Container> {
 
     public int getEnergyRequired() {
         return this.energyRequired;
-    }
-
-    public static Optional<CompressorRecipe> getRecipe(Level world, @Nullable BlockPos pos, ItemStack stack) {
-        return getRecipe(world, new CompressingContext(new SingletonInventory(stack), null, pos != null ? () -> Vec3.atCenterOf(pos) : null, null));
-    }
-
-    public static Optional<CompressorRecipe> getRecipe(Level world, CompressingContext ctx) {
-        return world.getRecipeManager().getRecipeFor(Electrona.COMPRESSING, ctx, world);
     }
 
     @Override
@@ -118,7 +119,7 @@ public class CompressorRecipe implements Recipe<Container> {
         Serializer() {
 
             // This registry name is what people will specify in their json files.
-            this.setRegistryName(new ResourceLocation(Electrona.MODID, "compressing"));
+            this.setRegistryName(Keys.COMPRESSING);
         }
 
         @Override

@@ -1,7 +1,5 @@
 package net.reikeb.electrona.network;
 
-import net.minecraft.resources.ResourceLocation;
-
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -16,9 +14,8 @@ import net.reikeb.electrona.network.packets.*;
 public class NetworkManager {
 
     public static final String PROTOCOL_VERSION = "1";
-    public static SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(Electrona.MODID, "main"), () -> NetworkManager.PROTOCOL_VERSION,
-            NetworkManager.PROTOCOL_VERSION::equals, NetworkManager.PROTOCOL_VERSION::equals);
+    public static SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(Electrona.RL("main"),
+            () -> NetworkManager.PROTOCOL_VERSION, NetworkManager.PROTOCOL_VERSION::equals, NetworkManager.PROTOCOL_VERSION::equals);
 
     @SuppressWarnings("UnusedAssignment")
     @SubscribeEvent

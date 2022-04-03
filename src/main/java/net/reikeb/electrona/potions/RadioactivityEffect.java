@@ -5,13 +5,14 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.misc.vm.RadioactivityFunction;
 
 public class RadioactivityEffect extends MobEffect {
 
     public RadioactivityEffect() {
         super(MobEffectCategory.HARMFUL, -3355648);
-        ResourceLocation potionIcon = new ResourceLocation("electrona:textures/mob_effect/radioactivity.png");
+        ResourceLocation potionIcon = Keys.RADIOACTIVITY_EFFECT;
     }
 
     @Override

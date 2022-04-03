@@ -63,8 +63,8 @@ public class LeadCrate extends Block implements EntityBlock {
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof LeadCrateBlockEntity) {
-                ((LeadCrateBlockEntity) blockEntity).dropItems(world, pos);
+            if (blockEntity instanceof LeadCrateBlockEntity leadCrateBlockEntity) {
+                leadCrateBlockEntity.dropItems(world, pos);
                 world.updateNeighbourForOutputSignal(pos, this);
             }
             super.onRemove(state, world, pos, newState, isMoving);

@@ -10,12 +10,12 @@ import java.util.function.Function;
 
 public class RandomTradeBuilder {
 
-    private Function<Random, ItemStack> price;
-    private Function<Random, ItemStack> price2;
-    private Function<Random, ItemStack> forSale;
     private final int maxTrades;
     private final int xp;
     private final float priceMult;
+    private Function<Random, ItemStack> price;
+    private Function<Random, ItemStack> price2;
+    private Function<Random, ItemStack> forSale;
 
     public RandomTradeBuilder(int maxTrades, int xp, float priceMult) {
         this.price = null;
@@ -24,6 +24,10 @@ public class RandomTradeBuilder {
         this.maxTrades = maxTrades;
         this.xp = xp;
         this.priceMult = priceMult;
+    }
+
+    public static Function<Random, ItemStack> createFunction(Item item, int min, int max) {
+        return (random) -> new ItemStack(item, max);
     }
 
     public RandomTradeBuilder setPrice(Function<Random, ItemStack> price) {
@@ -62,9 +66,5 @@ public class RandomTradeBuilder {
                 ? null
                 : new MerchantOffer(this.price.apply(random), this.price2.apply(random), this.forSale.apply(random), this.maxTrades, this.xp,
                 this.priceMult);
-    }
-
-    public static Function<Random, ItemStack> createFunction(Item item, int min, int max) {
-        return (random) -> new ItemStack(item, max);
     }
 }

@@ -9,16 +9,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class DarkMatter extends TextureSheetParticle {
 
-    private final SpriteSet spriteSet;
+    private final float angularAcceleration;
     private float angularVelocity;
-    private float angularAcceleration;
 
     protected DarkMatter(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, SpriteSet spriteSet) {
         super(world, x, y, z);
-        this.spriteSet = spriteSet;
         this.setSize((float) 0.4, (float) 0.4);
         this.quadSize *= (float) 1;
-        this.lifetime = (int) Math.max(1, 10 + (this.random.nextInt(30) - 15));
+        this.lifetime = Math.max(1, 10 + (this.random.nextInt(30) - 15));
         this.gravity = (float) 0;
         this.hasPhysics = true;
         this.xd = vx * 1;

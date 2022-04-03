@@ -14,8 +14,8 @@ public class BombFallingEntity extends FallingBlockEntity {
     boolean isCharged;
     int nuclearCharge;
 
-    public BombFallingEntity(EntityType<? extends FallingBlockEntity> p_i50218_1_, Level p_i50218_2_) {
-        super(p_i50218_1_, p_i50218_2_);
+    public BombFallingEntity(EntityType<? extends FallingBlockEntity> entityType, Level level) {
+        super(entityType, level);
     }
 
     public BombFallingEntity(Level worldIn, double v, double y, double v1, BlockState blockState, boolean isCharged, int nuclearCharge) {
@@ -24,13 +24,13 @@ public class BombFallingEntity extends FallingBlockEntity {
         this.nuclearCharge = nuclearCharge;
     }
 
-    public boolean causeFallDamage(float p_225503_1_, float p_225503_2_, DamageSource p_225503_3_) {
-        if (p_225503_1_ >= 3.0F && this.isCharged
+    public boolean causeFallDamage(float height, float p_225503_2_, DamageSource damageSource) {
+        if (height >= 3.0F && this.isCharged
                 && this.level.getLevelData().getGameRules().getBoolean(Gamerules.DO_NUCLEAR_BOMBS_EXPLODE)) {
             new NuclearExplosion(this.level, this.blockPosition().getX(),
                     this.blockPosition().getY(), this.blockPosition().getZ(), nuclearCharge);
         }
 
-        return super.causeFallDamage(p_225503_1_, p_225503_2_, p_225503_3_);
+        return super.causeFallDamage(height, p_225503_2_, damageSource);
     }
 }

@@ -47,10 +47,10 @@ public class RadioactiveZombie extends Zombie {
     @Override
     public boolean doHurtTarget(Entity entity) {
         boolean flag = super.doHurtTarget(entity);
-        if (flag && this.getMainHandItem().isEmpty() && entity instanceof LivingEntity) {
+        if (flag && this.getMainHandItem().isEmpty() && (entity instanceof LivingEntity livingEntity)) {
             float f = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
-            if (!RadioactivityFunction.isEntityWearingAntiRadiationSuit((LivingEntity) entity)) {
-                ((LivingEntity) entity).addEffect(new MobEffectInstance(PotionEffectInit.RADIOACTIVITY.get(), (int) (140 * f)));
+            if (!RadioactivityFunction.isEntityWearingAntiRadiationSuit(livingEntity)) {
+                livingEntity.addEffect(new MobEffectInstance(PotionEffectInit.RADIOACTIVITY.get(), (int) (140 * f)));
             }
         }
         return flag;

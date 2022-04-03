@@ -10,6 +10,7 @@ import net.minecraft.world.level.levelgen.feature.structures.StructureTemplatePo
 import net.minecraftforge.fml.common.Mod;
 
 import net.reikeb.electrona.Electrona;
+import net.reikeb.electrona.misc.Keys;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +18,15 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = Electrona.MODID)
 public class StructureGen {
 
-    private static final ResourceLocation mainEngineerHouse = new ResourceLocation(Electrona.MODID, "villages/engineer_house_plains");
+    private static final ResourceLocation mainEngineerHouse = Keys.ENGINEER_HOUSE_PLAINS;
 
     public static void setupVillageWorldGen(RegistryAccess dynamicRegistries) {
         // Add Houses to Vanilla Villages.
         addEngineerHouseToVillageConfig(dynamicRegistries, "village/plains/houses", mainEngineerHouse, 2);
-        addEngineerHouseToVillageConfig(dynamicRegistries, "village/savanna/houses", new ResourceLocation(Electrona.MODID, "villages/engineer_house_savanna"), 2);
-        addEngineerHouseToVillageConfig(dynamicRegistries, "village/desert/houses", new ResourceLocation(Electrona.MODID, "villages/engineer_house_desert"), 2);
-        addEngineerHouseToVillageConfig(dynamicRegistries, "village/taiga/houses", new ResourceLocation(Electrona.MODID, "villages/engineer_house_taiga"), 2);
-        addEngineerHouseToVillageConfig(dynamicRegistries, "village/snowy/houses", new ResourceLocation(Electrona.MODID, "villages/engineer_house_snowy"), 2);
+        addEngineerHouseToVillageConfig(dynamicRegistries, "village/savanna/houses", Keys.ENGINEER_HOUSE_SAVANNA, 2);
+        addEngineerHouseToVillageConfig(dynamicRegistries, "village/desert/houses", Keys.ENGINEER_HOUSE_DESERT, 2);
+        addEngineerHouseToVillageConfig(dynamicRegistries, "village/taiga/houses", Keys.ENGINEER_HOUSE_TAIGA, 2);
+        addEngineerHouseToVillageConfig(dynamicRegistries, "village/snowy/houses", Keys.ENGINEER_HOUSE_SNOWY, 2);
 
         // Add Houses to other mod's structures. (Make sure Houses piece Jigsaw Block's Name matches the other mod piece Jigsaw's Target Name.
         addEngineerHouseToVillageConfig(dynamicRegistries, "repurposed_structures:village/badlands/houses", mainEngineerHouse, 2);

@@ -3,7 +3,6 @@ package net.reikeb.electrona.setup.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -18,13 +17,12 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
-import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.misc.Keys;
 
 public class MechanicWingsLayer<T extends LivingEntity, M extends EntityModel<T>> extends ElytraLayer<T, M> {
 
-    public static ModelLayerLocation MECHANIC_WINGS_LAYER = new ModelLayerLocation(new ResourceLocation("minecraft:player"), "mechanic_wings");
-    private static final ResourceLocation TEXTURE_WINGS = new ResourceLocation(Electrona.MODID, "textures/models/mechanic_wings.png");
+    public static ModelLayerLocation MECHANIC_WINGS_LAYER = new ModelLayerLocation(Keys.PLAYER, "mechanic_wings");
     private final MechanicWingsModel<T> wingsModel;
 
     public MechanicWingsLayer(RenderLayerParent<T, M> p_i50942_1_, EntityModelSet p_i50942_2_) {
@@ -42,7 +40,7 @@ public class MechanicWingsLayer<T extends LivingEntity, M extends EntityModel<T>
             p_225628_1_.translate(0.0D, 0.0D, 0.125D);
             this.getParentModel().copyPropertiesTo(this.wingsModel);
             this.wingsModel.setupAnim(p_225628_4_, p_225628_5_, p_225628_6_, p_225628_8_, p_225628_9_, p_225628_10_);
-            VertexConsumer ivertexbuilder = ItemRenderer.getArmorFoilBuffer(p_225628_2_, RenderType.armorCutoutNoCull(TEXTURE_WINGS), false,
+            VertexConsumer ivertexbuilder = ItemRenderer.getArmorFoilBuffer(p_225628_2_, RenderType.armorCutoutNoCull(Keys.MECHANIC_WINGS), false,
                     itemstack.hasFoil());
             this.wingsModel.renderToBuffer(p_225628_1_, ivertexbuilder, p_225628_3_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
             p_225628_1_.popPose();
@@ -56,6 +54,6 @@ public class MechanicWingsLayer<T extends LivingEntity, M extends EntityModel<T>
 
     @Override
     public ResourceLocation getElytraTexture(ItemStack stack, T entity) {
-        return TEXTURE_WINGS;
+        return Keys.MECHANIC_WINGS;
     }
 }

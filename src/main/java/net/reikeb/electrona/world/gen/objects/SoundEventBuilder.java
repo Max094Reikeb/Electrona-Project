@@ -17,10 +17,10 @@ import java.util.List;
  */
 public class SoundEventBuilder {
 
-    private SoundSource category = SoundSource.BLOCKS;
-    private String subtitleTranslationKey = "";
     private final List<SoundBuilder> sounds = new ArrayList<>();
     private final SoundEvent event;
+    private SoundSource category = SoundSource.BLOCKS;
+    private String subtitleTranslationKey = "";
 
     public SoundEventBuilder(SoundEvent event) {
         this.event = event;

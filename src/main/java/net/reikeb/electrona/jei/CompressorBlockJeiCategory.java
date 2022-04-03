@@ -31,6 +31,10 @@ public class CompressorBlockJeiCategory implements IRecipeCategory<CompressorBlo
 
     private final IDrawable background;
 
+    public CompressorBlockJeiCategory(IGuiHelper guiHelper) {
+        this.background = guiHelper.createDrawable(Electrona.RL("textures/guis/compressor_gui.png"), 0, 0, 176, 65);
+    }
+
     public void draw(CompressorBlockRecipeWrapper recipe, PoseStack matrixStack, double mouseX, double mouseY) {
         Font fontRenderer = Minecraft.getInstance().font;
         fontRenderer.draw(matrixStack, new TranslatableComponent("gui.electrona.compressor.name"), 50, 6, -16777216);
@@ -55,10 +59,6 @@ public class CompressorBlockJeiCategory implements IRecipeCategory<CompressorBlo
         } else if (recipeOutput.getItem() == ItemInit.URANIUM_QUAD_BAR.get()) {
             fontRenderer.draw(matrixStack, "1600 ELs", 126, 16, -3407821);
         }
-    }
-
-    public CompressorBlockJeiCategory(IGuiHelper guiHelper) {
-        this.background = guiHelper.createDrawable(Electrona.RL("textures/guis/compressor_gui.png"), 0, 0, 176, 65);
     }
 
     @Override

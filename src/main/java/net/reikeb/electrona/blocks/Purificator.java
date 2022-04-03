@@ -76,8 +76,8 @@ public class Purificator extends AbstractWaterLoggableBlock implements EntityBlo
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof PurificatorBlockEntity) {
-                ((PurificatorBlockEntity) blockEntity).dropItems(world, pos);
+            if (blockEntity instanceof PurificatorBlockEntity purificatorBlockEntity) {
+                purificatorBlockEntity.dropItems(world, pos);
                 world.updateNeighbourForOutputSignal(pos, this);
             }
             super.onRemove(state, world, pos, newState, isMoving);

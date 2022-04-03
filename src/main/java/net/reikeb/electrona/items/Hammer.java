@@ -39,37 +39,6 @@ public class Hammer extends DiggerItem {
                 new Properties().stacksTo(1).rarity(Rarity.COMMON).tab(ItemGroups.ELECTRONA_TOOLS));
     }
 
-    @Override
-    public boolean hasCraftingRemainingItem() {
-        return true;
-    }
-
-    @Override
-    public ItemStack getContainerItem(ItemStack itemstack) {
-        ItemStack retval = new ItemStack(this);
-        retval.setDamageValue(itemstack.getDamageValue() + 1);
-        if (retval.getDamageValue() >= retval.getMaxDamage()) {
-            return ItemStack.EMPTY;
-        }
-        return retval;
-    }
-
-    @Override
-    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
-        return (toolAction.equals(ToolActions.SHOVEL_DIG) || (toolAction.equals(ToolActions.AXE_DIG)) ||
-                (toolAction.equals(ToolActions.PICKAXE_DIG)) || (toolAction.equals(ToolActions.HOE_DIG)));
-    }
-
-    public boolean mineBlock(ItemStack stack, Level world, BlockState state, BlockPos pos, LivingEntity entity) {
-        if (!world.isClientSide && state.getDestroySpeed(world, pos) != 0.0F) {
-            stack.hurtAndBreak(1, entity, (e) -> {
-                e.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-            });
-            attemptBreakNeighbors(world, pos, (Player) entity, NOT_EFFECTIVE_BLOCKS, false, 3);
-        }
-        return true;
-    }
-
     public static void attemptBreakNeighbors(Level world, BlockPos pos, Player player, Set<Block> notEffectiveOn, boolean checkHarvestLevel, int radioImpar) {
         world.setBlockAndUpdate(pos, Blocks.GLASS.defaultBlockState());
         BlockHitResult trace = ElectronaUtils.rayTrace(world, player, ClipContext.Fluid.ANY);
@@ -106,5 +75,36 @@ public class Hammer extends DiggerItem {
             Block.dropResources(state, world, pos, null, player, player.getMainHandItem());
             world.destroyBlock(pos, false);
         }
+    }
+
+    @Override
+    public boolean hasCraftingRemainingItem() {
+        return true;
+    }
+
+    @Override
+    public ItemStack getContainerItem(ItemStack itemstack) {
+        ItemStack retval = new ItemStack(this);
+        retval.setDamageValue(itemstack.getDamageValue() + 1);
+        if (retval.getDamageValue() >= retval.getMaxDamage()) {
+            return ItemStack.EMPTY;
+        }
+        return retval;
+    }
+
+    @Override
+    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+        return (toolAction.equals(ToolActions.SHOVEL_DIG) || (toolAction.equals(ToolActions.AXE_DIG)) ||
+                (toolAction.equals(ToolActions.PICKAXE_DIG)) || (toolAction.equals(ToolActions.HOE_DIG)));
+    }
+
+    public boolean mineBlock(ItemStack stack, Level world, BlockState state, BlockPos pos, LivingEntity entity) {
+        if (!world.isClientSide && state.getDestroySpeed(world, pos) != 0.0F) {
+            stack.hurtAndBreak(1, entity, (e) -> {
+                e.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+            });
+            attemptBreakNeighbors(world, pos, (Player) entity, NOT_EFFECTIVE_BLOCKS, false, 3);
+        }
+        return true;
     }
 }

@@ -18,30 +18,27 @@ import java.util.Collections;
 
 public class ChargeCommand {
 
-    private static final DynamicCommandExceptionType ERROR_NEGATIVE = new DynamicCommandExceptionType((error) -> {
-        return new TranslatableComponent("command.electrona.negative_charge", error);
-    });
+    private static final DynamicCommandExceptionType ERROR_NEGATIVE = new DynamicCommandExceptionType((error)
+            -> new TranslatableComponent("command.electrona.negative_charge", error));
 
-    private static final DynamicCommandExceptionType ERROR_NEGATIVE_RESULT = new DynamicCommandExceptionType((error) -> {
-        return new TranslatableComponent("command.electrona.negative_subtraction", error);
-    });
+    private static final DynamicCommandExceptionType ERROR_NEGATIVE_RESULT = new DynamicCommandExceptionType((error)
+            -> new TranslatableComponent("command.electrona.negative_subtraction", error));
 
-    private static final DynamicCommandExceptionType ERROR_INCOMPATIBLE = new DynamicCommandExceptionType((error) -> {
-        return new TranslatableComponent("command.electrona.cannot_be_charged", error);
-    });
+    private static final DynamicCommandExceptionType ERROR_INCOMPATIBLE = new DynamicCommandExceptionType((error)
+            -> new TranslatableComponent("command.electrona.cannot_be_charged", error));
 
-    private static final DynamicCommandExceptionType ERROR_NO_ITEM = new DynamicCommandExceptionType((error) -> {
-        return new TranslatableComponent("command.electrona.not_holding_items", error);
-    });
+    private static final DynamicCommandExceptionType ERROR_NO_ITEM = new DynamicCommandExceptionType((error)
+            -> new TranslatableComponent("command.electrona.not_holding_items", error));
 
     public static void register(CommandDispatcher<CommandSourceStack> commandDispatcher) {
-        commandDispatcher.register(Commands.literal("charge").requires((commandSource) -> {
-            return commandSource.hasPermission(2);
-        }).then(Commands.literal("set").then(Commands.argument("chargeCount", IntegerArgumentType.integer()).executes((command) -> {
-            return setChargeItem(command.getSource(), Collections.singleton(command.getSource().getPlayerOrException()), IntegerArgumentType.getInteger(command, "chargeCount"));
-        }))).then(Commands.literal("add").then(Commands.argument("chargeCount", IntegerArgumentType.integer()).executes((command) -> {
-            return addChargeItem(command.getSource(), Collections.singleton(command.getSource().getPlayerOrException()), IntegerArgumentType.getInteger(command, "chargeCount"));
-        }))));
+        commandDispatcher.register(Commands.literal("charge").requires((commandSource)
+                -> commandSource.hasPermission(2)).then(Commands.literal("set")
+                .then(Commands.argument("chargeCount", IntegerArgumentType.integer()).executes((command)
+                        -> setChargeItem(command.getSource(), Collections.singleton(command.getSource().getPlayerOrException()),
+                        IntegerArgumentType.getInteger(command, "chargeCount"))))).then(Commands.literal("add")
+                .then(Commands.argument("chargeCount", IntegerArgumentType.integer()).executes((command)
+                        -> addChargeItem(command.getSource(), Collections.singleton(command.getSource().getPlayerOrException()),
+                        IntegerArgumentType.getInteger(command, "chargeCount"))))));
     }
 
     private static int setChargeItem(CommandSourceStack source, Collection<ServerPlayer> user, int charge) throws CommandSyntaxException {

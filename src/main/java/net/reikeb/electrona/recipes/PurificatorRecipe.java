@@ -19,6 +19,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.BlockInit;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.recipes.contexts.PurifyingContext;
 import net.reikeb.electrona.utils.SingletonInventory;
 
@@ -49,6 +50,14 @@ public class PurificatorRecipe implements Recipe<Container> {
         System.out.println("Loaded " + this.toString());
     }
 
+    public static Optional<PurificatorRecipe> getRecipe(Level world, @Nullable BlockPos pos, ItemStack stack) {
+        return getRecipe(world, new PurifyingContext(new SingletonInventory(stack), null, pos != null ? () -> Vec3.atCenterOf(pos) : null, null));
+    }
+
+    public static Optional<PurificatorRecipe> getRecipe(Level world, PurifyingContext ctx) {
+        return world.getRecipeManager().getRecipeFor(Electrona.PURIFYING, ctx, world);
+    }
+
     @Override
     public String toString() {
 
@@ -71,14 +80,6 @@ public class PurificatorRecipe implements Recipe<Container> {
     public int getCountOutput() {
         int count = this.output.getCount() == 0 ? 1 : this.output.getCount();
         return this.randomOutput ? (Math.random() < 0.5 ? count : (count - 1)) : count;
-    }
-
-    public static Optional<PurificatorRecipe> getRecipe(Level world, @Nullable BlockPos pos, ItemStack stack) {
-        return getRecipe(world, new PurifyingContext(new SingletonInventory(stack), null, pos != null ? () -> Vec3.atCenterOf(pos) : null, null));
-    }
-
-    public static Optional<PurificatorRecipe> getRecipe(Level world, PurifyingContext ctx) {
-        return world.getRecipeManager().getRecipeFor(Electrona.PURIFYING, ctx, world);
     }
 
     @Override
@@ -129,7 +130,7 @@ public class PurificatorRecipe implements Recipe<Container> {
         Serializer() {
 
             // This registry name is what people will specify in their json files.
-            this.setRegistryName(new ResourceLocation(Electrona.MODID, "purifying"));
+            this.setRegistryName(Keys.PURIFYING);
         }
 
         @Override

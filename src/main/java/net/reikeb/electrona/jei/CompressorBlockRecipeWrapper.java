@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class CompressorBlockRecipeWrapper {
 
-    private final ArrayList input;
     public final ArrayList output;
+    private final ArrayList input;
 
     public CompressorBlockRecipeWrapper(ArrayList input, ArrayList output) {
         this.input = input;
