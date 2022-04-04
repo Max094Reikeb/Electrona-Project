@@ -29,7 +29,7 @@ public class NuclearGeneratorControllerContainer extends AbstractContainer {
         });
 
         this.layoutPlayerInventorySlots(inv);
-        this.addSyncedInt(nuclearGeneratorControllerBlockEntity::setElectronicPower, nuclearGeneratorControllerBlockEntity::getElectronicPower);
+        this.addSyncedInt(nuclearGeneratorControllerBlockEntity::setElectronicPowerTimesHundred, nuclearGeneratorControllerBlockEntity::getElectronicPowerTimesHundred);
         this.addSyncedInt(nuclearGeneratorControllerBlockEntity::setUnderWater, nuclearGeneratorControllerBlockEntity::getUnderWater);
         this.addSyncedInt(nuclearGeneratorControllerBlockEntity::setTemperature, nuclearGeneratorControllerBlockEntity::getTemperature);
         this.addSyncedInt(nuclearGeneratorControllerBlockEntity::setPowered, nuclearGeneratorControllerBlockEntity::isPowered);
@@ -41,7 +41,7 @@ public class NuclearGeneratorControllerContainer extends AbstractContainer {
         this.addSyncedInt(nuclearGeneratorControllerBlockEntity::setPosZUnder, nuclearGeneratorControllerBlockEntity::getPosZUnder);
     }
 
-    public int getElectronicPower() {
+    public double getElectronicPower() {
         return nuclearGeneratorControllerBlockEntity.getElectronicPower();
     }
 

@@ -25,10 +25,10 @@ public class BiomassGeneratorContainer extends AbstractContainer {
         });
 
         this.layoutPlayerInventorySlots(inv);
-        this.addSyncedInt(biomassGeneratorBlockEntity::setElectronicPower, biomassGeneratorBlockEntity::getElectronicPower);
+        this.addSyncedInt(biomassGeneratorBlockEntity::setElectronicPowerTimesHundred, biomassGeneratorBlockEntity::getElectronicPowerTimesHundred);
     }
 
-    public int getElectronicPower() {
+    public double getElectronicPower() {
         return biomassGeneratorBlockEntity.getElectronicPower();
     }
 }

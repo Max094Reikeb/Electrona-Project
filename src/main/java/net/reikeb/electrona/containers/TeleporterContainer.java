@@ -25,67 +25,67 @@ public class TeleporterContainer extends AbstractContainer {
         });
 
         this.layoutPlayerInventorySlots(inv);
-        this.addSyncedInt(teleporterBlockEntity::setElectronicPower, teleporterBlockEntity::getElectronicPower);
-        this.addSyncedInt(teleporterBlockEntity::setTeleportX, teleporterBlockEntity::getTeleportX);
-        this.addSyncedInt(teleporterBlockEntity::setTeleportY, teleporterBlockEntity::getTeleportY);
-        this.addSyncedInt(teleporterBlockEntity::setTeleportZ, teleporterBlockEntity::getTeleportZ);
+        this.addSyncedInt(teleporterBlockEntity::setElectronicPowerTimesHundred, teleporterBlockEntity::getElectronicPowerTimesHundred);
+        this.addSyncedInt(teleporterBlockEntity::setTeleportXTimesHundred, teleporterBlockEntity::getTeleportXTimesHundred);
+        this.addSyncedInt(teleporterBlockEntity::setTeleportYTimesHundred, teleporterBlockEntity::getTeleportYTimesHundred);
+        this.addSyncedInt(teleporterBlockEntity::setTeleportZTimesHundred, teleporterBlockEntity::getTeleportZTimesHundred);
+        this.addSyncedInt(teleporterBlockEntity::setItemTeleportXTimesHundred, teleporterBlockEntity::getItemTeleportXTimesHundred);
+        this.addSyncedInt(teleporterBlockEntity::setItemTeleportYTimesHundred, teleporterBlockEntity::getItemTeleportYTimesHundred);
+        this.addSyncedInt(teleporterBlockEntity::setItemTeleportZTimesHundred, teleporterBlockEntity::getItemTeleportZTimesHundred);
         this.addSyncedInt(teleporterBlockEntity::setAutoDeletion, teleporterBlockEntity::isAutoDeletion);
-        this.addSyncedInt(teleporterBlockEntity::setItemTeleportX, teleporterBlockEntity::getItemTeleportX);
-        this.addSyncedInt(teleporterBlockEntity::setItemTeleportY, teleporterBlockEntity::getItemTeleportY);
-        this.addSyncedInt(teleporterBlockEntity::setItemTeleportZ, teleporterBlockEntity::getItemTeleportZ);
         this.addSyncedInt(teleporterBlockEntity::setTeleportSaver, teleporterBlockEntity::isTeleportSaver);
         this.addSyncedInt(teleporterBlockEntity::setTeleporter, teleporterBlockEntity::isTeleporter);
     }
 
-    public int getElectronicPower() {
+    public double getElectronicPower() {
         return teleporterBlockEntity.getElectronicPower();
     }
 
-    public int getTeleportX() {
+    public double getTeleportX() {
         return teleporterBlockEntity.getTeleportX();
     }
 
-    public void setTeleportX(int teleportX) {
+    public void setTeleportX(double teleportX) {
         teleporterBlockEntity.setTeleportX(teleportX);
     }
 
-    public int getItemTeleportX() {
+    public double getItemTeleportX() {
         return teleporterBlockEntity.getItemTeleportX();
     }
 
-    public void setItemTeleportX(int itemTeleportX) {
+    public void setItemTeleportX(double itemTeleportX) {
         teleporterBlockEntity.setItemTeleportX(itemTeleportX);
     }
 
-    public int getTeleportY() {
+    public double getTeleportY() {
         return teleporterBlockEntity.getTeleportY();
     }
 
-    public void setTeleportY(int teleportY) {
+    public void setTeleportY(double teleportY) {
         teleporterBlockEntity.setTeleportY(teleportY);
     }
 
-    public int getItemTeleportY() {
+    public double getItemTeleportY() {
         return teleporterBlockEntity.getItemTeleportY();
     }
 
-    public void setItemTeleportY(int itemTeleportY) {
+    public void setItemTeleportY(double itemTeleportY) {
         teleporterBlockEntity.setItemTeleportY(itemTeleportY);
     }
 
-    public int getTeleportZ() {
+    public double getTeleportZ() {
         return teleporterBlockEntity.getTeleportZ();
     }
 
-    public void setTeleportZ(int teleportZ) {
+    public void setTeleportZ(double teleportZ) {
         teleporterBlockEntity.setTeleportZ(teleportZ);
     }
 
-    public int getItemTeleportZ() {
+    public double getItemTeleportZ() {
         return teleporterBlockEntity.getItemTeleportZ();
     }
 
-    public void setItemTeleportZ(int itemTeleportZ) {
+    public void setItemTeleportZ(double itemTeleportZ) {
         teleporterBlockEntity.setItemTeleportZ(itemTeleportZ);
     }
 

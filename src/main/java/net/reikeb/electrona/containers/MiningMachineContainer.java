@@ -27,10 +27,10 @@ public class MiningMachineContainer extends AbstractContainer {
         });
 
         this.layoutPlayerInventorySlots(inv);
-        this.addSyncedInt(miningMachineBlockEntity::setElectronicPower, miningMachineBlockEntity::getElectronicPower);
+        this.addSyncedInt(miningMachineBlockEntity::setElectronicPowerTimesHundred, miningMachineBlockEntity::getElectronicPowerTimesHundred);
     }
 
-    public int getElectronicPower() {
+    public double getElectronicPower() {
         return miningMachineBlockEntity.getElectronicPower();
     }
 }

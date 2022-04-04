@@ -25,12 +25,12 @@ public class XPGeneratorContainer extends AbstractContainer {
         });
 
         this.layoutPlayerInventorySlots(inv);
-        this.addSyncedInt(xpGeneratorBlockEntity::setElectronicPower, xpGeneratorBlockEntity::getElectronicPower);
+        this.addSyncedInt(xpGeneratorBlockEntity::setElectronicPowerTimesHundred, xpGeneratorBlockEntity::getElectronicPowerTimesHundred);
         this.addSyncedInt(xpGeneratorBlockEntity::setWait, xpGeneratorBlockEntity::getWait);
         this.addSyncedInt(xpGeneratorBlockEntity::setXpLevels, xpGeneratorBlockEntity::getXpLevels);
     }
 
-    public int getElectronicPower() {
+    public double getElectronicPower() {
         return xpGeneratorBlockEntity.getElectronicPower();
     }
 

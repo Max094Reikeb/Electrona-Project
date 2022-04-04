@@ -25,14 +25,14 @@ public class ConverterContainer extends AbstractContainer {
         });
 
         this.layoutPlayerInventorySlots(inv);
-        this.addSyncedInt(converterBlockEntity::setElectronicPower, converterBlockEntity::getElectronicPower);
+        this.addSyncedInt(converterBlockEntity::setElectronicPowerTimesHundred, converterBlockEntity::getElectronicPowerTimesHundred);
         this.addSyncedInt(converterBlockEntity::setForgeEnergy, converterBlockEntity::getForgeEnergy);
-        this.addSyncedInt(converterBlockEntity::setVP, converterBlockEntity::getVP);
+        this.addSyncedInt(converterBlockEntity::setVPTimesHundred, converterBlockEntity::getVPTimesHundred);
         this.addSyncedInt(converterBlockEntity::setToVP, converterBlockEntity::isToVP);
         this.addSyncedInt(converterBlockEntity::setToOthers, converterBlockEntity::isToOthers);
     }
 
-    public int getElectronicPower() {
+    public double getElectronicPower() {
         return converterBlockEntity.getElectronicPower();
     }
 
@@ -40,7 +40,7 @@ public class ConverterContainer extends AbstractContainer {
         return converterBlockEntity.getForgeEnergy();
     }
 
-    public int getVP() {
+    public double getVP() {
         return converterBlockEntity.getVP();
     }
 

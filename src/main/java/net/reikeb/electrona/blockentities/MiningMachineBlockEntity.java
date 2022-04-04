@@ -29,7 +29,7 @@ import static net.reikeb.electrona.init.BlockEntityInit.MINING_MACHINE_BLOCK_ENT
 public class MiningMachineBlockEntity extends AbstractBlockEntity {
 
     public static final BlockEntityTicker<MiningMachineBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
-    public  double electronicPower;
+    public double electronicPower;
     private int maxStorage;
     private int wait;
 
@@ -137,8 +137,16 @@ public class MiningMachineBlockEntity extends AbstractBlockEntity {
         }
     }
 
-    public int getElectronicPower() {
-        return (int) this.electronicPower;
+    public int getElectronicPowerTimesHundred() {
+        return (int) (this.electronicPower * 100);
+    }
+
+    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
+        this.electronicPower = electronicPowerTimesHundred / 100.0;
+    }
+
+    public double getElectronicPower() {
+        return this.electronicPower;
     }
 
     public void setElectronicPower(double electronicPower) {

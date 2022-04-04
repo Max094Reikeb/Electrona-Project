@@ -63,8 +63,16 @@ public class SprayerBlockEntity extends AbstractBlockEntity {
         }
     }
 
-    public int getElectronicPower() {
-        return (int) this.electronicPower;
+    public int getElectronicPowerTimesHundred() {
+        return (int) (this.electronicPower * 100);
+    }
+
+    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
+        this.electronicPower = electronicPowerTimesHundred / 100.0;
+    }
+
+    public double getElectronicPower() {
+        return this.electronicPower;
     }
 
     public void setElectronicPower(double electronicPower) {

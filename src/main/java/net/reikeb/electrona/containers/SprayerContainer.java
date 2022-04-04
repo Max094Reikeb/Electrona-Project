@@ -28,11 +28,11 @@ public class SprayerContainer extends AbstractContainer {
         });
 
         this.layoutPlayerInventorySlots(inv);
-        this.addSyncedInt(sprayerBlockEntity::setElectronicPower, sprayerBlockEntity::getElectronicPower);
+        this.addSyncedInt(sprayerBlockEntity::setElectronicPowerTimesHundred, sprayerBlockEntity::getElectronicPowerTimesHundred);
         this.addSyncedInt(sprayerBlockEntity::setRadius, sprayerBlockEntity::getRadius);
     }
 
-    public int getElectronicPower() {
+    public double getElectronicPower() {
         return sprayerBlockEntity.getElectronicPower();
     }
 

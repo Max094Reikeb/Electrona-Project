@@ -26,12 +26,12 @@ public class WaterPumpContainer extends AbstractContainer {
         });
 
         this.layoutPlayerInventorySlots(inv);
-        this.addSyncedInt(waterPumpBlockEntity::setElectronicPower, waterPumpBlockEntity::getElectronicPower);
+        this.addSyncedInt(waterPumpBlockEntity::setElectronicPowerTimesHundred, waterPumpBlockEntity::getElectronicPowerTimesHundred);
         this.addSyncedInt(waterPumpBlockEntity::setWaterLevel, waterPumpBlockEntity::getWaterLevel);
         this.addSyncedInt(waterPumpBlockEntity::setOn, waterPumpBlockEntity::isOn);
     }
 
-    public int getElectronicPower() {
+    public double getElectronicPower() {
         return waterPumpBlockEntity.getElectronicPower();
     }
 

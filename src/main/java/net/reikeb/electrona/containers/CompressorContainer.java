@@ -27,12 +27,12 @@ public class CompressorContainer extends AbstractContainer {
         });
 
         this.layoutPlayerInventorySlots(inv);
-        this.addSyncedInt(compressorBlockEntity::setElectronicPower, compressorBlockEntity::getElectronicPower);
+        this.addSyncedInt(compressorBlockEntity::setElectronicPowerTimesHundred, compressorBlockEntity::getElectronicPowerTimesHundred);
         this.addSyncedInt(compressorBlockEntity::setCompressingTime, compressorBlockEntity::getCompressingTime);
         this.addSyncedInt(compressorBlockEntity::setCurrentCompressingTime, compressorBlockEntity::getCurrentCompressingTime);
     }
 
-    public int getElectronicPower() {
+    public double getElectronicPower() {
         return compressorBlockEntity.getElectronicPower();
     }
 

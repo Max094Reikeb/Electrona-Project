@@ -118,8 +118,16 @@ public class ConverterBlockEntity extends AbstractBlockEntity {
         }
     }
 
-    public int getElectronicPower() {
-        return (int) this.electronicPower;
+    public int getElectronicPowerTimesHundred() {
+        return (int) (this.electronicPower * 100);
+    }
+
+    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
+        this.electronicPower = electronicPowerTimesHundred / 100.0;
+    }
+
+    public double getElectronicPower() {
+        return this.electronicPower;
     }
 
     public void setElectronicPower(double electronicPower) {
@@ -139,11 +147,19 @@ public class ConverterBlockEntity extends AbstractBlockEntity {
         this.getCapability(CapabilityEnergy.ENERGY, null).ifPresent(cap -> cap.receiveEnergy(energy, false));
     }
 
-    public int getVP() {
-        return (int) this.vp;
+    public int getVPTimesHundred() {
+        return (int) (this.vp * 100);
     }
 
-    public void setVP(int vp) {
+    public void setVPTimesHundred(int vpTimesHundred) {
+        this.vp = vpTimesHundred / 100.0;
+    }
+
+    public double getVP() {
+        return this.vp;
+    }
+
+    public void setVP(double vp) {
         this.vp = vp;
     }
 

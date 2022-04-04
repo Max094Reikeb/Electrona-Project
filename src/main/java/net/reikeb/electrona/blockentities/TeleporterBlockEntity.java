@@ -27,9 +27,9 @@ public class TeleporterBlockEntity extends AbstractBlockEntity {
     private double teleportX;
     private double teleportY;
     private double teleportZ;
-    private int itemTeleportX;
-    private int itemTeleportY;
-    private int itemTeleportZ;
+    private double itemTeleportX;
+    private double itemTeleportY;
+    private double itemTeleportZ;
     private boolean autoDeletion;
     private boolean isTeleportSaver;
     private boolean isTeleporter;
@@ -60,9 +60,9 @@ public class TeleporterBlockEntity extends AbstractBlockEntity {
         if (world == null) return;
         ItemStack stack = inventory.getStackInSlot(0);
         if ((stack.getItem() == ItemInit.TELEPORT_SAVER.get()) || (stack.getItem() == ItemInit.PORTABLE_TELEPORTER.get())) {
-            this.itemTeleportX = stack.getOrCreateTag().getInt("teleportX");
-            this.itemTeleportY = stack.getOrCreateTag().getInt("teleportY");
-            this.itemTeleportZ = stack.getOrCreateTag().getInt("teleportZ");
+            this.itemTeleportX = stack.getOrCreateTag().getDouble("teleportX");
+            this.itemTeleportY = stack.getOrCreateTag().getDouble("teleportY");
+            this.itemTeleportZ = stack.getOrCreateTag().getDouble("teleportZ");
             this.isTeleportSaver = stack.getItem() == ItemInit.TELEPORT_SAVER.get();
             this.isTeleporter = stack.getItem() == ItemInit.PORTABLE_TELEPORTER.get();
         }
@@ -71,35 +71,67 @@ public class TeleporterBlockEntity extends AbstractBlockEntity {
         world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
     }
 
-    public int getElectronicPower() {
-        return (int) this.electronicPower;
+    public int getElectronicPowerTimesHundred() {
+        return (int) (this.electronicPower * 100);
     }
 
-    public void setElectronicPower(int electronicPower) {
+    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
+        this.electronicPower = electronicPowerTimesHundred / 100.0;
+    }
+
+    public double getElectronicPower() {
+        return this.electronicPower;
+    }
+
+    public void setElectronicPower(double electronicPower) {
         this.electronicPower = electronicPower;
     }
 
-    public int getTeleportX() {
-        return (int) this.teleportX;
+    public int getTeleportXTimesHundred() {
+        return (int) (this.teleportX * 100);
     }
 
-    public void setTeleportX(int teleportX) {
+    public void setTeleportXTimesHundred(int teleportXTimesHundred) {
+        this.teleportX = teleportXTimesHundred / 100.0;
+    }
+
+    public double getTeleportX() {
+        return this.teleportX;
+    }
+
+    public void setTeleportX(double teleportX) {
         this.teleportX = teleportX;
     }
 
-    public int getTeleportY() {
-        return (int) this.teleportY;
+    public int getTeleportYTimesHundred() {
+        return (int) (this.teleportY * 100);
     }
 
-    public void setTeleportY(int teleportY) {
+    public void setTeleportYTimesHundred(int teleportYTimesHundred) {
+        this.teleportY = teleportYTimesHundred / 100.0;
+    }
+
+    public double getTeleportY() {
+        return this.teleportY;
+    }
+
+    public void setTeleportY(double teleportY) {
         this.teleportY = teleportY;
     }
 
-    public int getTeleportZ() {
-        return (int) this.teleportZ;
+    public int getTeleportZTimesHundred() {
+        return (int) (this.teleportZ * 100);
     }
 
-    public void setTeleportZ(int teleportZ) {
+    public void setTeleportZTimesHundred(int teleportZTimesHundred) {
+        this.teleportZ = teleportZTimesHundred / 100.0;
+    }
+
+    public double getTeleportZ() {
+        return this.teleportZ;
+    }
+
+    public void setTeleportZ(double teleportZ) {
         this.teleportZ = teleportZ;
     }
 
@@ -111,27 +143,51 @@ public class TeleporterBlockEntity extends AbstractBlockEntity {
         this.autoDeletion = (isAutoDeletion == 1);
     }
 
-    public int getItemTeleportX() {
+    public int getItemTeleportXTimesHundred() {
+        return (int) (this.itemTeleportX * 100);
+    }
+
+    public void setItemTeleportXTimesHundred(int itemTeleportXTimesHundred) {
+        this.itemTeleportX = itemTeleportXTimesHundred / 100.0;
+    }
+
+    public double getItemTeleportX() {
         return this.itemTeleportX;
     }
 
-    public void setItemTeleportX(int itemTeleportX) {
+    public void setItemTeleportX(double itemTeleportX) {
         this.itemTeleportX = itemTeleportX;
     }
 
-    public int getItemTeleportY() {
+    public int getItemTeleportYTimesHundred() {
+        return (int) (this.itemTeleportY * 100);
+    }
+
+    public void setItemTeleportYTimesHundred(int itemTeleportYTimesHundred) {
+        this.itemTeleportY = itemTeleportYTimesHundred / 100.0;
+    }
+
+    public double getItemTeleportY() {
         return this.itemTeleportY;
     }
 
-    public void setItemTeleportY(int itemTeleportY) {
+    public void setItemTeleportY(double itemTeleportY) {
         this.itemTeleportY = itemTeleportY;
     }
 
-    public int getItemTeleportZ() {
+    public int getItemTeleportZTimesHundred() {
+        return (int) (this.itemTeleportZ * 100);
+    }
+
+    public void setItemTeleportZTimesHundred(int itemTeleportZTimesHundred) {
+        this.itemTeleportZ = itemTeleportZTimesHundred / 100.0;
+    }
+
+    public double getItemTeleportZ() {
         return this.itemTeleportZ;
     }
 
-    public void setItemTeleportZ(int itemTeleportZ) {
+    public void setItemTeleportZ(double itemTeleportZ) {
         this.itemTeleportZ = itemTeleportZ;
     }
 
