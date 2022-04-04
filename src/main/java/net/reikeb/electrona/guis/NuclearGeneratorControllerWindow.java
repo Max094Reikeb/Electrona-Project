@@ -129,7 +129,7 @@ public class NuclearGeneratorControllerWindow extends AbstractWindow<NuclearGene
                     WARNING_HEIGHT);
         }
         // get current power
-        int currentPower = this.menu.getElectronicPower();
+        double currentPower = this.menu.getElectronicPower();
         // get current power as a double between 0 and 1
         double powerProgress = (currentPower / 10000.0);
         int yOffsetPower = (int) ((1.0 - powerProgress) * POWER_HEIGHT);
