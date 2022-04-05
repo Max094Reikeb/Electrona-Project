@@ -1,7 +1,6 @@
 package net.reikeb.electrona.events.block;
 
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.Block;
@@ -14,6 +13,7 @@ import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.misc.vm.EnchantmentFunction;
+import net.reikeb.electrona.utils.ElectronaUtils;
 
 @Mod.EventBusSubscriber(modid = Electrona.MODID)
 public class BlockMinedEvent {
@@ -25,14 +25,7 @@ public class BlockMinedEvent {
 
         if (eventBlock == BlockInit.TIN_ORE.get()) {
             Advancement advancement = player.server.getAdvancements().getAdvancement(Keys.A_WHOLE_NEW_WORLD_ADVANCEMENT);
-            if (advancement == null) System.out.println("Advancement A Whole New World seems to be null");
-            if (advancement == null) return;
-            AdvancementProgress advancementProgress = player.getAdvancements().getOrStartProgress(advancement);
-            if (!advancementProgress.isDone()) {
-                for (String criteria : advancementProgress.getRemainingCriteria()) {
-                    player.getAdvancements().award(advancement, criteria);
-                }
-            }
+            ElectronaUtils.awardAdvancement(player, advancement, "A Whole New World");
         }
 
         // Enchantments triggered

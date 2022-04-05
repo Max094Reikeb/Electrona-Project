@@ -3,22 +3,17 @@ package net.reikeb.electrona.misc.vm;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 
 import net.reikeb.electrona.entity.RadioactiveZombie;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.init.PotionEffectInit;
 import net.reikeb.electrona.misc.DamageSources;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+import net.reikeb.electrona.utils.ElectronaUtils;
 
 public class RadioactivityFunction {
 
@@ -57,17 +52,7 @@ public class RadioactivityFunction {
      * @param power    The power of the give effect
      */
     public static void radioactiveItemInInventory(Level world, Entity entity, int duration, int power) {
-        List<LivingEntity> livingEntities = world.getEntitiesOfClass(LivingEntity.class,
-                        new AABB(entity.getX() - (10 / 2d),
-                                entity.getY() - (10 / 2d), entity.getZ() - (10 / 2d),
-                                entity.getX() + (10 / 2d), entity.getY() + (10 / 2d),
-                                entity.getZ() + (10 / 2d)), EntitySelector.LIVING_ENTITY_STILL_ALIVE)
-                .stream().sorted(new Object() {
-                    Comparator<Entity> compareDistOf(double x, double y, double z) {
-                        return Comparator.comparing(axis -> axis.distanceToSqr(x, y, z));
-                    }
-                }.compareDistOf(entity.getX(), entity.getY(), entity.getZ())).collect(Collectors.toList());
-        for (LivingEntity entityiterator : livingEntities) {
+        for (LivingEntity entityiterator : ElectronaUtils.getLivingEntitiesInRadius(world, entity.blockPosition(), (int) (10 / 2d))) {
             if ((entityiterator instanceof Skeleton) || (entityiterator instanceof RadioactiveZombie)) return;
             if (entityiterator instanceof Player) {
                 if (((Player) entityiterator).isCreative()) return;

@@ -15,8 +15,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -25,7 +23,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -33,10 +30,6 @@ import net.minecraft.world.phys.Vec3;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.utils.ElectronaUtils;
 import net.reikeb.electrona.utils.GemPower;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class CosmicGemFunction {
 
@@ -223,19 +216,8 @@ public class CosmicGemFunction {
             }
 
         } else if (GemPower.KNOCKBACK.equalsTo(getPower(stack)) && playerEntity.isShiftKeyDown()) {
-            int x = playerEntity.blockPosition().getX();
-            int y = playerEntity.blockPosition().getY();
-            int z = playerEntity.blockPosition().getZ();
             boolean flag = false;
-            List<LivingEntity> livingEntities = world.getEntitiesOfClass(LivingEntity.class,
-                    new AABB(x - 5, y - 5, z - 5,
-                            x + 5, y + 5, z + 5),
-                    EntitySelector.LIVING_ENTITY_STILL_ALIVE).stream().sorted(new Object() {
-                Comparator<Entity> compareDistOf(double x, double y, double z) {
-                    return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(x, y, z));
-                }
-            }.compareDistOf(x, y, z)).collect(Collectors.toList());
-            for (LivingEntity entityiterator : livingEntities) {
+            for (LivingEntity entityiterator : ElectronaUtils.getLivingEntitiesInRadius(world, playerEntity.blockPosition(), 5)) {
                 if (entityiterator != playerEntity) {
                     flag = true;
                     entityiterator.knockback(5F * 0.5F, Mth.sin(playerEntity.yRot * ((float) Math.PI / 180F)), -Mth.cos(playerEntity.yRot * ((float) Math.PI / 180F)));

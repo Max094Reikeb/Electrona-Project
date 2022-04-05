@@ -8,26 +8,20 @@ import net.minecraft.tags.TagCollection;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AreaEffectCloud;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.phys.AABB;
 
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.init.ParticleInit;
 import net.reikeb.electrona.misc.Keys;
+import net.reikeb.electrona.utils.ElectronaUtils;
 import net.reikeb.electrona.utils.GemPower;
 import net.reikeb.electrona.world.Gamerules;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class BlackHoleFunction {
 
@@ -72,22 +66,11 @@ public class BlackHoleFunction {
      * @param pos   The position of the Singularity
      */
     public static void singularityParticles(Level world, BlockPos pos) {
-        double x = pos.getX();
-        double y = pos.getY();
-        double z = pos.getZ();
         if (world.isClientSide) return;
 
-        AreaEffectCloud areaEffectCloudEntity = new AreaEffectCloud(world, x, y, z);
+        AreaEffectCloud areaEffectCloudEntity = new AreaEffectCloud(world, pos.getX(), pos.getY(), pos.getZ());
 
-        List<LivingEntity> livingEntities = world.getEntitiesOfClass(LivingEntity.class,
-                new AABB(x - 100, y - 100, z - 100,
-                        x + 100, y + 100, z + 100),
-                EntitySelector.LIVING_ENTITY_STILL_ALIVE).stream().sorted(new Object() {
-            Comparator<Entity> compareDistOf(double x, double y, double z) {
-                return Comparator.comparing(_entcnd -> _entcnd.distanceToSqr(x, y, z));
-            }
-        }.compareDistOf(x, y, z)).collect(Collectors.toList());
-        for (LivingEntity entityiterator : livingEntities) {
+        for (LivingEntity entityiterator : ElectronaUtils.getLivingEntitiesInRadius(world, pos, 100)) {
             areaEffectCloudEntity.setOwner(entityiterator);
         }
 

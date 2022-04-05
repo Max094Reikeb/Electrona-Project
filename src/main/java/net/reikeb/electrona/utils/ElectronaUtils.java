@@ -2,17 +2,28 @@ package net.reikeb.electrona.utils;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ElectronaUtils {
 
@@ -82,5 +93,44 @@ public class ElectronaUtils {
      */
     public static void bind(ResourceLocation res) {
         RenderSystem.setShaderTexture(0, res);
+    }
+
+    /**
+     * Method to award an advancement to a player
+     *
+     * @param serverPlayer The player that completes the advancement
+     * @param advancement  The advancement completed
+     * @param name         The name of the advancement used in error log
+     */
+    public static void awardAdvancement(ServerPlayer serverPlayer, Advancement advancement, String name) {
+        if (advancement == null) {
+            System.out.println("Advancement " + name + " seems to be null");
+            return;
+        }
+        AdvancementProgress advancementProgress = serverPlayer.getAdvancements().getOrStartProgress(advancement);
+        if (!advancementProgress.isDone()) {
+            for (String criteria : advancementProgress.getRemainingCriteria()) {
+                serverPlayer.getAdvancements().award(advancement, criteria);
+            }
+        }
+    }
+
+    /**
+     * Method that gets all living entities in a certain radius
+     *
+     * @param level    World the entities are in
+     * @param blockPos Central position where we do the check
+     * @param radius   Radius of the check
+     * @return List of living entities
+     */
+    public static List<LivingEntity> getLivingEntitiesInRadius(Level level, BlockPos blockPos, int radius) {
+        return level.getEntitiesOfClass(LivingEntity.class, new AABB(blockPos.getX() - radius,
+                        blockPos.getY() - radius, blockPos.getZ() - radius, blockPos.getX() + radius,
+                        blockPos.getY() + radius, blockPos.getZ() + radius),
+                EntitySelector.LIVING_ENTITY_STILL_ALIVE).stream().sorted(new Object() {
+            Comparator<Entity> compareDistOf(double x, double y, double z) {
+                return Comparator.comparing(axis -> axis.distanceToSqr(x, y, z));
+            }
+        }.compareDistOf(blockPos.getX(), blockPos.getY(), blockPos.getZ())).collect(Collectors.toList());
     }
 }

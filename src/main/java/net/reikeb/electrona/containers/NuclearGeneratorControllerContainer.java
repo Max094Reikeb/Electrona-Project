@@ -3,11 +3,8 @@ package net.reikeb.electrona.containers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
 
 import net.reikeb.electrona.blockentities.NuclearGeneratorControllerBlockEntity;
 
@@ -87,27 +84,5 @@ public class NuclearGeneratorControllerContainer extends AbstractContainer {
 
     public int getPosZUnder() {
         return nuclearGeneratorControllerBlockEntity.getPosZUnder();
-    }
-
-    static class UraniumSlot extends SlotItemHandler {
-
-        public NuclearGeneratorControllerBlockEntity nuclearGeneratorControllerBlockEntity;
-
-        public UraniumSlot(IItemHandler itemHandler, NuclearGeneratorControllerBlockEntity nuclearGeneratorControllerBlockEntity, int id, int x, int y) {
-            super(itemHandler, id, x, y);
-            this.nuclearGeneratorControllerBlockEntity = nuclearGeneratorControllerBlockEntity;
-        }
-
-        public boolean mayPlace(ItemStack itemStack) {
-            return nuclearGeneratorControllerBlockEntity.areUbIn() == 0;
-        }
-
-        public boolean mayPickup(Player player) {
-            return nuclearGeneratorControllerBlockEntity.areUbIn() == 0;
-        }
-
-        public int getMaxStackSize() {
-            return 1;
-        }
     }
 }

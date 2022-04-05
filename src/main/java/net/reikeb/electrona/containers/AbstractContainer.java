@@ -12,6 +12,7 @@ import net.minecraft.world.item.Items;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import net.reikeb.electrona.blockentities.NuclearGeneratorControllerBlockEntity;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.CompressionPacket;
@@ -238,6 +239,28 @@ public abstract class AbstractContainer extends AbstractContainerMenu {
 
         public boolean mayPlace(ItemStack itemStack) {
             return (itemStack.getItem() == Items.EMERALD);
+        }
+    }
+
+    static class UraniumSlot extends SlotItemHandler {
+
+        public NuclearGeneratorControllerBlockEntity nuclearGeneratorControllerBlockEntity;
+
+        public UraniumSlot(IItemHandler itemHandler, NuclearGeneratorControllerBlockEntity nuclearGeneratorControllerBlockEntity, int id, int x, int y) {
+            super(itemHandler, id, x, y);
+            this.nuclearGeneratorControllerBlockEntity = nuclearGeneratorControllerBlockEntity;
+        }
+
+        public boolean mayPlace(ItemStack itemStack) {
+            return nuclearGeneratorControllerBlockEntity.areUbIn() == 0;
+        }
+
+        public boolean mayPickup(Player player) {
+            return nuclearGeneratorControllerBlockEntity.areUbIn() == 0;
+        }
+
+        public int getMaxStackSize() {
+            return 1;
         }
     }
 }

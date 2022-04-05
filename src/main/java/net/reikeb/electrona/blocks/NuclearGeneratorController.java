@@ -1,7 +1,6 @@
 package net.reikeb.electrona.blocks;
 
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -30,14 +29,17 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
+
 import net.reikeb.electrona.blockentities.NuclearGeneratorControllerBlockEntity;
-import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.BlockEntityInit;
+import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.misc.vm.CustomShapes;
+import net.reikeb.electrona.utils.ElectronaUtils;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -78,16 +80,9 @@ public class NuclearGeneratorController extends Block implements EntityBlock {
     @Override
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack itemStack) {
         if (BlockInit.COOLER.get() == world.getBlockState(new BlockPos(pos.getX(), (pos.getY() - 1), pos.getZ())).getBlock()) {
-            if (entity instanceof ServerPlayer) {
-                Advancement advancement = ((ServerPlayer) entity).server.getAdvancements().getAdvancement(Keys.UNLOCKED_POTENTIAL_ADVANCEMENT);
-                if (advancement == null) System.out.println("Advancement Unlocked Potential! seems to be null");
-                if (advancement == null) return;
-                AdvancementProgress advancementProgress = ((ServerPlayer) entity).getAdvancements().getOrStartProgress(advancement);
-                if (!advancementProgress.isDone()) {
-                    for (String criteria : advancementProgress.getRemainingCriteria()) {
-                        ((ServerPlayer) entity).getAdvancements().award(advancement, criteria);
-                    }
-                }
+            if (entity instanceof ServerPlayer serverPlayer) {
+                Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(Keys.UNLOCKED_POTENTIAL_ADVANCEMENT);
+                ElectronaUtils.awardAdvancement(serverPlayer, advancement, "Unlocked Potential!");
             }
         }
     }

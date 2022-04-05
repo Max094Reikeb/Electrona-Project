@@ -40,14 +40,7 @@ public class EnergeticLightningRodBlockEntity extends BlockEntity {
     }
 
     public void struckByLightning() {
-        double power = 0;
-        double electronicPower = this.getTileData().getDouble("ElectronicPower");
-        if (electronicPower <= 2000) {
-            power = electronicPower + 1000;
-        } else {
-            power = 3000;
-        }
-        this.getTileData().putDouble("ElectronicPower", power);
+        this.electronicPower = (this.electronicPower <= 2000 ? this.electronicPower + 1000 : 3000);
     }
 
     @Override

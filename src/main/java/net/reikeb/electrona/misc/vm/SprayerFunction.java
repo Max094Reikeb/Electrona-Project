@@ -6,22 +6,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 
 import net.reikeb.electrona.blockentities.SprayerBlockEntity;
 import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.utils.ElectronaUtils;
 import net.reikeb.electrona.utils.ItemHandler;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class SprayerFunction {
 
@@ -35,9 +29,6 @@ public class SprayerFunction {
     public static void mainSprayer(ItemHandler inv, SprayerBlockEntity sprayerBlockEntity, double electronicPower) {
         int boostCount = 0;
         Level world = sprayerBlockEntity.getLevel();
-        double x = sprayerBlockEntity.getBlockPos().getX();
-        double y = sprayerBlockEntity.getBlockPos().getY();
-        double z = sprayerBlockEntity.getBlockPos().getZ();
         if (inv.getStackInSlot(1).getItem() == ItemInit.WIRELESS_BOOSTER.get()) {
             boostCount += 1;
         }
@@ -51,15 +42,7 @@ public class SprayerFunction {
         if ((!(inv.getStackInSlot(0).isEmpty())) && (electronicPower >= 200)) {
             double radiusEffect = sprayerBlockEntity.getTileData().getInt("radius");
             if (world == null) return;
-            List<LivingEntity> livingEntities = world.getEntitiesOfClass(LivingEntity.class,
-                    new AABB(x - radiusEffect, y - radiusEffect, z - radiusEffect,
-                            x + radiusEffect, y + radiusEffect, z + radiusEffect),
-                    EntitySelector.LIVING_ENTITY_STILL_ALIVE).stream().sorted(new Object() {
-                Comparator<Entity> compareDistOf(double x, double y, double z) {
-                    return Comparator.comparing(axis -> axis.distanceToSqr(x, y, z));
-                }
-            }.compareDistOf(x, y, z)).collect(Collectors.toList());
-            for (LivingEntity entityiterator : livingEntities) {
+            for (LivingEntity entityiterator : ElectronaUtils.getLivingEntitiesInRadius(world, sprayerBlockEntity.getBlockPos(), (int) radiusEffect)) {
                 if (inv.getStackInSlot(0).getItem().isEdible()) {
                     sprayerBlockEntity.getTileData().putDouble("ElectronicPower", (electronicPower - 200));
                     FoodProperties usedFood = inv.getStackInSlot(0).getItem().getFoodProperties();
