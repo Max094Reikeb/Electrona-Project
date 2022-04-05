@@ -6,6 +6,10 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMaps;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+
+import net.minecraft.Util;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
@@ -18,6 +22,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.SculkSensorBlock;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.FlatLevelSource;
 import net.minecraft.world.level.levelgen.StructureSettings;
@@ -41,6 +46,7 @@ import net.reikeb.electrona.advancements.TTriggers;
 import net.reikeb.electrona.events.entity.EntityDiesEvent;
 import net.reikeb.electrona.init.BiomeInit;
 import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.misc.GameEvents;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.recipes.CompressorRecipe;
 import net.reikeb.electrona.recipes.PurificatorRecipe;
@@ -127,12 +133,20 @@ public class Electrona {
     public void setup(final FMLCommonSetupEvent event) {
         POIFixup.fixup();
 
-        // Register structures & biomes
+        // Register structures, biomes, game events, ...
         event.enqueueWork(() -> {
             Structures.setupStructures();
             ConfiguredStructures.registerConfiguredStructures();
+            GameEvents.setupGameEvents();
 
             BiomeProviders.register(new net.reikeb.electrona.world.gen.biomes.BiomeProvider(Keys.NUCLEAR_BIOME, 1));
+
+            SculkSensorBlock.VIBRATION_STRENGTH_FOR_EVENT = Object2IntMaps.unmodifiable(Util.make(new Object2IntOpenHashMap<>(), (map) -> {
+                map.putAll(SculkSensorBlock.VIBRATION_STRENGTH_FOR_EVENT);
+                map.put(GameEvents.SINGULARITY, 7);
+                map.put(GameEvents.TELEPORTER_USE, 10);
+                map.put(GameEvents.ENERGETIC_LIGHTNING_STRIKE, 15);
+            }));
         });
 
         /**

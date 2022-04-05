@@ -32,6 +32,7 @@ import net.reikeb.electrona.blockentities.TeleporterBlockEntity;
 import net.reikeb.electrona.events.local.TeleporterUseEvent;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.misc.GameEvents;
 
 import java.util.Collections;
 
@@ -165,6 +166,7 @@ public class TeleporterFunction {
                         entity.xRot, Collections.emptySet());
             }
         }
+        entity.gameEvent(GameEvents.TELEPORTER_USE, teleportPos);
         SoundEvent teleportSound = SoundEvents.ENDERMAN_TELEPORT;
         teleportParticles(world, pos, 300);
         teleportParticles(world, teleportPos, 300);

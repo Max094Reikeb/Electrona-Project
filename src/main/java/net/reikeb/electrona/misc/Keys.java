@@ -103,4 +103,7 @@ public class Keys {
     // Recipes
     public static final ResourceLocation COMPRESSING = Electrona.RL("compressing");
     public static final ResourceLocation PURIFYING = Electrona.RL("purifying");
+
+    // Triggers
+    public static final ResourceLocation ENERGETIC_LIGHTNING_STRIKE_TRIGGER = new ResourceLocation("energetic_lightning_strike");
 }

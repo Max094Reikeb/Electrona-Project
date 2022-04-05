@@ -3,14 +3,12 @@ package net.reikeb.electrona.events.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import net.reikeb.electrona.Electrona;
-import net.reikeb.electrona.blockentities.EnergeticLightningRodBlockEntity;
 import net.reikeb.electrona.entity.EnergeticLightningBolt;
 import net.reikeb.electrona.init.BlockInit;
 
@@ -34,10 +32,6 @@ public class EntitySpawnsEvent {
                     for (int cz = -32; cz < 32; cz++) {
                         if (world.getBlockState(new BlockPos(x + cx, y + cy, z + cz)).getBlock() == BlockInit.ENERGETIC_LIGHTNING_ROD.get()) {
                             energeticLightningBolt.teleportTo(x + cx, y + cy, z + cz);
-                            BlockEntity blockEntity = world.getBlockEntity(new BlockPos(x + cx, y + cy, z + cz));
-                            if (blockEntity instanceof EnergeticLightningRodBlockEntity energeticLightningRodBlockEntity) {
-                                energeticLightningRodBlockEntity.struckByLightning();
-                            }
                             return;
                         }
                     }

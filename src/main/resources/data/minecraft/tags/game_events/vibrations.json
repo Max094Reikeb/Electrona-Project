@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "electrona:energetic_lightning_strike",
+    "electrona:singularity",
+    "electrona:teleporter_use"
+  ]
+}

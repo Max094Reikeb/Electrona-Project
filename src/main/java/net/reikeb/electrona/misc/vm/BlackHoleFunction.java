@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.init.ParticleInit;
+import net.reikeb.electrona.misc.GameEvents;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.utils.ElectronaUtils;
 import net.reikeb.electrona.utils.GemPower;
@@ -82,6 +83,7 @@ public class BlackHoleFunction {
 
         world.levelEvent(2006, pos, 1);
         world.addFreshEntity(areaEffectCloudEntity);
+        world.gameEvent(GameEvents.SINGULARITY, pos);
     }
 
     /**
