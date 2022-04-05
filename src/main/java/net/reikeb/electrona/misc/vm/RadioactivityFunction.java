@@ -54,12 +54,13 @@ public class RadioactivityFunction {
     public static void radioactiveItemInInventory(Level world, Entity entity, int duration, int power) {
         for (LivingEntity entityiterator : ElectronaUtils.getLivingEntitiesInRadius(world, entity.blockPosition(), (int) (10 / 2d))) {
             if ((entityiterator instanceof Skeleton) || (entityiterator instanceof RadioactiveZombie)) return;
-            if (entityiterator instanceof Player) {
-                if (((Player) entityiterator).isCreative()) return;
+            if (!(entity instanceof LivingEntity livingEntity)) return;
+            if (entityiterator instanceof Player player) {
+                if (player.isCreative()) return;
             }
-            if (!isEntityWearingAntiRadiationSuit((LivingEntity) entity)) {
-                boolean entityWearsLeadArmor = isEntityWearingLeadArmor((LivingEntity) entity);
-                ((LivingEntity) (entityWearsLeadArmor ? entity : entityiterator)).addEffect(new MobEffectInstance(PotionEffectInit.RADIOACTIVITY.get(), duration, power));
+            if (!isEntityWearingAntiRadiationSuit(livingEntity)) {
+                boolean entityWearsLeadArmor = isEntityWearingLeadArmor(livingEntity);
+                (entityWearsLeadArmor ? livingEntity : entityiterator).addEffect(new MobEffectInstance(PotionEffectInit.RADIOACTIVITY.get(), duration, power));
             }
         }
     }
@@ -70,13 +71,13 @@ public class RadioactivityFunction {
      * @param entity The entity that steps on the radioactive block
      */
     public static void stepOnRadioactiveBlock(Entity entity) {
-        if ((!(entity instanceof LivingEntity)) || (entity instanceof Skeleton)
+        if ((!(entity instanceof LivingEntity livingEntity)) || (entity instanceof Skeleton)
                 || (entity instanceof RadioactiveZombie)) return;
-        if (entity instanceof Player) {
-            if (((Player) entity).isCreative()) return;
+        if (entity instanceof Player player) {
+            if (player.isCreative()) return;
         }
-        if (!isEntityWearingAntiRadiationSuit((LivingEntity) entity)) {
-            ((LivingEntity) entity).addEffect(new MobEffectInstance(PotionEffectInit.RADIOACTIVITY.get(), 200, 2));
+        if (!isEntityWearingAntiRadiationSuit(livingEntity)) {
+            livingEntity.addEffect(new MobEffectInstance(PotionEffectInit.RADIOACTIVITY.get(), 200, 2));
         }
     }
 

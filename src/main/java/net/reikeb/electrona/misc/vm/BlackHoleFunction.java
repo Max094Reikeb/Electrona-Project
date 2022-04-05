@@ -41,17 +41,15 @@ public class BlackHoleFunction {
         if (world.getLevelData().getGameRules().getBoolean(Gamerules.DO_BLACK_HOLES_EXIST)) {
             for (Direction dir : directions) {
                 Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
-                BlockPos belowPos = new BlockPos(pos.getX(), (pos.getY() - 1), pos.getZ());
-                BlockPos abovePos = new BlockPos(pos.getX(), (pos.getY() + 1), pos.getZ());
 
                 if ((Math.random() >= 0.5) && (!stopsHoleTag.contains(offsetBlock))) {
                     world.setBlock(pos.relative(dir), BlockInit.HOLE.get().defaultBlockState(), 3);
                 }
-                if (!stopsHoleTag.contains(world.getBlockState(belowPos).getBlock())) {
-                    world.setBlock(belowPos, BlockInit.HOLE.get().defaultBlockState(), 3);
+                if (!stopsHoleTag.contains(world.getBlockState(pos.below()).getBlock())) {
+                    world.setBlock(pos.below(), BlockInit.HOLE.get().defaultBlockState(), 3);
                 }
-                if (!stopsHoleTag.contains(world.getBlockState(abovePos).getBlock())) {
-                    world.setBlock(abovePos, BlockInit.HOLE.get().defaultBlockState(), 3);
+                if (!stopsHoleTag.contains(world.getBlockState(pos.above()).getBlock())) {
+                    world.setBlock(pos.above(), BlockInit.HOLE.get().defaultBlockState(), 3);
                 }
             }
         }

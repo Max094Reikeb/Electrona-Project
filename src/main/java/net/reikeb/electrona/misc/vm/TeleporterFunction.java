@@ -23,7 +23,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraftforge.common.MinecraftForge;
 
@@ -46,13 +45,7 @@ public class TeleporterFunction {
      * @param entity The entity which travels through the Teleporter
      */
     public static void stepOnTeleporter(Level world, BlockPos pos, Entity entity) {
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
-        BlockState state = world.getBlockState(pos);
-        BlockPos posBelow = new BlockPos(x, (y - 1), z);
-        BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (!(blockEntity instanceof TeleporterBlockEntity teleporterBlockEntity)) return;
+        if (!(world.getBlockEntity(pos) instanceof TeleporterBlockEntity teleporterBlockEntity)) return;
         boolean isTeleporter = false;
         boolean autoDeletion = teleporterBlockEntity.isAutoDeletion() == 1;
         double teleportXCo = teleporterBlockEntity.getTeleportX();
@@ -61,20 +54,20 @@ public class TeleporterFunction {
         BlockPos teleportPos = new BlockPos(teleportXCo, teleportYCo, teleportZCo);
         double electronicPower = teleporterBlockEntity.getElectronicPower();
         if (electronicPower >= 1000) {
-            if (BlockInit.DIMENSION_LINKER.get() == world.getBlockState(posBelow).getBlock()) {
-                BlockEntity blockEntityBelow = world.getBlockEntity(posBelow);
+            if (BlockInit.DIMENSION_LINKER.get() == world.getBlockState(pos.below()).getBlock()) {
+                BlockEntity blockEntityBelow = world.getBlockEntity(pos.below());
                 if (!(blockEntityBelow instanceof DimensionLinkerBlockEntity dimensionLinkerBlockEntity)) return;
                 String dimension = dimensionLinkerBlockEntity.getDimensionID();
-                if (world instanceof ServerLevel) {
+                if (world instanceof ServerLevel serverLevel) {
                     ResourceKey<Level> key = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dimension));
-                    if ((!dimension.equals("")) && (((ServerLevel) world).getServer().getLevel(key) != null)) {
-                        if ((BlockInit.TELEPORTER.get() == (((ServerLevel) world).getServer().getLevel(key)
+                    if ((!dimension.equals("")) && (serverLevel.getServer().getLevel(key) != null)) {
+                        if ((BlockInit.TELEPORTER.get() == (serverLevel.getServer().getLevel(key)
                                 .getBlockState(new BlockPos((int) (teleportXCo - 0.5), (int) teleportYCo, (int) (teleportZCo - 0.5)))).getBlock())) {
                             isTeleporter = true;
                         }
                     } else {
-                        if (entity instanceof Player && !entity.level.isClientSide) {
-                            ((Player) entity).displayClientMessage(new TranslatableComponent("message.electrona.no_dimension_info"),
+                        if ((entity instanceof Player player) && !entity.level.isClientSide) {
+                            player.displayClientMessage(new TranslatableComponent("message.electrona.no_dimension_info"),
                                     true);
                         }
                     }
@@ -85,20 +78,16 @@ public class TeleporterFunction {
                     if (world != _newWorld) {
                         if (!MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Pre(world, _newWorld, pos, teleportPos, entity))) {
                             {
-                                if (!entity.level.isClientSide && entity instanceof ServerPlayer) {
+                                if (!entity.level.isClientSide && (entity instanceof ServerPlayer serverPlayer)) {
                                     if (_newWorld != null) {
-                                        ((ServerPlayer) entity).connection
-                                                .send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
-                                        ((ServerPlayer) entity).teleportTo(_newWorld, _newWorld.getSharedSpawnPos().getX(),
-                                                _newWorld.getSharedSpawnPos().getY() + 1, _newWorld.getSharedSpawnPos().getZ(), entity.yRot,
-                                                entity.xRot);
-                                        ((ServerPlayer) entity).connection
-                                                .send(new ClientboundPlayerAbilitiesPacket(((ServerPlayer) entity).abilities));
-                                        for (MobEffectInstance effectinstance : ((ServerPlayer) entity).getActiveEffects()) {
-                                            ((ServerPlayer) entity).connection
-                                                    .send(new ClientboundUpdateMobEffectPacket(entity.getId(), effectinstance));
+                                        serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
+                                        serverPlayer.teleportTo(_newWorld, _newWorld.getSharedSpawnPos().getX(), _newWorld.getSharedSpawnPos().getY() + 1,
+                                                _newWorld.getSharedSpawnPos().getZ(), entity.yRot, entity.xRot);
+                                        serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.abilities));
+                                        for (MobEffectInstance effectinstance : serverPlayer.getActiveEffects()) {
+                                            serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(entity.getId(), effectinstance));
                                         }
-                                        ((ServerPlayer) entity).connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
+                                        serverPlayer.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
                                     }
                                 }
                             }
@@ -111,13 +100,13 @@ public class TeleporterFunction {
                                     teleporterBlockEntity.setTeleportY(0);
                                     teleporterBlockEntity.setTeleportZ(0);
                                 }
-                                world.sendBlockUpdated(pos, state, state, 3);
+                                world.sendBlockUpdated(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
                             }
                         }
                     }
                 } else {
-                    if (entity instanceof Player && !entity.level.isClientSide) {
-                        ((Player) entity).displayClientMessage(new TranslatableComponent("message.electrona.no_world_coos_info"), true);
+                    if ((entity instanceof Player player) && !entity.level.isClientSide) {
+                        player.displayClientMessage(new TranslatableComponent("message.electrona.no_world_coos_info"), true);
                     }
                 }
             } else if ((BlockInit.TELEPORTER.get() == (world.getBlockState(new
@@ -132,17 +121,17 @@ public class TeleporterFunction {
                             teleporterBlockEntity.setTeleportY(0);
                             teleporterBlockEntity.setTeleportZ(0);
                         }
-                        world.sendBlockUpdated(pos, state, state, 3);
+                        world.sendBlockUpdated(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
                     }
                 }
             } else {
-                if (entity instanceof Player && !entity.level.isClientSide) {
-                    ((Player) entity).displayClientMessage(new TranslatableComponent("message.electrona.no_coos_info"), true);
+                if ((entity instanceof Player player) && !entity.level.isClientSide) {
+                    player.displayClientMessage(new TranslatableComponent("message.electrona.no_coos_info"), true);
                 }
             }
         } else {
-            if (entity instanceof Player && !entity.level.isClientSide) {
-                ((Player) entity).displayClientMessage(new TranslatableComponent("message.electrona.not_enough_power_info"), true);
+            if ((entity instanceof Player player) && !entity.level.isClientSide) {
+                player.displayClientMessage(new TranslatableComponent("message.electrona.not_enough_power_info"), true);
             }
         }
     }
@@ -161,9 +150,9 @@ public class TeleporterFunction {
         double teleportZCo = teleportPos.getZ();
         {
             entity.teleportTo(teleportXCo, teleportYCo, teleportZCo);
-            if (entity instanceof ServerPlayer) {
-                ((ServerPlayer) entity).connection.teleport(teleportXCo, teleportYCo, teleportZCo, entity.yRot,
-                        entity.xRot, Collections.emptySet());
+            if (entity instanceof ServerPlayer serverPlayer) {
+                serverPlayer.connection.teleport(teleportXCo, teleportYCo, teleportZCo, entity.yRot, entity.xRot,
+                        Collections.emptySet());
             }
         }
         entity.gameEvent(GameEvents.TELEPORTER_USE, teleportPos);

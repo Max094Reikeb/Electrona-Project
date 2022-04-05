@@ -29,15 +29,9 @@ public class SprayerFunction {
     public static void mainSprayer(ItemHandler inv, SprayerBlockEntity sprayerBlockEntity, double electronicPower) {
         int boostCount = 0;
         Level world = sprayerBlockEntity.getLevel();
-        if (inv.getStackInSlot(1).getItem() == ItemInit.WIRELESS_BOOSTER.get()) {
-            boostCount += 1;
-        }
-        if (inv.getStackInSlot(2).getItem() == ItemInit.WIRELESS_BOOSTER.get()) {
-            boostCount += 1;
-        }
-        if (inv.getStackInSlot(3).getItem() == ItemInit.WIRELESS_BOOSTER.get()) {
-            boostCount += 1;
-        }
+        if (inv.getStackInSlot(1).getItem() == ItemInit.WIRELESS_BOOSTER.get()) boostCount += 1;
+        if (inv.getStackInSlot(2).getItem() == ItemInit.WIRELESS_BOOSTER.get()) boostCount += 1;
+        if (inv.getStackInSlot(3).getItem() == ItemInit.WIRELESS_BOOSTER.get()) boostCount += 1;
         sprayerBlockEntity.getTileData().putInt("radius", 5 + (boostCount * 3));
         if ((!(inv.getStackInSlot(0).isEmpty())) && (electronicPower >= 200)) {
             double radiusEffect = sprayerBlockEntity.getTileData().getInt("radius");
@@ -73,14 +67,13 @@ public class SprayerFunction {
      */
     public static void sprayerParticles(Level world, SprayerBlockEntity sprayerBlockEntity, BlockPos pos) {
         if (world.isClientSide) return;
-        double xRadius = sprayerBlockEntity.getTileData().getInt("radius");
+        double xzRadius = sprayerBlockEntity.getTileData().getInt("radius");
         double loop = 0;
-        double zRadius = sprayerBlockEntity.getTileData().getInt("radius");
-        double particleAmount = (xRadius) * 4;
+        double particleAmount = (xzRadius) * 4;
         while (loop < particleAmount) {
-            if (world instanceof ServerLevel) {
-                ((ServerLevel) world).sendParticles(ParticleTypes.CLOUD, (pos.getX() + (Math.cos((((Math.PI * 2) / (particleAmount)) * (loop))) * (xRadius))),
-                        pos.getY(), (pos.getZ() + (Math.sin((((Math.PI * 2) / (particleAmount)) * (loop))) * (zRadius))), 3, 0, 0, 0, 0.05);
+            if (world instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(ParticleTypes.CLOUD, (pos.getX() + (Math.cos((((Math.PI * 2) / (particleAmount)) * (loop))) * (xzRadius))),
+                        pos.getY(), (pos.getZ() + (Math.sin((((Math.PI * 2) / (particleAmount)) * (loop))) * (xzRadius))), 3, 0, 0, 0, 0.05);
             }
             loop = (loop) + 1;
         }
