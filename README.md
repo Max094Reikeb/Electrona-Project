@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'net.reikeb:electrona:${minecraft_version}-${mod_version}'
+    implementation 'com.github.Max094Reikeb:Electrona-Project:TAG'
 }
 ```
 
