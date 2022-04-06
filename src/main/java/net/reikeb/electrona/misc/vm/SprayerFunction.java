@@ -22,23 +22,22 @@ public class SprayerFunction {
     /**
      * Method that handles the way the Sprayer gives an effect to entities around it
      *
-     * @param inv                The inventory of the Sprayer
      * @param sprayerBlockEntity The BlockEntity of the Sprayer
-     * @param electronicPower    The energy of the Sprayer
      */
-    public static void mainSprayer(ItemHandler inv, SprayerBlockEntity sprayerBlockEntity, double electronicPower) {
+    public static void mainSprayer(SprayerBlockEntity sprayerBlockEntity) {
+        double electronicPower = sprayerBlockEntity.getElectronicPower();
+        ItemHandler inv = sprayerBlockEntity.getItemInventory();
         int boostCount = 0;
         Level world = sprayerBlockEntity.getLevel();
         if (inv.getStackInSlot(1).getItem() == ItemInit.WIRELESS_BOOSTER.get()) boostCount += 1;
         if (inv.getStackInSlot(2).getItem() == ItemInit.WIRELESS_BOOSTER.get()) boostCount += 1;
         if (inv.getStackInSlot(3).getItem() == ItemInit.WIRELESS_BOOSTER.get()) boostCount += 1;
-        sprayerBlockEntity.getTileData().putInt("radius", 5 + (boostCount * 3));
+        sprayerBlockEntity.setRadius(5 + (boostCount * 3));
         if ((!(inv.getStackInSlot(0).isEmpty())) && (electronicPower >= 200)) {
-            double radiusEffect = sprayerBlockEntity.getTileData().getInt("radius");
             if (world == null) return;
-            for (LivingEntity entityiterator : ElectronaUtils.getLivingEntitiesInRadius(world, sprayerBlockEntity.getBlockPos(), (int) radiusEffect)) {
+            for (LivingEntity entityiterator : ElectronaUtils.getLivingEntitiesInRadius(world, sprayerBlockEntity.getBlockPos(), sprayerBlockEntity.getRadius())) {
                 if (inv.getStackInSlot(0).getItem().isEdible()) {
-                    sprayerBlockEntity.getTileData().putDouble("ElectronicPower", (electronicPower - 200));
+                    sprayerBlockEntity.setElectronicPower(electronicPower - 200);
                     FoodProperties usedFood = inv.getStackInSlot(0).getItem().getFoodProperties();
                     if (usedFood == null) return;
                     for (Pair<MobEffectInstance, Float> pairiterator : usedFood.getEffects()) {
@@ -48,7 +47,7 @@ public class SprayerFunction {
                     }
                     inv.decrStackSize(0, 1);
                 } else if (inv.getStackInSlot(0).getItem() instanceof PotionItem) {
-                    sprayerBlockEntity.getTileData().putDouble("ElectronicPower", (electronicPower - 200));
+                    sprayerBlockEntity.setElectronicPower(electronicPower - 200);
                     for (MobEffectInstance effectiterator : PotionUtils.getMobEffects(inv.getStackInSlot(0))) {
                         entityiterator.addEffect(new MobEffectInstance(effectiterator));
                     }
@@ -61,13 +60,14 @@ public class SprayerFunction {
     /**
      * Method that handles Sprayer's particles
      *
-     * @param world              The world of the Sprayer
      * @param sprayerBlockEntity The BlockEntity of the Sprayer
-     * @param pos                The position of the Sprayer
      */
-    public static void sprayerParticles(Level world, SprayerBlockEntity sprayerBlockEntity, BlockPos pos) {
+    public static void sprayerParticles(SprayerBlockEntity sprayerBlockEntity) {
+        Level world = sprayerBlockEntity.getLevel();
+        assert world != null;
         if (world.isClientSide) return;
-        double xzRadius = sprayerBlockEntity.getTileData().getInt("radius");
+        BlockPos pos = sprayerBlockEntity.getBlockPos();
+        double xzRadius = sprayerBlockEntity.getRadius();
         double loop = 0;
         double particleAmount = (xzRadius) * 4;
         while (loop < particleAmount) {

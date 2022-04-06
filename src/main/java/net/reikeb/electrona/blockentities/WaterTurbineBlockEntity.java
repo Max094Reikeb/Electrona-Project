@@ -14,13 +14,14 @@ import net.minecraft.world.level.material.Material;
 
 import net.reikeb.electrona.blocks.WaterTurbine;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
 
 import static net.reikeb.electrona.init.BlockEntityInit.WATER_TURBINE_BLOCK_ENTITY;
 
-public class WaterTurbineBlockEntity extends BlockEntity {
+public class WaterTurbineBlockEntity extends BlockEntity implements AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<WaterTurbineBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private double electronicPower;
@@ -39,38 +40,62 @@ public class WaterTurbineBlockEntity extends BlockEntity {
         BlockPos frontPos = blockPos.relative(this.getDirection().getOpposite());
         BlockPos backPos = blockPos.relative(this.getDirection());
 
-        // We get the NBT Tags
-        this.getTileData().putInt("MaxStorage", 1000);
-        double electronicPower = this.getTileData().getDouble("ElectronicPower");
+        this.setMaxStorage(1000);
+        if (world == null) return;
 
-        if (world != null) { // Avoid NullPointerExceptions
-
-            // We generate the energy (this part is uncommon for all generators)
-            if ((Blocks.AIR == world.getBlockState(backPos).getBlock())
-                    && (Material.WATER == world.getBlockState(frontPos).getMaterial())) {
-                world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(WaterTurbine.WATERLOGGED, true));
-            } else if (Material.WATER != world.getBlockState(frontPos).getMaterial()) {
-                world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(WaterTurbine.WATERLOGGED, false));
-            }
-
-            if ((Material.WATER == world.getBlockState(backPos).getMaterial())
-                    && (Material.WATER == world.getBlockState(frontPos).getMaterial())) {
-                if ((electronicPower < 996)) {
-                    this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.2));
-                } else if (((electronicPower >= 996) && (electronicPower <= 999.95))) {
-                    this.getTileData().putDouble("ElectronicPower", (electronicPower + 0.05));
-                }
-            } else {
-                if ((electronicPower > 0.2)) {
-                    this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.2));
-                } else if (((electronicPower <= 0.2) && (electronicPower >= 0.05))) {
-                    this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.05));
-                }
-            }
-
-            // We pass energy to blocks around (this part is common to all generators)
-            EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 4, electronicPower, true);
+        // We generate the energy (this part is uncommon for all generators)
+        if ((Blocks.AIR == world.getBlockState(backPos).getBlock())
+                && (Material.WATER == world.getBlockState(frontPos).getMaterial())) {
+            world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(WaterTurbine.WATERLOGGED, true));
+        } else if (Material.WATER != world.getBlockState(frontPos).getMaterial()) {
+            world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(WaterTurbine.WATERLOGGED, false));
         }
+
+        if ((Material.WATER == world.getBlockState(backPos).getMaterial())
+                && (Material.WATER == world.getBlockState(frontPos).getMaterial())) {
+            if ((this.electronicPower < 996)) {
+                this.setElectronicPower(this.electronicPower + 0.2);
+            } else if (((this.electronicPower >= 996) && (this.electronicPower <= 999.95))) {
+                this.setElectronicPower(this.electronicPower + 0.05);
+            }
+        } else {
+            if ((this.electronicPower > 0.2)) {
+                this.setElectronicPower(this.electronicPower - 0.2);
+            } else if (((this.electronicPower <= 0.2) && (this.electronicPower >= 0.05))) {
+                this.setElectronicPower(this.electronicPower - 0.05);
+            }
+        }
+
+        // We pass energy to blocks around (this part is common to all generators)
+        EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this, 4, true);
+    }
+
+    public ItemHandler getItemInventory() {
+        return null;
+    }
+
+    public int getElectronicPowerTimesHundred() {
+        return (int) (this.electronicPower * 100);
+    }
+
+    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
+        this.electronicPower = electronicPowerTimesHundred / 100.0;
+    }
+
+    public double getElectronicPower() {
+        return this.electronicPower;
+    }
+
+    public void setElectronicPower(double electronicPower) {
+        this.electronicPower = electronicPower;
+    }
+
+    public int getMaxStorage() {
+        return this.maxStorage;
+    }
+
+    public void setMaxStorage(int maxStorage) {
+        this.maxStorage = maxStorage;
     }
 
     @Override

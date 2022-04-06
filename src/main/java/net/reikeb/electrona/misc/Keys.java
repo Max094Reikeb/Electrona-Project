@@ -97,6 +97,9 @@ public class Keys {
     // ItemProperties
     public static final ResourceLocation ANGLE_PROPERTY = new ResourceLocation("angle");
 
+    // Items tag
+    public static final ResourceLocation CHARGEABLE_ITEMS_TAG = new ResourceLocation("forge", "electrona/chargeable_items");
+
     // Potions
     public static final ResourceLocation RADIOACTIVITY_EFFECT = new ResourceLocation("electrona:textures/mob_effect/radioactivity.png");
 

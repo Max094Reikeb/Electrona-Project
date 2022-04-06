@@ -4,16 +4,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
-import net.minecraft.tags.TagCollection;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -30,7 +26,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.reikeb.electrona.blockentities.CableBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.misc.DamageSources;
-import net.reikeb.electrona.misc.Keys;
+import net.reikeb.electrona.misc.Tags;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -53,14 +49,8 @@ public class Cable extends AbstractCable implements EntityBlock {
     public boolean canConnectTo(BlockState wireState, Level worldIn, BlockPos wirePos, BlockPos connectPos, Direction direction) {
         BlockState otherState = worldIn.getBlockState(connectPos);
 
-        TagCollection<Block> tagCollection = BlockTags.getAllTags();
-        Tag<Block> generatorTag, machineTag, cableTag;
-        generatorTag = tagCollection.getTagOrEmpty(Keys.GENERATORS_TAG);
-        machineTag = tagCollection.getTagOrEmpty(Keys.CABLE_MACHINE_TAG);
-        cableTag = tagCollection.getTagOrEmpty(Keys.CABLE_TAG);
-
-        return (generatorTag.contains(otherState.getBlock())) || (machineTag.contains(otherState.getBlock()))
-                || (cableTag.contains(otherState.getBlock()));
+        return (Tags.GENERATORS.contains(otherState.getBlock())) || (Tags.MACHINES.contains(otherState.getBlock()))
+                || (Tags.CABLE.contains(otherState.getBlock()));
     }
 
     @Override
@@ -86,7 +76,7 @@ public class Cable extends AbstractCable implements EntityBlock {
         BlockState stateIn = worldIn.getBlockState(pos);
         BlockEntity blockEntity = worldIn.getBlockEntity(pos);
         if (blockEntity instanceof CableBlockEntity cableBlockEntity) {
-            if ((hasOpenEnd(stateIn)) && (entityIn instanceof LivingEntity) && (cableBlockEntity.getTileData().getDouble("ElectronicPower") > 0)) {
+            if ((hasOpenEnd(stateIn)) && (entityIn instanceof LivingEntity) && (cableBlockEntity.getElectronicPower() > 0)) {
                 double damage = Math.random() * 10;
                 if (damage > 0) entityIn.hurt(DamageSources.ELECTRIC_SHOCK.bypassArmor(), (float) damage);
             }

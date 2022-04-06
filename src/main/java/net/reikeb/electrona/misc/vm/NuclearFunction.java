@@ -27,17 +27,17 @@ public class NuclearFunction {
      * @param nuclearGeneratorControllerBlockEntity The Block Entity of the Nuclear Generator Controller
      * @param coolerBlockEntity                     The Block Entity of the Cooler below the Nuclear Generator Controller
      * @param slotCooler                            The slot of the Cooler
-     * @param slotGenerator                         The slot of the Nuclear Generator Controller
-     * @param electronicPower                       The energy inside the Nuclear Generator Controller
-     * @param temperature                           The temperature of the Nuclear Generator
-     * @param waterLevel                            The water level of the tank inside the Cooler
      */
-    public static void nuclearGeneration(NuclearGeneratorControllerBlockEntity nuclearGeneratorControllerBlockEntity, BlockEntity coolerBlockEntity, ItemStack slotCooler, ItemStack slotGenerator, double electronicPower, int temperature, int waterLevel) {
+    public static void nuclearGeneration(NuclearGeneratorControllerBlockEntity nuclearGeneratorControllerBlockEntity, BlockEntity coolerBlockEntity, ItemStack slotCooler) {
+        double electronicPower = nuclearGeneratorControllerBlockEntity.getElectronicPower();
+        int temperature = nuclearGeneratorControllerBlockEntity.getTemperature();
+        int waterLevel = nuclearGeneratorControllerBlockEntity.getUnderWater();
+        ItemStack slotGenerator = nuclearGeneratorControllerBlockEntity.getItemInventory().getStackInSlot(1);
         if ((slotCooler.getItem() == ItemInit.URANIUM_BAR.get())
                 || (slotCooler.getItem() == ItemInit.URANIUM_DUAL_BAR.get())
                 || (slotCooler.getItem() == ItemInit.URANIUM_QUAD_BAR.get())) {
-            if ((nuclearGeneratorControllerBlockEntity.getTileData().getBoolean("powered"))
-                    && (nuclearGeneratorControllerBlockEntity.getTileData().getBoolean("UBIn"))) {
+            if ((nuclearGeneratorControllerBlockEntity.isPowered() == 1)
+                    && (nuclearGeneratorControllerBlockEntity.areUbIn() == 1)) {
                 if (slotCooler.hurt(1, new Random(), null)) {
                     slotCooler.shrink(1);
                     slotCooler.setDamageValue(0);
@@ -47,37 +47,37 @@ public class NuclearFunction {
                     slotGenerator.setDamageValue(0);
                 }
                 if (temperature <= 500) {
-                    nuclearGeneratorControllerBlockEntity.getTileData().putInt("temperature", (temperature + 1));
+                    nuclearGeneratorControllerBlockEntity.setTemperature(temperature += 1);
                     if (electronicPower <= 9950) {
-                        nuclearGeneratorControllerBlockEntity.getTileData().putDouble("ElectronicPower", (electronicPower + 2.5));
+                        nuclearGeneratorControllerBlockEntity.setElectronicPower(electronicPower + 2.5);
                     } else if ((electronicPower > 9950) && (electronicPower < 10000)) {
-                        nuclearGeneratorControllerBlockEntity.getTileData().putDouble("ElectronicPower", (electronicPower + 0.05));
+                        nuclearGeneratorControllerBlockEntity.setElectronicPower(electronicPower + 0.05);
                     }
                     if (waterLevel >= 500) {
                         FluidFunction.drainWater(coolerBlockEntity, 40);
                     }
                 } else if (temperature <= 1500) {
-                    nuclearGeneratorControllerBlockEntity.getTileData().putInt("temperature", (temperature + 5));
+                    nuclearGeneratorControllerBlockEntity.setTemperature(temperature + 5);
                     if (electronicPower <= 9900) {
-                        nuclearGeneratorControllerBlockEntity.getTileData().putDouble("ElectronicPower", (electronicPower + 5));
+                        nuclearGeneratorControllerBlockEntity.setElectronicPower(electronicPower + 5);
                     } else if ((electronicPower > 9900) && (electronicPower <= 9950)) {
-                        nuclearGeneratorControllerBlockEntity.getTileData().putDouble("ElectronicPower", (electronicPower + 2.5));
+                        nuclearGeneratorControllerBlockEntity.setElectronicPower(electronicPower + 2.5);
                     } else if ((electronicPower > 9950) && (electronicPower < 10000)) {
-                        nuclearGeneratorControllerBlockEntity.getTileData().putDouble("ElectronicPower", (electronicPower + 0.05));
+                        nuclearGeneratorControllerBlockEntity.setElectronicPower(electronicPower + 0.05);
                     }
                     if (waterLevel >= 800) {
                         FluidFunction.drainWater(coolerBlockEntity, 50);
                     }
                 } else if (temperature <= 2400) {
-                    nuclearGeneratorControllerBlockEntity.getTileData().putInt("temperature", (temperature + 8));
+                    nuclearGeneratorControllerBlockEntity.setTemperature(temperature + 8);
                     if (electronicPower <= 9500) {
-                        nuclearGeneratorControllerBlockEntity.getTileData().putDouble("ElectronicPower", (electronicPower + 25));
+                        nuclearGeneratorControllerBlockEntity.setElectronicPower(electronicPower + 25);
                     } else if ((electronicPower > 9500) && (electronicPower <= 9900)) {
-                        nuclearGeneratorControllerBlockEntity.getTileData().putDouble("ElectronicPower", (electronicPower + 5));
+                        nuclearGeneratorControllerBlockEntity.setElectronicPower(electronicPower + 5);
                     } else if ((electronicPower > 9900) && (electronicPower <= 9950)) {
-                        nuclearGeneratorControllerBlockEntity.getTileData().putDouble("ElectronicPower", (electronicPower + 2.5));
+                        nuclearGeneratorControllerBlockEntity.setElectronicPower(electronicPower + 2.5);
                     } else if ((electronicPower > 9950) && (electronicPower < 10000)) {
-                        nuclearGeneratorControllerBlockEntity.getTileData().putDouble("ElectronicPower", (electronicPower + 0.05));
+                        nuclearGeneratorControllerBlockEntity.setElectronicPower(electronicPower + 0.05);
                     }
                     if (waterLevel >= 1000) {
                         FluidFunction.drainWater(coolerBlockEntity, 80);
@@ -86,20 +86,20 @@ public class NuclearFunction {
                     if (waterLevel >= 1000) {
                         FluidFunction.drainWater(coolerBlockEntity, 80);
                     } else {
-                        nuclearGeneratorControllerBlockEntity.getTileData().putInt("temperature", (temperature + 5));
+                        nuclearGeneratorControllerBlockEntity.setTemperature(temperature + 5);
                     }
                     if (electronicPower <= 9500) {
-                        nuclearGeneratorControllerBlockEntity.getTileData().putDouble("ElectronicPower", (electronicPower + 25));
+                        nuclearGeneratorControllerBlockEntity.setElectronicPower(electronicPower + 25);
                     } else if ((electronicPower > 9500) && (electronicPower <= 9900)) {
-                        nuclearGeneratorControllerBlockEntity.getTileData().putDouble("ElectronicPower", (electronicPower + 5));
+                        nuclearGeneratorControllerBlockEntity.setElectronicPower(electronicPower + 5);
                     } else if ((electronicPower > 9900) && (electronicPower <= 9950)) {
-                        nuclearGeneratorControllerBlockEntity.getTileData().putDouble("ElectronicPower", (electronicPower + 2.5));
+                        nuclearGeneratorControllerBlockEntity.setElectronicPower(electronicPower + 2.5);
                     } else if ((electronicPower > 9950) && (electronicPower < 10000)) {
-                        nuclearGeneratorControllerBlockEntity.getTileData().putDouble("ElectronicPower", (electronicPower + 0.05));
+                        nuclearGeneratorControllerBlockEntity.setElectronicPower(electronicPower + 0.05);
                     }
                 }
                 if ((waterLevel < 800) && (temperature >= 2000)) {
-                    nuclearGeneratorControllerBlockEntity.getTileData().putBoolean("alert", true);
+                    nuclearGeneratorControllerBlockEntity.setAlert(1);
                 }
                 if ((waterLevel < 800) && (temperature >= 2800)) {
                     if (nuclearGeneratorControllerBlockEntity.getLevel() == null) return;
@@ -115,16 +115,16 @@ public class NuclearFunction {
                 }
                 if ((waterLevel > 400) && (temperature >= 2000)) {
                     FluidFunction.drainWater(coolerBlockEntity, 40);
-                    nuclearGeneratorControllerBlockEntity.getTileData().putInt("temperature", (temperature - 10));
+                    nuclearGeneratorControllerBlockEntity.setTemperature(temperature - 10);
                 } else if ((waterLevel > 300) && (temperature >= 1000)) {
                     FluidFunction.drainWater(coolerBlockEntity, 30);
-                    nuclearGeneratorControllerBlockEntity.getTileData().putInt("temperature", (temperature - 5));
+                    nuclearGeneratorControllerBlockEntity.setTemperature(temperature - 5);
                 } else if ((waterLevel > 200) && (temperature >= 50)) {
                     FluidFunction.drainWater(coolerBlockEntity, 20);
-                    nuclearGeneratorControllerBlockEntity.getTileData().putInt("temperature", (int) (temperature - 2.5));
+                    nuclearGeneratorControllerBlockEntity.setTemperature((int) (temperature - 2.5));
                 } else if ((waterLevel >= 1) && (temperature >= 1)) {
                     FluidFunction.drainWater(coolerBlockEntity, 1);
-                    nuclearGeneratorControllerBlockEntity.getTileData().putInt("temperature", temperature - 1);
+                    nuclearGeneratorControllerBlockEntity.setTemperature(temperature - 1);
                 }
             }
         }

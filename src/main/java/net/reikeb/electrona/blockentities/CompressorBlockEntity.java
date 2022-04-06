@@ -22,16 +22,17 @@ import net.reikeb.electrona.containers.CompressorContainer;
 import net.reikeb.electrona.events.local.CompressionEvent;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.recipes.Recipes;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import static net.reikeb.electrona.init.BlockEntityInit.COMPRESSOR_BLOCK_ENTITY;
 
-public class CompressorBlockEntity extends AbstractBlockEntity {
+public class CompressorBlockEntity extends AbstractBlockEntity implements AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<CompressorBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
-    public double electronicPower;
     public int compressingTime;
     public int currentCompressingTime;
-    private int maxStorage;
+    public double electronicPower;
+    public int maxStorage;
     private int energyRequired;
     private boolean canCompress;
 
@@ -58,12 +59,11 @@ public class CompressorBlockEntity extends AbstractBlockEntity {
         ItemStack stackInSlot0 = this.inventory.getStackInSlot(0);
         ItemStack stackInSlot1 = this.inventory.getStackInSlot(1);
 
-        double electronicPower = t.getTileData().getDouble("ElectronicPower");
-        t.getTileData().putInt("MaxStorage", 5000);
+        this.setMaxStorage(5000);
 
         if ((world == null) || (world.isClientSide)) return;
 
-        if ((electronicPower > 0) && (Recipes.getRecipe(this, stackInSlot0, stackInSlot1) != null)) {
+        if ((this.electronicPower > 0) && (Recipes.getRecipe(this, stackInSlot0, stackInSlot1) != null)) {
             if (this.canCompress) {
                 this.energyRequired = getEnergyRequired(stackInSlot0, stackInSlot1);
                 this.compressingTime = getCompressingTime(stackInSlot0, stackInSlot1);
@@ -72,7 +72,7 @@ public class CompressorBlockEntity extends AbstractBlockEntity {
 
                 if (this.currentCompressingTime < (this.compressingTime * 20)) {
                     this.currentCompressingTime += 1;
-                    electronicPower = electronicPower - (energyPerSecond * 0.05);
+                    this.electronicPower = this.electronicPower - (energyPerSecond * 0.05);
 
                 } else {
                     if (!MinecraftForge.EVENT_BUS.post(new CompressionEvent(world, blockPos, stackInSlot0, stackInSlot1, output.copy(), this.compressingTime, this.energyRequired))) {
@@ -84,7 +84,6 @@ public class CompressorBlockEntity extends AbstractBlockEntity {
                                 SoundSource.BLOCKS, 0.6F, 1.0F);
                     }
                 }
-                t.getTileData().putDouble("ElectronicPower", electronicPower);
             } else {
                 this.currentCompressingTime = 0;
             }
@@ -94,11 +93,12 @@ public class CompressorBlockEntity extends AbstractBlockEntity {
         world.setBlockAndUpdate(blockPos, state
                 .setValue(Compressor.COMPRESSING, this.currentCompressingTime > 0));
 
-        t.getTileData().putInt("CurrentCompressingTime", this.currentCompressingTime);
-        t.getTileData().putInt("CompressingTime", this.compressingTime);
-
         t.setChanged();
         world.sendBlockUpdated(blockPos, state, state, 3);
+    }
+
+    public ItemHandler getItemInventory() {
+        return this.inventory;
     }
 
     public int getElectronicPowerTimesHundred() {
@@ -115,6 +115,14 @@ public class CompressorBlockEntity extends AbstractBlockEntity {
 
     public void setElectronicPower(double electronicPower) {
         this.electronicPower = electronicPower;
+    }
+
+    public int getMaxStorage() {
+        return this.maxStorage;
+    }
+
+    public void setMaxStorage(int maxStorage) {
+        this.maxStorage = maxStorage;
     }
 
     public int getCompressingTime() {
@@ -137,6 +145,13 @@ public class CompressorBlockEntity extends AbstractBlockEntity {
         this.canCompress = canCompress;
     }
 
+    public boolean getLogic() {
+        return false;
+    }
+
+    public void setLogic(boolean logic) {
+    }
+
     public int getCompressingTime(ItemStack stack, ItemStack stack1) {
         if (ItemStack.EMPTY == stack || ItemStack.EMPTY == stack1) return 0;
         return Recipes.getRecipe(this, stack, stack1).getCompressingTime();
@@ -155,9 +170,6 @@ public class CompressorBlockEntity extends AbstractBlockEntity {
         this.compressingTime = compound.getInt("CompressingTime");
         this.currentCompressingTime = compound.getInt("CurrentCompressingTime");
         this.energyRequired = compound.getInt("EnergyRequired");
-        if (compound.contains("Inventory")) {
-            inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
-        }
     }
 
     @Override
@@ -168,6 +180,5 @@ public class CompressorBlockEntity extends AbstractBlockEntity {
         compound.putInt("CompressingTime", this.compressingTime);
         compound.putInt("CurrentCompressingTime", this.currentCompressingTime);
         compound.putInt("EnergyRequired", this.energyRequired);
-        compound.put("Inventory", inventory.serializeNBT());
     }
 }

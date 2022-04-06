@@ -11,13 +11,14 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.misc.vm.CableFunction;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
 
 import static net.reikeb.electrona.init.BlockEntityInit.CABLE_BLOCK_ENTITY;
 
-public class CableBlockEntity extends BlockEntity {
+public class CableBlockEntity extends BlockEntity implements AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<CableBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private double electronicPower;
@@ -29,14 +30,48 @@ public class CableBlockEntity extends BlockEntity {
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
-        // We get NBT Tags
-        double electronicPower = t.getTileData().getDouble("ElectronicPower");
-        t.getTileData().putInt("MaxStorage", 36);
+        this.setMaxStorage(36);
 
         // We pass energy to blocks around (this part is common to all cables)
-        CableFunction.cableTransferEnergy(world, blockPos, Direction.values(), t.getTileData(), electronicPower, 6, false);
+        CableFunction.cableTransferEnergy(world, blockPos, Direction.values(), this, 6, false);
 
         t.setChanged();
+    }
+
+    public ItemHandler getItemInventory() {
+        return null;
+    }
+
+    public int getElectronicPowerTimesHundred() {
+        return (int) (this.electronicPower * 100);
+    }
+
+    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
+        this.electronicPower = electronicPowerTimesHundred / 100.0;
+    }
+
+    public double getElectronicPower() {
+        return this.electronicPower;
+    }
+
+    public void setElectronicPower(double electronicPower) {
+        this.electronicPower = electronicPower;
+    }
+
+    public int getMaxStorage() {
+        return this.maxStorage;
+    }
+
+    public void setMaxStorage(int maxStorage) {
+        this.maxStorage = maxStorage;
+    }
+
+    public boolean getLogic() {
+        return this.cableLogic;
+    }
+
+    public void setLogic(boolean logic) {
+        this.cableLogic = logic;
     }
 
     @Override

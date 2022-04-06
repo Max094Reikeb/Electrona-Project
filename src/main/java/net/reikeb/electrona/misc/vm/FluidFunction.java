@@ -2,9 +2,6 @@ package net.reikeb.electrona.misc.vm;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
-import net.minecraft.tags.TagCollection;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -14,7 +11,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-import net.reikeb.electrona.misc.Keys;
+import net.reikeb.electrona.misc.Tags;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -33,18 +30,13 @@ public class FluidFunction {
     public static void generatorTransferFluid(Level world, BlockPos pos, Direction[] directions, BlockEntity generatorBE, int generatorLevel, int transferPerSecond) {
         double transferPerTick = transferPerSecond * 0.05;
 
-        TagCollection<Block> tagCollection = BlockTags.getAllTags();
-        Tag<Block> machineTag, cableTag;
-        machineTag = tagCollection.getTagOrEmpty(Keys.HAS_WATER_TANK_TAG);
-        cableTag = tagCollection.getTagOrEmpty(Keys.WATER_CABLE_TAG);
-
         for (Direction dir : directions) {
             if (generatorLevel <= 0) return; // we have no more fluid
 
             BlockEntity blockEntity = world.getBlockEntity(pos.relative(dir));
             Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
             if (blockEntity == null) continue;
-            if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
+            if (!(Tags.WATER_TANK.contains(offsetBlock) || Tags.WATER_CABLE.contains(offsetBlock))) continue;
 
             AtomicInteger machineLevel = getFluidAmount(blockEntity);
             AtomicInteger machineCapacity = getTankCapacity(blockEntity);

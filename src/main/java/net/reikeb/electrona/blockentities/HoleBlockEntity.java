@@ -33,13 +33,11 @@ public class HoleBlockEntity extends BlockEntity {
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         if (this.level == null) return; // Avoid NullPointerExceptions
-        int wait = this.getTileData().getInt("wait");
         wait += 1;
         if (wait >= 100) {
             BlackHoleFunction.HoleProcedure(this.level, this.getBlockPos(), Direction.values());
             wait = 0;
         }
-        this.getTileData().putInt("wait", wait);
     }
 
     @Override

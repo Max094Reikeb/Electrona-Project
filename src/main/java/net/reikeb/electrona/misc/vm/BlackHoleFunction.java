@@ -2,9 +2,6 @@ package net.reikeb.electrona.misc.vm;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
-import net.minecraft.tags.TagCollection;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AreaEffectCloud;
@@ -19,7 +16,7 @@ import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.init.ParticleInit;
 import net.reikeb.electrona.misc.GameEvents;
-import net.reikeb.electrona.misc.Keys;
+import net.reikeb.electrona.misc.Tags;
 import net.reikeb.electrona.utils.ElectronaUtils;
 import net.reikeb.electrona.utils.GemPower;
 import net.reikeb.electrona.world.Gamerules;
@@ -35,20 +32,18 @@ public class BlackHoleFunction {
      */
     public static void HoleProcedure(Level world, BlockPos pos, Direction[] directions) {
         if (world.isClientSide) return;
-        TagCollection<Block> tagCollection = BlockTags.getAllTags();
-        Tag<Block> stopsHoleTag = tagCollection.getTagOrEmpty(Keys.STOPS_BLACK_HOLES_TAG);
 
         if (world.getLevelData().getGameRules().getBoolean(Gamerules.DO_BLACK_HOLES_EXIST)) {
             for (Direction dir : directions) {
                 Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
 
-                if ((Math.random() >= 0.5) && (!stopsHoleTag.contains(offsetBlock))) {
+                if ((Math.random() >= 0.5) && (!Tags.STOPS_BLACK_HOLE.contains(offsetBlock))) {
                     world.setBlock(pos.relative(dir), BlockInit.HOLE.get().defaultBlockState(), 3);
                 }
-                if (!stopsHoleTag.contains(world.getBlockState(pos.below()).getBlock())) {
+                if (!Tags.STOPS_BLACK_HOLE.contains(world.getBlockState(pos.below()).getBlock())) {
                     world.setBlock(pos.below(), BlockInit.HOLE.get().defaultBlockState(), 3);
                 }
-                if (!stopsHoleTag.contains(world.getBlockState(pos.above()).getBlock())) {
+                if (!Tags.STOPS_BLACK_HOLE.contains(world.getBlockState(pos.above()).getBlock())) {
                     world.setBlock(pos.above(), BlockInit.HOLE.get().defaultBlockState(), 3);
                 }
             }

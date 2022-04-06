@@ -11,13 +11,14 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.misc.vm.EnergyFunction;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
 
 import static net.reikeb.electrona.init.BlockEntityInit.ENERGETIC_LIGHTNING_ROD_BLOCK_ENTITY;
 
-public class EnergeticLightningRodBlockEntity extends BlockEntity {
+public class EnergeticLightningRodBlockEntity extends BlockEntity implements AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<EnergeticLightningRodBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private double electronicPower;
@@ -28,20 +29,51 @@ public class EnergeticLightningRodBlockEntity extends BlockEntity {
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
-        // We get the NBT Tags
-        this.getTileData().putInt("MaxStorage", 3000);
-        double electronicPower = this.getTileData().getDouble("ElectronicPower");
+        this.setMaxStorage(3000);
 
-        if (world != null) { // Avoid NullPointerExceptions
+        if (world == null) return;
 
-            // We pass energy to blocks around (this part is common to all generators)
-            EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 50, electronicPower, true);
-        }
+        // We pass energy to blocks around (this part is common to all generators)
+        EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this, 50, true);
     }
 
     public void struckByLightning() {
         this.electronicPower = (this.electronicPower <= 2000 ? this.electronicPower + 1000 : 3000);
-        this.getTileData().putDouble("ElectronicPower", (this.electronicPower <= 2000 ? this.electronicPower + 1000 : 3000));
+    }
+
+    public ItemHandler getItemInventory() {
+        return null;
+    }
+
+    public int getElectronicPowerTimesHundred() {
+        return (int) (this.electronicPower * 100);
+    }
+
+    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
+        this.electronicPower = electronicPowerTimesHundred / 100.0;
+    }
+
+    public double getElectronicPower() {
+        return this.electronicPower;
+    }
+
+    public void setElectronicPower(double electronicPower) {
+        this.electronicPower = electronicPower;
+    }
+
+    public int getMaxStorage() {
+        return this.maxStorage;
+    }
+
+    public void setMaxStorage(int maxStorage) {
+        this.maxStorage = maxStorage;
+    }
+
+    public boolean getLogic() {
+        return false;
+    }
+
+    public void setLogic(boolean logic) {
     }
 
     @Override

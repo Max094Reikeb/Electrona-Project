@@ -32,9 +32,8 @@ public class SingularityBlockEntity extends BlockEntity {
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
-        if (this.level == null) return; // Avoid NullPointerExceptions
-        int wait = this.getTileData().getInt("wait");
-        int delay = this.getTileData().getInt("delay");
+        if (this.level == null) return;
+
         wait += 1;
         delay += 1;
         if (wait >= 100) {
@@ -45,8 +44,6 @@ public class SingularityBlockEntity extends BlockEntity {
             BlackHoleFunction.singularityDelay(this.level, this.getBlockPos());
             delay = 0;
         }
-        this.getTileData().putInt("wait", wait);
-        this.getTileData().putInt("delay", delay);
     }
 
     @Override

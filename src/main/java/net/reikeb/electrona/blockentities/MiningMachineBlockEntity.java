@@ -21,12 +21,13 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.containers.MiningMachineContainer;
 import net.reikeb.electrona.init.BlockInit;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import java.util.Random;
 
 import static net.reikeb.electrona.init.BlockEntityInit.MINING_MACHINE_BLOCK_ENTITY;
 
-public class MiningMachineBlockEntity extends AbstractBlockEntity {
+public class MiningMachineBlockEntity extends AbstractBlockEntity implements AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<MiningMachineBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     public double electronicPower;
@@ -53,88 +54,89 @@ public class MiningMachineBlockEntity extends AbstractBlockEntity {
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
-        // We get the NBT Tags
-        this.getTileData().putInt("MaxStorage", 6000);
-        double electronicPower = this.getTileData().getDouble("ElectronicPower");
+        this.setMaxStorage(6000);
+        if (world == null) return;
 
         wait++;
         if (wait < 30) return;
         wait = 0;
 
-        if (world != null) { // Avoid NullPointerExceptions
-            double ny;
-            double sy;
-            double x = blockPos.getX();
-            double y = blockPos.getY();
-            double z = blockPos.getZ();
-            ItemStack item;
+        double ny;
+        double sy;
+        double x = blockPos.getX();
+        double y = blockPos.getY();
+        double z = blockPos.getZ();
+        ItemStack item;
 
-            if ((world.hasNeighborSignal(blockPos)) && (electronicPower >= 50)) {
-                ny = 1;
-                while ((BlockInit.MINING_PIPE.get() == (world.getBlockState(new BlockPos((int) x, (int) (y - (ny)), (int) z)))
-                        .getBlock())) {
-                    ny = (ny) + 1;
-                }
-                BlockPos _tempPos = new BlockPos(x, (y - ny), z);
-                Block _tempBlock = world.getBlockState(_tempPos).getBlock();
-                if ((Blocks.AIR == _tempBlock) || (Blocks.VOID_AIR == _tempBlock) || (Blocks.CAVE_AIR == _tempBlock)) {
-                    world.setBlock(_tempPos, BlockInit.MINING_PIPE.get().defaultBlockState(), 3);
-                } else {
-                    if ((!(world.getBlockState(_tempPos)).getFluidState().isSource()) && (!(_tempBlock instanceof LiquidBlock))) {
-                        item = this.inventory.getStackInSlot(0);
-                        if (item.isCorrectToolForDrops(world.getBlockState(_tempPos)) && (Blocks.BEDROCK != _tempBlock)) {
-                            if (!world.isClientSide()) {
-                                ItemEntity entityToSpawn = new ItemEntity(world, x, (y + 1), z, (new ItemStack(_tempBlock)));
-                                entityToSpawn.setPickUpDelay(10);
-                                world.addFreshEntity(entityToSpawn);
-                            }
-                            world.destroyBlock(_tempPos, false);
-                            if (this.inventory.getStackInSlot(0).hurt(1, new Random(), null)) {
-                                this.inventory.getStackInSlot(0).shrink(1);
-                                this.inventory.getStackInSlot(0).setDamageValue(0);
-                            }
-                            this.getTileData().putDouble("ElectronicPower", (electronicPower - 50));
+        if ((world.hasNeighborSignal(blockPos)) && (this.electronicPower >= 50)) {
+            ny = 1;
+            while ((BlockInit.MINING_PIPE.get() == (world.getBlockState(new BlockPos((int) x, (int) (y - (ny)), (int) z)))
+                    .getBlock())) {
+                ny = (ny) + 1;
+            }
+            BlockPos _tempPos = new BlockPos(x, (y - ny), z);
+            Block _tempBlock = world.getBlockState(_tempPos).getBlock();
+            if ((Blocks.AIR == _tempBlock) || (Blocks.VOID_AIR == _tempBlock) || (Blocks.CAVE_AIR == _tempBlock)) {
+                world.setBlock(_tempPos, BlockInit.MINING_PIPE.get().defaultBlockState(), 3);
+            } else {
+                if ((!(world.getBlockState(_tempPos)).getFluidState().isSource()) && (!(_tempBlock instanceof LiquidBlock))) {
+                    item = this.inventory.getStackInSlot(0);
+                    if (item.isCorrectToolForDrops(world.getBlockState(_tempPos)) && (Blocks.BEDROCK != _tempBlock)) {
+                        if (!world.isClientSide()) {
+                            ItemEntity entityToSpawn = new ItemEntity(world, x, (y + 1), z, (new ItemStack(_tempBlock)));
+                            entityToSpawn.setPickUpDelay(10);
+                            world.addFreshEntity(entityToSpawn);
                         }
-                    } else {
-                        if (world.getBlockState(_tempPos).getFluidState().isSource()) {
-                            boolean flag = false;
-                            int slot = 0;
-                            if (Items.BUCKET == this.inventory.getStackInSlot(1).getItem()) {
-                                flag = true;
-                                slot = 1;
-                            } else if (Items.BUCKET == this.inventory.getStackInSlot(2).getItem()) {
-                                flag = true;
-                                slot = 2;
+                        world.destroyBlock(_tempPos, false);
+                        if (this.inventory.getStackInSlot(0).hurt(1, new Random(), null)) {
+                            this.inventory.getStackInSlot(0).shrink(1);
+                            this.inventory.getStackInSlot(0).setDamageValue(0);
+                        }
+                        this.setElectronicPower(this.electronicPower -= 50);
+                    }
+                } else {
+                    if (world.getBlockState(_tempPos).getFluidState().isSource()) {
+                        boolean flag = false;
+                        int slot = 0;
+                        if (Items.BUCKET == this.inventory.getStackInSlot(1).getItem()) {
+                            flag = true;
+                            slot = 1;
+                        } else if (Items.BUCKET == this.inventory.getStackInSlot(2).getItem()) {
+                            flag = true;
+                            slot = 2;
+                        }
+                        if (flag) {
+                            if (Blocks.WATER == (world.getFluidState(_tempPos).createLegacyBlock()).getBlock()) {
+                                this.inventory.setStackInSlot(slot, new ItemStack(Items.WATER_BUCKET, 1));
+                            } else if (Blocks.LAVA == (world.getFluidState(_tempPos).createLegacyBlock()).getBlock()) {
+                                this.inventory.setStackInSlot(slot, new ItemStack(Items.LAVA_BUCKET, 1));
                             }
-                            if (flag) {
-                                if (Blocks.WATER == (world.getFluidState(_tempPos).createLegacyBlock()).getBlock()) {
-                                    this.inventory.setStackInSlot(slot, new ItemStack(Items.WATER_BUCKET, 1));
-                                } else if (Blocks.LAVA == (world.getFluidState(_tempPos).createLegacyBlock()).getBlock()) {
-                                    this.inventory.setStackInSlot(slot, new ItemStack(Items.LAVA_BUCKET, 1));
-                                }
-                                world.setBlock(_tempPos, Blocks.AIR.defaultBlockState(), 3);
-                                this.getTileData().putDouble("ElectronicPower", (electronicPower - 50));
-                            }
+                            world.setBlock(_tempPos, Blocks.AIR.defaultBlockState(), 3);
+                            this.setElectronicPower(this.electronicPower -= 50);
                         }
                     }
                 }
-            } else {
-                sy = 1;
-                while ((BlockInit.MINING_PIPE.get() == (world.getBlockState(new BlockPos(x, (y - (sy)), z)))
-                        .getBlock())) {
-                    sy = (sy) + 1;
-                }
-                BlockPos _tempPosNew = new BlockPos(x, (y - sy), z);
-                Block _tempBlockNew = world.getBlockState(_tempPosNew).getBlock();
-                if ((BlockInit.MINING_PIPE.get() != _tempBlockNew)
-                        && (BlockInit.MINING_MACHINE.get() != (world.getBlockState(new BlockPos(x, ((y - (sy)) + 1), z))).getBlock())) {
-                    world.setBlock(new BlockPos(x, ((y - (sy)) + 1), z), Blocks.AIR.defaultBlockState(), 3);
-                }
             }
-
-            this.setChanged();
-            world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
+        } else {
+            sy = 1;
+            while ((BlockInit.MINING_PIPE.get() == (world.getBlockState(new BlockPos(x, (y - (sy)), z)))
+                    .getBlock())) {
+                sy = (sy) + 1;
+            }
+            BlockPos _tempPosNew = new BlockPos(x, (y - sy), z);
+            Block _tempBlockNew = world.getBlockState(_tempPosNew).getBlock();
+            if ((BlockInit.MINING_PIPE.get() != _tempBlockNew)
+                    && (BlockInit.MINING_MACHINE.get() != (world.getBlockState(new BlockPos(x, ((y - (sy)) + 1), z))).getBlock())) {
+                world.setBlock(new BlockPos(x, ((y - (sy)) + 1), z), Blocks.AIR.defaultBlockState(), 3);
+            }
         }
+
+        this.setChanged();
+        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
+    }
+
+    public ItemHandler getItemInventory() {
+        return this.inventory;
     }
 
     public int getElectronicPowerTimesHundred() {
@@ -153,15 +155,27 @@ public class MiningMachineBlockEntity extends AbstractBlockEntity {
         this.electronicPower = electronicPower;
     }
 
+    public int getMaxStorage() {
+        return this.maxStorage;
+    }
+
+    public void setMaxStorage(int maxStorage) {
+        this.maxStorage = maxStorage;
+    }
+
+    public boolean getLogic() {
+        return false;
+    }
+
+    public void setLogic(boolean logic) {
+    }
+
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
         electronicPower = compound.getDouble("ElectronicPower");
         this.maxStorage = compound.getInt("MaxStorage");
         this.wait = compound.getInt("wait");
-        if (compound.contains("Inventory")) {
-            inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
-        }
     }
 
     @Override
@@ -170,6 +184,5 @@ public class MiningMachineBlockEntity extends AbstractBlockEntity {
         compound.putDouble("ElectronicPower", electronicPower);
         compound.putInt("MaxStorage", this.maxStorage);
         compound.putInt("wait", this.wait);
-        compound.put("Inventory", inventory.serializeNBT());
     }
 }

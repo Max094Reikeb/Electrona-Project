@@ -15,16 +15,16 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.containers.BatteryContainer;
-import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import static net.reikeb.electrona.init.BlockEntityInit.BATTERY_BLOCK_ENTITY;
 
-public class BatteryBlockEntity extends AbstractBlockEntity {
+public class BatteryBlockEntity extends AbstractBlockEntity implements AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<BatteryBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     public double electronicPower;
-    private int maxStorage;
+    public int maxStorage;
 
     public BatteryBlockEntity(BlockPos pos, BlockState state) {
         super(BATTERY_BLOCK_ENTITY.get(), pos, state, 2);
@@ -46,26 +46,22 @@ public class BatteryBlockEntity extends AbstractBlockEntity {
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
-        // We get the NBT Tags
-        t.getTileData().putInt("MaxStorage", 10000);
-        double electronicPower = t.getTileData().getDouble("ElectronicPower");
+        this.setMaxStorage(10000);
+        if (world == null) return;
 
-        if (world != null) { // Avoid NullPointerExceptions
+        // Input & Output slots - Handling slots
+        EnergyFunction.transferEnergyWithItemSlot(this, true, 1, 4);
+        EnergyFunction.transferEnergyWithItemSlot(this, false, 0, 4);
 
-            // Input slots - Handling slots
-            EnergyFunction.transferEnergyWithItemSlot(t.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), inventory, true, electronicPower, 1, 4);
-            EnergyFunction.transferEnergyWithItemSlot(t.getTileData(), ItemInit.MECHANIC_WINGS.get().asItem(), inventory, true, electronicPower, 1, 8);
-            EnergyFunction.transferEnergyWithItemSlot(t.getTileData(), ItemInit.PORTABLE_TELEPORTER.get().asItem(), inventory, true, electronicPower, 1, 8);
+        // We pass energy to blocks around (this part is common to all generators)
+        EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this, 6, false);
 
-            // Output slot - Handling slots
-            EnergyFunction.transferEnergyWithItemSlot(t.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), inventory, false, electronicPower, 0, 4);
+        t.setChanged();
+        world.sendBlockUpdated(blockPos, t.getBlockState(), t.getBlockState(), 3);
+    }
 
-            // We pass energy to blocks around (this part is common to all generators)
-            EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), t.getTileData(), 6, electronicPower, false);
-
-            t.setChanged();
-            world.sendBlockUpdated(blockPos, t.getBlockState(), t.getBlockState(), 3);
-        }
+    public ItemHandler getItemInventory() {
+        return this.inventory;
     }
 
     public int getElectronicPowerTimesHundred() {
@@ -84,14 +80,26 @@ public class BatteryBlockEntity extends AbstractBlockEntity {
         this.electronicPower = electronicPower;
     }
 
+    public int getMaxStorage() {
+        return this.maxStorage;
+    }
+
+    public void setMaxStorage(int maxStorage) {
+        this.maxStorage = maxStorage;
+    }
+
+    public boolean getLogic() {
+        return false;
+    }
+
+    public void setLogic(boolean logic) {
+    }
+
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
         this.electronicPower = compound.getDouble("ElectronicPower");
         this.maxStorage = compound.getInt("MaxStorage");
-        if (compound.contains("Inventory")) {
-            inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
-        }
     }
 
     @Override
@@ -99,6 +107,5 @@ public class BatteryBlockEntity extends AbstractBlockEntity {
         super.saveAdditional(compound);
         compound.putDouble("ElectronicPower", this.electronicPower);
         compound.putInt("MaxStorage", this.maxStorage);
-        compound.put("Inventory", inventory.serializeNBT());
     }
 }

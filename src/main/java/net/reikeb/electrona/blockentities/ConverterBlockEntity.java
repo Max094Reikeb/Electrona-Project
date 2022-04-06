@@ -21,14 +21,14 @@ import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.reikeb.electrona.containers.ConverterContainer;
-import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static net.reikeb.electrona.init.BlockEntityInit.CONVERTER_BLOCK_ENTITY;
 
-public class ConverterBlockEntity extends AbstractBlockEntity {
+public class ConverterBlockEntity extends AbstractBlockEntity implements AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<ConverterBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private final EnergyStorage energyStorage = new EnergyStorage(10000, 40, 40, 0) {
@@ -53,7 +53,7 @@ public class ConverterBlockEntity extends AbstractBlockEntity {
         }
     };
     public double electronicPower;
-    private int maxStorage;
+    public int maxStorage;
     private boolean toVP;
     private boolean toOthers;
     private double vp;
@@ -79,43 +79,40 @@ public class ConverterBlockEntity extends AbstractBlockEntity {
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
-        // We get the NBT Tags
-        this.getTileData().putInt("MaxStorage", 10000);
-        double electronicPower = this.getTileData().getDouble("ElectronicPower");
-        boolean toVP = this.getTileData().getBoolean("toVP");
-        boolean toOthers = this.getTileData().getBoolean("toOthers");
+        this.setMaxStorage(10000);
 
-        if (world != null) { // Avoid NullPointerExceptions
+        if (world == null) return;
 
-            wait += 1;
-            if (wait >= 15) {
-                if (((!toVP) && (!toOthers)) || (toVP && toOthers)) {
-                    this.getTileData().putBoolean("toVP", true);
-                    this.getTileData().putBoolean("toOthers", false);
-                }
-
-                if (toVP) {
-                    if (electronicPower >= 1) {
-                        this.getTileData().putDouble("vp", (this.getTileData().getDouble("vp") + 3));
-                        this.getTileData().putDouble("ElectronicPower", electronicPower - 1);
-                    }
-                } else if (toOthers) {
-                    if (electronicPower >= 1) {
-                        {
-                            this.getCapability(CapabilityEnergy.ENERGY, null).ifPresent(cap -> cap.receiveEnergy(3, false));
-                        }
-                        this.getTileData().putDouble("ElectronicPower", electronicPower - 1);
-                    }
-                }
-                wait = 0;
+        wait += 1;
+        if (wait >= 15) {
+            if (((!this.toVP) && (!this.toOthers)) || (this.toVP && this.toOthers)) {
+                this.toVP = true;
+                this.toOthers = false;
             }
 
-            // Output slot - Handling slots
-            EnergyFunction.transferEnergyWithItemSlot(this.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), inventory, false, electronicPower, 0, 4);
-
-            this.setChanged();
-            world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
+            if (this.toVP) {
+                if (this.electronicPower >= 1) {
+                    this.vp += 3;
+                    this.electronicPower -= 1;
+                }
+            } else {
+                if (this.electronicPower >= 1) {
+                    this.getCapability(CapabilityEnergy.ENERGY, null).ifPresent(cap -> cap.receiveEnergy(3, false));
+                    this.electronicPower -= 1;
+                }
+            }
+            wait = 0;
         }
+
+        // Output slot - Handling slots
+        EnergyFunction.transferEnergyWithItemSlot(this, false, 0, 4);
+
+        this.setChanged();
+        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
+    }
+
+    public ItemHandler getItemInventory() {
+        return this.inventory;
     }
 
     public int getElectronicPowerTimesHundred() {
@@ -132,6 +129,14 @@ public class ConverterBlockEntity extends AbstractBlockEntity {
 
     public void setElectronicPower(double electronicPower) {
         this.electronicPower = electronicPower;
+    }
+
+    public int getMaxStorage() {
+        return this.maxStorage;
+    }
+
+    public void setMaxStorage(int maxStorage) {
+        this.maxStorage = maxStorage;
     }
 
     public int getForgeEnergy() {
@@ -179,6 +184,13 @@ public class ConverterBlockEntity extends AbstractBlockEntity {
         this.toOthers = toOthers == 1;
     }
 
+    public boolean getLogic() {
+        return false;
+    }
+
+    public void setLogic(boolean logic) {
+    }
+
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
@@ -188,9 +200,6 @@ public class ConverterBlockEntity extends AbstractBlockEntity {
         this.toOthers = compound.getBoolean("toOthers");
         this.vp = compound.getDouble("vp");
         this.wait = compound.getInt("wait");
-        if (compound.contains("Inventory")) {
-            inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
-        }
         if (compound.contains("energyStorage")) {
             energyStorage.deserializeNBT(compound.get("energyStorage"));
         }
@@ -205,7 +214,6 @@ public class ConverterBlockEntity extends AbstractBlockEntity {
         compound.putBoolean("toOthers", this.toOthers);
         compound.putDouble("vp", this.vp);
         compound.putInt("wait", this.wait);
-        compound.put("Inventory", inventory.serializeNBT());
         compound.put("energyStorage", energyStorage.serializeNBT());
     }
 

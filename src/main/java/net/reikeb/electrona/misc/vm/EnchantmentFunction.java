@@ -4,9 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
-import net.minecraft.tags.TagCollection;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EntityType;
@@ -24,7 +21,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
 import net.reikeb.electrona.init.EnchantmentInit;
-import net.reikeb.electrona.misc.Keys;
+import net.reikeb.electrona.misc.Tags;
 
 public class EnchantmentFunction {
 
@@ -37,13 +34,10 @@ public class EnchantmentFunction {
      * @param directions The directions to get neighbour blocks
      */
     public static void lumberjackMain(ServerPlayer player, Level world, BlockPos pos, Direction[] directions) {
-        TagCollection<Block> tagCollection = BlockTags.getAllTags();
-        Tag<Block> logTag;
-        logTag = tagCollection.getTagOrEmpty(Keys.LOG_TAG);
         if (EnchantmentHelper.getItemEnchantmentLevel(EnchantmentInit.LUMBERJACK.get(), player.getMainHandItem()) > 0) {
             for (Direction dir : directions) {
                 BlockPos otherPos = pos.relative(dir);
-                if (logTag.contains(world.getBlockState(otherPos).getBlock())) {
+                if (Tags.LOGS.contains(world.getBlockState(otherPos).getBlock())) {
                     Block.dropResources(world.getBlockState(otherPos), world, otherPos);
                     world.destroyBlock(otherPos, false);
                     lumberjackDef(world, otherPos, directions);
@@ -60,13 +54,9 @@ public class EnchantmentFunction {
      * @param directions The directions to get the neighbour blocks
      */
     public static void lumberjackDef(Level world, BlockPos pos, Direction[] directions) {
-        TagCollection<Block> tagCollection = BlockTags.getAllTags();
-        Tag<Block> logTag;
-        logTag = tagCollection.getTagOrEmpty(Keys.LOG_TAG);
-
         for (Direction dir : directions) {
             BlockPos otherPos = pos.relative(dir);
-            if (logTag.contains(world.getBlockState(otherPos).getBlock())) {
+            if (Tags.LOGS.contains(world.getBlockState(otherPos).getBlock())) {
                 Block.dropResources(world.getBlockState(otherPos), world, otherPos);
                 world.destroyBlock(otherPos, false);
                 lumberjackDef(world, otherPos, directions);
@@ -83,18 +73,12 @@ public class EnchantmentFunction {
      * @param directions The directions to get neighbour blocks
      */
     public static void veinminerMain(ServerPlayer player, Level world, BlockPos pos, Direction[] directions) {
-        TagCollection<Block> tagCollection = BlockTags.getAllTags();
-        Tag<Block> mcOreTag, fgOreTag, elOreTag;
-        mcOreTag = tagCollection.getTagOrEmpty(Keys.MINECRAFT_ORES);
-        fgOreTag = tagCollection.getTagOrEmpty(Keys.FORGE_ORES);
-        elOreTag = tagCollection.getTagOrEmpty(Keys.ELECTRONA_ORES);
-
         if (EnchantmentHelper.getItemEnchantmentLevel(EnchantmentInit.VEINMINER.get(), player.getMainHandItem()) > 0) {
             for (Direction dir : directions) {
                 BlockPos otherPos = pos.relative(dir);
-                if ((mcOreTag.contains(world.getBlockState(otherPos).getBlock()))
-                        || (fgOreTag.contains(world.getBlockState(otherPos).getBlock()))
-                        || (elOreTag.contains(world.getBlockState(otherPos).getBlock()))) {
+                if ((Tags.MINECRAFT_ORES.contains(world.getBlockState(otherPos).getBlock()))
+                        || (Tags.FORGE_ORES.contains(world.getBlockState(otherPos).getBlock()))
+                        || (Tags.ELECTRONA_ORES.contains(world.getBlockState(otherPos).getBlock()))) {
                     Block.dropResources(world.getBlockState(otherPos), world, otherPos);
                     world.destroyBlock(otherPos, false);
                     veinminerDef(world, otherPos, directions);
@@ -111,17 +95,11 @@ public class EnchantmentFunction {
      * @param directions The directions to get the neighbour blocks
      */
     public static void veinminerDef(Level world, BlockPos pos, Direction[] directions) {
-        TagCollection<Block> tagCollection = BlockTags.getAllTags();
-        Tag<Block> mcOreTag, fgOreTag, elOreTag;
-        mcOreTag = tagCollection.getTagOrEmpty(Keys.MINECRAFT_ORES);
-        fgOreTag = tagCollection.getTagOrEmpty(Keys.FORGE_ORES);
-        elOreTag = tagCollection.getTagOrEmpty(Keys.ELECTRONA_ORES);
-
         for (Direction dir : directions) {
             BlockPos otherPos = pos.relative(dir);
-            if ((mcOreTag.contains(world.getBlockState(otherPos).getBlock()))
-                    || (fgOreTag.contains(world.getBlockState(otherPos).getBlock()))
-                    || (elOreTag.contains(world.getBlockState(otherPos).getBlock()))) {
+            if ((Tags.MINECRAFT_ORES.contains(world.getBlockState(otherPos).getBlock()))
+                    || (Tags.FORGE_ORES.contains(world.getBlockState(otherPos).getBlock()))
+                    || (Tags.ELECTRONA_ORES.contains(world.getBlockState(otherPos).getBlock()))) {
                 Block.dropResources(world.getBlockState(otherPos), world, otherPos);
                 world.destroyBlock(otherPos, false);
                 veinminerDef(world, otherPos, directions);

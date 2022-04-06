@@ -11,13 +11,14 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.misc.vm.EnergyFunction;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
 
 import static net.reikeb.electrona.init.BlockEntityInit.SOLAR_PANEL_T_1_BLOCK_ENTITY;
 
-public class SolarPanelT1BlockEntity extends BlockEntity {
+public class SolarPanelT1BlockEntity extends BlockEntity implements AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<SolarPanelT1BlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private double electronicPower;
@@ -28,34 +29,66 @@ public class SolarPanelT1BlockEntity extends BlockEntity {
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
-        // We get the NBT Tags
-        t.getTileData().putInt("MaxStorage", 1000);
-        double electronicPower = t.getTileData().getDouble("ElectronicPower");
+        this.setMaxStorage(1000);
 
-        if (world != null) { // Avoid NullPointerExceptions
+        if (world == null) return;
 
-            // We generate the energy (this part is uncommon for all generators)
-            if (world.canSeeSky(blockPos.above()) && world.isDay()) {
-                if (electronicPower < 996) {
-                    if ((world.getLevelData().isRaining() || world.getLevelData().isThundering())) {
-                        t.getTileData().putDouble("ElectronicPower", (electronicPower + 0.1));
-                    } else {
-                        t.getTileData().putDouble("ElectronicPower", (electronicPower + 0.2));
-                    }
-                } else if (electronicPower >= 996 && electronicPower <= 999.95) {
-                    t.getTileData().putDouble("ElectronicPower", (electronicPower + 0.05));
+        // We generate the energy (this part is uncommon for all generators)
+        if (world.canSeeSky(blockPos.above()) && world.isDay()) {
+            if (this.electronicPower < 996) {
+                if ((world.getLevelData().isRaining() || world.getLevelData().isThundering())) {
+                    this.setElectronicPower(this.electronicPower += 0.1);
+                } else {
+                    this.setElectronicPower(this.electronicPower += 0.2);
                 }
-            } else {
-                if (electronicPower > 0.2) {
-                    t.getTileData().putDouble("ElectronicPower", (electronicPower - 0.2));
-                } else if (electronicPower <= 0.2 && electronicPower >= 0.05) {
-                    t.getTileData().putDouble("ElectronicPower", (electronicPower - 0.05));
-                }
+            } else if (this.electronicPower >= 996 && this.electronicPower <= 999.95) {
+                this.setElectronicPower(this.electronicPower += 0.05);
             }
-
-            // We pass energy to blocks around (this part is common to all generators)
-            EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), t.getTileData(), 4, electronicPower, true);
+        } else {
+            if (this.electronicPower > 0.2) {
+                this.setElectronicPower(this.electronicPower -= 0.2);
+            } else if (this.electronicPower <= 0.2 && this.electronicPower >= 0.05) {
+                this.setElectronicPower(this.electronicPower -= 0.05);
+            }
         }
+
+        // We pass energy to blocks around (this part is common to all generators)
+        EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this, 4, true);
+    }
+
+    public ItemHandler getItemInventory() {
+        return null;
+    }
+
+    public int getElectronicPowerTimesHundred() {
+        return (int) (this.electronicPower * 100);
+    }
+
+    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
+        this.electronicPower = electronicPowerTimesHundred / 100.0;
+    }
+
+    public double getElectronicPower() {
+        return this.electronicPower;
+    }
+
+    public void setElectronicPower(double electronicPower) {
+        this.electronicPower = electronicPower;
+    }
+
+    public int getMaxStorage() {
+        return this.maxStorage;
+    }
+
+    public void setMaxStorage(int maxStorage) {
+        this.maxStorage = maxStorage;
+    }
+
+    public boolean getLogic() {
+        return false;
+    }
+
+    public void setLogic(boolean logic) {
     }
 
     @Override

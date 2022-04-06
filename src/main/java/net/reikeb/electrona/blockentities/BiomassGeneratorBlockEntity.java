@@ -6,9 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -19,15 +17,17 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.containers.BiomassGeneratorContainer;
 import net.reikeb.electrona.init.SoundsInit;
+import net.reikeb.electrona.misc.Tags;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import static net.reikeb.electrona.init.BlockEntityInit.BIOMASS_GENERATOR_BLOCK_ENTITY;
 
-public class BiomassGeneratorBlockEntity extends AbstractBlockEntity {
+public class BiomassGeneratorBlockEntity extends AbstractBlockEntity implements AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<BiomassGeneratorBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     public double electronicPower;
-    private int maxStorage;
+    public int maxStorage;
     private int wait;
 
     public BiomassGeneratorBlockEntity(BlockPos pos, BlockState state) {
@@ -50,37 +50,36 @@ public class BiomassGeneratorBlockEntity extends AbstractBlockEntity {
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
-        // We get the NBT Tags
-        t.getTileData().putInt("MaxStorage", 3000);
-        double electronicPower = t.getTileData().getDouble("ElectronicPower");
+        this.setMaxStorage(3000);
+        if (world == null) return;
 
-        if (world != null) { // Avoid NullPointerExceptions
-
-            // Handle slot
-            if (ItemTags.getAllTags().getTagOrEmpty(new ResourceLocation(("forge:biomass").toLowerCase(java.util.Locale.ENGLISH)))
-                    .contains(this.inventory.getStackInSlot(0).getItem()) && electronicPower < 3000) {
-                wait += 1;
-                if (wait >= 20) {
-                    if (electronicPower <= 2990) {
-                        t.getTileData().putDouble("ElectronicPower", electronicPower + 10);
-                    } else {
-                        t.getTileData().putDouble("ElectronicPower", 3000);
-                    }
-                    this.inventory.decrStackSize(0, 1);
-                    world.playSound(null, blockPos, SoundsInit.BIOMASS_GENERATOR_ACTIVE.get(),
-                            SoundSource.BLOCKS, 0.6F, 1.0F);
-                    wait = 0;
+        // Handle slot
+        if (Tags.BIOMASS.contains(this.inventory.getStackInSlot(0).getItem()) && this.electronicPower < 3000) {
+            wait += 1;
+            if (wait >= 20) {
+                if (this.electronicPower <= 2990) {
+                    this.electronicPower += 20;
+                } else {
+                    this.electronicPower = 300;
                 }
-            } else {
+                this.inventory.decrStackSize(0, 1);
+                world.playSound(null, blockPos, SoundsInit.BIOMASS_GENERATOR_ACTIVE.get(),
+                        SoundSource.BLOCKS, 0.6F, 1.0F);
                 wait = 0;
             }
-
-            // Transfer energy
-            EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), t.getTileData(), 3, electronicPower, true);
-
-            t.setChanged();
-            world.sendBlockUpdated(blockPos, t.getBlockState(), t.getBlockState(), 3);
+        } else {
+            wait = 0;
         }
+
+        // Transfer energy
+        EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this, 3, true);
+
+        t.setChanged();
+        world.sendBlockUpdated(blockPos, t.getBlockState(), t.getBlockState(), 3);
+    }
+
+    public ItemHandler getItemInventory() {
+        return this.inventory;
     }
 
     public int getElectronicPowerTimesHundred() {
@@ -99,15 +98,27 @@ public class BiomassGeneratorBlockEntity extends AbstractBlockEntity {
         this.electronicPower = electronicPower;
     }
 
+    public int getMaxStorage() {
+        return this.maxStorage;
+    }
+
+    public void setMaxStorage(int maxStorage) {
+        this.maxStorage = maxStorage;
+    }
+
+    public boolean getLogic() {
+        return false;
+    }
+
+    public void setLogic(boolean logic) {
+    }
+
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
         this.electronicPower = compound.getDouble("ElectronicPower");
         this.maxStorage = compound.getInt("MaxStorage");
         this.wait = compound.getInt("wait");
-        if (compound.contains("Inventory")) {
-            inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
-        }
     }
 
     @Override
@@ -116,6 +127,5 @@ public class BiomassGeneratorBlockEntity extends AbstractBlockEntity {
         compound.putDouble("ElectronicPower", this.electronicPower);
         compound.putInt("MaxStorage", this.maxStorage);
         compound.putInt("wait", this.wait);
-        compound.put("Inventory", inventory.serializeNBT());
     }
 }

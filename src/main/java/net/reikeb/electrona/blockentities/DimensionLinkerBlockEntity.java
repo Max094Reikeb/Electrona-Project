@@ -53,9 +53,6 @@ public class DimensionLinkerBlockEntity extends AbstractBlockEntity {
     public void load(CompoundTag compound) {
         super.load(compound);
         this.dimensionID = compound.getString("dimensionID");
-        if (compound.contains("Inventory")) {
-            inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
-        }
     }
 
     @Override
@@ -64,6 +61,5 @@ public class DimensionLinkerBlockEntity extends AbstractBlockEntity {
         if (this.dimensionID != null) {
             compound.putString("dimensionID", this.dimensionID);
         }
-        compound.put("Inventory", inventory.serializeNBT());
     }
 }

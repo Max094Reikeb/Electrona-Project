@@ -49,6 +49,14 @@ public class WaterCableBlockEntity extends BlockEntity {
         this.setChanged();
     }
 
+    public boolean getLogic() {
+        return this.cableLogic;
+    }
+
+    public void setLogic(boolean logic) {
+        this.cableLogic = logic;
+    }
+
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);

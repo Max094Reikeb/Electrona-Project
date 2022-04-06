@@ -35,9 +35,6 @@ public class CoolerBlockEntity extends AbstractBlockEntity {
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
-        if (compound.contains("Inventory")) {
-            inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
-        }
         if (compound.get("fluidTank") != null) {
             fluidTank.readFromNBT((CompoundTag) compound.get("fluidTank"));
         }
@@ -46,7 +43,6 @@ public class CoolerBlockEntity extends AbstractBlockEntity {
     @Override
     public void saveAdditional(CompoundTag compound) {
         super.saveAdditional(compound);
-        compound.put("Inventory", inventory.serializeNBT());
         compound.put("fluidTank", fluidTank.serializeNBT());
     }
 

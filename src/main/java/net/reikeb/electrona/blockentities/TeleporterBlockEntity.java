@@ -16,10 +16,11 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.containers.TeleporterContainer;
 import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import static net.reikeb.electrona.init.BlockEntityInit.TELEPORTER_BLOCK_ENTITY;
 
-public class TeleporterBlockEntity extends AbstractBlockEntity {
+public class TeleporterBlockEntity extends AbstractBlockEntity implements AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<TeleporterBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     public double electronicPower;
@@ -54,8 +55,7 @@ public class TeleporterBlockEntity extends AbstractBlockEntity {
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
-        // We get the NBT Tag
-        this.getTileData().putInt("MaxStorage", 2000);
+        this.setMaxStorage(2000);
 
         if (world == null) return;
         ItemStack stack = inventory.getStackInSlot(0);
@@ -69,6 +69,10 @@ public class TeleporterBlockEntity extends AbstractBlockEntity {
 
         this.setChanged();
         world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
+    }
+
+    public ItemHandler getItemInventory() {
+        return this.inventory;
     }
 
     public int getElectronicPowerTimesHundred() {
@@ -85,6 +89,14 @@ public class TeleporterBlockEntity extends AbstractBlockEntity {
 
     public void setElectronicPower(double electronicPower) {
         this.electronicPower = electronicPower;
+    }
+
+    public int getMaxStorage() {
+        return this.maxStorage;
+    }
+
+    public void setMaxStorage(int maxStorage) {
+        this.maxStorage = maxStorage;
     }
 
     public int getTeleportXTimesHundred() {
@@ -207,6 +219,13 @@ public class TeleporterBlockEntity extends AbstractBlockEntity {
         this.isTeleporter = (isTeleporter == 1);
     }
 
+    public boolean getLogic() {
+        return false;
+    }
+
+    public void setLogic(boolean logic) {
+    }
+
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
@@ -216,9 +235,6 @@ public class TeleporterBlockEntity extends AbstractBlockEntity {
         this.teleportY = compound.getDouble("teleportY");
         this.teleportZ = compound.getDouble("teleportZ");
         this.autoDeletion = compound.getBoolean("autoDeletion");
-        if (compound.contains("Inventory")) {
-            inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
-        }
     }
 
     @Override
@@ -230,6 +246,5 @@ public class TeleporterBlockEntity extends AbstractBlockEntity {
         compound.putDouble("teleportY", this.teleportY);
         compound.putDouble("teleportZ", this.teleportZ);
         compound.putBoolean("autoDeletion", this.autoDeletion);
-        compound.put("Inventory", inventory.serializeNBT());
     }
 }

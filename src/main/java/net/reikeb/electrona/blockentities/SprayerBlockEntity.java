@@ -15,10 +15,11 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.containers.SprayerContainer;
 import net.reikeb.electrona.misc.vm.SprayerFunction;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import static net.reikeb.electrona.init.BlockEntityInit.SPRAYER_BLOCK_ENTITY;
 
-public class SprayerBlockEntity extends AbstractBlockEntity {
+public class SprayerBlockEntity extends AbstractBlockEntity implements AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<SprayerBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     public double electronicPower;
@@ -46,21 +47,22 @@ public class SprayerBlockEntity extends AbstractBlockEntity {
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
-        // We get the NBT Tags
-        this.getTileData().putInt("MaxStorage", 3000);
-        double electronicPower = this.getTileData().getDouble("ElectronicPower");
+        this.setMaxStorage(3000);
 
-        if (world != null) { // Avoid NullPointerExceptions
-            SprayerFunction.mainSprayer(this.inventory, this, electronicPower);
-            wait++;
-            if (wait >= 30) {
-                wait = 0;
-                SprayerFunction.sprayerParticles(world, this, blockPos);
-            }
-
-            this.setChanged();
-            world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
+        if (world == null) return;
+        SprayerFunction.mainSprayer(this);
+        wait++;
+        if (wait >= 30) {
+            wait = 0;
+            SprayerFunction.sprayerParticles(this);
         }
+
+        this.setChanged();
+        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
+    }
+
+    public ItemHandler getItemInventory() {
+        return this.inventory;
     }
 
     public int getElectronicPowerTimesHundred() {
@@ -79,12 +81,27 @@ public class SprayerBlockEntity extends AbstractBlockEntity {
         this.electronicPower = electronicPower;
     }
 
+    public int getMaxStorage() {
+        return this.maxStorage;
+    }
+
+    public void setMaxStorage(int maxStorage) {
+        this.maxStorage = maxStorage;
+    }
+
     public int getRadius() {
         return this.radius;
     }
 
     public void setRadius(int radius) {
         this.radius = radius;
+    }
+
+    public boolean getLogic() {
+        return false;
+    }
+
+    public void setLogic(boolean logic) {
     }
 
     @Override
@@ -94,9 +111,6 @@ public class SprayerBlockEntity extends AbstractBlockEntity {
         this.maxStorage = compound.getInt("MaxStorage");
         this.radius = compound.getInt("radius");
         this.wait = compound.getInt("wait");
-        if (compound.contains("Inventory")) {
-            inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
-        }
     }
 
     @Override
@@ -106,6 +120,5 @@ public class SprayerBlockEntity extends AbstractBlockEntity {
         compound.putInt("MaxStorage", this.maxStorage);
         compound.putInt("radius", this.radius);
         compound.putInt("wait", this.wait);
-        compound.put("Inventory", inventory.serializeNBT());
     }
 }

@@ -26,17 +26,17 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.reikeb.electrona.blocks.WaterPump;
 import net.reikeb.electrona.containers.WaterPumpContainer;
-import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.electrona.misc.vm.FluidFunction;
 import net.reikeb.electrona.utils.FluidTankHandler;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static net.reikeb.electrona.init.BlockEntityInit.WATER_PUMP_BLOCK_ENTITY;
 
-public class WaterPumpBlockEntity extends AbstractBlockEntity {
+public class WaterPumpBlockEntity extends AbstractBlockEntity implements AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<WaterPumpBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private final FluidTankHandler fluidTank = new FluidTankHandler(10000, fs -> {
@@ -50,7 +50,7 @@ public class WaterPumpBlockEntity extends AbstractBlockEntity {
         }
     };
     public double electronicPower;
-    private int maxStorage;
+    public int maxStorage;
     private boolean isOn;
     private int wait;
 
@@ -75,9 +75,7 @@ public class WaterPumpBlockEntity extends AbstractBlockEntity {
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         // We get the NBT Tags
-        this.getTileData().putInt("MaxStorage", 1000);
-        double electronicPower = this.getTileData().getDouble("ElectronicPower");
-        boolean isOn = this.getTileData().getBoolean("isOn");
+        this.maxStorage = 1000;
 
         AtomicInteger waterLevel = new AtomicInteger();
         this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).ifPresent(cap -> waterLevel.set(cap.getFluidInTank(1).getAmount()));
@@ -93,57 +91,59 @@ public class WaterPumpBlockEntity extends AbstractBlockEntity {
         }
 
         // Output slot - Handling slots
-        EnergyFunction.transferEnergyWithItemSlot(this.getTileData(), ItemInit.PORTABLE_BATTERY.get().asItem(), inventory, false, electronicPower, 1, 4);
+        EnergyFunction.transferEnergyWithItemSlot(this, false, 1, 4);
 
         world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(WaterPump.PUMPING, isOn));
 
         if (world.isClientSide) return;
 
         // Pump water
-        if (isOn) {
+        if (this.isOn) {
             wait += 1;
             if (wait >= 15) {
-                if (electronicPower >= 20
+                if (this.electronicPower >= 20
                         && Blocks.WATER == world.getBlockState(blockPos.below()).getBlock()) {
                     if (tankCapacity.get() >= (waterLevel.get() + 100)) {
                         FluidFunction.fillWater(this, 100);
-                        electronicPower -= 20;
+                        this.electronicPower -= 20;
                         world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
                         world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                     } else if (tankCapacity.get() >= (waterLevel.get() + 50)) {
                         FluidFunction.fillWater(this, 50);
-                        electronicPower -= 10;
+                        this.electronicPower -= 10;
                         world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
                         world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                     } else if (tankCapacity.get() >= (waterLevel.get() + 10)) {
                         FluidFunction.fillWater(this, 10);
-                        electronicPower -= 2;
+                        this.electronicPower -= 2;
                         world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
                         world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                     } else if (tankCapacity.get() > waterLevel.get()) {
                         FluidFunction.fillWater(this, 1);
-                        electronicPower -= 0.2;
+                        this.electronicPower -= 0.2;
                         world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
                         world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                     } else {
-                        isOn = false;
+                        this.isOn = false;
                     }
-                    this.getTileData().putDouble("ElectronicPower", electronicPower);
-                } else if (electronicPower < 20) {
-                    isOn = false;
+                } else if (this.electronicPower < 20) {
+                    this.isOn = false;
                 }
                 wait = 0;
             }
         } else {
             wait = 0;
         }
-        this.getTileData().putBoolean("isOn", isOn);
 
         // We pass water to blocks around
         FluidFunction.generatorTransferFluid(world, blockPos, Direction.values(), this, waterLevel.get(), 100);
 
         this.setChanged();
         world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
+    }
+
+    public ItemHandler getItemInventory() {
+        return this.inventory;
     }
 
     public int getElectronicPowerTimesHundred() {
@@ -160,6 +160,14 @@ public class WaterPumpBlockEntity extends AbstractBlockEntity {
 
     public void setElectronicPower(double electronicPower) {
         this.electronicPower = electronicPower;
+    }
+
+    public int getMaxStorage() {
+        return this.maxStorage;
+    }
+
+    public void setMaxStorage(int maxStorage) {
+        this.maxStorage = maxStorage;
     }
 
     public int getWaterLevel() {
@@ -187,9 +195,6 @@ public class WaterPumpBlockEntity extends AbstractBlockEntity {
         this.maxStorage = compound.getInt("MaxStorage");
         this.isOn = compound.getBoolean("isOn");
         this.wait = compound.getInt("wait");
-        if (compound.contains("Inventory")) {
-            inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
-        }
         if (compound.get("fluidTank") != null) {
             fluidTank.readFromNBT((CompoundTag) compound.get("fluidTank"));
         }
@@ -202,7 +207,6 @@ public class WaterPumpBlockEntity extends AbstractBlockEntity {
         compound.putInt("MaxStorage", this.maxStorage);
         compound.putBoolean("isOn", this.isOn);
         compound.putInt("wait", this.wait);
-        compound.put("Inventory", inventory.serializeNBT());
         compound.put("fluidTank", fluidTank.serializeNBT());
     }
 

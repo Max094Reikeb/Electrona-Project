@@ -120,8 +120,6 @@ public class PurificatorBlockEntity extends AbstractBlockEntity {
         } else {
             this.currentPurifyingTime = 0;
         }
-        this.getTileData().putInt("CurrentPurifyingTime", this.currentPurifyingTime);
-        this.getTileData().putInt("PurifyingTime", this.purifyingTime);
 
         this.setChanged();
         world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
@@ -173,9 +171,6 @@ public class PurificatorBlockEntity extends AbstractBlockEntity {
         this.purifyingTime = compound.getInt("PurifyingTime");
         this.currentPurifyingTime = compound.getInt("CurrentPurifyingTime");
         this.waterRequired = compound.getInt("WaterRequired");
-        if (compound.contains("Inventory")) {
-            inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
-        }
         if (compound.get("fluidTank") != null) {
             fluidTank.readFromNBT((CompoundTag) compound.get("fluidTank"));
         }
@@ -187,7 +182,6 @@ public class PurificatorBlockEntity extends AbstractBlockEntity {
         compound.putInt("PurifyingTime", this.purifyingTime);
         compound.putInt("CurrentPurifyingTime", this.currentPurifyingTime);
         compound.putInt("WaterRequired", this.waterRequired);
-        compound.put("Inventory", inventory.serializeNBT());
         compound.put("fluidTank", fluidTank.serializeNBT());
     }
 

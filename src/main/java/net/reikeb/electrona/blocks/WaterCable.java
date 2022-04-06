@@ -4,14 +4,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
-import net.minecraft.tags.TagCollection;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -26,9 +22,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import net.reikeb.electrona.blockentities.WaterCableBlockEntity;
-import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.BlockEntityInit;
-import net.reikeb.electrona.misc.Keys;
+import net.reikeb.electrona.misc.Tags;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -51,13 +46,7 @@ public class WaterCable extends AbstractCable implements EntityBlock {
     public boolean canConnectTo(BlockState wireState, Level worldIn, BlockPos wirePos, BlockPos connectPos, Direction direction) {
         BlockState otherState = worldIn.getBlockState(connectPos);
 
-        TagCollection<Block> tagCollection = BlockTags.getAllTags();
-        Tag<Block> machineTag, cableTag;
-        machineTag = tagCollection.getTagOrEmpty(Keys.HAS_WATER_TANK_TAG);
-        cableTag = tagCollection.getTagOrEmpty(Keys.WATER_CABLE_TAG);
-
-        return (otherState.getBlock() == BlockInit.WATER_PUMP.get()) || (machineTag.contains(otherState.getBlock()))
-                || (cableTag.contains(otherState.getBlock()));
+        return (Tags.WATER_TANK.contains(otherState.getBlock())) || (Tags.WATER_CABLE.contains(otherState.getBlock()));
     }
 
     @Override

@@ -16,10 +16,11 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.blocks.XPGenerator;
 import net.reikeb.electrona.containers.XPGeneratorContainer;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import static net.reikeb.electrona.init.BlockEntityInit.XP_GENERATOR_BLOCK_ENTITY;
 
-public class XPGeneratorBlockEntity extends AbstractBlockEntity {
+public class XPGeneratorBlockEntity extends AbstractBlockEntity implements AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<XPGeneratorBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     public double electronicPower;
@@ -47,33 +48,30 @@ public class XPGeneratorBlockEntity extends AbstractBlockEntity {
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
-        // We get the NBT Tags
-        this.getTileData().putInt("MaxStorage", 10000);
-        double electronicPower = this.getTileData().getDouble("ElectronicPower");
-        int xpLevel = this.getTileData().getInt("XPLevels");
-        int xp = this.getTileData().getInt("wait");
+        this.setMaxStorage(10000);
+        if (world == null) return;
 
-        if (world != null) { // Avoid NullPointerExceptions
-
-            // Handle slot
-            if ((electronicPower >= 0.8) && (this.inventory.getStackInSlot(0).getItem() == Items.EMERALD)) {
-                xp += 1;
-                this.getTileData().putInt("wait", xp);
-                this.getTileData().putDouble("ElectronicPower", electronicPower - 0.8);
-                if (xp >= 4800) {
-                    this.inventory.decrStackSize(0, 1);
-                    this.getTileData().putInt("XPLevels", xpLevel + 1);
-                    this.getTileData().putInt("wait", 0);
-                }
-            } else {
-                this.getTileData().putInt("wait", 0);
+        // Handle slot
+        if ((this.electronicPower >= 0.8) && (this.inventory.getStackInSlot(0).getItem() == Items.EMERALD)) {
+            wait += 1;
+            this.setElectronicPower(this.electronicPower - 0.8);
+            if (wait >= 4800) {
+                this.inventory.decrStackSize(0, 1);
+                this.setXpLevels(this.xpLevels + 1);
+                this.setWait(0);
             }
-            world.setBlockAndUpdate(blockPos, this.getBlockState()
-                    .setValue(XPGenerator.ACTIVATED, (xpLevel > 0 || xp > 0)));
-
-            this.setChanged();
-            world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
+        } else {
+            this.setWait(0);
         }
+        world.setBlockAndUpdate(blockPos, this.getBlockState()
+                .setValue(XPGenerator.ACTIVATED, (this.xpLevels > 0 || wait > 0)));
+
+        this.setChanged();
+        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
+    }
+
+    public ItemHandler getItemInventory() {
+        return this.inventory;
     }
 
     public int getElectronicPowerTimesHundred() {
@@ -90,6 +88,14 @@ public class XPGeneratorBlockEntity extends AbstractBlockEntity {
 
     public void setElectronicPower(double electronicPower) {
         this.electronicPower = electronicPower;
+    }
+
+    public int getMaxStorage() {
+        return this.maxStorage;
+    }
+
+    public void setMaxStorage(int maxStorage) {
+        this.maxStorage = maxStorage;
     }
 
     public int getWait() {
@@ -115,9 +121,6 @@ public class XPGeneratorBlockEntity extends AbstractBlockEntity {
         this.maxStorage = compound.getInt("MaxStorage");
         this.xpLevels = compound.getInt("XPLevels");
         this.wait = compound.getInt("wait");
-        if (compound.contains("Inventory")) {
-            inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
-        }
     }
 
     @Override
@@ -127,6 +130,5 @@ public class XPGeneratorBlockEntity extends AbstractBlockEntity {
         compound.putInt("MaxStorage", this.maxStorage);
         compound.putInt("XPLevels", this.xpLevels);
         compound.putInt("wait", this.wait);
-        compound.put("Inventory", inventory.serializeNBT());
     }
 }

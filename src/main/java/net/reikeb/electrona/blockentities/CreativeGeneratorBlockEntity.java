@@ -16,13 +16,14 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 
 import net.reikeb.electrona.misc.vm.EnergyFunction;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
 
 import static net.reikeb.electrona.init.BlockEntityInit.CREATIVE_GENERATOR_BLOCK_ENTITY;
 
-public class CreativeGeneratorBlockEntity extends BlockEntity {
+public class CreativeGeneratorBlockEntity extends BlockEntity implements AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<CreativeGeneratorBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private final EnergyStorage energyStorage = new EnergyStorage(999999999, 999999999, 999999999, 999999999) {
@@ -46,27 +47,59 @@ public class CreativeGeneratorBlockEntity extends BlockEntity {
             return retval;
         }
     };
-    private double electronicPower;
-    private int maxStorage;
+    public double electronicPower;
+    public int maxStorage;
 
     public CreativeGeneratorBlockEntity(BlockPos pos, BlockState state) {
         super(CREATIVE_GENERATOR_BLOCK_ENTITY.get(), pos, state);
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
-        // We get the NBT Tags
-        this.getTileData().putInt("MaxStorage", 999999999);
-        this.getTileData().putDouble("ElectronicPower", 999999999);
-        double electronicPower = this.getTileData().getDouble("ElectronicPower");
+        this.setMaxStorage(999999999);
+        this.setElectronicPower(999999999);
 
-        if (world != null) { // Avoid NullPointerExceptions
+        if (world == null) return;
 
-            this.getCapability(CapabilityEnergy.ENERGY, null).ifPresent(cap ->
-                    cap.receiveEnergy(999999999, false));
+        this.getCapability(CapabilityEnergy.ENERGY, null).ifPresent(cap ->
+                cap.receiveEnergy(999999999, false));
 
-            // We pass energy to blocks around (this part is common to all generators)
-            EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 20, electronicPower, true);
-        }
+        // We pass energy to blocks around (this part is common to all generators)
+        EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this, 20, true);
+    }
+
+    public ItemHandler getItemInventory() {
+        return null;
+    }
+
+    public int getElectronicPowerTimesHundred() {
+        return (int) (this.electronicPower * 100);
+    }
+
+    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
+        this.electronicPower = electronicPowerTimesHundred / 100.0;
+    }
+
+    public double getElectronicPower() {
+        return this.electronicPower;
+    }
+
+    public void setElectronicPower(double electronicPower) {
+        this.electronicPower = electronicPower;
+    }
+
+    public int getMaxStorage() {
+        return this.maxStorage;
+    }
+
+    public void setMaxStorage(int maxStorage) {
+        this.maxStorage = maxStorage;
+    }
+
+    public boolean getLogic() {
+        return false;
+    }
+
+    public void setLogic(boolean logic) {
     }
 
     @Override

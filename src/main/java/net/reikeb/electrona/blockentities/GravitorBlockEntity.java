@@ -20,16 +20,17 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ParticleInit;
-import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.utils.Gravity;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class GravitorBlockEntity extends BlockEntity {
+public class GravitorBlockEntity extends BlockEntity implements AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<GravitorBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private final List<BlockPos> effectBlocks = Lists.newArrayList();
@@ -52,17 +53,16 @@ public class GravitorBlockEntity extends BlockEntity {
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         if (this.level == null) return;
 
-        this.getTileData().putInt("MaxStorage", 50);
-        double electronicPower = this.getTileData().getDouble("ElectronicPower");
+        this.setMaxStorage(50);
         long i = this.level.getGameTime();
 
         ++this.tickCount;
 
         if (i % 40L == 0L) {
-            boolean flag = (this.updateShape()) && (electronicPower >= 10);
+            boolean flag = (this.updateShape()) && (this.electronicPower >= 10);
             this.setActive(flag);
             if (!this.level.isClientSide && this.isActive()) {
-                this.getTileData().putDouble("ElectronicPower", (electronicPower - 10));
+                this.setElectronicPower(this.electronicPower -= 10);
                 this.applyGravity();
             }
         }
@@ -175,6 +175,41 @@ public class GravitorBlockEntity extends BlockEntity {
     public void playSound(SoundEvent sound) {
         if (this.level == null) return;
         this.level.playSound(null, this.worldPosition, sound, SoundSource.BLOCKS, 1.0F, 1.0F);
+    }
+
+    public ItemHandler getItemInventory() {
+        return null;
+    }
+
+    public int getElectronicPowerTimesHundred() {
+        return (int) (this.electronicPower * 100);
+    }
+
+    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
+        this.electronicPower = electronicPowerTimesHundred / 100.0;
+    }
+
+    public double getElectronicPower() {
+        return this.electronicPower;
+    }
+
+    public void setElectronicPower(double electronicPower) {
+        this.electronicPower = electronicPower;
+    }
+
+    public int getMaxStorage() {
+        return this.maxStorage;
+    }
+
+    public void setMaxStorage(int maxStorage) {
+        this.maxStorage = maxStorage;
+    }
+
+    public boolean getLogic() {
+        return false;
+    }
+
+    public void setLogic(boolean logic) {
     }
 
     public void load(CompoundTag nbt) {

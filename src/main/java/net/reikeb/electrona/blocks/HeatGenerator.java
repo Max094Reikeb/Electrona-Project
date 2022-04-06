@@ -90,10 +90,10 @@ public class HeatGenerator extends Block implements EntityBlock {
         BlockEntity tile = world.getBlockEntity(pos);
         if (tile instanceof HeatGeneratorBlockEntity tileHeatGenerator) {
             if (player instanceof ServerPlayer serverPlayer) {
-                double electronicPower = tileHeatGenerator.getTileData().getDouble("ElectronicPower");
+                double electronicPower = tileHeatGenerator.getElectronicPower();
                 if ((serverPlayer.getMainHandItem().getItem() == Items.LAVA_BUCKET) && (electronicPower <= 800)) {
                     if (!world.isClientSide()) {
-                        tileHeatGenerator.getTileData().putDouble("ElectronicPower", electronicPower + 200);
+                        tileHeatGenerator.setElectronicPower(electronicPower + 200);
                     }
                     if (!serverPlayer.isCreative()) {
                         serverPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
@@ -101,7 +101,7 @@ public class HeatGenerator extends Block implements EntityBlock {
                     }
                 } else if ((serverPlayer.getMainHandItem().getItem() == Items.LAVA_BUCKET) && (electronicPower > 800)) {
                     if (!world.isClientSide()) {
-                        tileHeatGenerator.getTileData().putDouble("ElectronicPower", electronicPower + (1000 - electronicPower));
+                        tileHeatGenerator.setElectronicPower(electronicPower + (1000 - electronicPower));
                     }
                     if (!serverPlayer.isCreative()) {
                         serverPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));

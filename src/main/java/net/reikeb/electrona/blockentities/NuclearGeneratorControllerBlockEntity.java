@@ -28,13 +28,14 @@ import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.electrona.misc.vm.FluidFunction;
 import net.reikeb.electrona.misc.vm.NuclearFunction;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static net.reikeb.electrona.init.BlockEntityInit.NUCLEAR_GENERATOR_CONTROLLER_BLOCK_ENTITY;
 
-public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity {
+public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity implements AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<NuclearGeneratorControllerBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     public double electronicPower;
@@ -80,13 +81,10 @@ public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity {
         this.posYUnder = blockPos.below().getY();
         this.posZUnder = blockPos.below().getZ();
 
-        double electronicPower = this.getTileData().getDouble("ElectronicPower");
-        int temperature = this.getTileData().getInt("temperature");
-        boolean ubIn = this.getTileData().getBoolean("UBIn");
-        this.getTileData().putInt("MaxStorage", 10000);
+        this.setMaxStorage(10000);
 
         world.setBlockAndUpdate(blockPos, this.getBlockState()
-                .setValue(NuclearGeneratorController.ACTIVATED, this.getTileData().getBoolean("powered")));
+                .setValue(NuclearGeneratorController.ACTIVATED, this.powered));
 
         if (blockEntityUnder instanceof CoolerBlockEntity coolerBlockEntity) {
             AtomicReference<ItemStack> stackInSlot1 = new AtomicReference<>();
@@ -110,30 +108,34 @@ public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity {
                         || (stackInSlot1.get().getItem() == ItemInit.URANIUM_DUAL_BAR.get())
                         || (stackInSlot1.get().getItem() == ItemInit.URANIUM_QUAD_BAR.get()))) {
                     this.inventory.insertItem(1, stackInSlot1.get(), false);
-                    this.getTileData().putBoolean("UBIn", true);
+                    this.ubIn = true;
                 }
             }
 
-            if (ubIn && (blockUnder != BlockInit.COOLER.get())) {
-                this.getTileData().putBoolean("UBIn", false);
-                this.getTileData().putBoolean("powered", false);
+            if (this.ubIn && (blockUnder != BlockInit.COOLER.get())) {
+                this.ubIn = false;
+                this.powered = false;
                 this.inventory.decrStackSize(1, 1);
             }
 
             // Generation function
-            NuclearFunction.nuclearGeneration(this, coolerBlockEntity, stackInSlot1.get(), this.inventory.getStackInSlot(1), electronicPower, temperature, waterLevel.get());
+            NuclearFunction.nuclearGeneration(this, coolerBlockEntity, stackInSlot1.get());
         }
 
-        if ((this.getTileData().getBoolean("alert")) && (this.level.getGameTime() % 20 == 0)) {
+        if ((this.alert) && (world.getGameTime() % 20 == 0)) {
             world.playSound(null, blockPos, SoundsInit.NUCLEAR_GENERATOR_CONTROLLER_ALERT.get(),
                     SoundSource.BLOCKS, 0.6F, 1.0F);
         }
 
         // Transfer energy
-        EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this.getTileData(), 10, electronicPower, true);
+        EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this, 10, true);
 
         this.setChanged();
         world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
+    }
+
+    public ItemHandler getItemInventory() {
+        return this.inventory;
     }
 
     public int getElectronicPowerTimesHundred() {
@@ -150,6 +152,14 @@ public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity {
 
     public void setElectronicPower(double electronicPower) {
         this.electronicPower = electronicPower;
+    }
+
+    public int getMaxStorage() {
+        return this.maxStorage;
+    }
+
+    public void setMaxStorage(int maxStorage) {
+        this.maxStorage = maxStorage;
     }
 
     public int getUnderWater() {
@@ -232,6 +242,13 @@ public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity {
         this.posZUnder = posZUnder;
     }
 
+    public boolean getLogic() {
+        return false;
+    }
+
+    public void setLogic(boolean logic) {
+    }
+
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
@@ -241,9 +258,6 @@ public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity {
         this.powered = compound.getBoolean("powered");
         this.ubIn = compound.getBoolean("UBIn");
         this.alert = compound.getBoolean("alert");
-        if (compound.contains("Inventory")) {
-            inventory.deserializeNBT((CompoundTag) compound.get("Inventory"));
-        }
     }
 
     @Override
@@ -255,6 +269,5 @@ public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity {
         compound.putBoolean("powered", this.powered);
         compound.putBoolean("UBIn", this.ubIn);
         compound.putBoolean("alert", this.alert);
-        compound.put("Inventory", inventory.serializeNBT());
     }
 }

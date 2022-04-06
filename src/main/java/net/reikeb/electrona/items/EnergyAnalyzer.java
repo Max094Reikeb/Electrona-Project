@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.reikeb.electrona.blockentities.AbstractEnergyBlockEntity;
 import net.reikeb.electrona.setup.ItemGroups;
 
 import java.util.List;
@@ -56,7 +57,7 @@ public class EnergyAnalyzer extends Item {
         if (entity == null) return InteractionResult.FAIL;
 
         BlockEntity blockEntity = world.getBlockEntity(context.getClickedPos());
-        double electronicPower = (blockEntity == null) ? 0 : blockEntity.getTileData().getDouble("ElectronicPower");
+        double electronicPower = (blockEntity instanceof AbstractEnergyBlockEntity energyBlockEntity) ? energyBlockEntity.getElectronicPower() : 0;
 
         if (!world.isClientSide) {
             entity.displayClientMessage(new TranslatableComponent("message.electrona.energy_analyzed", electronicPower), true);

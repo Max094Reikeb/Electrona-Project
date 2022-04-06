@@ -2,9 +2,6 @@ package net.reikeb.electrona.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
-import net.minecraft.tags.TagCollection;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -29,9 +26,9 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.reikeb.electrona.blockentities.SingularityBlockEntity;
-import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.BlockEntityInit;
-import net.reikeb.electrona.misc.Keys;
+import net.reikeb.electrona.init.BlockInit;
+import net.reikeb.electrona.misc.Tags;
 import net.reikeb.electrona.world.Gamerules;
 
 import javax.annotation.Nullable;
@@ -54,13 +51,11 @@ public class Singularity extends AbstractWaterLoggableBlock implements EntityBlo
 
     public static void singularitySpawn(Level world, BlockPos pos) {
         if (world.isClientSide) return;
-        TagCollection<Block> tagCollection = BlockTags.getAllTags();
-        Tag<Block> stopsHoleTag = tagCollection.getTagOrEmpty(Keys.STOPS_BLACK_HOLES_TAG);
 
         if (world.getLevelData().getGameRules().getBoolean(Gamerules.DO_BLACK_HOLES_EXIST)) {
 
             for (BlockPos testPos : BlockPos.spiralAround(pos, 1000, Direction.EAST, Direction.SOUTH)) {
-                if (!stopsHoleTag.contains(world.getBlockState(testPos).getBlock())) {
+                if (!Tags.STOPS_BLACK_HOLE.contains(world.getBlockState(testPos).getBlock())) {
                     world.setBlockAndUpdate(testPos, BlockInit.HOLE.get().defaultBlockState());
                     return;
                 }

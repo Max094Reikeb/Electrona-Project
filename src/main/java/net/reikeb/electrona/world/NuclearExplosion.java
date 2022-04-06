@@ -2,9 +2,6 @@ package net.reikeb.electrona.world;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
-import net.minecraft.tags.TagCollection;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,7 +24,7 @@ import net.reikeb.electrona.init.BiomeInit;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.misc.DamageSources;
-import net.reikeb.electrona.misc.Keys;
+import net.reikeb.electrona.misc.Tags;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.BiomeUpdatePacket;
 import net.reikeb.electrona.utils.BiomeUtil;
@@ -78,16 +75,6 @@ public class NuclearExplosion {
     }
 
     private void createHole(Level world, int x, int y, int z, int radius) {
-        TagCollection<Block> tagCollection = BlockTags.getAllTags();
-        Tag<Block> logTag, plankTag, stairsTag, slabsTag, doorTag, glassTag, panesTag;
-        logTag = tagCollection.getTagOrEmpty(Keys.LOG_THAT_BURN_TAG);
-        plankTag = tagCollection.getTagOrEmpty(Keys.PLANKS_TAG);
-        stairsTag = tagCollection.getTagOrEmpty(Keys.STAIRS_TAG);
-        slabsTag = tagCollection.getTagOrEmpty(Keys.SLABS_TAG);
-        doorTag = tagCollection.getTagOrEmpty(Keys.DOORS_TAG);
-        glassTag = tagCollection.getTagOrEmpty(Keys.GLASS_TAG);
-        panesTag = tagCollection.getTagOrEmpty(Keys.PANES_TAG);
-
         Random rand = new Random();
         int halfradius = radius / 2;
         int onepointfiveradius = halfradius * 3;
@@ -135,12 +122,12 @@ public class NuclearExplosion {
                             if (dist < onepointfiveradius) {
                                 flag = true;
                                 affectedBlocks.add(block);
-                                if ((Y >= tworadius) || (Y >= radius) || (glassTag.contains(block)) || (panesTag.contains(block))
-                                        || (doorTag.contains(block)) || (block == Blocks.TORCH) || (block == Blocks.WATER)) {
+                                if ((Y >= tworadius) || (Y >= radius) || (Tags.GLASS.contains(block)) || (Tags.PANES.contains(block))
+                                        || (Tags.DOORS.contains(block)) || (block == Blocks.TORCH) || (block == Blocks.WATER)) {
                                     world.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
-                                } else if ((plankTag.contains(block)) || (stairsTag.contains(block)) || (slabsTag.contains(block))) {
+                                } else if ((Tags.PLANKS.contains(block)) || (Tags.STAIRS.contains(block)) || (Tags.SLABS.contains(block))) {
                                     world.setBlockAndUpdate(blockPos, Blocks.FIRE.defaultBlockState());
-                                } else if (logTag.contains(block)) {
+                                } else if (Tags.LOG_THAT_BURN.contains(block)) {
                                     if (world.random.nextFloat() > 0.5) {
                                         world.setBlockAndUpdate(blockPos, Blocks.FIRE.defaultBlockState());
                                     } else {

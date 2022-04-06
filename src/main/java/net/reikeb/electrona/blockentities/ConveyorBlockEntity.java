@@ -10,37 +10,70 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.blocks.Conveyor;
+import net.reikeb.electrona.utils.ItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
 
 import static net.reikeb.electrona.init.BlockEntityInit.CONVEYOR_BLOCK_ENTITY;
 
-public class ConveyorBlockEntity extends BlockEntity {
+public class ConveyorBlockEntity extends BlockEntity implements AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<ConveyorBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
-    private double electronicPower;
-    private int maxStorage;
+    public double electronicPower;
+    public int maxStorage;
 
     public ConveyorBlockEntity(BlockPos pos, BlockState state) {
         super(CONVEYOR_BLOCK_ENTITY.get(), pos, state);
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
-        // We get the NBT Tags
-        this.getTileData().putInt("MaxStorage", 100);
-        double electronicPower = this.getTileData().getDouble("ElectronicPower");
+        this.setMaxStorage(100);
 
-        if (world != null) { // Avoid NullPointerExceptions
+        if (world == null) return;
 
-            world.setBlockAndUpdate(blockPos, state
-                    .setValue(Conveyor.ACTIVATED, electronicPower > 0));
+        world.setBlockAndUpdate(blockPos, state
+                .setValue(Conveyor.ACTIVATED, this.electronicPower > 0));
 
-            this.getTileData().putDouble("ElectronicPower", (electronicPower - 0.05));
+        this.electronicPower -= 0.05;
 
-            this.setChanged();
-            world.sendBlockUpdated(blockPos, state, state, 3);
-        }
+        this.setChanged();
+        world.sendBlockUpdated(blockPos, state, state, 3);
+    }
+
+    public ItemHandler getItemInventory() {
+        return null;
+    }
+
+    public int getElectronicPowerTimesHundred() {
+        return (int) (this.electronicPower * 100);
+    }
+
+    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
+        this.electronicPower = electronicPowerTimesHundred / 100.0;
+    }
+
+    public double getElectronicPower() {
+        return this.electronicPower;
+    }
+
+    public void setElectronicPower(double electronicPower) {
+        this.electronicPower = electronicPower;
+    }
+
+    public int getMaxStorage() {
+        return this.maxStorage;
+    }
+
+    public void setMaxStorage(int maxStorage) {
+        this.maxStorage = maxStorage;
+    }
+
+    public boolean getLogic() {
+        return false;
+    }
+
+    public void setLogic(boolean logic) {
     }
 
     @Override
