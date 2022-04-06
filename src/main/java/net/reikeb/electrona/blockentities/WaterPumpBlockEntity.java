@@ -74,8 +74,7 @@ public class WaterPumpBlockEntity extends AbstractBlockEntity implements Abstrac
     }
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
-        // We get the NBT Tags
-        this.maxStorage = 1000;
+        this.setMaxStorage(1000);
 
         AtomicInteger waterLevel = new AtomicInteger();
         this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).ifPresent(cap -> waterLevel.set(cap.getFluidInTank(1).getAmount()));
@@ -186,6 +185,13 @@ public class WaterPumpBlockEntity extends AbstractBlockEntity implements Abstrac
 
     public void setOn(int isOn) {
         this.isOn = (isOn == 1);
+    }
+
+    public boolean getLogic() {
+        return false;
+    }
+
+    public void setLogic(boolean logic) {
     }
 
     @Override

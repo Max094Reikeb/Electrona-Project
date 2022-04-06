@@ -114,6 +114,13 @@ public class XPGeneratorBlockEntity extends AbstractBlockEntity implements Abstr
         this.xpLevels = xpLevels;
     }
 
+    public boolean getLogic() {
+        return false;
+    }
+
+    public void setLogic(boolean logic) {
+    }
+
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);

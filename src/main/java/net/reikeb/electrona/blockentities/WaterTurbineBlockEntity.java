@@ -98,6 +98,13 @@ public class WaterTurbineBlockEntity extends BlockEntity implements AbstractEner
         this.maxStorage = maxStorage;
     }
 
+    public boolean getLogic() {
+        return false;
+    }
+
+    public void setLogic(boolean logic) {
+    }
+
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
