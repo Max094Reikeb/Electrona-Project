@@ -61,8 +61,8 @@ public class BiomeUtil {
         /*
         Biome biome = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).get(biomeKey); // get the biome from the biomeKey
         if (biome == null) return; // check the biome isn't null
-        ChunkBiomeContainer bc = world.getChunk(pos).getBiomes(); // get a container of all biomes in the chunk at the location
         ChunkAccess chunkAccess = world.getChunk(pos); // get access to the chunk at location
+        ChunkBiomeContainer bc = chunkAccess.getBiomes(); // get a container of all biomes in the chunk at the location
         if (bc != null) {
             Biome[] biomeArray = bc.biomes; // set all biomes in an array
             int biomeIndex = getBiomeIndex(pos.getX(), pos.getY(), pos.getZ(), 0L); // get the index of a biome at x y z

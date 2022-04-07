@@ -11,14 +11,15 @@ import net.minecraft.world.level.levelgen.SurfaceRules;
 
 import net.reikeb.electrona.init.BiomeInit;
 
+import terrablender.api.BiomeProvider;
 import terrablender.worldgen.TBClimate;
 
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class BiomeProvider extends terrablender.api.BiomeProvider {
+public class ElectronaBiomeProvider extends BiomeProvider {
 
-    public BiomeProvider(ResourceLocation name, int overworldWeight) {
+    public ElectronaBiomeProvider(ResourceLocation name, int overworldWeight) {
         super(name, overworldWeight);
     }
 

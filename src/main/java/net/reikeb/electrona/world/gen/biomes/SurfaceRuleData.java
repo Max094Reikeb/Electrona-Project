@@ -7,6 +7,7 @@ import net.reikeb.electrona.init.BiomeInit;
 import net.reikeb.electrona.init.BlockInit;
 
 public class SurfaceRuleData {
+
     private static final SurfaceRules.RuleSource RADIOACTIVE_DIRT = makeStateRule(BlockInit.RADIOACTIVE_DIRT.get());
 
     public static SurfaceRules.RuleSource makeRules() {

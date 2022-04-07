@@ -3,6 +3,8 @@ package net.reikeb.electrona.setup;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import net.reikeb.electrona.init.*;
+import net.reikeb.electrona.villages.Villagers;
+import net.reikeb.electrona.world.gen.Structures;
 
 public class RegistryHandler {
 
@@ -17,5 +19,8 @@ public class RegistryHandler {
         ItemInit.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ParticleInit.PARTICLES.register(FMLJavaModLoadingContext.get().getModEventBus());
         SoundsInit.SOUNDS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        Structures.DEFERRED_REGISTRY_STRUCTURE.register(FMLJavaModLoadingContext.get().getModEventBus());
+        Villagers.POI.register(FMLJavaModLoadingContext.get().getModEventBus());
+        Villagers.PROFESSIONS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 }

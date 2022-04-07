@@ -3,11 +3,8 @@ package net.reikeb.electrona.network.packets;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.biome.Biome;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -57,8 +54,7 @@ public class BiomeSingleUpdatePacket {
         public Object call() throws Exception {
             ClientLevel world = Minecraft.getInstance().level;
             if (world == null) return null;
-            ResourceKey<Biome> biomeKey = ResourceKey.create(Registry.BIOME_REGISTRY, biome);
-            BiomeUtil.setBiomeKeyAtPos(world, pos, biomeKey);
+            BiomeUtil.setBiomeAtPos(world, pos, biome);
             return null;
         }
     }

@@ -36,7 +36,6 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -55,10 +54,10 @@ import net.reikeb.electrona.recipes.types.RecipeTypePurificator;
 import net.reikeb.electrona.setup.RegistryHandler;
 import net.reikeb.electrona.villages.POIFixup;
 import net.reikeb.electrona.villages.StructureGen;
-import net.reikeb.electrona.villages.Villagers;
 import net.reikeb.electrona.world.Gamerules;
 import net.reikeb.electrona.world.gen.ConfiguredStructures;
 import net.reikeb.electrona.world.gen.Structures;
+import net.reikeb.electrona.world.gen.biomes.ElectronaBiomeProvider;
 import net.reikeb.electrona.world.structures.RuinsStructure;
 
 import org.apache.logging.log4j.LogManager;
@@ -86,17 +85,13 @@ public class Electrona {
 
     public Electrona() {
 
-        // Init the RegistryHandler class
+        // Init Advancements and Registries
         RegistryHandler.init();
-
-        // Init Advancements
         TTriggers.init();
 
         // Registers an event with the mod specific event bus. This is needed to register new stuff.
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(RecipeSerializer.class, this::registerRecipeSerializers);
-        Structures.DEFERRED_REGISTRY_STRUCTURE.register(FMLJavaModLoadingContext.get().getModEventBus());
-        registerAllDeferredRegistryObjects(FMLJavaModLoadingContext.get().getModEventBus());
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(new EntityDiesEvent());
@@ -139,25 +134,22 @@ public class Electrona {
             ConfiguredStructures.registerConfiguredStructures();
             GameEvents.setupGameEvents();
 
-            BiomeProviders.register(new net.reikeb.electrona.world.gen.biomes.BiomeProvider(Keys.NUCLEAR_BIOME, 1));
+            BiomeProviders.register(new ElectronaBiomeProvider(Keys.NUCLEAR_BIOME, 1));
 
             SculkSensorBlock.VIBRATION_STRENGTH_FOR_EVENT = Object2IntMaps.unmodifiable(Util.make(new Object2IntOpenHashMap<>(), (map) -> {
                 map.putAll(SculkSensorBlock.VIBRATION_STRENGTH_FOR_EVENT);
                 map.put(GameEvents.SINGULARITY, 7);
                 map.put(GameEvents.TELEPORTER_USE, 10);
                 map.put(GameEvents.ENERGETIC_LIGHTNING_STRIKE, 15);
+                map.put(GameEvents.NUCLEAR_EXPLOSION, 20);
             }));
         });
 
-        /**
-         * Custom potion recipes
-         */
-        // Sugar Bottle recipe
         BrewingRecipeRegistry.addRecipe(Ingredient.of(Items.GLASS_BOTTLE), Ingredient.of(Items.SUGAR),
-                new ItemStack(ItemInit.SUGAR_BOTTLE.get()));
-        // Concentrated Uranium recipe
+                new ItemStack(ItemInit.SUGAR_BOTTLE.get())); // sugar bottle brewing recipe
+
         BrewingRecipeRegistry.addRecipe(Ingredient.of(ItemInit.SUGAR_BOTTLE.get()), Ingredient.of(ItemInit.YELLOWCAKE.get()),
-                new ItemStack(ItemInit.CONCENTRATED_URANIUM.get()));
+                new ItemStack(ItemInit.CONCENTRATED_URANIUM.get())); // concentrated uranium brewing recipe
     }
 
     public void addDimensionalSpacing(final WorldEvent.Load event) {
@@ -193,11 +185,6 @@ public class Electrona {
             tempMap.putIfAbsent(Structures.RUINS.get(), StructureSettings.DEFAULTS.get(Structures.RUINS.get()));
             worldStructureConfig.structureConfig = tempMap;
         }
-    }
-
-    private void registerAllDeferredRegistryObjects(IEventBus modBus) {
-        Villagers.POI.register(modBus);
-        Villagers.PROFESSIONS.register(modBus);
     }
 
     /*
