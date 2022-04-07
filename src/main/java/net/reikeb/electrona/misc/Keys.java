@@ -38,6 +38,7 @@ public class Keys {
     public static final ResourceLocation DOORS_TAG = new ResourceLocation("minecraft", "wooden_doors");
     public static final ResourceLocation GLASS_TAG = new ResourceLocation("minecraft", "impermeable");
     public static final ResourceLocation PANES_TAG = new ResourceLocation("forge", "panes");
+    public static final ResourceLocation NUCLEAR_DEBRIS = new ResourceLocation("forge", "electrona/nuclear_debris");
 
     public static final ResourceLocation MINECRAFT_ORES = new ResourceLocation("minecraft:ores");
     public static final ResourceLocation FORGE_ORES = new ResourceLocation("forge:ores");
@@ -99,6 +100,9 @@ public class Keys {
 
     // Items tag
     public static final ResourceLocation CHARGEABLE_ITEMS_TAG = new ResourceLocation("forge", "electrona/chargeable_items");
+
+    // Others
+    public static final ResourceLocation BIOMASS = new ResourceLocation(("forge:biomass").toLowerCase(java.util.Locale.ENGLISH));
 
     // Potions
     public static final ResourceLocation RADIOACTIVITY_EFFECT = new ResourceLocation("electrona:textures/mob_effect/radioactivity.png");

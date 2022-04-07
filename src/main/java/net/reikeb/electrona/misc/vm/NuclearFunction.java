@@ -107,7 +107,7 @@ public class NuclearFunction {
                     BlockPos pos = nuclearGeneratorControllerBlockEntity.getBlockPos();
                     world.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
                     world.setBlock(coolerBlockEntity.getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
-                    new NuclearExplosion(world, pos.getX(), pos.getY(), pos.getZ(), 20);
+                    new NuclearExplosion(world, pos, 20);
                     if ((Math.random() < 0.45) && world.getLevelData().getGameRules().getBoolean(Gamerules.DO_BLACK_HOLES_EXIST)) {
                         world.setBlock(pos, BlockInit.SINGULARITY.get().defaultBlockState(), 3);
                         advancementInevitableFunction(world, pos);

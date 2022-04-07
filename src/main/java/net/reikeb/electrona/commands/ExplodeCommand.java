@@ -41,7 +41,7 @@ public class ExplodeCommand {
 
     private static int nuclearExplode(CommandSourceStack source, ServerPlayer user, int power) throws CommandSyntaxException {
         if (power > 0) {
-            new NuclearExplosion(user.level, (int) user.getX(), (int) user.getY(), (int) user.getZ(), power);
+            new NuclearExplosion(user.level, user.blockPosition(), power);
             source.sendSuccess(new TranslatableComponent("command.electrona.nuclear_explosion_success"), true);
         } else {
             throw ERROR_NEGATIVE.create(power);

@@ -1,6 +1,5 @@
 package net.reikeb.electrona.misc;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
@@ -9,7 +8,7 @@ import net.minecraft.world.level.block.Block;
 
 public class Tags {
 
-    public static Tag<Item> BIOMASS = ItemTags.getAllTags().getTagOrEmpty(new ResourceLocation(("forge:biomass").toLowerCase(java.util.Locale.ENGLISH)));
+    public static Tag<Item> BIOMASS = ItemTags.getAllTags().getTagOrEmpty(Keys.BIOMASS);
     public static Tag<Block> BLUE_CABLE = BlockTags.getAllTags().getTagOrEmpty(Keys.BLUE_CABLE_TAG);
     public static Tag<Block> BLUE_MACHINES = BlockTags.getAllTags().getTagOrEmpty(Keys.BLUE_CABLE_MACHINE_TAG);
     public static Tag<Block> CABLE = BlockTags.getAllTags().getTagOrEmpty(Keys.CABLE_TAG);
@@ -22,6 +21,7 @@ public class Tags {
     public static Tag<Block> LOG_THAT_BURN = BlockTags.getAllTags().getTagOrEmpty(Keys.LOG_THAT_BURN_TAG);
     public static Tag<Block> MACHINES = BlockTags.getAllTags().getTagOrEmpty(Keys.CABLE_MACHINE_TAG);
     public static Tag<Block> MINECRAFT_ORES = BlockTags.getAllTags().getTagOrEmpty(Keys.MINECRAFT_ORES);
+    public static Tag<Block> NUCLEAR_DEBRIS = BlockTags.getAllTags().getTagOrEmpty(Keys.NUCLEAR_DEBRIS);
     public static Tag<Block> PANES = BlockTags.getAllTags().getTagOrEmpty(Keys.PANES_TAG);
     public static Tag<Block> PLANKS = BlockTags.getAllTags().getTagOrEmpty(Keys.PLANKS_TAG);
     public static Tag<Item> POWERED_ITEMS = ItemTags.getAllTags().getTagOrEmpty(Keys.CHARGEABLE_ITEMS_TAG);

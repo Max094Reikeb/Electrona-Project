@@ -24,6 +24,7 @@ import net.reikeb.electrona.init.BiomeInit;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.misc.DamageSources;
+import net.reikeb.electrona.misc.GameEvents;
 import net.reikeb.electrona.misc.Tags;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.BiomeUpdatePacket;
@@ -40,81 +41,86 @@ import java.util.Random;
  */
 public class NuclearExplosion {
 
-    public static Block[] prblocks = {
-            Blocks.COAL_ORE,
-            Blocks.IRON_ORE,
-            Blocks.REDSTONE_ORE,
-            Blocks.GOLD_ORE,
-            Blocks.LAPIS_ORE,
-            Blocks.DIAMOND_ORE,
-            Blocks.EMERALD_ORE,
-    };
-
-    public static Block[] pgblocks = {
-            Blocks.STONE,
-            Blocks.COBBLESTONE,
-            Blocks.DIRT,
-    };
-
     private final List<Block> affectedBlocks = new ArrayList<>();
+    private final BlockPos blockPos;
     private final Vec3 position;
+    private final Level level;
+    private final int strength;
 
-    public NuclearExplosion(Level world, int x, int y, int z, int strength) {
+    public NuclearExplosion(Level level, BlockPos blockPos, int strength) {
+        this(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), strength);
+    }
+
+    public NuclearExplosion(Level level, int x, int y, int z, int strength) {
         this.position = new Vec3(x, y, z);
-        if (!world.isClientSide) {
-            if (!MinecraftForge.EVENT_BUS.post(new NuclearExplosionEvent.Start(world, this))) {
-                createHole(world, x, y, z, strength);
-                pushAndHurtEntities(world, x, y, z, strength);
-                fixLag(world, x, y, z, strength);
-            }
+        this.blockPos = new BlockPos(x, y, z);
+        this.level = level;
+        this.strength = strength;
+        if (level.isClientSide) return;
+        if (!MinecraftForge.EVENT_BUS.post(new NuclearExplosionEvent.Start(level, this))) {
+            createHole();
+            pushAndHurtEntities();
+            fixLag();
         }
+    }
+
+    public BlockPos getBlockPos() {
+        return this.getBlockPos();
     }
 
     public Vec3 getPosition() {
         return this.position;
     }
 
-    private void createHole(Level world, int x, int y, int z, int radius) {
+    public Level getLevel() {
+        return this.level;
+    }
+
+    public int getStrength() {
+        return this.strength;
+    }
+
+    private void createHole() {
         Random rand = new Random();
-        int halfradius = radius / 2;
+        int halfradius = this.strength / 2;
         int onepointfiveradius = halfradius * 3;
         int onepointfiveradiussqrd = onepointfiveradius * onepointfiveradius;
-        int tworadius = radius * 2;
+        int tworadius = this.strength * 2;
 
         for (int X = -onepointfiveradius; X <= onepointfiveradius; X++) {
-            int xx = x + X;
+            int xx = this.blockPos.getX() + X;
             int XX = X * X;
             for (int Z = -onepointfiveradius; Z <= onepointfiveradius; Z++) {
                 int ZZ = Z * Z + XX;
-                int zz = z + Z;
+                int zz = this.blockPos.getZ() + Z;
                 for (int Y = -onepointfiveradius; Y <= onepointfiveradius; Y++) {
                     int YY = Y * Y + ZZ;
-                    int yy = y + Y;
+                    int yy = this.blockPos.getY() + Y;
                     if (YY < onepointfiveradiussqrd) {
                         BlockPos blockPos = new BlockPos(xx, yy, zz);
-                        Block block = world.getBlockState(blockPos).getBlock();
-                        if ((!Gravity.isAir(world, blockPos)) && (block != Blocks.BEDROCK)) {
+                        Block block = this.level.getBlockState(blockPos).getBlock();
+                        if ((!Gravity.isAir(this.level, blockPos)) && (block != Blocks.BEDROCK)) {
                             int dist = (int) Math.sqrt(YY);
                             boolean flag = false;
-                            if (dist < radius) {
+                            if (dist < this.strength) {
                                 flag = true;
                                 affectedBlocks.add(block);
                                 int varrand = 1 + dist - halfradius;
                                 if (dist < halfradius) {
-                                    world.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
+                                    this.level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
                                     block = Blocks.AIR;
                                 } else if (varrand > 0) {
                                     int randomness = halfradius - varrand / 2;
                                     if (block == Blocks.WATER || block == Blocks.LAVA) {
-                                        world.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
+                                        this.level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
                                         block = Blocks.AIR;
                                     } else if (block == Blocks.STONE && rand.nextInt(randomness) < randomness / 2) {
-                                        world.setBlockAndUpdate(blockPos, Blocks.COBBLESTONE.defaultBlockState());
+                                        this.level.setBlockAndUpdate(blockPos, Blocks.COBBLESTONE.defaultBlockState());
                                         block = Blocks.COBBLESTONE;
                                     } else if ((block == Blocks.GRASS_BLOCK) || (block == Blocks.DIRT)) {
-                                        world.setBlockAndUpdate(blockPos, BlockInit.RADIOACTIVE_DIRT.get().defaultBlockState());
+                                        this.level.setBlockAndUpdate(blockPos, BlockInit.RADIOACTIVE_DIRT.get().defaultBlockState());
                                     } else if ((rand.nextInt(varrand) == 0 || rand.nextInt(varrand / 2 + 1) == 0)) {
-                                        world.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
+                                        this.level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
                                         block = Blocks.AIR;
                                     }
                                 }
@@ -122,47 +128,50 @@ public class NuclearExplosion {
                             if (dist < onepointfiveradius) {
                                 flag = true;
                                 affectedBlocks.add(block);
-                                if ((Y >= tworadius) || (Y >= radius) || (Tags.GLASS.contains(block)) || (Tags.PANES.contains(block))
+                                if ((Y >= tworadius) || (Y >= this.strength) || (Tags.GLASS.contains(block)) || (Tags.PANES.contains(block))
                                         || (Tags.DOORS.contains(block)) || (block == Blocks.TORCH) || (block == Blocks.WATER)) {
-                                    world.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
+                                    this.level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
                                 } else if ((Tags.PLANKS.contains(block)) || (Tags.STAIRS.contains(block)) || (Tags.SLABS.contains(block))) {
-                                    world.setBlockAndUpdate(blockPos, Blocks.FIRE.defaultBlockState());
+                                    this.level.setBlockAndUpdate(blockPos, Blocks.FIRE.defaultBlockState());
                                 } else if (Tags.LOG_THAT_BURN.contains(block)) {
-                                    if (world.random.nextFloat() > 0.5) {
-                                        world.setBlockAndUpdate(blockPos, Blocks.FIRE.defaultBlockState());
+                                    if (this.level.random.nextFloat() > 0.5) {
+                                        this.level.setBlockAndUpdate(blockPos, Blocks.FIRE.defaultBlockState());
                                     } else {
-                                        world.setBlockAndUpdate(blockPos, BlockInit.CHARDWOOD_LOG.get().defaultBlockState());
+                                        this.level.setBlockAndUpdate(blockPos, BlockInit.CHARDWOOD_LOG.get().defaultBlockState());
                                     }
                                 } else if ((block == Blocks.GRASS_BLOCK) || (block == Blocks.DIRT) || (block == Blocks.DIRT_PATH)) {
-                                    world.setBlockAndUpdate(blockPos, BlockInit.RADIOACTIVE_DIRT.get().defaultBlockState());
+                                    this.level.setBlockAndUpdate(blockPos, BlockInit.RADIOACTIVE_DIRT.get().defaultBlockState());
                                 }
                             }
                             if (flag) {
-                                Gravity.applyGravity(world, blockPos);
-                                BiomeUtil.setBiomeKeyAtPos(world, blockPos, BiomeInit.NUCLEAR);
+                                Gravity.applyGravity(this.level, blockPos);
+                                BiomeUtil.setBiomeKeyAtPos(this.level, blockPos, BiomeInit.NUCLEAR);
                             }
                         }
                     }
                 }
             }
         }
-        world.playSound(null, new BlockPos(x, y, z), SoundsInit.NUCLEAR_EXPLOSION.get(),
+        this.level.playSound(null, this.blockPos, SoundsInit.NUCLEAR_EXPLOSION.get(),
                 SoundSource.WEATHER, 0.6F, 1.0F);
-        NetworkManager.INSTANCE.send(PacketDistributor.ALL.noArg(), new BiomeUpdatePacket(new BlockPos(x, y, z), BiomeInit.NUCLEAR.location(), radius));
+        this.level.gameEvent(GameEvents.NUCLEAR_EXPLOSION, this.blockPos);
+        NetworkManager.INSTANCE.send(PacketDistributor.ALL.noArg(), new BiomeUpdatePacket(this.blockPos, BiomeInit.NUCLEAR.location(), this.strength));
     }
 
-    private void pushAndHurtEntities(Level world, int x, int y, int z, int radius) {
-        int diameter = radius * 2;
-        int onepointfiveradius = (radius / 2) * 3;
+    private void pushAndHurtEntities() {
+        int diameter = this.strength * 2;
+        int onepointfiveradius = (this.strength / 2) * 3;
+        double x = this.blockPos.getX();
+        double y = this.blockPos.getY();
+        double z = this.blockPos.getZ();
         int var3 = Mth.floor(x - (double) onepointfiveradius - 1.0D);
         int var4 = Mth.floor(x + (double) onepointfiveradius + 1.0D);
         int var5 = Mth.floor(y - (double) onepointfiveradius - 1.0D);
         int var28 = Mth.floor(y + (double) onepointfiveradius + 1.0D);
         int var7 = Mth.floor(z - (double) onepointfiveradius - 1.0D);
         int var29 = Mth.floor(z + (double) onepointfiveradius + 1.0D);
-        List<Entity> var9 = world.getEntities(null, AABB.of(new BoundingBox(var3, var5, var7, var4, var28, var29)));
-        MinecraftForge.EVENT_BUS.post(new NuclearExplosionEvent.Detonate(world, this, var9, affectedBlocks));
-        Vec3 var30 = new Vec3(x, y, z);
+        List<Entity> var9 = this.level.getEntities(null, AABB.of(new BoundingBox(var3, var5, var7, var4, var28, var29)));
+        MinecraftForge.EVENT_BUS.post(new NuclearExplosionEvent.Detonate(this.level, this, var9, affectedBlocks));
 
         for (Entity entity : var9) {
             double var13 = entity.distanceToSqr(x, y, z) / onepointfiveradius;
@@ -176,7 +185,7 @@ public class NuclearExplosion {
                     var15 /= var33;
                     var17 /= var33;
                     var19 /= var33;
-                    double var32 = Explosion.getSeenPercent(var30, entity);
+                    double var32 = Explosion.getSeenPercent(this.position, entity);
                     double var34 = (1.0D - var13) * var32;
                     if (entity instanceof ItemEntity) entity.discard();
                     if (!(entity instanceof FallingBlockEntity)) {
@@ -193,30 +202,23 @@ public class NuclearExplosion {
         }
     }
 
-    private void fixLag(Level world, int x, int y, int z, int strength) {
-        for (int X = -strength; X <= strength; X++) {
-            int xx = x + X;
-            for (int Y = -strength; Y <= strength; Y++) {
-                int yy = y + Y;
-                for (int Z = -strength; Z <= strength; Z++) {
-                    int zz = z + Z;
+    private void fixLag() {
+        for (int X = -this.strength; X <= this.strength; X++) {
+            int xx = this.blockPos.getX() + X;
+            for (int Y = -this.strength; Y <= this.strength; Y++) {
+                int yy = this.blockPos.getY() + Y;
+                for (int Z = -this.strength; Z <= this.strength; Z++) {
+                    int zz = this.blockPos.getZ() + Z;
                     BlockPos blockPos = new BlockPos(xx, yy, zz);
-                    Block blockID = world.getBlockState(blockPos).getBlock();
-                    if (blockID == Blocks.AIR && world.getLightEmission(blockPos) == 0) {
-                        if (world.getBlockState(new BlockPos(xx, yy + 1, zz)).getBlock() != Blocks.AIR
-                                && world.getBlockState(new BlockPos(xx, yy - 1, zz)).getBlock() != Blocks.AIR
-                                && world.getBlockState(new BlockPos(xx + 1, yy, zz)).getBlock() != Blocks.AIR
-                                && world.getBlockState(new BlockPos(xx - 1, yy, zz)).getBlock() != Blocks.AIR
-                                && world.getBlockState(new BlockPos(xx, yy, zz + 1)).getBlock() != Blocks.AIR
-                                && world.getBlockState(new BlockPos(xx, yy, zz - 1)).getBlock() != Blocks.AIR) {
-                            int r = world.random.nextInt(50);
-                            Block id;
-                            if (r == 0) {
-                                id = prblocks[world.random.nextInt(prblocks.length)];
-                            } else {
-                                id = pgblocks[world.random.nextInt(pgblocks.length)];
-                            }
-                            world.setBlockAndUpdate(blockPos, id.defaultBlockState());
+                    if (this.level.getBlockState(blockPos).getBlock() == Blocks.AIR && this.level.getLightEmission(blockPos) == 0) {
+                        if (this.level.getBlockState(blockPos.above()).getBlock() != Blocks.AIR
+                                && this.level.getBlockState(blockPos.below()).getBlock() != Blocks.AIR
+                                && this.level.getBlockState(blockPos.east()).getBlock() != Blocks.AIR
+                                && this.level.getBlockState(blockPos.west()).getBlock() != Blocks.AIR
+                                && this.level.getBlockState(blockPos.north()).getBlock() != Blocks.AIR
+                                && this.level.getBlockState(blockPos.south()).getBlock() != Blocks.AIR) {
+                            this.level.setBlockAndUpdate(blockPos, (this.level.random.nextInt(50) == 0 ?
+                                    Tags.MINECRAFT_ORES : Tags.NUCLEAR_DEBRIS).getRandomElement(this.level.random).defaultBlockState());
                         }
                     }
                 }
