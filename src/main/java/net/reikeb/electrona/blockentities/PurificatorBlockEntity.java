@@ -1,7 +1,6 @@
 package net.reikeb.electrona.blockentities;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -17,45 +16,30 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluids;
 
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.reikeb.electrona.containers.PurificatorContainer;
 import net.reikeb.electrona.events.local.PurificationEvent;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.misc.vm.FluidFunction;
 import net.reikeb.electrona.recipes.Recipes;
-import net.reikeb.electrona.utils.FluidTankHandler;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static net.reikeb.electrona.init.BlockEntityInit.PURIFICATOR_BLOCK_ENTITY;
 
-public class PurificatorBlockEntity extends AbstractBlockEntity {
+public class PurificatorBlockEntity extends AbstractFluidBlockEntity {
 
     public static final BlockEntityTicker<PurificatorBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
-    private final FluidTankHandler fluidTank = new FluidTankHandler(10000, fs -> {
-        return fs.getFluid() == Fluids.WATER;
-    }) {
-        @Override
-        protected void onContentsChanged() {
-            super.onContentsChanged();
-            setChanged();
-            level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
-        }
-    };
     public int purifyingTime;
     public int currentPurifyingTime;
     private int waterRequired;
     private boolean canPurify;
 
     public PurificatorBlockEntity(BlockPos pos, BlockState state) {
-        super(PURIFICATOR_BLOCK_ENTITY.get(), pos, state, 3);
+        super(PURIFICATOR_BLOCK_ENTITY.get(), pos, state, 3, 10000);
     }
 
     @Override
@@ -171,9 +155,6 @@ public class PurificatorBlockEntity extends AbstractBlockEntity {
         this.purifyingTime = compound.getInt("PurifyingTime");
         this.currentPurifyingTime = compound.getInt("CurrentPurifyingTime");
         this.waterRequired = compound.getInt("WaterRequired");
-        if (compound.get("fluidTank") != null) {
-            fluidTank.readFromNBT((CompoundTag) compound.get("fluidTank"));
-        }
     }
 
     @Override
@@ -182,13 +163,5 @@ public class PurificatorBlockEntity extends AbstractBlockEntity {
         compound.putInt("PurifyingTime", this.purifyingTime);
         compound.putInt("CurrentPurifyingTime", this.currentPurifyingTime);
         compound.putInt("WaterRequired", this.waterRequired);
-        compound.put("fluidTank", fluidTank.serializeNBT());
-    }
-
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-        if (!this.remove && cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-            return LazyOptional.of(() -> fluidTank).cast();
-        return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(cap, LazyOptional.of(() -> this.inventory));
     }
 }

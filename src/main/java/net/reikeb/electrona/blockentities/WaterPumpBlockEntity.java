@@ -17,45 +17,30 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluids;
 
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.reikeb.electrona.blocks.WaterPump;
 import net.reikeb.electrona.containers.WaterPumpContainer;
 import net.reikeb.electrona.init.SoundsInit;
+import net.reikeb.electrona.inventory.ItemHandler;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.electrona.misc.vm.FluidFunction;
-import net.reikeb.electrona.utils.FluidTankHandler;
-import net.reikeb.electrona.inventory.ItemHandler;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static net.reikeb.electrona.init.BlockEntityInit.WATER_PUMP_BLOCK_ENTITY;
 
-public class WaterPumpBlockEntity extends AbstractBlockEntity implements AbstractEnergyBlockEntity {
+public class WaterPumpBlockEntity extends AbstractFluidBlockEntity implements AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<WaterPumpBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
-    private final FluidTankHandler fluidTank = new FluidTankHandler(10000, fs -> {
-        return fs.getFluid() == Fluids.WATER;
-    }) {
-        @Override
-        protected void onContentsChanged() {
-            super.onContentsChanged();
-            setChanged();
-            level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
-        }
-    };
     public double electronicPower;
     public int maxStorage;
     private boolean isOn;
     private int wait;
 
     public WaterPumpBlockEntity(BlockPos pos, BlockState state) {
-        super(WATER_PUMP_BLOCK_ENTITY.get(), pos, state, 2);
+        super(WATER_PUMP_BLOCK_ENTITY.get(), pos, state, 2, 10000);
     }
 
     @Override
@@ -201,9 +186,6 @@ public class WaterPumpBlockEntity extends AbstractBlockEntity implements Abstrac
         this.maxStorage = compound.getInt("MaxStorage");
         this.isOn = compound.getBoolean("isOn");
         this.wait = compound.getInt("wait");
-        if (compound.get("fluidTank") != null) {
-            fluidTank.readFromNBT((CompoundTag) compound.get("fluidTank"));
-        }
     }
 
     @Override
@@ -213,13 +195,5 @@ public class WaterPumpBlockEntity extends AbstractBlockEntity implements Abstrac
         compound.putInt("MaxStorage", this.maxStorage);
         compound.putBoolean("isOn", this.isOn);
         compound.putInt("wait", this.wait);
-        compound.put("fluidTank", fluidTank.serializeNBT());
-    }
-
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-        if (!this.remove && cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-            return LazyOptional.of(() -> fluidTank).cast();
-        return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(cap, LazyOptional.of(() -> this.inventory));
     }
 }

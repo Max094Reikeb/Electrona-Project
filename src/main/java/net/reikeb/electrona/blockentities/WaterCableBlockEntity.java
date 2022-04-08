@@ -16,7 +16,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import net.reikeb.electrona.misc.vm.CableFunction;
-import net.reikeb.electrona.utils.FluidTankHandler;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -26,7 +25,7 @@ import static net.reikeb.electrona.init.BlockEntityInit.WATER_CABLE_BLOCK_ENTITY
 public class WaterCableBlockEntity extends BlockEntity {
 
     public static final BlockEntityTicker<WaterCableBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
-    private final FluidTankHandler fluidTank = new FluidTankHandler(1000, fs -> {
+    private final AbstractFluidBlockEntity.FluidTankHandler fluidTank = new AbstractFluidBlockEntity.FluidTankHandler(1000, fs -> {
         return fs.getFluid() == Fluids.WATER;
     }) {
         @Override
