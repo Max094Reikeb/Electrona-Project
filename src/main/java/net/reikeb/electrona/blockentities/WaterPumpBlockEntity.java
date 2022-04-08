@@ -3,9 +3,6 @@ package net.reikeb.electrona.blockentities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -40,17 +37,7 @@ public class WaterPumpBlockEntity extends AbstractFluidBlockEntity implements Ab
     private int wait;
 
     public WaterPumpBlockEntity(BlockPos pos, BlockState state) {
-        super(WATER_PUMP_BLOCK_ENTITY.get(), pos, state, 2, 10000);
-    }
-
-    @Override
-    public Component getDisplayName() {
-        return new TranslatableComponent("gui.electrona.water_pump.name");
-    }
-
-    @Override
-    protected Component getDefaultName() {
-        return new TextComponent("water_pump");
+        super(WATER_PUMP_BLOCK_ENTITY.get(), pos, state, "water_pump", 2, 10000);
     }
 
     @Override

@@ -10,8 +10,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.electrona.inventory.ItemHandler;
+import net.reikeb.electrona.misc.vm.EnergyFunction;
 
 import javax.annotation.Nullable;
 import java.util.Objects;

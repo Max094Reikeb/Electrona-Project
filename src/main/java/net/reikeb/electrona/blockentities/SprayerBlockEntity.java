@@ -2,9 +2,6 @@ package net.reikeb.electrona.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -14,8 +11,8 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.containers.SprayerContainer;
-import net.reikeb.electrona.misc.vm.SprayerFunction;
 import net.reikeb.electrona.inventory.ItemHandler;
+import net.reikeb.electrona.misc.vm.SprayerFunction;
 
 import static net.reikeb.electrona.init.BlockEntityInit.SPRAYER_BLOCK_ENTITY;
 
@@ -28,17 +25,7 @@ public class SprayerBlockEntity extends AbstractBlockEntity implements AbstractE
     private int wait;
 
     public SprayerBlockEntity(BlockPos pos, BlockState state) {
-        super(SPRAYER_BLOCK_ENTITY.get(), pos, state, 4);
-    }
-
-    @Override
-    public Component getDisplayName() {
-        return new TranslatableComponent("gui.electrona.sprayer.name");
-    }
-
-    @Override
-    protected Component getDefaultName() {
-        return new TextComponent("sprayer");
+        super(SPRAYER_BLOCK_ENTITY.get(), pos, state, "sprayer", 4);
     }
 
     @Override

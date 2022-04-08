@@ -2,9 +2,6 @@ package net.reikeb.electrona.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -36,17 +33,7 @@ public class TeleporterBlockEntity extends AbstractBlockEntity implements Abstra
     private boolean isTeleporter;
 
     public TeleporterBlockEntity(BlockPos pos, BlockState state) {
-        super(TELEPORTER_BLOCK_ENTITY.get(), pos, state, 1);
-    }
-
-    @Override
-    public Component getDisplayName() {
-        return new TranslatableComponent("gui.electrona.teleporter.name");
-    }
-
-    @Override
-    protected Component getDefaultName() {
-        return new TextComponent("teleporter");
+        super(TELEPORTER_BLOCK_ENTITY.get(), pos, state, "teleporter", 1);
     }
 
     @Override

@@ -2,9 +2,6 @@ package net.reikeb.electrona.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -19,17 +16,7 @@ public class DimensionLinkerBlockEntity extends AbstractBlockEntity {
     public String dimensionID;
 
     public DimensionLinkerBlockEntity(BlockPos pos, BlockState state) {
-        super(DIMENSION_LINKER_BLOCK_ENTITY.get(), pos, state, 1);
-    }
-
-    @Override
-    public Component getDisplayName() {
-        return new TranslatableComponent("gui.electrona.dimension_linker.name");
-    }
-
-    @Override
-    protected Component getDefaultName() {
-        return new TextComponent("dimension_linker");
+        super(DIMENSION_LINKER_BLOCK_ENTITY.get(), pos, state, "dimension_linker", 1);
     }
 
     @Override

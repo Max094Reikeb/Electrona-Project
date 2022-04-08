@@ -3,9 +3,6 @@ package net.reikeb.electrona.blockentities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -15,8 +12,8 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.containers.BatteryContainer;
-import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.electrona.inventory.ItemHandler;
+import net.reikeb.electrona.misc.vm.EnergyFunction;
 
 import static net.reikeb.electrona.init.BlockEntityInit.BATTERY_BLOCK_ENTITY;
 
@@ -27,17 +24,7 @@ public class BatteryBlockEntity extends AbstractBlockEntity implements AbstractE
     public int maxStorage;
 
     public BatteryBlockEntity(BlockPos pos, BlockState state) {
-        super(BATTERY_BLOCK_ENTITY.get(), pos, state, 2);
-    }
-
-    @Override
-    public Component getDisplayName() {
-        return new TranslatableComponent("gui.electrona.battery.name");
-    }
-
-    @Override
-    protected Component getDefaultName() {
-        return new TextComponent("battery");
+        super(BATTERY_BLOCK_ENTITY.get(), pos, state, "battery", 2);
     }
 
     @Override

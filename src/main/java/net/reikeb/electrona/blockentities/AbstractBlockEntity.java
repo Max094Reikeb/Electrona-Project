@@ -5,6 +5,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
@@ -30,12 +32,24 @@ public abstract class AbstractBlockEntity extends BaseContainerBlockEntity {
 
     public final ItemHandler inventory;
     public int slots;
+    private final String defaultName;
 
-    protected AbstractBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state, int slots) {
+    protected AbstractBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state, String defaultName, int slots) {
         super(blockEntityType, pos, state);
 
         this.slots = slots;
         this.inventory = new ItemHandler(slots);
+        this.defaultName = defaultName;
+    }
+
+    @Override
+    protected Component getDefaultName() {
+        return new TextComponent(this.defaultName);
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return new TranslatableComponent("gui.electrona." + this.getDefaultName() + ".name");
     }
 
     public ItemStack getItem(int slot) {
@@ -69,11 +83,6 @@ public abstract class AbstractBlockEntity extends BaseContainerBlockEntity {
 
     public void clearContent() {
         this.inventory.clear();
-    }
-
-    @Override
-    protected Component getDefaultName() {
-        return null;
     }
 
     @Override

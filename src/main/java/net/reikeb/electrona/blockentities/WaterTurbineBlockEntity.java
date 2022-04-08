@@ -13,8 +13,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 
 import net.reikeb.electrona.blocks.WaterTurbine;
-import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.electrona.inventory.ItemHandler;
+import net.reikeb.electrona.misc.vm.EnergyFunction;
 
 import javax.annotation.Nullable;
 import java.util.Objects;

@@ -20,8 +20,8 @@ public class AbstractFluidBlockEntity extends AbstractBlockEntity {
     private final int fluidCapacity;
     private final FluidTankHandler fluidTank;
 
-    protected AbstractFluidBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state, int slots, int fluidCapacity) {
-        super(blockEntityType, pos, state, slots);
+    protected AbstractFluidBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state, String defaultName, int slots, int fluidCapacity) {
+        super(blockEntityType, pos, state, defaultName, slots);
 
         this.fluidCapacity = fluidCapacity;
         this.fluidTank = new FluidTankHandler(this.fluidCapacity, fs -> {

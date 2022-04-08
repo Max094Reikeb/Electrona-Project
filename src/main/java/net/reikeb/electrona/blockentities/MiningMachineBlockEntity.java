@@ -2,9 +2,6 @@ package net.reikeb.electrona.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -35,17 +32,7 @@ public class MiningMachineBlockEntity extends AbstractBlockEntity implements Abs
     private int wait;
 
     public MiningMachineBlockEntity(BlockPos pos, BlockState state) {
-        super(MINING_MACHINE_BLOCK_ENTITY.get(), pos, state, 3);
-    }
-
-    @Override
-    public Component getDisplayName() {
-        return new TranslatableComponent("gui.electrona.mining_machine.name");
-    }
-
-    @Override
-    protected Component getDefaultName() {
-        return new TextComponent("mining_machine");
+        super(MINING_MACHINE_BLOCK_ENTITY.get(), pos, state, "mining_machine", 3);
     }
 
     @Override

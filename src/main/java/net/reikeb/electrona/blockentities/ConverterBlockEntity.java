@@ -3,9 +3,6 @@ package net.reikeb.electrona.blockentities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -21,8 +18,8 @@ import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.reikeb.electrona.containers.ConverterContainer;
-import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.electrona.inventory.ItemHandler;
+import net.reikeb.electrona.misc.vm.EnergyFunction;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -60,17 +57,7 @@ public class ConverterBlockEntity extends AbstractBlockEntity implements Abstrac
     private int wait;
 
     public ConverterBlockEntity(BlockPos pos, BlockState state) {
-        super(CONVERTER_BLOCK_ENTITY.get(), pos, state, 3);
-    }
-
-    @Override
-    public Component getDisplayName() {
-        return new TranslatableComponent("gui.electrona.el_converter.name");
-    }
-
-    @Override
-    protected Component getDefaultName() {
-        return new TextComponent("el_converter");
+        super(CONVERTER_BLOCK_ENTITY.get(), pos, state, "el_converter", 3);
     }
 
     @Override

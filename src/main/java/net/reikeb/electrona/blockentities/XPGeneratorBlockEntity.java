@@ -2,9 +2,6 @@ package net.reikeb.electrona.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -29,17 +26,7 @@ public class XPGeneratorBlockEntity extends AbstractBlockEntity implements Abstr
     private int xpLevels;
 
     public XPGeneratorBlockEntity(BlockPos pos, BlockState state) {
-        super(XP_GENERATOR_BLOCK_ENTITY.get(), pos, state, 1);
-    }
-
-    @Override
-    public Component getDisplayName() {
-        return new TranslatableComponent("gui.electrona.xp_generator.name");
-    }
-
-    @Override
-    protected Component getDefaultName() {
-        return new TextComponent("xp_generator");
+        super(XP_GENERATOR_BLOCK_ENTITY.get(), pos, state, "xp_generator", 1);
     }
 
     @Override

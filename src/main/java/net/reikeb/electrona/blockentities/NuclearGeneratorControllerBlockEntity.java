@@ -3,9 +3,6 @@ package net.reikeb.electrona.blockentities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -25,10 +22,10 @@ import net.reikeb.electrona.containers.NuclearGeneratorControllerContainer;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.init.SoundsInit;
+import net.reikeb.electrona.inventory.ItemHandler;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.electrona.misc.vm.FluidFunction;
 import net.reikeb.electrona.misc.vm.NuclearFunction;
-import net.reikeb.electrona.inventory.ItemHandler;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -51,17 +48,7 @@ public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity i
     private int wait;
 
     public NuclearGeneratorControllerBlockEntity(BlockPos pos, BlockState state) {
-        super(NUCLEAR_GENERATOR_CONTROLLER_BLOCK_ENTITY.get(), pos, state, 2);
-    }
-
-    @Override
-    public Component getDisplayName() {
-        return new TranslatableComponent("gui.electrona.nuclear_generator_controller.name");
-    }
-
-    @Override
-    protected Component getDefaultName() {
-        return new TextComponent("nuclear_generator_controller");
+        super(NUCLEAR_GENERATOR_CONTROLLER_BLOCK_ENTITY.get(), pos, state, "nuclear_generator_controller", 2);
     }
 
     @Override

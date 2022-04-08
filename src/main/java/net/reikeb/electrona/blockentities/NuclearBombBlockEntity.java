@@ -1,9 +1,6 @@
 package net.reikeb.electrona.blockentities;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -17,17 +14,7 @@ import static net.reikeb.electrona.init.BlockEntityInit.NUCLEAR_BOMB_BLOCK_ENTIT
 public class NuclearBombBlockEntity extends AbstractBlockEntity {
 
     public NuclearBombBlockEntity(BlockPos pos, BlockState state) {
-        super(NUCLEAR_BOMB_BLOCK_ENTITY.get(), pos, state, 2);
-    }
-
-    @Override
-    public Component getDisplayName() {
-        return new TranslatableComponent("gui.electrona.nuclear_bomb.name");
-    }
-
-    @Override
-    protected Component getDefaultName() {
-        return new TextComponent("nuclear_bomb");
+        super(NUCLEAR_BOMB_BLOCK_ENTITY.get(), pos, state, "nuclear_bomb", 2);
     }
 
     @Override
