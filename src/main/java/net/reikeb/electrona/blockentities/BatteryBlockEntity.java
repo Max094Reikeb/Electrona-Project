@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.containers.BatteryContainer;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
-import net.reikeb.electrona.utils.ItemHandler;
+import net.reikeb.electrona.inventory.ItemHandler;
 
 import static net.reikeb.electrona.init.BlockEntityInit.BATTERY_BLOCK_ENTITY;
 

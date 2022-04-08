@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.containers.MiningMachineContainer;
 import net.reikeb.electrona.init.BlockInit;
-import net.reikeb.electrona.utils.ItemHandler;
+import net.reikeb.electrona.inventory.ItemHandler;
 
 import java.util.Random;
 

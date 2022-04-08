@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.misc.vm.CableFunction;
-import net.reikeb.electrona.utils.ItemHandler;
+import net.reikeb.electrona.inventory.ItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.Objects;

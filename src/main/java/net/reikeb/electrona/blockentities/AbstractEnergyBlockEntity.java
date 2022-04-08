@@ -1,6 +1,6 @@
 package net.reikeb.electrona.blockentities;
 
-import net.reikeb.electrona.utils.ItemHandler;
+import net.reikeb.electrona.inventory.ItemHandler;
 
 public interface AbstractEnergyBlockEntity {
 

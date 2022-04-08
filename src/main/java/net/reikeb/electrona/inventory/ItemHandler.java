@@ -1,4 +1,4 @@
-package net.reikeb.electrona.utils;
+package net.reikeb.electrona.inventory;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;

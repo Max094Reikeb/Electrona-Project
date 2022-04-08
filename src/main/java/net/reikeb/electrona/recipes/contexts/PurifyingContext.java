@@ -5,7 +5,7 @@ import net.minecraft.world.phys.Vec3;
 
 import net.minecraftforge.items.IItemHandlerModifiable;
 
-import net.reikeb.electrona.utils.ItemHandlerWrapper;
+import net.reikeb.electrona.inventory.ItemHandlerWrapper;
 
 import javax.annotation.Nullable;
 import java.util.Random;

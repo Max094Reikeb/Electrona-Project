@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 import net.reikeb.electrona.blockentities.SprayerBlockEntity;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.utils.ElectronaUtils;
-import net.reikeb.electrona.utils.ItemHandler;
+import net.reikeb.electrona.inventory.ItemHandler;
 
 public class SprayerFunction {
 

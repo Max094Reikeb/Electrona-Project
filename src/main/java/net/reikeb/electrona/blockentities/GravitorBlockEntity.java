@@ -24,7 +24,7 @@ import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ParticleInit;
 import net.reikeb.electrona.utils.Gravity;
-import net.reikeb.electrona.utils.ItemHandler;
+import net.reikeb.electrona.inventory.ItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;

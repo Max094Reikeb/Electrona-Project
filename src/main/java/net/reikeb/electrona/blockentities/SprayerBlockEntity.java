@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.containers.SprayerContainer;
 import net.reikeb.electrona.misc.vm.SprayerFunction;
-import net.reikeb.electrona.utils.ItemHandler;
+import net.reikeb.electrona.inventory.ItemHandler;
 
 import static net.reikeb.electrona.init.BlockEntityInit.SPRAYER_BLOCK_ENTITY;
 

@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.containers.TeleporterContainer;
 import net.reikeb.electrona.init.ItemInit;
-import net.reikeb.electrona.utils.ItemHandler;
+import net.reikeb.electrona.inventory.ItemHandler;
 
 import static net.reikeb.electrona.init.BlockEntityInit.TELEPORTER_BLOCK_ENTITY;
 

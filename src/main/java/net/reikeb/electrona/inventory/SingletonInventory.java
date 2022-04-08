@@ -1,4 +1,4 @@
-package net.reikeb.electrona.utils;
+package net.reikeb.electrona.inventory;
 
 import net.minecraft.world.item.ItemStack;
 
@@ -7,6 +7,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import javax.annotation.Nonnull;
 
 public class SingletonInventory implements IItemHandlerModifiable {
+
     private final ItemStack stack;
 
     public SingletonInventory(ItemStack stack) {

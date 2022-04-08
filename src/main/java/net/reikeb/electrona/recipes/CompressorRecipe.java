@@ -19,7 +19,7 @@ import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.recipes.contexts.CompressingContext;
-import net.reikeb.electrona.utils.SingletonInventory;
+import net.reikeb.electrona.inventory.SingletonInventory;
 
 import javax.annotation.Nullable;
 import java.util.Optional;

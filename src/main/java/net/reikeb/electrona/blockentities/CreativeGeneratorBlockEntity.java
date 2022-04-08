@@ -16,7 +16,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 
 import net.reikeb.electrona.misc.vm.EnergyFunction;
-import net.reikeb.electrona.utils.ItemHandler;
+import net.reikeb.electrona.inventory.ItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.Objects;

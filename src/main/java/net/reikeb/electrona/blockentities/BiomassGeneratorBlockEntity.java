@@ -19,7 +19,7 @@ import net.reikeb.electrona.containers.BiomassGeneratorContainer;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.misc.Tags;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
-import net.reikeb.electrona.utils.ItemHandler;
+import net.reikeb.electrona.inventory.ItemHandler;
 
 import static net.reikeb.electrona.init.BlockEntityInit.BIOMASS_GENERATOR_BLOCK_ENTITY;
 

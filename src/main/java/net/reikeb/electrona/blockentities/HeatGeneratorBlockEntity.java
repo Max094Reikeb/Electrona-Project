@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.blocks.HeatGenerator;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
-import net.reikeb.electrona.utils.ItemHandler;
+import net.reikeb.electrona.inventory.ItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.Objects;

@@ -1,4 +1,4 @@
-package net.reikeb.electrona.utils;
+package net.reikeb.electrona.inventory;
 
 import com.google.common.collect.AbstractIterator;
 
@@ -14,8 +14,8 @@ import java.util.Iterator;
 import java.util.function.Supplier;
 
 public class ItemHandlerWrapper implements Container, Iterable<ItemStack> {
-    protected final IItemHandlerModifiable inner;
 
+    protected final IItemHandlerModifiable inner;
     @Nullable
     protected final Supplier<Vec3> location;
     protected final int distance;

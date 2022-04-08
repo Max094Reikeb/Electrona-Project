@@ -22,7 +22,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.reikeb.electrona.containers.ConverterContainer;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
-import net.reikeb.electrona.utils.ItemHandler;
+import net.reikeb.electrona.inventory.ItemHandler;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
