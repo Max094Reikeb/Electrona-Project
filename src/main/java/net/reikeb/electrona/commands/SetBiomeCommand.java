@@ -26,10 +26,10 @@ public class SetBiomeCommand {
     public static void register(CommandDispatcher<CommandSourceStack> commandDispatcher) {
         commandDispatcher.register(Commands.literal("setbiome").requires((commandSource) -> commandSource.hasPermission(2))
                 .then(Commands.argument("location", Vec3Argument.vec3())
-                        .then(Commands.argument("biome", ResourceLocationArgument.id()).suggests(SuggestionProviders.AVAILABLE_BIOMES)).executes((command)
-                                -> setBiomeAtPos(command.getSource(), Vec3Argument.getVec3(command, "location"), command.getArgument("biome", ResourceLocation.class))))
-                .then(Commands.argument("biome", ResourceLocationArgument.id()).suggests(SuggestionProviders.AVAILABLE_BIOMES)).executes((command)
-                        -> setBiomeAtPos(command.getSource(), command.getSource().getPosition(), command.getArgument("biome", ResourceLocation.class))));
+                        .then(Commands.argument("biome", ResourceLocationArgument.id()).suggests(SuggestionProviders.AVAILABLE_BIOMES).executes((command)
+                                -> setBiomeAtPos(command.getSource(), Vec3Argument.getVec3(command, "location"), command.getArgument("biome", ResourceLocation.class)))))
+                .then(Commands.argument("biome", ResourceLocationArgument.id()).suggests(SuggestionProviders.AVAILABLE_BIOMES).executes((command)
+                        -> setBiomeAtPos(command.getSource(), command.getSource().getPosition(), command.getArgument("biome", ResourceLocation.class)))));
     }
 
     private static int setBiomeAtPos(CommandSourceStack source, Vec3 coordinates, ResourceLocation resourceLocation) throws CommandSyntaxException {
