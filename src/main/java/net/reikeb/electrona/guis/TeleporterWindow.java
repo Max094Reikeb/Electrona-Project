@@ -27,7 +27,7 @@ public class TeleporterWindow extends AbstractWindow<TeleporterContainer> {
         this.font.draw(matrixStack, "" + this.menu.getTeleportY() + "", 135, 28, -13408513);
         this.font.draw(matrixStack, "" + this.menu.getTeleportZ() + "", 135, 38, -13408513);
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.storage"), 5, 7, -16777216);
-        this.font.draw(matrixStack, "" + this.menu.getElectronicPower() + " ELs", 5, 18, -3407821);
+        this.font.draw(matrixStack, "" + (int) this.menu.getElectronicPower() + " ELs", 5, 18, -3407821);
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.teleporter.auto_deletion"), 6, 28, -16777216);
         this.font.draw(matrixStack, "" + this.menu.isAutoDelete() + "", 5, 38, -3407821);
     }

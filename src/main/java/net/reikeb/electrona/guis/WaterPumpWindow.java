@@ -50,7 +50,7 @@ public class WaterPumpWindow extends AbstractWindow<WaterPumpContainer> {
     protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.water_pump.name"), 51, 8, -16777216);
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.storage"), 125, 6, -16777216);
-        this.font.draw(matrixStack, "" + this.menu.getElectronicPower() + " EL", 125, 16, -3407821);
+        this.font.draw(matrixStack, "" + (int) this.menu.getElectronicPower() + " EL", 125, 16, -3407821);
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.state"), 62, 24, -16777216);
         this.font.draw(matrixStack, (this.menu.isOn() ? "ON" : "OFF"), 99, 24, -3407821);
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.input"), 132, 47, -16777216);

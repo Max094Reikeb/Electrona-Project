@@ -75,7 +75,7 @@ public class NuclearGeneratorControllerWindow extends AbstractWindow<NuclearGene
         int XposPowerT2 = leftPos + 167;
         int YposPowerT1 = topPos + 5;
         int YposPowerT2 = topPos + 45;
-        String power = ("Stored: " + this.menu.getElectronicPower() + " ELs");
+        String power = ("Stored: " + (int) this.menu.getElectronicPower() + " ELs");
         // Temperature
         int currentTemp = this.menu.getTemperature();
         int XposTempT1 = leftPos + 146;

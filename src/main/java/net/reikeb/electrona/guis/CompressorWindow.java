@@ -37,6 +37,6 @@ public class CompressorWindow extends AbstractWindow<CompressorContainer> {
     protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.compressor.name"), 50, 6, -16777216);
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.power"), 126, 6, -16777216);
-        this.font.draw(matrixStack, "" + this.menu.getElectronicPower() + " ELs", 126, 16, -3407821);
+        this.font.draw(matrixStack, "" + (int) this.menu.getElectronicPower() + " ELs", 126, 16, -3407821);
     }
 }

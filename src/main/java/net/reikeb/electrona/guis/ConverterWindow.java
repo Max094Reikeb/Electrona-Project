@@ -23,7 +23,7 @@ public class ConverterWindow extends AbstractWindow<ConverterContainer> {
         boolean toOthers = this.menu.isToOthers();
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.el_converter.name"), 66, 6, -16777216);
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.storage"), 7, 6, -16777216);
-        this.font.draw(matrixStack, "" + (toOthers ? this.menu.getFE() + " FE" : this.menu.getVP() + " VPs"), 7, 16, -3407821);
+        this.font.draw(matrixStack, "" + (toOthers ? this.menu.getFE() + " FE" : (int) this.menu.getVP() + " VPs"), 7, 16, -3407821);
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.input"), 77, 49, -16777216);
         this.font.draw(matrixStack, "" + this.menu.isToVP() + "", 140, 16, -3407821);
         this.font.draw(matrixStack, "VP", 140, 6, -16777216);
