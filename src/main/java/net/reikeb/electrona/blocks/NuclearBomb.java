@@ -97,7 +97,7 @@ public class NuclearBomb extends FallingBlock implements EntityBlock {
         if (!world.isClientSide) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof NuclearBombBlockEntity nuclearBombBlockEntity) {
-                new NuclearExplosion(world, pos, nuclearBombBlockEntity.getNuclearCharge());
+                new NuclearExplosion(world,null, pos, nuclearBombBlockEntity.getNuclearCharge());
             }
         }
     }
@@ -154,7 +154,7 @@ public class NuclearBomb extends FallingBlock implements EntityBlock {
                                 p_220287_1_.broadcastBreakEvent(handIn);
                             });
                         }
-                        new NuclearExplosion(worldIn, pos, nuclearBombBlockEntity.getNuclearCharge());
+                        new NuclearExplosion(worldIn, player, pos, nuclearBombBlockEntity.getNuclearCharge());
                         return InteractionResult.SUCCESS;
                     }
                 }

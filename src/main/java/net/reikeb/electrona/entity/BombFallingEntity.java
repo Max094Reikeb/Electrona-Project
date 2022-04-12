@@ -27,7 +27,7 @@ public class BombFallingEntity extends FallingBlockEntity {
     public boolean causeFallDamage(float height, float p_225503_2_, DamageSource damageSource) {
         if (height >= 3.0F && this.isCharged
                 && this.level.getLevelData().getGameRules().getBoolean(Gamerules.DO_NUCLEAR_BOMBS_EXPLODE)) {
-            new NuclearExplosion(this.level, this.blockPosition(), this.nuclearCharge);
+            new NuclearExplosion(this.level, this, this.blockPosition(), this.nuclearCharge);
         }
 
         return super.causeFallDamage(height, p_225503_2_, damageSource);

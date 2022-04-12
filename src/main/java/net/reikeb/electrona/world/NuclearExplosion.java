@@ -1,228 +1,309 @@
 package net.reikeb.electrona.world;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.FallingBlockEntity;
-import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.item.PrimedTnt;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.ProtectionEnchantment;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.network.PacketDistributor;
 
 import net.reikeb.electrona.events.local.NuclearExplosionEvent;
 import net.reikeb.electrona.init.BiomeInit;
-import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.SoundsInit;
-import net.reikeb.electrona.misc.DamageSources;
 import net.reikeb.electrona.misc.GameEvents;
-import net.reikeb.electrona.misc.Tags;
-import net.reikeb.electrona.network.NetworkManager;
-import net.reikeb.electrona.network.packets.BiomeUpdatePacket;
 import net.reikeb.electrona.utils.BiomeUtil;
-import net.reikeb.electrona.utils.Gravity;
 
-import java.util.ArrayList;
+import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * Credits: rodolphito
- * https://github.com/rodolphito/Rival-Rebels-Mod/blob/master/main/java/assets/rivalrebels/common/explosion/NuclearExplosion.java
+ * Credits: SNGTech
+ * https://github.com/SNGTech/Beneath-Mod/blob/master/src/main/java/com/sngtech/beneathMod/world/explosions/NuclearExplosion.java
  */
-public class NuclearExplosion {
+public class NuclearExplosion extends Explosion {
 
-    private final List<Block> affectedBlocks = new ArrayList<>();
-    private final BlockPos blockPos;
-    private final Vec3 position;
+    private final static List<BlockPos> affectedBlockPositions = Lists.newArrayList();
+    private final Mode mode;
     private final Level level;
-    private final int strength;
+    private final double x;
+    private final double y;
+    private final double z;
+    private final Entity source;
+    private final float size;
+    private final Map<Player, Vec3> playerKnockbackMap = Maps.newHashMap();
+    private final Vec3 position;
+    private DamageSource damageSource;
 
-    public NuclearExplosion(Level level, BlockPos blockPos, int strength) {
-        this(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), strength);
+    @OnlyIn(Dist.CLIENT)
+    public NuclearExplosion(Level level, @Nullable Entity entity, BlockPos pos, float size) {
+        this(level, entity, pos.getX(), pos.getY(), pos.getZ(), size, Mode.DESTROY);
     }
 
-    public NuclearExplosion(Level level, int x, int y, int z, int strength) {
-        this.position = new Vec3(x, y, z);
-        this.blockPos = new BlockPos(x, y, z);
+    @OnlyIn(Dist.CLIENT)
+    public NuclearExplosion(Level level, @Nullable Entity entity, double x, double y, double z, float size, List<BlockPos> affectedPositions) {
+        this(level, entity, x, y, z, size, Mode.DESTROY, affectedPositions);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public NuclearExplosion(Level level, @Nullable Entity entity, double x, double y, double z, float size, Mode mode, List<BlockPos> affectedPositions) {
+        this(level, entity, x, y, z, size, mode);
+        NuclearExplosion.affectedBlockPositions.addAll(affectedPositions);
+    }
+
+    public NuclearExplosion(Level level, @Nullable Entity entity, double x, double y, double z, float size, Mode mode) {
+        super(level, entity, x, y, z, size, affectedBlockPositions);
         this.level = level;
-        this.strength = strength;
-        if (level.isClientSide) return;
-        if (!MinecraftForge.EVENT_BUS.post(new NuclearExplosionEvent.Start(level, this))) {
-            createHole();
-            pushAndHurtEntities();
-            fixLag();
+        this.source = entity;
+        this.size = size;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.mode = mode;
+        this.damageSource = DamageSource.explosion(this);
+        this.position = new Vec3(this.x, this.y, this.z);
+
+        if (MinecraftForge.EVENT_BUS.post(new NuclearExplosionEvent.Start(level, this))) return;
+        explode();
+    }
+
+    public static float func_222259_a(Vec3 p_222259_0_, Entity p_222259_1_) {
+        AABB axisalignedbb = p_222259_1_.getBoundingBox();
+        double d0 = 1.0D / ((axisalignedbb.maxX - axisalignedbb.minX) * 2.0D + 1.0D);
+        double d1 = 1.0D / ((axisalignedbb.maxY - axisalignedbb.minY) * 2.0D + 1.0D);
+        double d2 = 1.0D / ((axisalignedbb.maxZ - axisalignedbb.minZ) * 2.0D + 1.0D);
+        double d3 = (1.0D - Math.floor(1.0D / d0) * d0) / 2.0D;
+        double d4 = (1.0D - Math.floor(1.0D / d2) * d2) / 2.0D;
+        if (!(d0 < 0.0D) && !(d1 < 0.0D) && !(d2 < 0.0D)) {
+            int i = 0;
+            int j = 0;
+
+            for (float f = 0.0F; f <= 1.0F; f = (float) ((double) f + d0)) {
+                for (float f1 = 0.0F; f1 <= 1.0F; f1 = (float) ((double) f1 + d1)) {
+                    for (float f2 = 0.0F; f2 <= 1.0F; f2 = (float) ((double) f2 + d2)) {
+                        double d5 = Math.fma(f, axisalignedbb.minX, axisalignedbb.maxX);
+                        double d6 = Math.fma(f1, axisalignedbb.minY, axisalignedbb.maxY);
+                        double d7 = Math.fma(f2, axisalignedbb.minZ, axisalignedbb.maxZ);
+                        Vec3 vec3d = new Vec3(d5 + d3, d6, d7 + d4);
+                        if (p_222259_1_.level.clip(new ClipContext(vec3d, p_222259_0_, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, p_222259_1_)).getType() == BlockHitResult.Type.MISS) {
+                            ++i;
+                        }
+                        ++j;
+                    }
+                }
+            }
+            return (float) i / (float) j;
+        } else {
+            return 0.0F;
         }
     }
 
-    public BlockPos getBlockPos() {
-        return this.getBlockPos();
+    /**
+     * Does the first part of the explosion (destroy blocks)
+     */
+    public void explode() {
+        this.level.gameEvent(GameEvents.NUCLEAR_EXPLOSION, new BlockPos(this.position));
+        Set<BlockPos> set = Sets.newHashSet();
+
+        for (int j = 0; j < 50; ++j) {
+            for (int k = 0; k < 35; ++k) {
+                for (int l = 0; l < 45; ++l) {
+                    if (j == 0 || j == 15 || k == 0 || k == 15 || l == 0 || l == 15) {
+                        double d0 = (float) j / 15.0F * 2.0F - 1.0F;
+                        double d1 = (float) k / 15.0F * 2.0F - 1.0F;
+                        double d2 = (float) l / 15.0F * 2.0F - 1.0F;
+                        double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+                        d0 = d0 / d3;
+                        d1 = d1 / d3;
+                        d2 = d2 / d3;
+                        float f = this.size * (0.7F + this.level.random.nextFloat() * 0.6F);
+                        double d4 = this.x;
+                        double d6 = this.y;
+                        double d8 = this.z;
+
+                        for (float f1 = 0.3F; f > 0.0F; f -= 0.22500001F) {
+                            BlockPos blockpos = new BlockPos(d4, d6, d8);
+                            BlockState blockstate = this.level.getBlockState(blockpos);
+                            FluidState ifluidstate = this.level.getFluidState(blockpos);
+
+                            if (!blockstate.isAir() || !ifluidstate.isEmpty()) {
+                                float f2 = Math.max(blockstate.getExplosionResistance(this.level, blockpos, this), ifluidstate.getExplosionResistance(this.level, blockpos, this));
+                                if (this.source != null) {
+                                    f2 = this.source.getBlockExplosionResistance(this, this.level, blockpos, blockstate, ifluidstate, f2);
+                                }
+                                f -= (f2 + 0.3F) * 0.3F;
+                            }
+
+                            if (f > 0.0F && (this.source == null || this.source.shouldBlockExplode(this, this.level, blockpos, blockstate, f))) {
+                                set.add(blockpos);
+                                BiomeUtil.setBiomeKeyAtPos(this.level, blockpos, BiomeInit.NUCLEAR);
+                            }
+                            d4 += d0 * (double) 0.3F;
+                            d6 += d1 * (double) 0.3F;
+                            d8 += d2 * (double) 0.3F;
+                        }
+                    }
+                }
+            }
+        }
+
+        affectedBlockPositions.addAll(set);
+        float f3 = this.size * 2.0F;
+        double k1 = Math.floor(this.x - (double) f3 - 1.0D);
+        double l1 = Math.floor(this.x + (double) f3 + 1.0D);
+        double i2 = Math.floor(this.y - (double) f3 - 1.0D);
+        double i1 = Math.floor(this.y + (double) f3 + 1.0D);
+        double j2 = Math.floor(this.z - (double) f3 - 1.0D);
+        double j1 = Math.floor(this.z + (double) f3 + 1.0D);
+        List<Entity> list = this.level.getEntities(this.source, new AABB(k1, i2, j2, l1, i1, j1));
+
+        MinecraftForge.EVENT_BUS.post(new NuclearExplosionEvent.Detonate(this.level, this, list, affectedBlockPositions));
+
+        for (Entity entity : list) {
+            if (!entity.ignoreExplosion()) {
+                double d12 = Math.sqrt(entity.distanceToSqr(this.position)) / f3;
+                if (d12 <= 1.0D) {
+                    double d5 = entity.getX() - this.x;
+                    double d7 = entity.getY() + (double) entity.getEyeHeight() - this.y;
+                    double d9 = entity.getZ() - this.z;
+                    double d13 = Math.sqrt(d5 * d5 + d7 * d7 + d9 * d9);
+                    if (d13 != 0.0D) {
+                        d5 = d5 / d13;
+                        d7 = d7 / d13;
+                        d9 = d9 / d13;
+                        double d14 = func_222259_a(this.position, entity);
+                        double d10 = (1.0D - d12) * d14;
+                        entity.hurt(this.getDamageSource(), (float) ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * (double) f3 + 1.0D)));
+                        double d11 = d10;
+                        if (entity instanceof LivingEntity) {
+                            d11 = ProtectionEnchantment.getExplosionKnockbackAfterDampener((LivingEntity) entity, d10);
+                        }
+
+                        entity.setDeltaMovement(entity.getDeltaMovement().add(d5 * d11, d7 * d11, d9 * d11));
+                        if (entity instanceof Player playerentity) {
+                            if (!playerentity.isSpectator() && (!playerentity.isCreative() || !playerentity.abilities.flying)) {
+                                this.playerKnockbackMap.put(playerentity, new Vec3(d5 * d10, d7 * d10, d9 * d10));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        cleanUp(false);
+    }
+
+    /**
+     * Does the second part of the explosion (sound, particles, drop spawn)
+     */
+    public void cleanUp(boolean spawnParticles) {
+        this.level.playSound(null, new BlockPos(this.position), SoundsInit.NUCLEAR_EXPLOSION.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
+        if (this.mode == Mode.NONE) return;
+
+        for (BlockPos blockpos : affectedBlockPositions) {
+            BlockState blockstate = this.level.getBlockState(blockpos);
+            Block block = blockstate.getBlock();
+            if (spawnParticles) {
+                double d0 = (float) blockpos.getX() + this.level.random.nextFloat();
+                double d1 = (float) blockpos.getY() + this.level.random.nextFloat();
+                double d2 = (float) blockpos.getZ() + this.level.random.nextFloat();
+                double d3 = d0 - this.x;
+                double d4 = d1 - this.y;
+                double d5 = d2 - this.z;
+                double d6 = Math.sqrt(d3 * d3 + d4 * d4 + d5 * d5);
+                d3 = d3 / d6;
+                d4 = d4 / d6;
+                d5 = d5 / d6;
+                double d7 = 0.5D / (d6 / (double) this.size + 0.1D);
+                d7 = d7 * (double) (this.level.random.nextFloat() * this.level.random.nextFloat() + 0.3F);
+                d3 = d3 * d7;
+                d4 = d4 * d7;
+                d5 = d5 * d7;
+                this.level.addParticle(ParticleTypes.POOF, (d0 + this.x) / 2.0D, (d1 + this.y) / 2.0D, (d2 + this.z) / 2.0D, d3, d4, d5);
+                this.level.addParticle(ParticleTypes.SMOKE, d0, d1, d2, d3, d4, d5);
+            }
+
+            if (!blockstate.isAir()) {
+                if (this.level instanceof ServerLevel && blockstate.canDropFromExplosion(this.level, blockpos, this)) {
+                    BlockEntity blockEntity = blockstate.hasBlockEntity() ? this.level.getBlockEntity(blockpos) : null;
+                    LootContext.Builder lootcontext$builder = (new LootContext.Builder((ServerLevel) this.level)).withRandom(this.level.random).withParameter(LootContextParams.ORIGIN, this.position).withParameter(LootContextParams.TOOL, ItemStack.EMPTY).withOptionalParameter(LootContextParams.BLOCK_ENTITY, blockEntity);
+                    if (this.mode == Mode.DESTROY) {
+                        lootcontext$builder.withParameter(LootContextParams.EXPLOSION_RADIUS, this.size);
+                    }
+                }
+                this.level.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 3);
+                block.canDropFromExplosion(block.defaultBlockState(), this.level, blockpos, this);
+            }
+        }
+    }
+
+    public DamageSource getDamageSource() {
+        return this.damageSource;
+    }
+
+    public void setDamageSource(DamageSource damageSourceIn) {
+        this.damageSource = damageSourceIn;
+    }
+
+    public Map<Player, Vec3> getPlayerKnockbackMap() {
+        return this.playerKnockbackMap;
+    }
+
+    /**
+     * Returns either the entity that placed the explosive block, the entity that caused the explosion or null.
+     */
+    @Nullable
+    public LivingEntity getExplosivePlacedBy() {
+        if (this.source == null) {
+            return null;
+        } else if (this.source instanceof PrimedTnt) {
+            return ((PrimedTnt) this.source).getOwner();
+        } else {
+            return this.source instanceof LivingEntity ? (LivingEntity) this.source : null;
+        }
+    }
+
+    public void clearAffectedBlockPositions() {
+        affectedBlockPositions.clear();
+    }
+
+    public List<BlockPos> getAffectedBlockPositions() {
+        return affectedBlockPositions;
     }
 
     public Vec3 getPosition() {
         return this.position;
     }
 
-    public Level getLevel() {
-        return this.level;
-    }
-
-    public int getStrength() {
-        return this.strength;
-    }
-
-    private void createHole() {
-        Random rand = new Random();
-        int halfradius = this.strength / 2;
-        int onepointfiveradius = halfradius * 3;
-        int onepointfiveradiussqrd = onepointfiveradius * onepointfiveradius;
-        int tworadius = this.strength * 2;
-
-        for (int X = -onepointfiveradius; X <= onepointfiveradius; X++) {
-            int xx = this.blockPos.getX() + X;
-            int XX = X * X;
-            for (int Z = -onepointfiveradius; Z <= onepointfiveradius; Z++) {
-                int ZZ = Z * Z + XX;
-                int zz = this.blockPos.getZ() + Z;
-                for (int Y = -onepointfiveradius; Y <= onepointfiveradius; Y++) {
-                    int YY = Y * Y + ZZ;
-                    int yy = this.blockPos.getY() + Y;
-                    if (YY < onepointfiveradiussqrd) {
-                        BlockPos blockPos = new BlockPos(xx, yy, zz);
-                        Block block = this.level.getBlockState(blockPos).getBlock();
-                        if ((!Gravity.isAir(this.level, blockPos)) && (block != Blocks.BEDROCK)) {
-                            int dist = (int) Math.sqrt(YY);
-                            boolean flag = false;
-                            if (dist < this.strength) {
-                                flag = true;
-                                affectedBlocks.add(block);
-                                int varrand = 1 + dist - halfradius;
-                                if (dist < halfradius) {
-                                    this.level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
-                                    block = Blocks.AIR;
-                                } else if (varrand > 0) {
-                                    int randomness = halfradius - varrand / 2;
-                                    if (block == Blocks.WATER || block == Blocks.LAVA) {
-                                        this.level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
-                                        block = Blocks.AIR;
-                                    } else if (block == Blocks.STONE && rand.nextInt(randomness) < randomness / 2) {
-                                        this.level.setBlockAndUpdate(blockPos, Blocks.COBBLESTONE.defaultBlockState());
-                                        block = Blocks.COBBLESTONE;
-                                    } else if ((block == Blocks.GRASS_BLOCK) || (block == Blocks.DIRT)) {
-                                        this.level.setBlockAndUpdate(blockPos, BlockInit.RADIOACTIVE_DIRT.get().defaultBlockState());
-                                    } else if ((rand.nextInt(varrand) == 0 || rand.nextInt(varrand / 2 + 1) == 0)) {
-                                        this.level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
-                                        block = Blocks.AIR;
-                                    }
-                                }
-                            }
-                            if (dist < onepointfiveradius) {
-                                flag = true;
-                                affectedBlocks.add(block);
-                                if ((Y >= tworadius) || (Y >= this.strength) || (Tags.GLASS.contains(block)) || (Tags.PANES.contains(block))
-                                        || (Tags.DOORS.contains(block)) || (block == Blocks.TORCH) || (block == Blocks.WATER)) {
-                                    this.level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
-                                } else if ((Tags.PLANKS.contains(block)) || (Tags.STAIRS.contains(block)) || (Tags.SLABS.contains(block))) {
-                                    this.level.setBlockAndUpdate(blockPos, Blocks.FIRE.defaultBlockState());
-                                } else if (Tags.LOG_THAT_BURN.contains(block)) {
-                                    if (this.level.random.nextFloat() > 0.5) {
-                                        this.level.setBlockAndUpdate(blockPos, Blocks.FIRE.defaultBlockState());
-                                    } else {
-                                        this.level.setBlockAndUpdate(blockPos, BlockInit.CHARDWOOD_LOG.get().defaultBlockState());
-                                    }
-                                } else if ((block == Blocks.GRASS_BLOCK) || (block == Blocks.DIRT) || (block == Blocks.DIRT_PATH)) {
-                                    this.level.setBlockAndUpdate(blockPos, BlockInit.RADIOACTIVE_DIRT.get().defaultBlockState());
-                                }
-                            }
-                            if (flag) {
-                                Gravity.applyGravity(this.level, blockPos);
-                                BiomeUtil.setBiomeKeyAtPos(this.level, blockPos, BiomeInit.NUCLEAR);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        this.level.playSound(null, this.blockPos, SoundsInit.NUCLEAR_EXPLOSION.get(),
-                SoundSource.WEATHER, 0.6F, 1.0F);
-        this.level.gameEvent(GameEvents.NUCLEAR_EXPLOSION, this.blockPos);
-        NetworkManager.INSTANCE.send(PacketDistributor.ALL.noArg(), new BiomeUpdatePacket(this.blockPos, BiomeInit.NUCLEAR.location(), this.strength));
-    }
-
-    private void pushAndHurtEntities() {
-        int diameter = this.strength * 2;
-        int onepointfiveradius = (this.strength / 2) * 3;
-        double x = this.blockPos.getX();
-        double y = this.blockPos.getY();
-        double z = this.blockPos.getZ();
-        int var3 = Mth.floor(x - (double) onepointfiveradius - 1.0D);
-        int var4 = Mth.floor(x + (double) onepointfiveradius + 1.0D);
-        int var5 = Mth.floor(y - (double) onepointfiveradius - 1.0D);
-        int var28 = Mth.floor(y + (double) onepointfiveradius + 1.0D);
-        int var7 = Mth.floor(z - (double) onepointfiveradius - 1.0D);
-        int var29 = Mth.floor(z + (double) onepointfiveradius + 1.0D);
-        List<Entity> var9 = this.level.getEntities(null, AABB.of(new BoundingBox(var3, var5, var7, var4, var28, var29)));
-        MinecraftForge.EVENT_BUS.post(new NuclearExplosionEvent.Detonate(this.level, this, var9, affectedBlocks));
-
-        for (Entity entity : var9) {
-            double var13 = entity.distanceToSqr(x, y, z) / onepointfiveradius;
-            if (var13 <= 1.0D) {
-                double var15 = entity.getX() - x;
-                double var17 = entity.getY() + entity.getEyeHeight() - y;
-                double var19 = entity.getZ() - z;
-                double var33 = Mth.sqrt((float) (var15 * var15 + var17 * var17 + var19 * var19));
-
-                if (var33 != 0.0D) {
-                    var15 /= var33;
-                    var17 /= var33;
-                    var19 /= var33;
-                    double var32 = Explosion.getSeenPercent(this.position, entity);
-                    double var34 = (1.0D - var13) * var32;
-                    if (entity instanceof ItemEntity) entity.discard();
-                    if (!(entity instanceof FallingBlockEntity)) {
-                        entity.hurt(DamageSources.NUCLEAR_BLAST, (float) (int) ((var34 * var34 + var34) / 2.0D * 8.0D * (double) diameter + 1.0D) * 8);
-                    }
-                    double var35 = var34;
-                    if (entity instanceof LivingEntity) {
-                        var35 = ProtectionEnchantment.getExplosionKnockbackAfterDampener((LivingEntity) entity, var34);
-                    }
-
-                    entity.setDeltaMovement(entity.getDeltaMovement().add(var15 * var35 * 8, var17 * var35 * 8, var19 * var35 * 8));
-                }
-            }
-        }
-    }
-
-    private void fixLag() {
-        for (int X = -this.strength; X <= this.strength; X++) {
-            int xx = this.blockPos.getX() + X;
-            for (int Y = -this.strength; Y <= this.strength; Y++) {
-                int yy = this.blockPos.getY() + Y;
-                for (int Z = -this.strength; Z <= this.strength; Z++) {
-                    int zz = this.blockPos.getZ() + Z;
-                    BlockPos blockPos = new BlockPos(xx, yy, zz);
-                    if (this.level.getBlockState(blockPos).getBlock() == Blocks.AIR && this.level.getLightEmission(blockPos) == 0) {
-                        if (this.level.getBlockState(blockPos.above()).getBlock() != Blocks.AIR
-                                && this.level.getBlockState(blockPos.below()).getBlock() != Blocks.AIR
-                                && this.level.getBlockState(blockPos.east()).getBlock() != Blocks.AIR
-                                && this.level.getBlockState(blockPos.west()).getBlock() != Blocks.AIR
-                                && this.level.getBlockState(blockPos.north()).getBlock() != Blocks.AIR
-                                && this.level.getBlockState(blockPos.south()).getBlock() != Blocks.AIR) {
-                            this.level.setBlockAndUpdate(blockPos, (this.level.random.nextInt(50) == 0 ?
-                                    Tags.MINECRAFT_ORES : Tags.NUCLEAR_DEBRIS).getRandomElement(this.level.random).defaultBlockState());
-                        }
-                    }
-                }
-            }
-        }
+    public static enum Mode {
+        NONE,
+        BREAK,
+        DESTROY;
     }
 }

@@ -3,6 +3,7 @@ package net.reikeb.electrona.network.packets;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
@@ -54,7 +55,7 @@ public class BiomeSingleUpdatePacket {
         public Object call() throws Exception {
             ClientLevel world = Minecraft.getInstance().level;
             if (world == null) return null;
-            BiomeUtil.setBiomeAtPos(world, pos, biome);
+            BiomeUtil.setBiomeAtPos(world, pos, world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getOptional(biome).orElseThrow());
             return null;
         }
     }
