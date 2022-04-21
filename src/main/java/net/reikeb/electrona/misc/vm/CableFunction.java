@@ -46,16 +46,16 @@ public class CableFunction {
 
                 if (machineTag.contains(offsetBlock)) {
                     if (machinePower < (machineMax - cablePower)) {
-                        energyBlockEntity.setElectronicPower(machinePower + transferPerTick);
-                        cableBlockEntity.setElectronicPower(cablePower - transferPerTick);
+                        EnergyFunction.fillEnergy(energyBlockEntity, transferPerTick);
+                        EnergyFunction.drainEnergy(cableBlockEntity, transferPerTick);
                     } else {
-                        energyBlockEntity.setElectronicPower(machineMax);
+                        EnergyFunction.setEnergy(energyBlockEntity, machineMax);
                     }
                 } else if (cableTag.contains(offsetBlock)) {
                     if ((!machineLogic) && ((transferPerTick + machinePower) < machineMax)) {
-                        energyBlockEntity.setElectronicPower(machinePower + transferPerTick);
-                        cableBlockEntity.setElectronicPower(cablePower -= transferPerTick);
-                        cableBlockEntity.setLogic(!(cablePower > 0));
+                        EnergyFunction.fillEnergy(energyBlockEntity, transferPerTick);
+                        EnergyFunction.drainEnergy(cableBlockEntity, transferPerTick);
+                        cableBlockEntity.setLogic(!(cableBlockEntity.getElectronicPower() > 0));
                         energyBlockEntity.setLogic(false);
                     }
                 }

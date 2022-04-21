@@ -56,7 +56,7 @@ public class CreativeGeneratorBlockEntity extends BlockEntity implements Abstrac
 
     public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
         this.setMaxStorage(999999999);
-        this.setElectronicPower(999999999);
+        EnergyFunction.setEnergy(this, 999999999);
 
         if (world == null) return;
 

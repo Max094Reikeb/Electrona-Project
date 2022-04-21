@@ -4,6 +4,8 @@ import net.minecraft.world.entity.ai.village.poi.PoiType;
 
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
+import net.reikeb.electrona.Electrona;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -16,7 +18,7 @@ public class POIFixup {
         try {
             blockStatesInjector.invoke(null, Villagers.ENGINEER_POI.get());
         } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            Electrona.LOGGER.catching(e);
         }
     }
 }

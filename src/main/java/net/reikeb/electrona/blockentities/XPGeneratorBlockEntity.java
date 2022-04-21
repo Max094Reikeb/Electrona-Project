@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.blocks.XPGenerator;
 import net.reikeb.electrona.containers.XPGeneratorContainer;
 import net.reikeb.electrona.inventory.ItemHandler;
+import net.reikeb.electrona.misc.vm.EnergyFunction;
 
 import static net.reikeb.electrona.init.BlockEntityInit.XP_GENERATOR_BLOCK_ENTITY;
 
@@ -41,7 +42,7 @@ public class XPGeneratorBlockEntity extends AbstractBlockEntity implements Abstr
         // Handle slot
         if ((this.electronicPower >= 0.8) && (this.inventory.getStackInSlot(0).getItem() == Items.EMERALD)) {
             wait += 1;
-            this.setElectronicPower(this.electronicPower - 0.8);
+            EnergyFunction.drainEnergy(this, 0.8);
             if (wait >= 4800) {
                 this.inventory.decrStackSize(0, 1);
                 this.setXpLevels(this.xpLevels + 1);

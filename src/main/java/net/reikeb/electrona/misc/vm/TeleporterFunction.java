@@ -94,7 +94,7 @@ public class TeleporterFunction {
                             teleport(_newWorld, pos, teleportPos, entity);
                             MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(world, _newWorld, pos, teleportPos, entity));
                             if (!world.isClientSide()) {
-                                teleporterBlockEntity.setElectronicPower((int) (electronicPower - 1000));
+                                EnergyFunction.drainEnergy(teleporterBlockEntity, 1000);
                                 if (autoDeletion) {
                                     teleporterBlockEntity.setTeleportX(0);
                                     teleporterBlockEntity.setTeleportY(0);
@@ -115,7 +115,7 @@ public class TeleporterFunction {
                     teleport(world, pos, teleportPos, entity);
                     MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(world, world, pos, teleportPos, entity));
                     if (!world.isClientSide()) {
-                        teleporterBlockEntity.setElectronicPower((int) (electronicPower - 1000));
+                        EnergyFunction.drainEnergy(teleporterBlockEntity, 1000);
                         if (autoDeletion) {
                             teleporterBlockEntity.setTeleportX(0);
                             teleporterBlockEntity.setTeleportY(0);

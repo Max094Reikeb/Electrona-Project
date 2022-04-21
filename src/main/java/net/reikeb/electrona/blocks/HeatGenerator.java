@@ -31,6 +31,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import net.reikeb.electrona.blockentities.HeatGeneratorBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
+import net.reikeb.electrona.misc.vm.EnergyFunction;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -93,7 +94,7 @@ public class HeatGenerator extends Block implements EntityBlock {
                 double electronicPower = tileHeatGenerator.getElectronicPower();
                 if ((serverPlayer.getMainHandItem().getItem() == Items.LAVA_BUCKET) && (electronicPower <= 800)) {
                     if (!world.isClientSide()) {
-                        tileHeatGenerator.setElectronicPower(electronicPower + 200);
+                        EnergyFunction.fillEnergy(tileHeatGenerator, 200);
                     }
                     if (!serverPlayer.isCreative()) {
                         serverPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
@@ -101,7 +102,7 @@ public class HeatGenerator extends Block implements EntityBlock {
                     }
                 } else if ((serverPlayer.getMainHandItem().getItem() == Items.LAVA_BUCKET) && (electronicPower > 800)) {
                     if (!world.isClientSide()) {
-                        tileHeatGenerator.setElectronicPower(electronicPower + (1000 - electronicPower));
+                        EnergyFunction.setEnergy(tileHeatGenerator, electronicPower + (1000 - electronicPower));
                     }
                     if (!serverPlayer.isCreative()) {
                         serverPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));

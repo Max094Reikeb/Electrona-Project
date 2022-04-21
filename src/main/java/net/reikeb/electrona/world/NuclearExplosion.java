@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -94,8 +95,8 @@ public class NuclearExplosion extends Explosion {
         explode();
     }
 
-    public static float func_222259_a(Vec3 p_222259_0_, Entity p_222259_1_) {
-        AABB axisalignedbb = p_222259_1_.getBoundingBox();
+    public static float func_222259_a(Vec3 vec3, Entity entity) {
+        AABB axisalignedbb = entity.getBoundingBox();
         double d0 = 1.0D / ((axisalignedbb.maxX - axisalignedbb.minX) * 2.0D + 1.0D);
         double d1 = 1.0D / ((axisalignedbb.maxY - axisalignedbb.minY) * 2.0D + 1.0D);
         double d2 = 1.0D / ((axisalignedbb.maxZ - axisalignedbb.minZ) * 2.0D + 1.0D);
@@ -108,11 +109,11 @@ public class NuclearExplosion extends Explosion {
             for (float f = 0.0F; f <= 1.0F; f = (float) ((double) f + d0)) {
                 for (float f1 = 0.0F; f1 <= 1.0F; f1 = (float) ((double) f1 + d1)) {
                     for (float f2 = 0.0F; f2 <= 1.0F; f2 = (float) ((double) f2 + d2)) {
-                        double d5 = Math.fma(f, axisalignedbb.minX, axisalignedbb.maxX);
-                        double d6 = Math.fma(f1, axisalignedbb.minY, axisalignedbb.maxY);
-                        double d7 = Math.fma(f2, axisalignedbb.minZ, axisalignedbb.maxZ);
+                        double d5 = Mth.lerp(f, axisalignedbb.minX, axisalignedbb.maxX);
+                        double d6 = Mth.lerp(f1, axisalignedbb.minY, axisalignedbb.maxY);
+                        double d7 = Mth.lerp(f2, axisalignedbb.minZ, axisalignedbb.maxZ);
                         Vec3 vec3d = new Vec3(d5 + d3, d6, d7 + d4);
-                        if (p_222259_1_.level.clip(new ClipContext(vec3d, p_222259_0_, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, p_222259_1_)).getType() == BlockHitResult.Type.MISS) {
+                        if (entity.level.clip(new ClipContext(vec3d, vec3, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, entity)).getType() == BlockHitResult.Type.MISS) {
                             ++i;
                         }
                         ++j;

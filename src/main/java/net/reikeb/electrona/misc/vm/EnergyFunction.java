@@ -26,7 +26,7 @@ public class EnergyFunction {
      */
     public static <T extends AbstractEnergyBlockEntity> void generatorTransferEnergy(Level world, BlockPos pos, Direction[] directions, T generatorBlockEntity, int transferPerSecond, Boolean isGenerator) {
         double transferPerTick = transferPerSecond * 0.05;
-        double generatorPower = generatorBlockEntity.getElectronicPower();
+        double generatorPower = getEnergy(generatorBlockEntity);
 
         Tag<Block> machineTag = isGenerator ? Tags.MACHINES : Tags.BLUE_MACHINES;
         Tag<Block> cableTag = isGenerator ? Tags.CABLE : Tags.BLUE_CABLE;
@@ -39,13 +39,13 @@ public class EnergyFunction {
             if (!(blockEntity instanceof AbstractEnergyBlockEntity energyBlockEntity)) continue;
             if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
 
-            double machinePower = energyBlockEntity.getElectronicPower();
-            int machineMax = energyBlockEntity.getMaxStorage();
+            double machinePower = getEnergy(energyBlockEntity);
+            int machineMax = getMaxEnergy(energyBlockEntity);
             double headroom = machineMax - machinePower;
             double actualTransfer = Math.min(Math.min(transferPerTick, generatorPower), headroom);
 
-            generatorBlockEntity.setElectronicPower(generatorPower -= actualTransfer);
-            energyBlockEntity.setElectronicPower(machinePower + actualTransfer);
+            drainEnergy(generatorBlockEntity, actualTransfer);
+            fillEnergy(energyBlockEntity, actualTransfer);
         }
     }
 
@@ -61,7 +61,7 @@ public class EnergyFunction {
     public static void transferEnergyWithItemSlot(AbstractEnergyBlockEntity generatorBlockEntity, Boolean fromGenerator, int slot, double transferPerSecond) {
         double transferPerTick = transferPerSecond * 0.05;
         ItemStack stackInSlot = generatorBlockEntity.getItemInventory().getStackInSlot(slot);
-        double electronicPower = generatorBlockEntity.getElectronicPower();
+        double electronicPower = getEnergy(generatorBlockEntity);
 
         if (fromGenerator && (electronicPower <= 0)) return; // we have no more power
         if (!Tags.POWERED_ITEMS.contains(stackInSlot.getItem())) return; // the itemstack is not the one required
@@ -69,7 +69,60 @@ public class EnergyFunction {
         double itemPower = stackInSlot.getOrCreateTag().getDouble("ElectronicPower");
         double actualTransfer = Math.min(transferPerTick, (fromGenerator ? electronicPower : itemPower));
 
-        generatorBlockEntity.setElectronicPower(fromGenerator ? (electronicPower - actualTransfer) : (electronicPower + actualTransfer));
+        if (fromGenerator) {
+            drainEnergy(generatorBlockEntity, actualTransfer);
+        } else {
+            fillEnergy(generatorBlockEntity, actualTransfer);
+        }
         stackInSlot.getOrCreateTag().putDouble("ElectronicPower", (fromGenerator ? (itemPower + actualTransfer) : (itemPower - actualTransfer)));
+    }
+
+    /**
+     * Small method to drain energy from a BlockEntity
+     *
+     * @param be     The BlockEntity we drain energy from
+     * @param amount The amount of energy drained
+     */
+    public static void drainEnergy(AbstractEnergyBlockEntity be, double amount) {
+        be.setElectronicPower(be.getElectronicPower() - amount);
+    }
+
+    /**
+     * Small method to fill energy into a BlockEntity
+     *
+     * @param be     The BlockEntity we give energy to
+     * @param amount The amount of energy given
+     */
+    public static void fillEnergy(AbstractEnergyBlockEntity be, double amount) {
+        be.setElectronicPower(be.getElectronicPower() + amount);
+    }
+
+    /**
+     * Small method to get the energy of a block in a BlockEntity
+     *
+     * @param be The BlockEntity to check
+     * @return The amount of energy
+     */
+    public static double getEnergy(AbstractEnergyBlockEntity be) {
+        return be.getElectronicPower();
+    }
+
+    /**
+     * Small method to set the energy of a BlockEntity
+     * @param be The BlockEntity we set energy to
+     * @param amount The amount of energy we set
+     */
+    public static void setEnergy(AbstractEnergyBlockEntity be, double amount) {
+        be.setElectronicPower(amount);
+    }
+
+    /**
+     * Small method to get the capacity of a BlockEntity
+     *
+     * @param be The BlockEntity to check
+     * @return The capacity
+     */
+    public static int getMaxEnergy(AbstractEnergyBlockEntity be) {
+        return be.getMaxStorage();
     }
 }

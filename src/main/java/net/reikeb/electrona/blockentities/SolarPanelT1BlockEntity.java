@@ -37,18 +37,18 @@ public class SolarPanelT1BlockEntity extends BlockEntity implements AbstractEner
         if (world.canSeeSky(blockPos.above()) && world.isDay()) {
             if (this.electronicPower < 996) {
                 if ((world.getLevelData().isRaining() || world.getLevelData().isThundering())) {
-                    this.setElectronicPower(this.electronicPower += 0.1);
+                    EnergyFunction.fillEnergy(this, 0.1);
                 } else {
-                    this.setElectronicPower(this.electronicPower += 0.2);
+                    EnergyFunction.fillEnergy(this, 0.2);
                 }
             } else if (this.electronicPower >= 996 && this.electronicPower <= 999.95) {
-                this.setElectronicPower(this.electronicPower += 0.05);
+                EnergyFunction.fillEnergy(this, 0.05);
             }
         } else {
             if (this.electronicPower > 0.2) {
-                this.setElectronicPower(this.electronicPower -= 0.2);
+                EnergyFunction.drainEnergy(this, 0.2);
             } else if (this.electronicPower <= 0.2 && this.electronicPower >= 0.05) {
-                this.setElectronicPower(this.electronicPower -= 0.05);
+                EnergyFunction.drainEnergy(this, 0.05);
             }
         }
 

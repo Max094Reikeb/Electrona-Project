@@ -37,7 +37,7 @@ public class SprayerFunction {
             if (world == null) return;
             for (LivingEntity entityiterator : ElectronaUtils.getLivingEntitiesInRadius(world, sprayerBlockEntity.getBlockPos(), sprayerBlockEntity.getRadius())) {
                 if (inv.getStackInSlot(0).getItem().isEdible()) {
-                    sprayerBlockEntity.setElectronicPower(electronicPower - 200);
+                    EnergyFunction.drainEnergy(sprayerBlockEntity, 200);
                     FoodProperties usedFood = inv.getStackInSlot(0).getItem().getFoodProperties();
                     if (usedFood == null) return;
                     for (Pair<MobEffectInstance, Float> pairiterator : usedFood.getEffects()) {
@@ -47,7 +47,7 @@ public class SprayerFunction {
                     }
                     inv.decrStackSize(0, 1);
                 } else if (inv.getStackInSlot(0).getItem() instanceof PotionItem) {
-                    sprayerBlockEntity.setElectronicPower(electronicPower - 200);
+                    EnergyFunction.drainEnergy(sprayerBlockEntity, 200);
                     for (MobEffectInstance effectiterator : PotionUtils.getMobEffects(inv.getStackInSlot(0))) {
                         entityiterator.addEffect(new MobEffectInstance(effectiterator));
                     }

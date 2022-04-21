@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.containers.MiningMachineContainer;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.inventory.ItemHandler;
+import net.reikeb.electrona.misc.vm.EnergyFunction;
 
 import java.util.Random;
 
@@ -79,7 +80,7 @@ public class MiningMachineBlockEntity extends AbstractBlockEntity implements Abs
                             this.inventory.getStackInSlot(0).shrink(1);
                             this.inventory.getStackInSlot(0).setDamageValue(0);
                         }
-                        this.setElectronicPower(this.electronicPower -= 50);
+                        EnergyFunction.drainEnergy(this, 50);
                     }
                 } else {
                     if (world.getBlockState(_tempPos).getFluidState().isSource()) {
@@ -99,7 +100,7 @@ public class MiningMachineBlockEntity extends AbstractBlockEntity implements Abs
                                 this.inventory.setStackInSlot(slot, new ItemStack(Items.LAVA_BUCKET, 1));
                             }
                             world.setBlock(_tempPos, Blocks.AIR.defaultBlockState(), 3);
-                            this.setElectronicPower(this.electronicPower -= 50);
+                            EnergyFunction.drainEnergy(this, 50);
                         }
                     }
                 }

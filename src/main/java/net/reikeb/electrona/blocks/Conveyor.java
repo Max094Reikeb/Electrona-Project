@@ -6,8 +6,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -115,20 +113,17 @@ public class Conveyor extends AbstractWaterLoggableBlock implements EntityBlock 
     @Override
     public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
         super.stepOn(world, pos, state, entity);
-        BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (!(blockEntity instanceof ConveyorBlockEntity conveyorBlockEntity)) return;
-        double electronicPower = conveyorBlockEntity.getElectronicPower();
+        if (!(world.getBlockEntity(pos) instanceof ConveyorBlockEntity conveyorBlockEntity)) return;
+        if (conveyorBlockEntity.getElectronicPower() <= 0) return;
         Direction facing = conveyorBlockEntity.getBlockState().getValue(FACING);
-        if ((electronicPower > 0) && ((entity instanceof ItemEntity) || (entity instanceof LivingEntity))) {
-            if (facing == Direction.NORTH) {
-                entity.setDeltaMovement(0, 0, 0.3);
-            } else if (facing == Direction.SOUTH) {
-                entity.setDeltaMovement(0, 0, (-0.3));
-            } else if (facing == Direction.WEST) {
-                entity.setDeltaMovement(0.3, 0, 0);
-            } else if (facing == Direction.EAST) {
-                entity.setDeltaMovement((-0.3), 0, 0);
-            }
+        if (facing == Direction.NORTH) {
+            entity.setDeltaMovement(0, 0, 0.3);
+        } else if (facing == Direction.SOUTH) {
+            entity.setDeltaMovement(0, 0, (-0.3));
+        } else if (facing == Direction.WEST) {
+            entity.setDeltaMovement(0.3, 0, 0);
+        } else if (facing == Direction.EAST) {
+            entity.setDeltaMovement((-0.3), 0, 0);
         }
     }
 

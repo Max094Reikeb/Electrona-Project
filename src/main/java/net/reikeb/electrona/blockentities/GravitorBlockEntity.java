@@ -24,6 +24,7 @@ import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ParticleInit;
 import net.reikeb.electrona.inventory.ItemHandler;
+import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.electrona.utils.Gravity;
 
 import javax.annotation.Nullable;
@@ -62,7 +63,7 @@ public class GravitorBlockEntity extends BlockEntity implements AbstractEnergyBl
             boolean flag = (this.updateShape()) && (this.electronicPower >= 10);
             this.setActive(flag);
             if (!this.level.isClientSide && this.isActive()) {
-                this.setElectronicPower(this.electronicPower -= 10);
+                EnergyFunction.drainEnergy(this, 10);
                 this.applyGravity();
             }
         }

@@ -57,15 +57,15 @@ public class HeatGeneratorBlockEntity extends BlockEntity implements AbstractEne
                 || biomeRL.equals(Keys.SOUL_SAND_VALLEY_BIOME)
                 || biomeRL.equals(Keys.BASALT_DELTAS_BIOME))) {
             if (this.electronicPower < 1996) {
-                this.setElectronicPower(this.electronicPower += 0.15);
+                EnergyFunction.fillEnergy(this, 0.15);
             } else if ((this.electronicPower >= 1996) && (this.electronicPower <= 1999.95)) {
-                this.setElectronicPower(this.electronicPower += 0.05);
+                EnergyFunction.fillEnergy(this, 0.05);
             }
         } else {
             if (this.electronicPower > 0.15) {
-                this.setElectronicPower(this.electronicPower -= 0.15);
+                EnergyFunction.drainEnergy(this, 0.15);
             } else if ((this.electronicPower <= 0.15) && (this.electronicPower >= 0.05)) {
-                this.setElectronicPower(this.electronicPower -= 0.05);
+                EnergyFunction.drainEnergy(this, 0.05);
             }
         }
 
