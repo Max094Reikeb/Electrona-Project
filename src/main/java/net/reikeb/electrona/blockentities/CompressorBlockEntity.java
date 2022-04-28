@@ -19,6 +19,7 @@ import net.reikeb.electrona.containers.CompressorContainer;
 import net.reikeb.electrona.events.local.CompressionEvent;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.inventory.ItemHandler;
+import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.electrona.recipes.Recipes;
 
 import static net.reikeb.electrona.init.BlockEntityInit.COMPRESSOR_BLOCK_ENTITY;
@@ -59,7 +60,7 @@ public class CompressorBlockEntity extends AbstractBlockEntity implements Abstra
 
                 if (this.currentCompressingTime < (this.compressingTime * 20)) {
                     this.currentCompressingTime += 1;
-                    this.electronicPower = this.electronicPower - (energyPerSecond * 0.05);
+                    EnergyFunction.drainEnergy(this, energyPerSecond * 0.05);
 
                 } else {
                     if (!MinecraftForge.EVENT_BUS.post(new CompressionEvent(world, blockPos, stackInSlot0, stackInSlot1, output.copy(), this.compressingTime, this.energyRequired))) {

@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.reikeb.electrona.blocks.Conveyor;
 import net.reikeb.electrona.inventory.ItemHandler;
+import net.reikeb.electrona.misc.vm.EnergyFunction;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -35,7 +36,7 @@ public class ConveyorBlockEntity extends BlockEntity implements AbstractEnergyBl
         world.setBlockAndUpdate(blockPos, state
                 .setValue(Conveyor.ACTIVATED, this.electronicPower > 0));
 
-        this.electronicPower -= 0.05;
+        EnergyFunction.drainEnergy(this, 0.05);
 
         this.setChanged();
         world.sendBlockUpdated(blockPos, state, state, 3);

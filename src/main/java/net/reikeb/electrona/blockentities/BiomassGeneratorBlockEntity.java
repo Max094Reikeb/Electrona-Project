@@ -45,9 +45,9 @@ public class BiomassGeneratorBlockEntity extends AbstractBlockEntity implements 
             wait += 1;
             if (wait >= 20) {
                 if (this.electronicPower <= 2990) {
-                    this.electronicPower += 20;
+                    EnergyFunction.fillEnergy(this, 20);
                 } else {
-                    this.electronicPower = 300;
+                    EnergyFunction.setEnergy(this, 300);
                 }
                 this.inventory.decrStackSize(0, 1);
                 world.playSound(null, blockPos, SoundsInit.BIOMASS_GENERATOR_ACTIVE.get(),

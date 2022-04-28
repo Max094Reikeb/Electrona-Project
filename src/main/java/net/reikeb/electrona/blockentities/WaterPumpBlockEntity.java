@@ -76,22 +76,22 @@ public class WaterPumpBlockEntity extends AbstractFluidBlockEntity implements Ab
                         && Blocks.WATER == world.getBlockState(blockPos.below()).getBlock()) {
                     if (tankCapacity.get() >= (waterLevel.get() + 100)) {
                         FluidFunction.fillWater(this, 100);
-                        this.electronicPower -= 20;
+                        EnergyFunction.drainEnergy(this, 20);
                         world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
                         world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                     } else if (tankCapacity.get() >= (waterLevel.get() + 50)) {
                         FluidFunction.fillWater(this, 50);
-                        this.electronicPower -= 10;
+                        EnergyFunction.drainEnergy(this, 10);
                         world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
                         world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                     } else if (tankCapacity.get() >= (waterLevel.get() + 10)) {
                         FluidFunction.fillWater(this, 10);
-                        this.electronicPower -= 2;
+                        EnergyFunction.drainEnergy(this, 2);
                         world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
                         world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                     } else if (tankCapacity.get() > waterLevel.get()) {
                         FluidFunction.fillWater(this, 1);
-                        this.electronicPower -= 0.2;
+                        EnergyFunction.drainEnergy(this, 0.2);
                         world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
                         world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                     } else {

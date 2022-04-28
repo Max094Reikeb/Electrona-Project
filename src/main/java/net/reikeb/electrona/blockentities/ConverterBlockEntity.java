@@ -80,12 +80,12 @@ public class ConverterBlockEntity extends AbstractBlockEntity implements Abstrac
             if (this.toVP) {
                 if (this.electronicPower >= 1) {
                     this.vp += 3;
-                    this.electronicPower -= 1;
+                    EnergyFunction.drainEnergy(this, 1);
                 }
             } else {
                 if (this.electronicPower >= 1) {
                     this.getCapability(CapabilityEnergy.ENERGY, null).ifPresent(cap -> cap.receiveEnergy(3, false));
-                    this.electronicPower -= 1;
+                    EnergyFunction.drainEnergy(this, 1);
                 }
             }
             wait = 0;

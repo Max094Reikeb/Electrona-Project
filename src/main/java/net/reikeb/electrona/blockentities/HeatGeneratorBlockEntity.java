@@ -40,11 +40,7 @@ public class HeatGeneratorBlockEntity extends BlockEntity implements AbstractEne
         // We generate the energy (this part is uncommon for all generators)
         ResourceLocation biomeRL = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(world.getBiome(blockPos));
 
-        if (this.electronicPower > 0) {
-            world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(HeatGenerator.HEATING, true));
-        } else {
-            world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(HeatGenerator.HEATING, false));
-        }
+        world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(HeatGenerator.HEATING, this.electronicPower > 0));
 
         if ((biomeRL != null) && (biomeRL.equals(Keys.DESERT_BIOME)
                 || biomeRL.equals(Keys.NETHER_WASTES_BIOME)
