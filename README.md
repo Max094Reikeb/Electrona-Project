@@ -1,29 +1,38 @@
-<img align="center" width="800" src="https://zupimages.net/up/22/08/p4pn.png">
-<p align="center"><b>GUIs update!</b></p>
+<img align="center" width="600" src="https://zupimages.net/up/22/14/q9wk.png">
 
-<b><u>The links!</u></b> <br />
-You want informations about the blocks/items/mechanics of the mod? <br />
-http://max-electrona.000webhostapp.com/ <br />
-You want to see more about the mod?<br />
-https://github.com/Max094Reikeb/Electrona-Project/wiki<br />
-You want to help translate the mod to another language?<br />
-https://crowdin.com/project/electrona<br />
-Want more help than the website can provide? <br />
-http://discord.gg/8As6xhKXd5
+# Wiki & Crowdin #
 
-## About
-Electrona is my first Tech mod. It first began when I wanted to make a mod with energy, solar panels, batteries, ... <br />
-Then I expanded it, making more and more generators and machines, more useful items and armors. <br />
-I also wanted to make cleaner GUIs that are more representative of what Electrona is about: a clean mod. <br />
+Electrona has a [wiki](http://max-electrona.000webhostapp.com/) and a [crowdin page](https://crowdin.com/project/electrona) where you can help to translate into your main language!
 
-## Compatibility
-Electrona can work with Machineria, a mod by Hidan. <br />
-The EL Converter can convert ELs into VPs and into FE (Forge Energies) <br />
-Electrona also work with Patchouli Books. The Electronic Tablet gives you many informations about blocks, machines and custom recipes. <br />
-WARNING : Patchouli Books have been dropped since r1.2 version, so use the website instead. <br />
+# Electrona API #
 
-## Special Thanks
-People who helped me making this mod are below the description, but I wanted to make special thanks to :
-- Aixiis (alias super_cube4) for helping design the first GUIs that defined and still define Electrona.
-- birb for helping designing things for this mod and being a good texturer.
-- Fredzik22 (alias Fredzik) who is also a good texturer of the mod.
+```groovy
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.Max094Reikeb:Electrona-Project:TAG'
+}
+```
+
+You can see the List of Versions on the Github Tags
+
+# Credits #
+
+* [Max094_Reikeb](https://www.curseforge.com/members/reikeb) (Forge Developer)
+* [FirstMegaGame4](https://www.curseforge.com/members/firstmegagame4) (Fabric Developer)
+* [aixiis](https://www.curseforge.com/members/aixiis) (Artist)
+* [Fredzik2](https://www.curseforge.com/members/fredzik2) (Artist)
+* [ItzFredTLC](https://www.curseforge.com/members/itzfredtlc) (Artist)
+* [NWTG](https://www.curseforge.com/members/northwesttreesgaming) (Artist)
+* [Parrazarre](https://www.curseforge.com/members/parrazarre) (Artist)
+* [rekteditor](https://www.curseforge.com/members/rekteditor) (Artist)
+* [titedog33](https://www.curseforge.com/members/titedog33) (Artist)
+* [Hidan97](https://www.curseforge.com/members/hidan97) (Contributor)
+* [itayfeder](https://www.curseforge.com/members/itayfeder) (Contributor)
+* [shadowthefourth](https://www.curseforge.com/members/shadowthefourth) (Contributor)
+* [sweepyspud](https://www.curseforge.com/members/sweepyspud) (Contributor)
+* [DanteMinecraftDM](https://www.curseforge.com/members/danteminecraftdm) (Translator)
+* [DerAmirs](https://www.curseforge.com/members/deramirs) (Translator)
+* [thekralgame](https://www.curseforge.com/members/thekralgame) (Translator)
