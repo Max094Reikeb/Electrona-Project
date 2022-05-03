@@ -1,6 +1,6 @@
 {
   "group": "electrona",
-  "type": "minecraft:crafting_shaped",
+  "type": "electrona:hammer_shaped",
   "pattern": [
     "012",
     "345",

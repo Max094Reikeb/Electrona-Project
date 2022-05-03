@@ -1,6 +1,6 @@
 {
   "group": "electrona",
-  "type": "minecraft:crafting_shapeless",
+  "type": "electrona:hammer_shapeless",
   "ingredients": [
     {
       "item": "electrona:hammer"

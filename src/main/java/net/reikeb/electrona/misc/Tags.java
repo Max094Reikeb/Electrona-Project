@@ -20,6 +20,7 @@ public class Tags {
     public static Tag<Block> LOGS = BlockTags.getAllTags().getTagOrEmpty(Keys.LOG_TAG);
     public static Tag<Block> LOG_THAT_BURN = BlockTags.getAllTags().getTagOrEmpty(Keys.LOG_THAT_BURN_TAG);
     public static Tag<Block> MACHINES = BlockTags.getAllTags().getTagOrEmpty(Keys.CABLE_MACHINE_TAG);
+    public static Tag<Block> MINEABLE_WITH_HAMMER = BlockTags.getAllTags().getTagOrEmpty(Keys.MINEABLE_HAMMER);
     public static Tag<Block> MINECRAFT_ORES = BlockTags.getAllTags().getTagOrEmpty(Keys.MINECRAFT_ORES);
     public static Tag<Block> NUCLEAR_DEBRIS = BlockTags.getAllTags().getTagOrEmpty(Keys.NUCLEAR_DEBRIS);
     public static Tag<Block> PANES = BlockTags.getAllTags().getTagOrEmpty(Keys.PANES_TAG);

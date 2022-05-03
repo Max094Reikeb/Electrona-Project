@@ -9,11 +9,11 @@ public class Keys {
     public static final ResourceLocation DEFAULT_NULL = new ResourceLocation("");
 
     // Advancements
-    public static final ResourceLocation A_WHOLE_NEW_WORLD_ADVANCEMENT = new ResourceLocation("electrona:a_whole_new_world");
-    public static final ResourceLocation I_AM_INEVITABLE_ADVANCEMENT = new ResourceLocation("electrona:i_am_inevitable");
-    public static final ResourceLocation LEADER_ADVANCEMENT = new ResourceLocation("electrona:leader");
-    public static final ResourceLocation UNLOCKED_POTENTIAL_ADVANCEMENT = new ResourceLocation("electrona:unlocked_potential");
-    public static final ResourceLocation SKY_HIGH_ADVANCEMENT = new ResourceLocation("electrona:sky_high");
+    public static final ResourceLocation A_WHOLE_NEW_WORLD_ADVANCEMENT = Electrona.RL("a_whole_new_world");
+    public static final ResourceLocation I_AM_INEVITABLE_ADVANCEMENT = Electrona.RL("i_am_inevitable");
+    public static final ResourceLocation LEADER_ADVANCEMENT = Electrona.RL("leader");
+    public static final ResourceLocation UNLOCKED_POTENTIAL_ADVANCEMENT = Electrona.RL("unlocked_potential");
+    public static final ResourceLocation SKY_HIGH_ADVANCEMENT = Electrona.RL("sky_high");
 
     // Biomes
     public static final ResourceLocation DESERT_BIOME = new ResourceLocation("desert");
@@ -29,36 +29,38 @@ public class Keys {
     public static final ResourceLocation NUCLEAR_BIOME = Electrona.RL("nuclear");
 
     // Blocks tags
-    public static final ResourceLocation STOPS_BLACK_HOLES_TAG = new ResourceLocation("forge", "electrona/stops_black_hole");
-    public static final ResourceLocation LOG_TAG = new ResourceLocation("minecraft:logs");
-    public static final ResourceLocation LOG_THAT_BURN_TAG = new ResourceLocation("minecraft", "logs_that_burn");
-    public static final ResourceLocation PLANKS_TAG = new ResourceLocation("minecraft", "planks");
-    public static final ResourceLocation STAIRS_TAG = new ResourceLocation("minecraft", "wooden_stairs");
-    public static final ResourceLocation SLABS_TAG = new ResourceLocation("minecraft", "wooden_slabs");
-    public static final ResourceLocation DOORS_TAG = new ResourceLocation("minecraft", "wooden_doors");
-    public static final ResourceLocation GLASS_TAG = new ResourceLocation("minecraft", "impermeable");
-    public static final ResourceLocation PANES_TAG = new ResourceLocation("forge", "panes");
-    public static final ResourceLocation NUCLEAR_DEBRIS = new ResourceLocation("forge", "electrona/nuclear_debris");
+    public static final ResourceLocation STOPS_BLACK_HOLES_TAG = Electrona.FRL("electrona/stops_black_hole");
+    public static final ResourceLocation LOG_TAG = Electrona.MRL("logs");
+    public static final ResourceLocation LOG_THAT_BURN_TAG = Electrona.MRL("logs_that_burn");
+    public static final ResourceLocation PLANKS_TAG = Electrona.MRL("planks");
+    public static final ResourceLocation STAIRS_TAG = Electrona.MRL("wooden_stairs");
+    public static final ResourceLocation SLABS_TAG = Electrona.MRL("wooden_slabs");
+    public static final ResourceLocation DOORS_TAG = Electrona.MRL("wooden_doors");
+    public static final ResourceLocation GLASS_TAG = Electrona.MRL("impermeable");
+    public static final ResourceLocation PANES_TAG = Electrona.FRL("panes");
+    public static final ResourceLocation NUCLEAR_DEBRIS = Electrona.FRL("electrona/nuclear_debris");
 
-    public static final ResourceLocation MINECRAFT_ORES = new ResourceLocation("minecraft:ores");
-    public static final ResourceLocation FORGE_ORES = new ResourceLocation("forge:ores");
-    public static final ResourceLocation ELECTRONA_ORES = new ResourceLocation("forge:electrona/ores");
+    public static final ResourceLocation MINECRAFT_ORES = Electrona.MRL("ores");
+    public static final ResourceLocation FORGE_ORES = Electrona.FRL("ores");
+    public static final ResourceLocation ELECTRONA_ORES = Electrona.FRL("electrona/ores");
+
+    public static final ResourceLocation MINEABLE_HAMMER = Electrona.RL("mineable/hammer");
 
     // Cable & machines tags
-    public static final ResourceLocation CABLE_TAG = new ResourceLocation("forge", "electrona/cable");
-    public static final ResourceLocation CABLE_MACHINE_TAG = new ResourceLocation("forge", "electrona/machines_all");
-    public static final ResourceLocation BLUE_CABLE_TAG = new ResourceLocation("forge", "electrona/blue_cable");
-    public static final ResourceLocation BLUE_CABLE_MACHINE_TAG = new ResourceLocation("forge", "electrona/machines");
-    public static final ResourceLocation WATER_CABLE_TAG = new ResourceLocation("forge", "electrona/water_cable");
-    public static final ResourceLocation HAS_WATER_TANK_TAG = new ResourceLocation("forge", "electrona/has_water_tank");
-    public static final ResourceLocation GENERATORS_TAG = new ResourceLocation("forge", "electrona/generators");
+    public static final ResourceLocation CABLE_TAG = Electrona.FRL("electrona/cable");
+    public static final ResourceLocation CABLE_MACHINE_TAG = Electrona.FRL("electrona/machines_all");
+    public static final ResourceLocation BLUE_CABLE_TAG = Electrona.FRL("electrona/blue_cable");
+    public static final ResourceLocation BLUE_CABLE_MACHINE_TAG = Electrona.FRL("electrona/machines");
+    public static final ResourceLocation WATER_CABLE_TAG = Electrona.FRL("electrona/water_cable");
+    public static final ResourceLocation HAS_WATER_TANK_TAG = Electrona.FRL("electrona/has_water_tank");
+    public static final ResourceLocation GENERATORS_TAG = Electrona.FRL("electrona/generators");
 
     // Configured structures
     public static final ResourceLocation CONFIGURED_RUINS = Electrona.RL("configured_ruins");
     public static final ResourceLocation RUINS_START_POOL = Electrona.RL("ruins/start_pool");
 
     // Dimensions
-    public static final ResourceLocation OVERWORLD = new ResourceLocation("minecraft:overworld");
+    public static final ResourceLocation OVERWORLD = Electrona.MRL("overworld");
 
     // Engineer House
     public static final ResourceLocation ENGINEER_HOUSE_PLAINS = Electrona.RL("villages/engineer_house_plains");
@@ -74,8 +76,8 @@ public class Keys {
     public static final ResourceLocation GRAVITOR_WIND_VERTICAL = Electrona.RL("entity/gravitor/wind_vertical");
     public static final ResourceLocation GRAVITOR_OPEN_EYE = Electrona.RL("entity/gravitor/open_eye");
     public static final ResourceLocation GRAVITOR_CLOSED_EYE = Electrona.RL("entity/gravitor/closed_eye");
-    public static final ResourceLocation MECHANIC_WINGS = Electrona.RL( "textures/models/mechanic_wings.png");
-    public static final ResourceLocation PLAYER = new ResourceLocation("minecraft:player");
+    public static final ResourceLocation MECHANIC_WINGS = Electrona.RL("textures/models/mechanic_wings.png");
+    public static final ResourceLocation PLAYER = Electrona.MRL("player");
     public static final ResourceLocation RADIOACTIVE_ZOMBIE = Electrona.RL("textures/entity/radioactive_zombie.png");
     public static final ResourceLocation SINGULARITY_BEAM_LOCATION = new ResourceLocation("textures/entity/beacon_beam.png");
 
@@ -99,17 +101,19 @@ public class Keys {
     public static final ResourceLocation ANGLE_PROPERTY = new ResourceLocation("angle");
 
     // Items tag
-    public static final ResourceLocation CHARGEABLE_ITEMS_TAG = new ResourceLocation("forge", "electrona/chargeable_items");
+    public static final ResourceLocation CHARGEABLE_ITEMS_TAG = Electrona.FRL("electrona/chargeable_items");
 
     // Others
     public static final ResourceLocation BIOMASS = new ResourceLocation(("forge:biomass").toLowerCase(java.util.Locale.ENGLISH));
 
     // Potions
-    public static final ResourceLocation RADIOACTIVITY_EFFECT = new ResourceLocation("electrona:textures/mob_effect/radioactivity.png");
+    public static final ResourceLocation RADIOACTIVITY_EFFECT = Electrona.RL("textures/mob_effect/radioactivity.png");
 
     // Recipes
     public static final ResourceLocation COMPRESSING = Electrona.RL("compressing");
     public static final ResourceLocation PURIFYING = Electrona.RL("purifying");
+    public static final ResourceLocation SHAPED_HAMMER = Electrona.RL("hammer_shaped");
+    public static final ResourceLocation SHAPELESS_HAMMER = Electrona.RL("hammer_shapeless");
 
     // Triggers
     public static final ResourceLocation ENERGETIC_LIGHTNING_STRIKE_TRIGGER = new ResourceLocation("energetic_lightning_strike");

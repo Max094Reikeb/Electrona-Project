@@ -49,6 +49,8 @@ import net.reikeb.electrona.misc.GameEvents;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.recipes.CompressorRecipe;
 import net.reikeb.electrona.recipes.PurificatorRecipe;
+import net.reikeb.electrona.recipes.ShapedHammerRecipe;
+import net.reikeb.electrona.recipes.ShapelessHammerRecipe;
 import net.reikeb.electrona.recipes.types.RecipeTypeCompressor;
 import net.reikeb.electrona.recipes.types.RecipeTypePurificator;
 import net.reikeb.electrona.setup.RegistryHandler;
@@ -104,6 +106,14 @@ public class Electrona {
 
     public static ResourceLocation RL(String path) {
         return new ResourceLocation(MODID, path);
+    }
+
+    public static ResourceLocation FRL(String path) {
+        return new ResourceLocation("forge", path);
+    }
+
+    public static ResourceLocation MRL(String path) {
+        return new ResourceLocation("minecraft", path);
     }
 
     private static void associateBiomeToConfiguredStructure(Map<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> STStructureToMultiMap, ConfiguredStructureFeature<?, ?> configuredStructureFeature, ResourceKey<Biome> biomeRegistryKey) {
@@ -205,5 +215,7 @@ public class Electrona {
         // Register the recipe serializer. This handles from json, from packet, and to packet.
         event.getRegistry().register(CompressorRecipe.SERIALIZER);
         event.getRegistry().register(PurificatorRecipe.SERIALIZER);
+        event.getRegistry().register(ShapedHammerRecipe.SERIALIZER);
+        event.getRegistry().register(ShapelessHammerRecipe.SERIALIZER);
     }
 }

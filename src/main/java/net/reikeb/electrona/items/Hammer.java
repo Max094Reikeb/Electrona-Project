@@ -19,11 +19,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 
-import net.reikeb.electrona.Electrona;
+import net.reikeb.electrona.misc.Tags;
 import net.reikeb.electrona.setup.ItemGroups;
 import net.reikeb.electrona.utils.ElectronaUtils;
 
@@ -32,10 +31,9 @@ import java.util.Set;
 public class Hammer extends DiggerItem {
 
     private static final Set<Block> NOT_EFFECTIVE_BLOCKS = ImmutableSet.of(Blocks.BEDROCK, Blocks.LAVA, Blocks.WATER);
-    private static final Tags.IOptionalNamedTag<Block> MINEABLE_WITH_HAMMER = BlockTags.createOptional(Electrona.RL("mineable/hammer"));
 
     public Hammer() {
-        super(1F, -2.8F, Tiers.IRON, MINEABLE_WITH_HAMMER,
+        super(1F, -2.8F, Tiers.IRON, Tags.MINEABLE_WITH_HAMMER,
                 new Properties().stacksTo(1).rarity(Rarity.COMMON).tab(ItemGroups.ELECTRONA_TOOLS));
     }
 
@@ -75,21 +73,6 @@ public class Hammer extends DiggerItem {
             Block.dropResources(state, world, pos, null, player, player.getMainHandItem());
             world.destroyBlock(pos, false);
         }
-    }
-
-    @Override
-    public boolean hasCraftingRemainingItem() {
-        return true;
-    }
-
-    @Override
-    public ItemStack getContainerItem(ItemStack itemstack) {
-        ItemStack retval = new ItemStack(this);
-        retval.setDamageValue(itemstack.getDamageValue() + 1);
-        if (retval.getDamageValue() >= retval.getMaxDamage()) {
-            return ItemStack.EMPTY;
-        }
-        return retval;
     }
 
     @Override
