@@ -36,13 +36,17 @@ import net.minecraftforge.common.MinecraftForge;
 
 import net.reikeb.electrona.events.local.NuclearExplosionEvent;
 import net.reikeb.electrona.init.BiomeInit;
+import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.misc.GameEvents;
+import net.reikeb.electrona.misc.Tags;
 import net.reikeb.electrona.utils.BiomeUtil;
+import net.reikeb.electrona.utils.Gravity;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -53,6 +57,7 @@ public class NuclearExplosion extends Explosion {
 
     private final static List<BlockPos> affectedBlockPositions = Lists.newArrayList();
     private final Mode mode;
+    private final Random random;
     private final Level level;
     private final double x;
     private final double y;
@@ -81,6 +86,7 @@ public class NuclearExplosion extends Explosion {
 
     public NuclearExplosion(Level level, @Nullable Entity entity, double x, double y, double z, float size, Mode mode) {
         super(level, entity, x, y, z, size, affectedBlockPositions);
+        this.random = level.random;
         this.level = level;
         this.source = entity;
         this.size = size;
@@ -144,7 +150,7 @@ public class NuclearExplosion extends Explosion {
                         d0 = d0 / d3;
                         d1 = d1 / d3;
                         d2 = d2 / d3;
-                        float f = this.size * (0.7F + this.level.random.nextFloat() * 0.6F);
+                        float f = this.size * (0.7F + this.random.nextFloat() * 0.6F);
                         double d4 = this.x;
                         double d6 = this.y;
                         double d8 = this.z;
@@ -217,11 +223,76 @@ public class NuclearExplosion extends Explosion {
                 }
             }
         }
+        effects();
+    }
+
+    /**
+     * Does the second part of the explosion (radioactivity and effects)
+     */
+    public void effects() {
+        float halfradius = this.size / 2;
+        float onepointfiveradius = halfradius * 3;
+        float onepointfiveradiussqrd = onepointfiveradius * onepointfiveradius;
+        float tworadius = this.size * 2;
+        for (float X = -onepointfiveradius; X <= onepointfiveradius; X++) {
+            double xx = this.x + X;
+            float XX = X * X;
+            for (float Z = -onepointfiveradius; Z <= onepointfiveradius; Z++) {
+                float ZZ = Z * Z + XX;
+                double zz = this.z + Z;
+                for (float Y = -onepointfiveradius; Y <= onepointfiveradius; Y++) {
+                    float YY = Y * Y + ZZ;
+                    double yy = this.y + Y;
+                    if (YY < onepointfiveradiussqrd) {
+                        BlockPos blockPos = new BlockPos(xx, yy, zz);
+                        Block block = this.level.getBlockState(blockPos).getBlock();
+                        if ((!Gravity.isAir(this.level, blockPos)) && (block != Blocks.BEDROCK)) {
+                            int dist = (int) Math.sqrt(YY);
+                            boolean flag = false;
+                            if (dist < this.size) {
+                                flag = true;
+                                float varrand = 1 + dist - halfradius;
+                                if ((varrand > 0) && (dist > halfradius)) {
+                                    float randomness = halfradius - varrand / 2;
+                                    if (block == Blocks.WATER || block == Blocks.LAVA) {
+                                        this.level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
+                                    } else if (block == Blocks.STONE && this.random.nextFloat(randomness) < randomness / 2) {
+                                        this.level.setBlockAndUpdate(blockPos, Blocks.COBBLESTONE.defaultBlockState());
+                                    } else if ((block == Blocks.GRASS_BLOCK) || (block == Blocks.DIRT)) {
+                                        this.level.setBlockAndUpdate(blockPos, BlockInit.RADIOACTIVE_DIRT.get().defaultBlockState());
+                                    }
+                                }
+                            }
+                            if (dist < onepointfiveradius) {
+                                flag = true;
+                                if ((Y >= tworadius) || (Y >= this.size) || (Tags.GLASS.contains(block)) || (Tags.PANES.contains(block))
+                                        || (Tags.DOORS.contains(block)) || (block == Blocks.TORCH) || (block == Blocks.WATER)) {
+                                    this.level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
+                                } else if ((Tags.PLANKS.contains(block)) || (Tags.STAIRS.contains(block)) || (Tags.SLABS.contains(block))) {
+                                    this.level.setBlockAndUpdate(blockPos, Blocks.FIRE.defaultBlockState());
+                                } else if (Tags.LOGS.contains(block)) {
+                                    if (this.random.nextFloat() > 0.5) {
+                                        this.level.setBlockAndUpdate(blockPos, Blocks.FIRE.defaultBlockState());
+                                    } else {
+                                        this.level.setBlockAndUpdate(blockPos, BlockInit.CHARDWOOD_LOG.get().defaultBlockState());
+                                    }
+                                } else if ((block == Blocks.GRASS_BLOCK) || (block == Blocks.DIRT) || (block == Blocks.DIRT_PATH)) {
+                                    this.level.setBlockAndUpdate(blockPos, BlockInit.RADIOACTIVE_DIRT.get().defaultBlockState());
+                                }
+                            }
+                            if (flag) {
+                                Gravity.applyGravity(this.level, blockPos);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         cleanUp(false);
     }
 
     /**
-     * Does the second part of the explosion (sound, particles, drop spawn)
+     * Does the third part of the explosion (sound, particles, drop spawn)
      */
     public void cleanUp(boolean spawnParticles) {
         this.level.playSound(null, new BlockPos(this.position), SoundsInit.NUCLEAR_EXPLOSION.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
@@ -231,9 +302,9 @@ public class NuclearExplosion extends Explosion {
             BlockState blockstate = this.level.getBlockState(blockpos);
             Block block = blockstate.getBlock();
             if (spawnParticles) {
-                double d0 = (float) blockpos.getX() + this.level.random.nextFloat();
-                double d1 = (float) blockpos.getY() + this.level.random.nextFloat();
-                double d2 = (float) blockpos.getZ() + this.level.random.nextFloat();
+                double d0 = (float) blockpos.getX() + this.random.nextFloat();
+                double d1 = (float) blockpos.getY() + this.random.nextFloat();
+                double d2 = (float) blockpos.getZ() + this.random.nextFloat();
                 double d3 = d0 - this.x;
                 double d4 = d1 - this.y;
                 double d5 = d2 - this.z;
@@ -242,7 +313,7 @@ public class NuclearExplosion extends Explosion {
                 d4 = d4 / d6;
                 d5 = d5 / d6;
                 double d7 = 0.5D / (d6 / (double) this.size + 0.1D);
-                d7 = d7 * (double) (this.level.random.nextFloat() * this.level.random.nextFloat() + 0.3F);
+                d7 = d7 * (double) (this.random.nextFloat() * this.random.nextFloat() + 0.3F);
                 d3 = d3 * d7;
                 d4 = d4 * d7;
                 d5 = d5 * d7;
@@ -253,7 +324,7 @@ public class NuclearExplosion extends Explosion {
             if (!blockstate.isAir()) {
                 if (this.level instanceof ServerLevel && blockstate.canDropFromExplosion(this.level, blockpos, this)) {
                     BlockEntity blockEntity = blockstate.hasBlockEntity() ? this.level.getBlockEntity(blockpos) : null;
-                    LootContext.Builder lootcontext$builder = (new LootContext.Builder((ServerLevel) this.level)).withRandom(this.level.random).withParameter(LootContextParams.ORIGIN, this.position).withParameter(LootContextParams.TOOL, ItemStack.EMPTY).withOptionalParameter(LootContextParams.BLOCK_ENTITY, blockEntity);
+                    LootContext.Builder lootcontext$builder = (new LootContext.Builder((ServerLevel) this.level)).withRandom(this.random).withParameter(LootContextParams.ORIGIN, this.position).withParameter(LootContextParams.TOOL, ItemStack.EMPTY).withOptionalParameter(LootContextParams.BLOCK_ENTITY, blockEntity);
                     if (this.mode == Mode.DESTROY) {
                         lootcontext$builder.withParameter(LootContextParams.EXPLOSION_RADIUS, this.size);
                     }
