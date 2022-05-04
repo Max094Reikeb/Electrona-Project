@@ -1,12 +1,6 @@
 {
-  "parent": "block/cube",
+  "parent": "minecraft:block/cube_all",
   "textures": {
-    "down": "electrona:blocks/gravitonium_block",
-    "up": "electrona:blocks/gravitonium_block",
-    "north": "electrona:blocks/gravitonium_block",
-    "east": "electrona:blocks/gravitonium_block",
-    "south": "electrona:blocks/gravitonium_block",
-    "west": "electrona:blocks/gravitonium_block",
-    "particle": "electrona:blocks/gravitonium_block"
+    "all": "electrona:blocks/gravitonium_block"
   }
 }

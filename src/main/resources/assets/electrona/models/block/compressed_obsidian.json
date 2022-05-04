@@ -1,12 +1,6 @@
 {
-  "parent": "block/cube",
+  "parent": "minecraft:block/cube_all",
   "textures": {
-    "down": "electrona:blocks/compressed_obsidian",
-    "up": "electrona:blocks/compressed_obsidian",
-    "north": "electrona:blocks/compressed_obsidian",
-    "east": "electrona:blocks/compressed_obsidian",
-    "south": "electrona:blocks/compressed_obsidian",
-    "west": "electrona:blocks/compressed_obsidian",
-    "particle": "electrona:blocks/compressed_obsidian"
+    "all": "electrona:blocks/compressed_obsidian"
   }
 }

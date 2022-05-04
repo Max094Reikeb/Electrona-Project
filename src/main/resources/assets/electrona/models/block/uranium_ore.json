@@ -1,12 +1,6 @@
 {
-  "parent": "block/cube",
+  "parent": "minecraft:block/cube_all",
   "textures": {
-    "down": "electrona:blocks/uranium_ore",
-    "up": "electrona:blocks/uranium_ore",
-    "north": "electrona:blocks/uranium_ore",
-    "east": "electrona:blocks/uranium_ore",
-    "south": "electrona:blocks/uranium_ore",
-    "west": "electrona:blocks/uranium_ore",
-    "particle": "electrona:blocks/uranium_ore"
+    "all": "electrona:blocks/uranium_ore"
   }
 }

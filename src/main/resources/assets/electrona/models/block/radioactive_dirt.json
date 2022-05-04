@@ -1,12 +1,6 @@
 {
-  "parent": "block/cube",
+  "parent": "minecraft:block/cube_all",
   "textures": {
-    "down": "electrona:blocks/radioactive_dirt",
-    "up": "electrona:blocks/radioactive_dirt",
-    "north": "electrona:blocks/radioactive_dirt",
-    "east": "electrona:blocks/radioactive_dirt",
-    "south": "electrona:blocks/radioactive_dirt",
-    "west": "electrona:blocks/radioactive_dirt",
-    "particle": "electrona:blocks/radioactive_dirt"
+    "all": "electrona:blocks/radioactive_dirt"
   }
 }

@@ -1,12 +1,6 @@
 {
-  "parent": "block/cube",
+  "parent": "minecraft:block/cube_all",
   "textures": {
-    "down": "electrona:blocks/tin_ore",
-    "up": "electrona:blocks/tin_ore",
-    "north": "electrona:blocks/tin_ore",
-    "east": "electrona:blocks/tin_ore",
-    "south": "electrona:blocks/tin_ore",
-    "west": "electrona:blocks/tin_ore",
-    "particle": "electrona:blocks/tin_ore"
+    "all": "electrona:blocks/tin_ore"
   }
 }

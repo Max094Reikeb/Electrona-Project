@@ -1,12 +1,6 @@
 {
-  "parent": "block/cube",
+  "parent": "minecraft:block/cube_all",
   "textures": {
-    "down": "electrona:blocks/hole",
-    "up": "electrona:blocks/hole",
-    "north": "electrona:blocks/hole",
-    "east": "electrona:blocks/hole",
-    "south": "electrona:blocks/hole",
-    "west": "electrona:blocks/hole",
-    "particle": "electrona:blocks/hole"
+    "all": "electrona:blocks/hole"
   }
 }

@@ -1,12 +1,6 @@
 {
-  "parent": "block/cube",
+  "parent": "minecraft:block/cube_all",
   "textures": {
-    "down": "electrona:blocks/lead_crate",
-    "up": "electrona:blocks/lead_crate",
-    "north": "electrona:blocks/lead_crate",
-    "east": "electrona:blocks/lead_crate",
-    "south": "electrona:blocks/lead_crate",
-    "west": "electrona:blocks/lead_crate",
-    "particle": "electrona:blocks/lead_crate"
+    "all": "electrona:blocks/lead_crate"
   }
 }
