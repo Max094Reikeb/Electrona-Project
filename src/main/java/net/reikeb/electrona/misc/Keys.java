@@ -31,14 +31,12 @@ public class Keys {
     // Blocks tags
     public static final ResourceLocation STOPS_BLACK_HOLES_TAG = Electrona.FRL("electrona/stops_black_hole");
     public static final ResourceLocation LOG_TAG = Electrona.MRL("logs");
-    public static final ResourceLocation LOG_THAT_BURN_TAG = Electrona.MRL("logs_that_burn");
     public static final ResourceLocation PLANKS_TAG = Electrona.MRL("planks");
     public static final ResourceLocation STAIRS_TAG = Electrona.MRL("wooden_stairs");
     public static final ResourceLocation SLABS_TAG = Electrona.MRL("wooden_slabs");
     public static final ResourceLocation DOORS_TAG = Electrona.MRL("wooden_doors");
     public static final ResourceLocation GLASS_TAG = Electrona.MRL("impermeable");
     public static final ResourceLocation PANES_TAG = Electrona.FRL("panes");
-    public static final ResourceLocation NUCLEAR_DEBRIS = Electrona.FRL("electrona/nuclear_debris");
 
     public static final ResourceLocation MINECRAFT_ORES = Electrona.MRL("ores");
     public static final ResourceLocation FORGE_ORES = Electrona.FRL("ores");
@@ -102,6 +100,11 @@ public class Keys {
 
     // Items tag
     public static final ResourceLocation CHARGEABLE_ITEMS_TAG = Electrona.FRL("electrona/chargeable_items");
+
+    // JEI IDs
+    public static final ResourceLocation DEFAULT_ID = Electrona.RL("default");
+    public static final ResourceLocation COMPRESSOR_ID = Electrona.RL("compressor_category");
+    public static final ResourceLocation PURIFICATOR_ID = Electrona.RL("purificator_category");
 
     // Others
     public static final ResourceLocation BIOMASS = new ResourceLocation(("forge:biomass").toLowerCase(java.util.Locale.ENGLISH));

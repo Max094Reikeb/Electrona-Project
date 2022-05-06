@@ -128,11 +128,20 @@ public class ItemInit {
     public static final RegistryObject<Item> TIN_ORE_ITEM = ITEMS.register("tin_ore", () ->
             new BlockItem(BlockInit.TIN_ORE.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
 
+    public static final RegistryObject<Item> DEEPSLATE_TIN_ORE_ITEM = ITEMS.register("deepslate_tin_ore", () ->
+            new BlockItem(BlockInit.DEEPSLATE_TIN_ORE.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
+
     public static final RegistryObject<Item> LEAD_ORE_ITEM = ITEMS.register("lead_ore", () ->
             new BlockItem(BlockInit.LEAD_ORE.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
 
+    public static final RegistryObject<Item> DEEPSLATE_LEAD_ORE_ITEM = ITEMS.register("deepslate_lead_ore", () ->
+            new BlockItem(BlockInit.DEEPSLATE_LEAD_ORE.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
+
     public static final RegistryObject<Item> URANIUM_ORE_ITEM = ITEMS.register("uranium_ore", () ->
             new BlockItem(BlockInit.URANIUM_ORE.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
+
+    public static final RegistryObject<Item> DEEPSLATE_URANIUM_ORE_ITEM = ITEMS.register("deepslate_uranium_ore", () ->
+            new BlockItem(BlockInit.DEEPSLATE_URANIUM_ORE.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
 
     public static final RegistryObject<Item> GRAVITONIUM_ORE_ITEM = ITEMS.register("gravitonium_ore", () ->
             new BlockItem(BlockInit.GRAVITONIUM_ORE.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "electrona:blocks/deepslate_tin_ore"
+  }
+}

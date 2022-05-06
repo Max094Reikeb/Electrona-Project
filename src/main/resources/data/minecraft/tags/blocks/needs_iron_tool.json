@@ -3,6 +3,9 @@
   "values": [
     "electrona:conveyor",
     "electrona:cooler",
+    "electrona:deepslate_lead_ore",
+    "electrona:deepslate_tin_ore",
+    "electrona:deepslate_uranium_ore",
     "electrona:dimension_linker",
     "electrona:gravitonium_block",
     "electrona:gravitonium_ore",

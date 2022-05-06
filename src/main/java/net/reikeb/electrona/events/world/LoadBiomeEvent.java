@@ -17,6 +17,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTes
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -31,13 +32,15 @@ public class LoadBiomeEvent {
     public static final RuleTest END_STONE = new BlockMatchTest(Blocks.END_STONE);
 
     @SubscribeEvent
-    public static void addFeatureToBiomes(net.minecraftforge.event.world.BiomeLoadingEvent event) {
+    public static void addFeatureToBiomes(BiomeLoadingEvent event) {
         if (!event.getCategory().equals(Biome.BiomeCategory.NETHER)
                 && !event.getCategory().equals(Biome.BiomeCategory.THEEND)
                 && !event.getCategory().equals(Biome.BiomeCategory.NONE)) {
-            generateOre(event.getGeneration(), OreFeatures.NATURAL_STONE, BlockInit.TIN_ORE.get().defaultBlockState(), 10, 0, 50, 5);
-            generateOre(event.getGeneration(), OreFeatures.NATURAL_STONE, BlockInit.URANIUM_ORE.get().defaultBlockState(), 8, 0, 30, 6);
-            generateOre(event.getGeneration(), OreFeatures.NATURAL_STONE, BlockInit.LEAD_ORE.get().defaultBlockState(), 10, 0, 25, 6);
+            generateOre(event.getGeneration(), OreFeatures.STONE_ORE_REPLACEABLES, BlockInit.TIN_ORE.get().defaultBlockState(), 10, 6, 80, 8);
+            generateOre(event.getGeneration(), OreFeatures.DEEPSLATE_ORE_REPLACEABLES, BlockInit.DEEPSLATE_TIN_ORE.get().defaultBlockState(), 10, -64, 5, 8);
+            generateOre(event.getGeneration(), OreFeatures.STONE_ORE_REPLACEABLES, BlockInit.LEAD_ORE.get().defaultBlockState(), 10, 6, 55, 5);
+            generateOre(event.getGeneration(), OreFeatures.DEEPSLATE_ORE_REPLACEABLES, BlockInit.DEEPSLATE_LEAD_ORE.get().defaultBlockState(), 10, -64, 5, 5);
+            generateOre(event.getGeneration(), OreFeatures.DEEPSLATE_ORE_REPLACEABLES, BlockInit.DEEPSLATE_URANIUM_ORE.get().defaultBlockState(), 6, -64, -5, 3);
         }
 
         if (event.getCategory().equals(Biome.BiomeCategory.THEEND)) {

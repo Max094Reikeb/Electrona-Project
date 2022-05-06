@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
+    "electrona:deepslate_lead_ore",
+    "electrona:deepslate_tin_ore",
+    "electrona:deepslate_uranium_ore",
     "electrona:tin_ore",
     "electrona:uranium_ore",
     "electrona:lead_ore",

@@ -21,30 +21,30 @@ import net.minecraft.world.item.Items;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.utils.RInputs;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class CompressorBlockJeiCategory implements IRecipeCategory<CompressorBlockRecipeWrapper> {
+public class CompressingCategory implements IRecipeCategory<CompressingWrapper> {
 
-    public static final ResourceLocation Uid = Electrona.RL("compressorblockcategory");
     private static final int input1 = 0;
     private static final int input2 = 1;
     private static final int output1 = 2;
 
     private final IDrawable background;
 
-    public CompressorBlockJeiCategory(IGuiHelper guiHelper) {
+    public CompressingCategory(IGuiHelper guiHelper) {
         this.background = guiHelper.createDrawable(Electrona.RL("textures/guis/compressor_gui.png"), 0, 0, 176, 65);
     }
 
-    public void draw(CompressorBlockRecipeWrapper recipe, PoseStack matrixStack, double mouseX, double mouseY) {
+    public void draw(CompressingWrapper recipe, PoseStack matrixStack, double mouseX, double mouseY) {
         Font fontRenderer = Minecraft.getInstance().font;
         fontRenderer.draw(matrixStack, new TranslatableComponent("gui.electrona.compressor.name"), 50, 6, -16777216);
         fontRenderer.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.power"), 126, 6, -16777216);
         RInputs recipeIntput = recipe.getInput();
-        ItemStack recipeOutput = recipe.output;
+        ItemStack recipeOutput = recipe.getOutput();
         if (recipeOutput.getItem() == ItemInit.STEEL_INGOT.get()) {
             fontRenderer.draw(matrixStack, "400 ELs", 126, 16, -3407821);
         } else if (recipeOutput.getItem() == ItemInit.STEEL_PLATE.get()) {
@@ -56,7 +56,7 @@ public class CompressorBlockJeiCategory implements IRecipeCategory<CompressorBlo
         } else if (recipeOutput.getItem() == ItemInit.ADVANCED_TOTEM_OF_UNDYING.get()) {
             fontRenderer.draw(matrixStack, "1200 ELs", 126, 16, -3407821);
         } else if (recipeOutput.getItem() == ItemInit.YELLOWCAKE.get()) {
-            fontRenderer.draw(matrixStack, (recipeIntput.getItemInput1() == ItemInit.URANIUM_ORE_ITEM.get() ? "400 ELs" : "450 ELs") , 126, 16, -3407821);
+            fontRenderer.draw(matrixStack, (recipeIntput.getItemInput1() == ItemInit.URANIUM_ORE_ITEM.get() ? "400 ELs" : "450 ELs"), 126, 16, -3407821);
         } else if (recipeOutput.getItem() == ItemInit.URANIUM_BAR.get()) {
             fontRenderer.draw(matrixStack, "400 ELs", 126, 16, -3407821);
         } else if (recipeOutput.getItem() == ItemInit.URANIUM_DUAL_BAR.get()) {
@@ -68,12 +68,12 @@ public class CompressorBlockJeiCategory implements IRecipeCategory<CompressorBlo
 
     @Override
     public ResourceLocation getUid() {
-        return Uid;
+        return Keys.COMPRESSOR_ID;
     }
 
     @Override
-    public Class<? extends CompressorBlockRecipeWrapper> getRecipeClass() {
-        return CompressorBlockRecipeWrapper.class;
+    public Class<? extends CompressingWrapper> getRecipeClass() {
+        return CompressingWrapper.class;
     }
 
     @Override
@@ -92,13 +92,13 @@ public class CompressorBlockJeiCategory implements IRecipeCategory<CompressorBlo
     }
 
     @Override
-    public void setIngredients(CompressorBlockRecipeWrapper recipeWrapper, IIngredients iIngredients) {
+    public void setIngredients(CompressingWrapper recipeWrapper, IIngredients iIngredients) {
         iIngredients.setInputs(VanillaTypes.ITEM, recipeWrapper.getInput().getInputs());
         iIngredients.setOutputs(VanillaTypes.ITEM, new ArrayList<>(Collections.singleton(recipeWrapper.getOutput())));
     }
 
     @Override
-    public void setRecipe(IRecipeLayout iRecipeLayout, CompressorBlockRecipeWrapper recipeWrapper, IIngredients iIngredients) {
+    public void setRecipe(IRecipeLayout iRecipeLayout, CompressingWrapper recipeWrapper, IIngredients iIngredients) {
         IGuiItemStackGroup stacks = iRecipeLayout.getItemStacks();
         stacks.init(input1, true, 26, 38);
         stacks.set(input1, iIngredients.getInputs(VanillaTypes.ITEM).get(0));

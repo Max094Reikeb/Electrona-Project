@@ -17,36 +17,36 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 import net.reikeb.electrona.Electrona;
+import net.reikeb.electrona.misc.Keys;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class PurificatorBlockJeiCategory implements IRecipeCategory<PurificatorBlockRecipeWrapper> {
+public class PurificatorCategory implements IRecipeCategory<PurificatorWrapper> {
 
-    public static final ResourceLocation Uid = Electrona.RL("purificatorblockcategory");
     private static final int input1 = 0;
     private static final int input2 = 1;
     private static final int output1 = 2;
 
     private final IDrawable background;
 
-    public PurificatorBlockJeiCategory(IGuiHelper guiHelper) {
+    public PurificatorCategory(IGuiHelper guiHelper) {
         this.background = guiHelper.createDrawable(Electrona.RL("textures/guis/purificator_gui.png"), 0, 0, 166, 73);
     }
 
-    public void draw(PurificatorBlockRecipeWrapper recipe, PoseStack matrixStack, double mouseX, double mouseY) {
+    public void draw(PurificatorWrapper recipe, PoseStack matrixStack, double mouseX, double mouseY) {
         Font fontRenderer = Minecraft.getInstance().font;
         fontRenderer.draw(matrixStack, new TranslatableComponent("gui.electrona.purificator.name"), 52, 12, -16777216);
     }
 
     @Override
     public ResourceLocation getUid() {
-        return Uid;
+        return Keys.PURIFICATOR_ID;
     }
 
     @Override
-    public Class<? extends PurificatorBlockRecipeWrapper> getRecipeClass() {
-        return PurificatorBlockRecipeWrapper.class;
+    public Class<? extends PurificatorWrapper> getRecipeClass() {
+        return PurificatorWrapper.class;
     }
 
     @Override
@@ -65,13 +65,13 @@ public class PurificatorBlockJeiCategory implements IRecipeCategory<PurificatorB
     }
 
     @Override
-    public void setIngredients(PurificatorBlockRecipeWrapper recipeWrapper, IIngredients iIngredients) {
+    public void setIngredients(PurificatorWrapper recipeWrapper, IIngredients iIngredients) {
         iIngredients.setInputs(VanillaTypes.ITEM, recipeWrapper.getInput().getInputs());
         iIngredients.setOutputs(VanillaTypes.ITEM, new ArrayList<>(Collections.singleton(recipeWrapper.getOutput())));
     }
 
     @Override
-    public void setRecipe(IRecipeLayout iRecipeLayout, PurificatorBlockRecipeWrapper recipeWrapper, IIngredients iIngredients) {
+    public void setRecipe(IRecipeLayout iRecipeLayout, PurificatorWrapper recipeWrapper, IIngredients iIngredients) {
         IGuiItemStackGroup stacks = iRecipeLayout.getItemStacks();
         stacks.init(input1, true, 26, 26);
         stacks.set(input1, iIngredients.getInputs(VanillaTypes.ITEM).get(0));

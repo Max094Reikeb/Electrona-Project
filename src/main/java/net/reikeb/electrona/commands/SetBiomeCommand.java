@@ -35,8 +35,33 @@ public class SetBiomeCommand {
     private static int setBiomeAtPos(CommandSourceStack source, Vec3 coordinates, ResourceLocation resourceLocation) throws CommandSyntaxException {
         Biome biome = source.getServer().registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getOptional(resourceLocation).orElseThrow(()
                 -> ERROR_INVALID_BIOME.create(source));
-        BlockPos blockPos = new BlockPos(coordinates.x, coordinates.y, coordinates.z);
-        BiomeUtil.setBiomeAtPos(source.getLevel(), blockPos, resourceLocation);
+        for (int j = 0; j < 50; ++j) {
+            for (int k = 0; k < 35; ++k) {
+                for (int l = 0; l < 45; ++l) {
+                    if (j == 0 || j == 15 || k == 0 || k == 15 || l == 0 || l == 15) {
+                        double d0 = (float) j / 15.0F * 2.0F - 1.0F;
+                        double d1 = (float) k / 15.0F * 2.0F - 1.0F;
+                        double d2 = (float) l / 15.0F * 2.0F - 1.0F;
+                        double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+                        d0 = d0 / d3;
+                        d1 = d1 / d3;
+                        d2 = d2 / d3;
+                        float f = 15 * (0.7F + source.getLevel().random.nextFloat() * 0.6F);
+                        double d4 = coordinates.x;
+                        double d6 = coordinates.y;
+                        double d8 = coordinates.z;
+
+                        for (float f1 = 0.3F; f > 0.0F; f -= 0.22500001F) {
+                            BlockPos blockpos = new BlockPos(d4, d6, d8);
+                            BiomeUtil.setBiomeAtPos(source.getLevel(), blockpos, resourceLocation);
+                            d4 += d0 * (double) 0.3F;
+                            d6 += d1 * (double) 0.3F;
+                            d8 += d2 * (double) 0.3F;
+                        }
+                    }
+                }
+            }
+        }
         return source.hashCode();
     }
 }
