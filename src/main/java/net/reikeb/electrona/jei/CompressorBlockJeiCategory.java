@@ -21,6 +21,10 @@ import net.minecraft.world.item.Items;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.utils.RInputs;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class CompressorBlockJeiCategory implements IRecipeCategory<CompressorBlockRecipeWrapper> {
 
@@ -39,7 +43,8 @@ public class CompressorBlockJeiCategory implements IRecipeCategory<CompressorBlo
         Font fontRenderer = Minecraft.getInstance().font;
         fontRenderer.draw(matrixStack, new TranslatableComponent("gui.electrona.compressor.name"), 50, 6, -16777216);
         fontRenderer.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.power"), 126, 6, -16777216);
-        ItemStack recipeOutput = (ItemStack) recipe.output.get(0);
+        RInputs recipeIntput = recipe.getInput();
+        ItemStack recipeOutput = recipe.output;
         if (recipeOutput.getItem() == ItemInit.STEEL_INGOT.get()) {
             fontRenderer.draw(matrixStack, "400 ELs", 126, 16, -3407821);
         } else if (recipeOutput.getItem() == ItemInit.STEEL_PLATE.get()) {
@@ -51,7 +56,7 @@ public class CompressorBlockJeiCategory implements IRecipeCategory<CompressorBlo
         } else if (recipeOutput.getItem() == ItemInit.ADVANCED_TOTEM_OF_UNDYING.get()) {
             fontRenderer.draw(matrixStack, "1200 ELs", 126, 16, -3407821);
         } else if (recipeOutput.getItem() == ItemInit.YELLOWCAKE.get()) {
-            fontRenderer.draw(matrixStack, "400 ELs", 126, 16, -3407821);
+            fontRenderer.draw(matrixStack, (recipeIntput.getItemInput1() == ItemInit.URANIUM_ORE_ITEM.get() ? "400 ELs" : "450 ELs") , 126, 16, -3407821);
         } else if (recipeOutput.getItem() == ItemInit.URANIUM_BAR.get()) {
             fontRenderer.draw(matrixStack, "400 ELs", 126, 16, -3407821);
         } else if (recipeOutput.getItem() == ItemInit.URANIUM_DUAL_BAR.get()) {
@@ -88,8 +93,8 @@ public class CompressorBlockJeiCategory implements IRecipeCategory<CompressorBlo
 
     @Override
     public void setIngredients(CompressorBlockRecipeWrapper recipeWrapper, IIngredients iIngredients) {
-        iIngredients.setInputs(VanillaTypes.ITEM, recipeWrapper.getInput());
-        iIngredients.setOutputs(VanillaTypes.ITEM, recipeWrapper.getOutput());
+        iIngredients.setInputs(VanillaTypes.ITEM, recipeWrapper.getInput().getInputs());
+        iIngredients.setOutputs(VanillaTypes.ITEM, new ArrayList<>(Collections.singleton(recipeWrapper.getOutput())));
     }
 
     @Override

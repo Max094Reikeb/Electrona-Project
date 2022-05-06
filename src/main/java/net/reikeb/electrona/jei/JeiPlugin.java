@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.utils.RInputs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,124 +38,38 @@ public class JeiPlugin implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         registration.addRecipes(generateCompressorBlockRecipes(), CompressorBlockJeiCategory.Uid);
-        registration.addRecipes(generateCompressorBlockRecipes2(), CompressorBlockJeiCategory.Uid);
-        registration.addRecipes(generateCompressorBlockRecipes3(), CompressorBlockJeiCategory.Uid);
-        registration.addRecipes(generateCompressorBlockRecipes4(), CompressorBlockJeiCategory.Uid);
-        registration.addRecipes(generateCompressorBlockRecipes5(), CompressorBlockJeiCategory.Uid);
-        registration.addRecipes(generateCompressorBlockRecipes6(), CompressorBlockJeiCategory.Uid);
-        registration.addRecipes(generateCompressorBlockRecipes7(), CompressorBlockJeiCategory.Uid);
-        registration.addRecipes(generateCompressorBlockRecipes8(), CompressorBlockJeiCategory.Uid);
-        registration.addRecipes(generateCompressorBlockRecipes9(), CompressorBlockJeiCategory.Uid);
         registration.addRecipes(generatePurificatorBlockRecipes(), PurificatorBlockJeiCategory.Uid);
     }
 
     private List<CompressorBlockRecipeWrapper> generateCompressorBlockRecipes() {
         List<CompressorBlockRecipeWrapper> recipes = new ArrayList<>();
-        ArrayList<ItemStack> inputs = new ArrayList<>();
-        ArrayList<ItemStack> outputs = new ArrayList<>();
-        inputs.add(new ItemStack(Items.IRON_INGOT));
-        inputs.add(new ItemStack(Items.COAL));
-        outputs.add(new ItemStack(ItemInit.STEEL_INGOT.get()));
-        recipes.add(new CompressorBlockRecipeWrapper(inputs, outputs));
-        return recipes;
-    }
-
-    private List<CompressorBlockRecipeWrapper> generateCompressorBlockRecipes2() {
-        List<CompressorBlockRecipeWrapper> recipes = new ArrayList<>();
-        ArrayList<ItemStack> inputs = new ArrayList<>();
-        ArrayList<ItemStack> outputs = new ArrayList<>();
-        inputs.add(new ItemStack(ItemInit.STEEL_INGOT.get()));
-        inputs.add(new ItemStack(ItemInit.STEEL_INGOT.get()));
-        outputs.add(new ItemStack(ItemInit.STEEL_PLATE.get()));
-        recipes.add(new CompressorBlockRecipeWrapper(inputs, outputs));
-        return recipes;
-    }
-
-    private List<CompressorBlockRecipeWrapper> generateCompressorBlockRecipes3() {
-        List<CompressorBlockRecipeWrapper> recipes = new ArrayList<>();
-        ArrayList<ItemStack> inputs = new ArrayList<>();
-        ArrayList<ItemStack> outputs = new ArrayList<>();
-        inputs.add(new ItemStack(Blocks.OBSIDIAN));
-        inputs.add(new ItemStack(Blocks.OBSIDIAN));
-        outputs.add(new ItemStack(BlockInit.COMPRESSED_OBSIDIAN.get().asItem()));
-        recipes.add(new CompressorBlockRecipeWrapper(inputs, outputs));
-        return recipes;
-    }
-
-    private List<CompressorBlockRecipeWrapper> generateCompressorBlockRecipes4() {
-        List<CompressorBlockRecipeWrapper> recipes = new ArrayList<>();
-        ArrayList<ItemStack> inputs = new ArrayList<>();
-        ArrayList<ItemStack> outputs = new ArrayList<>();
-        inputs.add(new ItemStack(Blocks.COAL_BLOCK));
-        inputs.add(new ItemStack(Blocks.COAL_BLOCK));
-        outputs.add(new ItemStack(Items.DIAMOND));
-        recipes.add(new CompressorBlockRecipeWrapper(inputs, outputs));
-        return recipes;
-    }
-
-    private List<CompressorBlockRecipeWrapper> generateCompressorBlockRecipes5() {
-        List<CompressorBlockRecipeWrapper> recipes = new ArrayList<>();
-        ArrayList<ItemStack> inputs = new ArrayList<>();
-        ArrayList<ItemStack> outputs = new ArrayList<>();
-        inputs.add(new ItemStack(Items.TOTEM_OF_UNDYING));
-        inputs.add(new ItemStack(Items.NETHER_STAR));
-        outputs.add(new ItemStack(ItemInit.ADVANCED_TOTEM_OF_UNDYING.get()));
-        recipes.add(new CompressorBlockRecipeWrapper(inputs, outputs));
-        return recipes;
-    }
-
-    private List<CompressorBlockRecipeWrapper> generateCompressorBlockRecipes6() {
-        List<CompressorBlockRecipeWrapper> recipes = new ArrayList<>();
-        ArrayList<ItemStack> inputs = new ArrayList<>();
-        ArrayList<ItemStack> outputs = new ArrayList<>();
-        inputs.add(new ItemStack(BlockInit.URANIUM_ORE.get().asItem()));
-        inputs.add(new ItemStack(BlockInit.URANIUM_ORE.get().asItem()));
-        outputs.add(new ItemStack(ItemInit.YELLOWCAKE.get()));
-        recipes.add(new CompressorBlockRecipeWrapper(inputs, outputs));
-        return recipes;
-    }
-
-    private List<CompressorBlockRecipeWrapper> generateCompressorBlockRecipes7() {
-        List<CompressorBlockRecipeWrapper> recipes = new ArrayList<>();
-        ArrayList<ItemStack> inputs = new ArrayList<>();
-        ArrayList<ItemStack> outputs = new ArrayList<>();
-        inputs.add(new ItemStack(ItemInit.PURIFIED_URANIUM.get()));
-        inputs.add(new ItemStack(ItemInit.PURIFIED_URANIUM.get()));
-        outputs.add(new ItemStack(ItemInit.URANIUM_BAR.get()));
-        recipes.add(new CompressorBlockRecipeWrapper(inputs, outputs));
-        return recipes;
-    }
-
-    private List<CompressorBlockRecipeWrapper> generateCompressorBlockRecipes8() {
-        List<CompressorBlockRecipeWrapper> recipes = new ArrayList<>();
-        ArrayList<ItemStack> inputs = new ArrayList<>();
-        ArrayList<ItemStack> outputs = new ArrayList<>();
-        inputs.add(new ItemStack(ItemInit.URANIUM_BAR.get()));
-        inputs.add(new ItemStack(ItemInit.URANIUM_BAR.get()));
-        outputs.add(new ItemStack(ItemInit.URANIUM_DUAL_BAR.get()));
-        recipes.add(new CompressorBlockRecipeWrapper(inputs, outputs));
-        return recipes;
-    }
-
-    private List<CompressorBlockRecipeWrapper> generateCompressorBlockRecipes9() {
-        List<CompressorBlockRecipeWrapper> recipes = new ArrayList<>();
-        ArrayList<ItemStack> inputs = new ArrayList<>();
-        ArrayList<ItemStack> outputs = new ArrayList<>();
-        inputs.add(new ItemStack(ItemInit.URANIUM_DUAL_BAR.get()));
-        inputs.add(new ItemStack(ItemInit.URANIUM_DUAL_BAR.get()));
-        outputs.add(new ItemStack(ItemInit.URANIUM_QUAD_BAR.get()));
-        recipes.add(new CompressorBlockRecipeWrapper(inputs, outputs));
+        RInputs input1 = new RInputs(Items.IRON_INGOT, Items.COAL);
+        RInputs input2 = new RInputs(ItemInit.STEEL_INGOT.get(), ItemInit.STEEL_INGOT.get());
+        RInputs input3 = new RInputs(Blocks.OBSIDIAN, Blocks.OBSIDIAN);
+        RInputs input4 = new RInputs(Blocks.COAL_BLOCK, Blocks.COAL_BLOCK);
+        RInputs input5 = new RInputs(Items.TOTEM_OF_UNDYING, Items.NETHER_STAR);
+        RInputs input6 = new RInputs(BlockInit.URANIUM_ORE.get(), BlockInit.URANIUM_ORE.get());
+        RInputs input7 = new RInputs(BlockInit.DEEPSLATE_URANIUM_ORE.get(), BlockInit.DEEPSLATE_URANIUM_ORE.get());
+        RInputs input8 = new RInputs(ItemInit.PURIFIED_URANIUM.get(), ItemInit.PURIFIED_URANIUM.get());
+        RInputs input9 = new RInputs(ItemInit.URANIUM_BAR.get(), ItemInit.URANIUM_BAR.get());
+        RInputs input10 = new RInputs(ItemInit.URANIUM_DUAL_BAR.get(), ItemInit.URANIUM_DUAL_BAR.get());
+        recipes.add(new CompressorBlockRecipeWrapper(input1, ItemInit.STEEL_INGOT.get()));
+        recipes.add(new CompressorBlockRecipeWrapper(input2, ItemInit.STEEL_PLATE.get()));
+        recipes.add(new CompressorBlockRecipeWrapper(input3, BlockInit.COMPRESSED_OBSIDIAN.get().asItem()));
+        recipes.add(new CompressorBlockRecipeWrapper(input4, Items.DIAMOND));
+        recipes.add(new CompressorBlockRecipeWrapper(input5, ItemInit.ADVANCED_TOTEM_OF_UNDYING.get()));
+        recipes.add(new CompressorBlockRecipeWrapper(input6, ItemInit.YELLOWCAKE.get()));
+        recipes.add(new CompressorBlockRecipeWrapper(input7, ItemInit.YELLOWCAKE.get()));
+        recipes.add(new CompressorBlockRecipeWrapper(input8, ItemInit.URANIUM_BAR.get()));
+        recipes.add(new CompressorBlockRecipeWrapper(input9, ItemInit.URANIUM_DUAL_BAR.get()));
+        recipes.add(new CompressorBlockRecipeWrapper(input10, ItemInit.URANIUM_QUAD_BAR.get()));
         return recipes;
     }
 
     private List<PurificatorBlockRecipeWrapper> generatePurificatorBlockRecipes() {
         List<PurificatorBlockRecipeWrapper> recipes = new ArrayList<>();
-        ArrayList<ItemStack> inputs = new ArrayList<>();
-        ArrayList<ItemStack> outputs = new ArrayList<>();
-        inputs.add(new ItemStack(Items.WATER_BUCKET));
-        inputs.add(new ItemStack(ItemInit.CONCENTRATED_URANIUM.get(), 3));
-        outputs.add(new ItemStack(ItemInit.PURIFIED_URANIUM.get()));
-        recipes.add(new PurificatorBlockRecipeWrapper(inputs, outputs));
+        RInputs input1 = new RInputs(Items.WATER_BUCKET, ItemInit.CONCENTRATED_URANIUM.get());
+        recipes.add(new PurificatorBlockRecipeWrapper(input1, ItemInit.PURIFIED_URANIUM.get()));
         return recipes;
     }
 

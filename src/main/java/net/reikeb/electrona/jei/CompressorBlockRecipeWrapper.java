@@ -1,22 +1,17 @@
 package net.reikeb.electrona.jei;
 
-import java.util.ArrayList;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
-public class CompressorBlockRecipeWrapper {
+import net.reikeb.electrona.utils.RInputs;
 
-    public final ArrayList output;
-    private final ArrayList input;
+public record CompressorBlockRecipeWrapper(RInputs input, Item output) {
 
-    public CompressorBlockRecipeWrapper(ArrayList input, ArrayList output) {
-        this.input = input;
-        this.output = output;
-    }
-
-    public ArrayList getInput() {
+    public RInputs getInput() {
         return input;
     }
 
-    public ArrayList getOutput() {
-        return output;
+    public ItemStack getOutput() {
+        return new ItemStack(output, 1);
     }
 }

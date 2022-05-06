@@ -18,6 +18,9 @@ import net.minecraft.resources.ResourceLocation;
 
 import net.reikeb.electrona.Electrona;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class PurificatorBlockJeiCategory implements IRecipeCategory<PurificatorBlockRecipeWrapper> {
 
     public static final ResourceLocation Uid = Electrona.RL("purificatorblockcategory");
@@ -63,8 +66,8 @@ public class PurificatorBlockJeiCategory implements IRecipeCategory<PurificatorB
 
     @Override
     public void setIngredients(PurificatorBlockRecipeWrapper recipeWrapper, IIngredients iIngredients) {
-        iIngredients.setInputs(VanillaTypes.ITEM, recipeWrapper.getInput());
-        iIngredients.setOutputs(VanillaTypes.ITEM, recipeWrapper.getOutput());
+        iIngredients.setInputs(VanillaTypes.ITEM, recipeWrapper.getInput().getInputs());
+        iIngredients.setOutputs(VanillaTypes.ITEM, new ArrayList<>(Collections.singleton(recipeWrapper.getOutput())));
     }
 
     @Override

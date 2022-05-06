@@ -1,14 +1,17 @@
 package net.reikeb.electrona.jei;
 
-import java.util.ArrayList;
+import net.minecraft.world.item.Item;
 
-public record PurificatorBlockRecipeWrapper(ArrayList input, ArrayList output) {
+import net.minecraft.world.item.ItemStack;
+import net.reikeb.electrona.utils.RInputs;
 
-    public ArrayList getInput() {
+public record PurificatorBlockRecipeWrapper(RInputs input, Item output) {
+
+    public RInputs getInput() {
         return input;
     }
 
-    public ArrayList getOutput() {
-        return output;
+    public ItemStack getOutput() {
+        return new ItemStack(output, 1);
     }
 }
