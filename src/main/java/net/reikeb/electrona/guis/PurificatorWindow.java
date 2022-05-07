@@ -2,15 +2,13 @@ package net.reikeb.electrona.guis;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
-
 import net.reikeb.electrona.containers.PurificatorContainer;
 import net.reikeb.electrona.misc.Keys;
-import net.reikeb.electrona.utils.ElectronaUtils;
+import net.reikeb.maxilib.utils.Utils;
 
 public class PurificatorWindow extends AbstractWindow<PurificatorContainer> {
 
@@ -73,7 +71,7 @@ public class PurificatorWindow extends AbstractWindow<PurificatorContainer> {
     protected void renderBg(PoseStack matrixStack, float par1, int par2, int par3) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        ElectronaUtils.bind(Keys.PURIFICATOR_GUI);
+        Utils.bind(Keys.PURIFICATOR_GUI);
         int k = (this.width - this.imageWidth) / 2;
         int l = (this.height - this.imageHeight) / 2;
         this.blit(matrixStack, k, l, 0, 0, this.imageWidth, this.imageHeight);

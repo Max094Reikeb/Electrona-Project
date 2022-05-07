@@ -3,9 +3,7 @@ package net.reikeb.electrona.containers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-
 import net.minecraftforge.items.CapabilityItemHandler;
-
 import net.reikeb.electrona.blockentities.LeadCrateBlockEntity;
 
 import static net.reikeb.electrona.init.ContainerInit.LEAD_CRATE_CONTAINER;

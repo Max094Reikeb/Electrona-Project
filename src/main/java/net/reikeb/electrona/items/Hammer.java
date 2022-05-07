@@ -1,7 +1,6 @@
 package net.reikeb.electrona.items;
 
 import com.google.common.collect.ImmutableSet;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -18,13 +17,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
-
 import net.reikeb.electrona.misc.Tags;
 import net.reikeb.electrona.setup.ItemGroups;
-import net.reikeb.electrona.utils.ElectronaUtils;
+import net.reikeb.maxilib.utils.Utils;
 
 import java.util.Set;
 
@@ -39,7 +36,7 @@ public class Hammer extends DiggerItem {
 
     public static void attemptBreakNeighbors(Level world, BlockPos pos, Player player, Set<Block> notEffectiveOn, boolean checkHarvestLevel, int radioImpar) {
         world.setBlockAndUpdate(pos, Blocks.GLASS.defaultBlockState());
-        BlockHitResult trace = ElectronaUtils.rayTrace(world, player, ClipContext.Fluid.ANY);
+        BlockHitResult trace = Utils.rayTrace(world, player, ClipContext.Fluid.ANY);
         world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 
         if (trace.getType() == BlockHitResult.Type.BLOCK) {

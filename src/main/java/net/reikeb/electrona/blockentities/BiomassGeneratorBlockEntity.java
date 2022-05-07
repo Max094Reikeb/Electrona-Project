@@ -11,7 +11,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
-
 import net.reikeb.electrona.containers.BiomassGeneratorContainer;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.inventory.ItemHandler;
@@ -41,7 +40,7 @@ public class BiomassGeneratorBlockEntity extends AbstractBlockEntity implements 
         if (world == null) return;
 
         // Handle slot
-        if (Tags.BIOMASS.contains(this.inventory.getStackInSlot(0).getItem()) && this.electronicPower < 3000) {
+        if (this.inventory.getStackInSlot(0).is(Tags.BIOMASS) && this.electronicPower < 3000) {
             wait += 1;
             if (wait >= 20) {
                 if (this.electronicPower <= 2990) {

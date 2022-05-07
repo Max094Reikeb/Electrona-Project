@@ -5,11 +5,9 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
-
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.items.*;
 import net.reikeb.electrona.setup.ItemGroups;

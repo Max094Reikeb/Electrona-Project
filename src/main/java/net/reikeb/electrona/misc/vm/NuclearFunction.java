@@ -8,14 +8,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-
 import net.reikeb.electrona.blockentities.NuclearGeneratorControllerBlockEntity;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.misc.Keys;
-import net.reikeb.electrona.utils.ElectronaUtils;
 import net.reikeb.electrona.world.Gamerules;
 import net.reikeb.electrona.world.NuclearExplosion;
+import net.reikeb.maxilib.utils.Utils;
 
 import java.util.Random;
 
@@ -137,10 +136,10 @@ public class NuclearFunction {
      * @param pos   Position of the Singularity
      */
     public static void advancementInevitableFunction(Level world, BlockPos pos) {
-        for (LivingEntity entityiterator : ElectronaUtils.getLivingEntitiesInRadius(world, pos, 5)) {
+        for (LivingEntity entityiterator : Utils.getLivingEntitiesInRadius(world, pos, 5)) {
             if (entityiterator instanceof ServerPlayer serverPlayer) {
                 Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(Keys.I_AM_INEVITABLE_ADVANCEMENT);
-                ElectronaUtils.awardAdvancement(serverPlayer, advancement, "I Am... Inevitable!");
+                Utils.awardAdvancement(serverPlayer, advancement, "I Am... Inevitable!");
             }
         }
     }

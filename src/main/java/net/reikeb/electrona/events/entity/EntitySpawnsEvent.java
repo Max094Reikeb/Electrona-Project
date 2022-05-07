@@ -3,11 +3,9 @@ package net.reikeb.electrona.events.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.entity.EnergeticLightningBolt;
 import net.reikeb.electrona.init.BlockInit;

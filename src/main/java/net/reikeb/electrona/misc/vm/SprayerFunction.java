@@ -1,7 +1,6 @@
 package net.reikeb.electrona.misc.vm;
 
 import com.mojang.datafixers.util.Pair;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -11,11 +10,10 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
-
 import net.reikeb.electrona.blockentities.SprayerBlockEntity;
 import net.reikeb.electrona.init.ItemInit;
-import net.reikeb.electrona.utils.ElectronaUtils;
 import net.reikeb.electrona.inventory.ItemHandler;
+import net.reikeb.maxilib.utils.Utils;
 
 public class SprayerFunction {
 
@@ -35,7 +33,7 @@ public class SprayerFunction {
         sprayerBlockEntity.setRadius(5 + (boostCount * 3));
         if ((!(inv.getStackInSlot(0).isEmpty())) && (electronicPower >= 200)) {
             if (world == null) return;
-            for (LivingEntity entityiterator : ElectronaUtils.getLivingEntitiesInRadius(world, sprayerBlockEntity.getBlockPos(), sprayerBlockEntity.getRadius())) {
+            for (LivingEntity entityiterator : Utils.getLivingEntitiesInRadius(world, sprayerBlockEntity.getBlockPos(), sprayerBlockEntity.getRadius())) {
                 if (inv.getStackInSlot(0).getItem().isEdible()) {
                     EnergyFunction.drainEnergy(sprayerBlockEntity, 200);
                     FoodProperties usedFood = inv.getStackInSlot(0).getItem().getFoodProperties();

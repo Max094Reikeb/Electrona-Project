@@ -24,7 +24,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
 import net.reikeb.electrona.blockentities.MiningPipeBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
 

@@ -10,12 +10,10 @@ import net.minecraft.world.entity.monster.Husk;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
-
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.entity.RadioactiveZombie;
 import net.reikeb.electrona.init.EntityInit;

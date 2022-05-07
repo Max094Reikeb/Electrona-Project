@@ -5,7 +5,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
-
 import net.reikeb.electrona.init.BlockInit;
 
 import static net.reikeb.electrona.init.BlockEntityInit.MINING_PIPE_BLOCK_ENTITY;

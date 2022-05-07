@@ -1,12 +1,10 @@
 package net.reikeb.electrona.events.world;
 
 import net.minecraft.world.level.biome.Biome;
-
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
-
 import net.reikeb.electrona.init.BiomeInit;
 import net.reikeb.electrona.world.gen.biomes.OverworldBiomes;
 

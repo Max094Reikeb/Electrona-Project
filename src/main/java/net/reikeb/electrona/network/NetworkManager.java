@@ -5,7 +5,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
-
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.network.packets.*;
 
@@ -35,6 +34,5 @@ public class NetworkManager {
         INSTANCE.registerMessage(index++, SkyHighPacket.class, SkyHighPacket::encode, SkyHighPacket::decode, SkyHighPacket::whenThisPacketIsReceived);
         INSTANCE.registerMessage(index++, PurificationPacket.class, PurificationPacket::encode, PurificationPacket::decode, PurificationPacket::whenThisPacketIsReceived);
         INSTANCE.registerMessage(index++, BiomeUpdatePacket.class, BiomeUpdatePacket::encode, BiomeUpdatePacket::decode, BiomeUpdatePacket::whenThisPacketIsReceived);
-        INSTANCE.registerMessage(index++, BiomeSingleUpdatePacket.class, BiomeSingleUpdatePacket::encode, BiomeSingleUpdatePacket::decode, BiomeSingleUpdatePacket::whenThisPacketIsReceived);
     }
 }

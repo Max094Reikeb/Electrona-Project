@@ -1,7 +1,6 @@
 package net.reikeb.electrona.advancements;
 
 import net.minecraft.advancements.CriteriaTriggers;
-
 import net.reikeb.electrona.advancements.critereon.EnergeticLightningStrikeTrigger;
 
 public class TTriggers {

@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
-
 import net.reikeb.electrona.init.BlockInit;
 
 public class RadioactiveGrass extends FlowerBlock {

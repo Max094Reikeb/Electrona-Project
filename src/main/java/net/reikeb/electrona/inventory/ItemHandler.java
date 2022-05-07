@@ -3,7 +3,6 @@ package net.reikeb.electrona.inventory;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-
 import net.minecraftforge.items.ItemStackHandler;
 
 public class ItemHandler extends ItemStackHandler {

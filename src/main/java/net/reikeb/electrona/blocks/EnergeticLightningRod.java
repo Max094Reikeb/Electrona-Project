@@ -18,11 +18,10 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
 import net.reikeb.electrona.blockentities.EnergeticLightningRodBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.misc.vm.CustomShapes;
-import net.reikeb.electrona.utils.ElectronaUtils;
+import net.reikeb.maxilib.utils.Utils;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -58,11 +57,11 @@ public class EnergeticLightningRod extends AbstractWaterLoggableBlock implements
         } else if (facing == Direction.NORTH) {
             return CustomShapes.EnergeticLightningRod;
         } else if (facing == Direction.SOUTH) {
-            return ElectronaUtils.rotateShape(Direction.NORTH, Direction.SOUTH, CustomShapes.EnergeticLightningRod);
+            return Utils.rotateShape(Direction.NORTH, Direction.SOUTH, CustomShapes.EnergeticLightningRod);
         } else if (facing == Direction.EAST) {
-            return ElectronaUtils.rotateShape(Direction.NORTH, Direction.EAST, CustomShapes.EnergeticLightningRod);
+            return Utils.rotateShape(Direction.NORTH, Direction.EAST, CustomShapes.EnergeticLightningRod);
         } else if (facing == Direction.WEST) {
-            return ElectronaUtils.rotateShape(Direction.NORTH, Direction.WEST, CustomShapes.EnergeticLightningRod);
+            return Utils.rotateShape(Direction.NORTH, Direction.WEST, CustomShapes.EnergeticLightningRod);
         }
         return CustomShapes.EnergeticLightningRodUp;
     }

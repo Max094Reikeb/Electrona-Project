@@ -25,9 +25,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
 import net.minecraftforge.network.NetworkHooks;
-
 import net.reikeb.electrona.blockentities.NuclearBombBlockEntity;
 import net.reikeb.electrona.entity.BombFallingEntity;
 import net.reikeb.electrona.misc.vm.CustomShapes;
@@ -97,7 +95,7 @@ public class NuclearBomb extends FallingBlock implements EntityBlock {
         if (!world.isClientSide) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof NuclearBombBlockEntity nuclearBombBlockEntity) {
-                new NuclearExplosion(world,null, pos, nuclearBombBlockEntity.getNuclearCharge());
+                new NuclearExplosion(world, null, pos, nuclearBombBlockEntity.getNuclearCharge());
             }
         }
     }

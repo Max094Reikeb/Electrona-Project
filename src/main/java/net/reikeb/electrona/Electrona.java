@@ -5,10 +5,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
-
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-
 import net.minecraft.Util;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
@@ -25,11 +23,8 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.SculkSensorBlock;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.FlatLevelSource;
-import net.minecraft.world.level.levelgen.StructureSettings;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
-
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.RegistryEvent;
@@ -40,7 +35,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
-
 import net.reikeb.electrona.advancements.TTriggers;
 import net.reikeb.electrona.events.entity.EntityDiesEvent;
 import net.reikeb.electrona.init.BiomeInit;
@@ -57,15 +51,11 @@ import net.reikeb.electrona.setup.RegistryHandler;
 import net.reikeb.electrona.villages.POIFixup;
 import net.reikeb.electrona.villages.StructureGen;
 import net.reikeb.electrona.world.Gamerules;
-import net.reikeb.electrona.world.gen.ConfiguredStructures;
 import net.reikeb.electrona.world.gen.Structures;
 import net.reikeb.electrona.world.gen.biomes.ElectronaBiomeProvider;
 import net.reikeb.electrona.world.structures.RuinsStructure;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import terrablender.api.BiomeProviders;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -98,7 +88,7 @@ public class Electrona {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(new EntityDiesEvent());
         MinecraftForge.EVENT_BUS.register(new Gamerules());
-        MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, this::addDimensionalSpacing);
+        // MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, this::addDimensionalSpacing);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, RuinsStructure::setupStructureSpawns);
         MinecraftForge.EVENT_BUS.addListener(this::setupEngineerHouses);
         MinecraftForge.EVENT_BUS.register(this);
@@ -138,13 +128,11 @@ public class Electrona {
     public void setup(final FMLCommonSetupEvent event) {
         POIFixup.fixup();
 
-        // Register structures, biomes, game events, ...
+        // Register biomes, game events, ...
         event.enqueueWork(() -> {
-            Structures.setupStructures();
-            ConfiguredStructures.registerConfiguredStructures();
             GameEvents.setupGameEvents();
 
-            BiomeProviders.register(new ElectronaBiomeProvider(Keys.NUCLEAR_BIOME, 1));
+            // BiomeProviders.register(new ElectronaBiomeProvider(Keys.NUCLEAR_BIOME, 1));
 
             SculkSensorBlock.VIBRATION_STRENGTH_FOR_EVENT = Object2IntMaps.unmodifiable(Util.make(new Object2IntOpenHashMap<>(), (map) -> {
                 map.putAll(SculkSensorBlock.VIBRATION_STRENGTH_FOR_EVENT);
@@ -162,6 +150,7 @@ public class Electrona {
                 new ItemStack(ItemInit.CONCENTRATED_URANIUM.get())); // concentrated uranium brewing recipe
     }
 
+    /*
     public void addDimensionalSpacing(final WorldEvent.Load event) {
         if (event.getWorld() instanceof ServerLevel serverLevel) {
             ChunkGenerator chunkGenerator = serverLevel.getChunkSource().getGenerator();
@@ -196,6 +185,7 @@ public class Electrona {
             worldStructureConfig.structureConfig = tempMap;
         }
     }
+     */
 
     /*
       Add to Village pools in FMLServerAboutToStartEvent so Engineer houses shows up in Villages modified by datapacks.

@@ -11,7 +11,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
-
 import net.reikeb.electrona.blocks.HeatGenerator;
 import net.reikeb.electrona.inventory.ItemHandler;
 import net.reikeb.electrona.misc.Keys;
@@ -38,7 +37,7 @@ public class HeatGeneratorBlockEntity extends BlockEntity implements AbstractEne
         if (world == null) return;
 
         // We generate the energy (this part is uncommon for all generators)
-        ResourceLocation biomeRL = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(world.getBiome(blockPos));
+        ResourceLocation biomeRL = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(world.getBiome(blockPos).value());
 
         world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(HeatGenerator.HEATING, this.electronicPower > 0));
 

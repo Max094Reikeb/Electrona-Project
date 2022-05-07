@@ -1,11 +1,9 @@
 package net.reikeb.electrona.init;
 
 import net.minecraft.sounds.SoundEvent;
-
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-
 import net.reikeb.electrona.Electrona;
 
 public class SoundsInit {

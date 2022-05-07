@@ -1,9 +1,8 @@
 package net.reikeb.electrona.jei;
 
 import net.minecraft.world.item.Item;
-
 import net.minecraft.world.item.ItemStack;
-import net.reikeb.electrona.utils.RInputs;
+import net.reikeb.maxilib.RInputs;
 
 public record PurificatorWrapper(RInputs input, Item output) {
 

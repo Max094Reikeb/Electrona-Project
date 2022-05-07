@@ -3,11 +3,9 @@ package net.reikeb.electrona.network.packets;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-
 import net.minecraftforge.network.NetworkEvent;
-
 import net.reikeb.electrona.misc.Keys;
-import net.reikeb.electrona.utils.ElectronaUtils;
+import net.reikeb.maxilib.utils.Utils;
 
 import java.util.function.Supplier;
 
@@ -28,7 +26,7 @@ public class SkyHighPacket {
             ServerPlayer entity = context.get().getSender();
             if (entity == null) return;
             Advancement advancement = entity.server.getAdvancements().getAdvancement(Keys.SKY_HIGH_ADVANCEMENT);
-            ElectronaUtils.awardAdvancement(entity, advancement, "SkyHigh!");
+            Utils.awardAdvancement(entity, advancement, "SkyHigh!");
         });
         context.get().setPacketHandled(true);
     }

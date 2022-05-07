@@ -3,15 +3,13 @@ package net.reikeb.electrona.events.entity;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
-
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.misc.vm.RadioactivityFunction;
-import net.reikeb.electrona.utils.ElectronaUtils;
+import net.reikeb.maxilib.utils.Utils;
 
 @Mod.EventBusSubscriber(modid = Electrona.MODID)
 public class EntityTickEvent {
@@ -33,7 +31,7 @@ public class EntityTickEvent {
                 // Leader advancement
                 if ((entity instanceof ServerPlayer serverPlayer) && RadioactivityFunction.isEntityWearingLeadArmor(entity)) {
                     Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(Keys.LEADER_ADVANCEMENT);
-                    ElectronaUtils.awardAdvancement(serverPlayer, advancement, "Leader!");
+                    Utils.awardAdvancement(serverPlayer, advancement, "Leader!");
                 }
             }
         }

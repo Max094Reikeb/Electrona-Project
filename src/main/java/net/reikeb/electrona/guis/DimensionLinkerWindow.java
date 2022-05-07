@@ -1,14 +1,12 @@
 package net.reikeb.electrona.guis;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
-
 import net.reikeb.electrona.containers.DimensionLinkerContainer;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.network.NetworkManager;

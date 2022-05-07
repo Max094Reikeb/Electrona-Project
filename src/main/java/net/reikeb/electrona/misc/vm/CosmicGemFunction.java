@@ -26,10 +26,9 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-
 import net.reikeb.electrona.misc.Keys;
-import net.reikeb.electrona.utils.ElectronaUtils;
 import net.reikeb.electrona.utils.GemPower;
+import net.reikeb.maxilib.utils.Utils;
 
 public class CosmicGemFunction {
 
@@ -50,7 +49,7 @@ public class CosmicGemFunction {
             return true;
 
         } else if (GemPower.TELEPORTATION.equalsTo(getPower(stack))) {
-            HitResult rayTraceResult = ElectronaUtils.lookAt(playerEntity, 100D, 1F, false);
+            HitResult rayTraceResult = Utils.lookAt(playerEntity, 100D, 1F, false);
             Vec3 location = rayTraceResult.getLocation();
             int stepX = 0;
             int stepY = 1;
@@ -217,7 +216,7 @@ public class CosmicGemFunction {
 
         } else if (GemPower.KNOCKBACK.equalsTo(getPower(stack)) && playerEntity.isShiftKeyDown()) {
             boolean flag = false;
-            for (LivingEntity entityiterator : ElectronaUtils.getLivingEntitiesInRadius(world, playerEntity.blockPosition(), 5)) {
+            for (LivingEntity entityiterator : Utils.getLivingEntitiesInRadius(world, playerEntity.blockPosition(), 5)) {
                 if (entityiterator != playerEntity) {
                     flag = true;
                     entityiterator.knockback(5F * 0.5F, Mth.sin(playerEntity.yRot * ((float) Math.PI / 180F)), -Mth.cos(playerEntity.yRot * ((float) Math.PI / 180F)));

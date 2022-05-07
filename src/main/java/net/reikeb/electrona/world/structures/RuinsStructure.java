@@ -1,30 +1,25 @@
 package net.reikeb.electrona.world.structures;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.serialization.Codec;
-
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.level.NoiseColumn;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.JigsawConfiguration;
-import net.minecraft.world.level.levelgen.feature.structures.JigsawPlacement;
+import net.minecraft.world.level.levelgen.structure.BuiltinStructureSets;
 import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
 import net.minecraft.world.level.levelgen.structure.PostPlacementProcessor;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGenerator;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplier;
-
+import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.event.world.StructureSpawnListGatherEvent;
-
 import net.reikeb.electrona.init.EntityInit;
-import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.world.gen.Structures;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,8 +30,8 @@ public class RuinsStructure extends StructureFeature<JigsawConfiguration> {
             new MobSpawnSettings.SpawnerData(EntityInit.RADIOACTIVE_ZOMBIE.get(), 100, 4, 9)
     ));
 
-    public RuinsStructure(Codec<JigsawConfiguration> codec) {
-        super(codec, RuinsStructure::createPiecesGenerator, PostPlacementProcessor.NONE);
+    public RuinsStructure() {
+        super(JigsawConfiguration.CODEC, RuinsStructure::createPiecesGenerator, PostPlacementProcessor.NONE);
     }
 
     public static void setupStructureSpawns(final StructureSpawnListGatherEvent event) {
@@ -46,42 +41,22 @@ public class RuinsStructure extends StructureFeature<JigsawConfiguration> {
     }
 
     private static boolean isFeatureChunk(PieceGeneratorSupplier.Context<JigsawConfiguration> context) {
-        BlockPos blockPos = context.chunkPos().getWorldPosition();
+        ChunkPos chunkPos = context.chunkPos();
 
-        int landHeight = context.chunkGenerator().getFirstOccupiedHeight(blockPos.getX(), blockPos.getZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
-        NoiseColumn columnOfBlocks = context.chunkGenerator().getBaseColumn(blockPos.getX(), blockPos.getZ(), context.heightAccessor());
-
-        BlockState topBlock = columnOfBlocks.getBlock(landHeight);
-        return topBlock.getFluidState().isEmpty();
+        return !context.chunkGenerator().hasFeatureChunkInRange(BuiltinStructureSets.OCEAN_MONUMENTS, context.seed(), chunkPos.x, chunkPos.z, 9);
     }
 
-    public static Optional<PieceGenerator<JigsawConfiguration>> createPiecesGenerator(PieceGeneratorSupplier.Context<JigsawConfiguration> context) {
+    public static @NotNull Optional<PieceGenerator<JigsawConfiguration>> createPiecesGenerator(PieceGeneratorSupplier.Context<JigsawConfiguration> context) {
         if (!isFeatureChunk(context)) {
             return Optional.empty();
         }
-        JigsawConfiguration newConfig = new JigsawConfiguration(() ->
-                context.registryAccess().ownedRegistryOrThrow(Registry.TEMPLATE_POOL_REGISTRY)
-                        .get(Keys.RUINS_START_POOL), 10);
-
-        PieceGeneratorSupplier.Context<JigsawConfiguration> newContext = new PieceGeneratorSupplier.Context<>(
-                context.chunkGenerator(),
-                context.biomeSource(),
-                context.seed(),
-                context.chunkPos(),
-                newConfig,
-                context.heightAccessor(),
-                context.validBiome(),
-                context.structureManager(),
-                context.registryAccess());
-
-        int x = (context.chunkPos().x << 4) + 7;
-        int z = (context.chunkPos().z << 4) + 7;
-        BlockPos blockpos = new BlockPos(x, 0, z);
+        BlockPos blockPos = context.chunkPos().getMiddleBlockPosition(0);
+        blockPos = blockPos.above(context.chunkGenerator().getFirstFreeHeight(blockPos.getX(), blockPos.getZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor()));
 
         Optional<PieceGenerator<JigsawConfiguration>> structurePiecesGenerator = JigsawPlacement.addPieces(
-                newContext,
+                context,
                 PoolElementStructurePiece::new, // Needed in order to create a list of jigsaw pieces when making the structure's layout.
-                blockpos, // Position of the structure. Y value is ignored if last parameter is set to true.
+                blockPos, // Position of the structure. Y value is ignored if last parameter is set to true.
                 false,  // Special boundary adjustments for villages. It's... hard to explain. Keep this false and make your pieces not be partially intersecting.
                 // Either not intersecting or fully contained will make children pieces spawn just fine. It's easier that way.
                 true // Place at heightmap (top land). Set this to false for structure to be place at the passed in blockpos's Y value instead.

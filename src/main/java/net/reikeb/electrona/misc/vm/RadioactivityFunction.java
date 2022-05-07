@@ -8,12 +8,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-
 import net.reikeb.electrona.entity.RadioactiveZombie;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.init.PotionEffectInit;
 import net.reikeb.electrona.misc.DamageSources;
-import net.reikeb.electrona.utils.ElectronaUtils;
+import net.reikeb.maxilib.utils.Utils;
 
 public class RadioactivityFunction {
 
@@ -52,7 +51,7 @@ public class RadioactivityFunction {
      * @param power    The power of the give effect
      */
     public static void radioactiveItemInInventory(Level world, Entity entity, int duration, int power) {
-        for (LivingEntity entityiterator : ElectronaUtils.getLivingEntitiesInRadius(world, entity.blockPosition(), (int) (10 / 2d))) {
+        for (LivingEntity entityiterator : Utils.getLivingEntitiesInRadius(world, entity.blockPosition(), (int) (10 / 2d))) {
             if ((entityiterator instanceof Skeleton) || (entityiterator instanceof RadioactiveZombie)) return;
             if (!(entity instanceof LivingEntity livingEntity)) return;
             if (entityiterator instanceof Player player) {

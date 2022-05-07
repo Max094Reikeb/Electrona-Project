@@ -9,11 +9,9 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.Vec3;
-
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.entity.EnergeticLightningBolt;
 import net.reikeb.electrona.init.EntityInit;
@@ -35,7 +33,7 @@ public class WorldTickEvent {
             if (optional.isEmpty()) return;
             ChunkPos chunkpos = optional.get().getPos();
             DistanceManager distanceManager = chunkProvider.chunkMap.getDistanceManager();
-            if ((serverLevel.isPositionEntityTicking(chunkpos) && !chunkProvider.chunkMap.anyPlayerCloseEnoughForSpawning(chunkpos))
+            if ((serverLevel.isNaturalSpawningAllowed(chunkpos) && chunkProvider.chunkMap.anyPlayerCloseEnoughForSpawning(chunkpos))
                     || distanceManager.shouldForceTicks(chunkpos.toLong())) {
                 lightnings(serverLevel, optional.get());
             }

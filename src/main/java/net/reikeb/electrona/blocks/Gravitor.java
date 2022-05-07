@@ -24,7 +24,6 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
 import net.reikeb.electrona.blockentities.GravitorBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
 

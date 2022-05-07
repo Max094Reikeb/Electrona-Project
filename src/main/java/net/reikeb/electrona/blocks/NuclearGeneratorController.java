@@ -29,17 +29,15 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
-
 import net.reikeb.electrona.blockentities.NuclearGeneratorControllerBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.misc.vm.CustomShapes;
-import net.reikeb.electrona.utils.ElectronaUtils;
+import net.reikeb.maxilib.utils.Utils;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -82,7 +80,7 @@ public class NuclearGeneratorController extends Block implements EntityBlock {
         if (BlockInit.COOLER.get() == world.getBlockState(new BlockPos(pos.getX(), (pos.getY() - 1), pos.getZ())).getBlock()) {
             if (entity instanceof ServerPlayer serverPlayer) {
                 Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(Keys.UNLOCKED_POTENTIAL_ADVANCEMENT);
-                ElectronaUtils.awardAdvancement(serverPlayer, advancement, "Unlocked Potential!");
+                Utils.awardAdvancement(serverPlayer, advancement, "Unlocked Potential!");
             }
         }
     }

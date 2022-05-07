@@ -19,10 +19,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootContext;
-
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
 import net.reikeb.electrona.blockentities.BlueCableBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.misc.DamageSources;
@@ -49,8 +47,7 @@ public class BlueCable extends AbstractCable implements EntityBlock {
     public boolean canConnectTo(BlockState wireState, Level worldIn, BlockPos wirePos, BlockPos connectPos, Direction direction) {
         BlockState otherState = worldIn.getBlockState(connectPos);
 
-        return (Tags.GENERATORS.contains(otherState.getBlock())) || (Tags.MACHINES.contains(otherState.getBlock()))
-                || (Tags.BLUE_CABLE.contains(otherState.getBlock()));
+        return (otherState.is(Tags.GENERATORS)) || (otherState.is(Tags.MACHINES)) || (otherState.is(Tags.BLUE_CABLE));
     }
 
     @Override

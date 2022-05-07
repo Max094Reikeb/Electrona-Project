@@ -3,7 +3,6 @@ package net.reikeb.electrona.containers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-
 import net.reikeb.electrona.blockentities.DimensionLinkerBlockEntity;
 
 import java.util.HashMap;

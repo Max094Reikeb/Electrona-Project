@@ -1,7 +1,6 @@
 package net.reikeb.electrona.entity;
 
 import com.google.common.collect.Sets;
-
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -21,11 +20,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
-
 import net.reikeb.electrona.advancements.TTriggers;
 import net.reikeb.electrona.blockentities.EnergeticLightningRodBlockEntity;
 import net.reikeb.electrona.events.local.EntityStruckByEnergeticLightningEvent;

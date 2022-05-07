@@ -5,7 +5,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
-
 import net.reikeb.electrona.containers.SteelCrateContainer;
 
 import static net.reikeb.electrona.init.BlockEntityInit.STEEL_CRATE_BLOCK_ENTITY;

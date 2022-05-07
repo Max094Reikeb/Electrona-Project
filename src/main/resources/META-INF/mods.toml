@@ -1,10 +1,10 @@
 modLoader="javafml"
-loaderVersion="[39,)"
+loaderVersion="[40,)"
 license="All rights reserved"
 
 [[mods]]
 modId="electrona"
-version="1.18.1-r3.0"
+version="1.18.2-r3.0"
 displayName="Electrona"
 credits="Credits are on mod's page."
 displayURL="http://max-electrona.000webhostapp.com/"
@@ -18,13 +18,13 @@ It was originally made on MCreator, but then, the r2.0 version ported it off.
 [[dependencies.electrona]] #optional
     modId="forge"
     mandatory=true
-    versionRange="[39.1.0,)"
+    versionRange="[40.1.0,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.electrona]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.18.1,1.19)"
+    versionRange="[1.18.2,1.19)"
     ordering="NONE"
     side="BOTH"

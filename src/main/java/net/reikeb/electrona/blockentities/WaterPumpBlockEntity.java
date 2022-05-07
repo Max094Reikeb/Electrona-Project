@@ -14,9 +14,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
-
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-
 import net.reikeb.electrona.blocks.WaterPump;
 import net.reikeb.electrona.containers.WaterPumpContainer;
 import net.reikeb.electrona.init.SoundsInit;

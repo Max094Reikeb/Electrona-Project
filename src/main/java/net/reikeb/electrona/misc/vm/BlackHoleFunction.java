@@ -11,15 +11,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.init.ParticleInit;
 import net.reikeb.electrona.misc.GameEvents;
 import net.reikeb.electrona.misc.Tags;
-import net.reikeb.electrona.utils.ElectronaUtils;
 import net.reikeb.electrona.utils.GemPower;
 import net.reikeb.electrona.world.Gamerules;
+import net.reikeb.maxilib.utils.Utils;
 
 public class BlackHoleFunction {
 
@@ -64,7 +63,7 @@ public class BlackHoleFunction {
 
         AreaEffectCloud areaEffectCloudEntity = new AreaEffectCloud(world, pos.getX(), pos.getY(), pos.getZ());
 
-        for (LivingEntity entityiterator : ElectronaUtils.getLivingEntitiesInRadius(world, pos, 100)) {
+        for (LivingEntity entityiterator : Utils.getLivingEntitiesInRadius(world, pos, 100)) {
             areaEffectCloudEntity.setOwner(entityiterator);
         }
 

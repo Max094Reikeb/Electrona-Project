@@ -5,13 +5,11 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
-
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
-
 import net.reikeb.electrona.init.BiomeInit;
-import net.reikeb.electrona.utils.BiomeUtil;
+import net.reikeb.maxilib.utils.BiomeUtil;
 
 import java.util.Collection;
 import java.util.function.Supplier;

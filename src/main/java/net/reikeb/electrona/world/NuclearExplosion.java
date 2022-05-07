@@ -3,7 +3,6 @@ package net.reikeb.electrona.world;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -29,19 +28,17 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
-
 import net.reikeb.electrona.events.local.NuclearExplosionEvent;
 import net.reikeb.electrona.init.BiomeInit;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.misc.GameEvents;
 import net.reikeb.electrona.misc.Tags;
-import net.reikeb.electrona.utils.BiomeUtil;
-import net.reikeb.electrona.utils.Gravity;
+import net.reikeb.maxilib.utils.BiomeUtil;
+import net.reikeb.maxilib.utils.Gravity;
 
 import javax.annotation.Nullable;
 import java.util.List;

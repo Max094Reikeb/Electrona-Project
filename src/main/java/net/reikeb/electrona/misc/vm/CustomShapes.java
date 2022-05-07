@@ -5,8 +5,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import net.reikeb.electrona.utils.ElectronaUtils;
+import net.reikeb.maxilib.utils.Utils;
 
 import java.util.stream.Stream;
 
@@ -164,11 +163,11 @@ public class CustomShapes {
      */
     public static VoxelShape getVoxelShape(Direction facing, VoxelShape shape) {
         if (facing == Direction.SOUTH) {
-            return ElectronaUtils.rotateShape(Direction.NORTH, Direction.SOUTH, shape);
+            return Utils.rotateShape(Direction.NORTH, Direction.SOUTH, shape);
         } else if (facing == Direction.EAST) {
-            return ElectronaUtils.rotateShape(Direction.NORTH, Direction.EAST, shape);
+            return Utils.rotateShape(Direction.NORTH, Direction.EAST, shape);
         } else if (facing == Direction.WEST) {
-            return ElectronaUtils.rotateShape(Direction.NORTH, Direction.WEST, shape);
+            return Utils.rotateShape(Direction.NORTH, Direction.WEST, shape);
         }
         return shape;
     }
