@@ -7,7 +7,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.*;
-
 import net.reikeb.electrona.init.EntityInit;
 import net.reikeb.electrona.init.ParticleInit;
 

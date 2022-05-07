@@ -6,7 +6,6 @@ import net.minecraft.tags.Tag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-
 import net.reikeb.electrona.blockentities.AbstractEnergyBlockEntity;
 import net.reikeb.electrona.blockentities.WaterCableBlockEntity;
 import net.reikeb.electrona.misc.Tags;

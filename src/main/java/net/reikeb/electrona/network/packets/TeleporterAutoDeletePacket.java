@@ -2,9 +2,7 @@ package net.reikeb.electrona.network.packets;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-
 import net.minecraftforge.network.NetworkEvent;
-
 import net.reikeb.electrona.containers.TeleporterContainer;
 
 import java.util.function.Supplier;

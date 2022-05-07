@@ -3,11 +3,9 @@ package net.reikeb.electrona.world.gen.objects;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-
 import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-
 import net.reikeb.electrona.Electrona;
 
 /**

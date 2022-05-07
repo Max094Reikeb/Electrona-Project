@@ -1,9 +1,7 @@
 package net.reikeb.electrona.villages;
 
 import net.minecraft.world.entity.ai.village.poi.PoiType;
-
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
-
 import net.reikeb.electrona.Electrona;
 
 import java.lang.reflect.InvocationTargetException;

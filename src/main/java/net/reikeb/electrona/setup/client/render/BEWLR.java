@@ -1,7 +1,6 @@
 package net.reikeb.electrona.setup.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -13,9 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-
 import net.minecraftforge.common.util.Lazy;
-
 import net.reikeb.electrona.blockentities.GravitorBlockEntity;
 import net.reikeb.electrona.init.BlockInit;
 

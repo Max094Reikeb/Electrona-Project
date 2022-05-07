@@ -1,7 +1,6 @@
 package net.reikeb.electrona.setup;
 
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-
 import net.reikeb.electrona.init.*;
 import net.reikeb.electrona.villages.Villagers;
 import net.reikeb.electrona.world.gen.Structures;

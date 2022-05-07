@@ -23,9 +23,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-
 import net.minecraftforge.common.MinecraftForge;
-
 import net.reikeb.electrona.blockentities.DimensionLinkerBlockEntity;
 import net.reikeb.electrona.blockentities.TeleporterBlockEntity;
 import net.reikeb.electrona.events.local.TeleporterUseEvent;

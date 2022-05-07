@@ -4,9 +4,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
-
 import net.minecraftforge.network.NetworkEvent;
-
 import net.reikeb.electrona.containers.XPGeneratorContainer;
 
 import java.util.function.Supplier;

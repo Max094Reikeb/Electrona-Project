@@ -2,7 +2,10 @@ package net.reikeb.electrona.utils;
 
 import net.minecraft.world.item.ItemStack;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public enum GemPower {
 

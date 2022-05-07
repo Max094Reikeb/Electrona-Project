@@ -1,14 +1,12 @@
 package net.reikeb.electrona.setup.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.DyeColor;
-
 import net.reikeb.electrona.blockentities.SingularityBlockEntity;
 import net.reikeb.electrona.misc.Keys;
 

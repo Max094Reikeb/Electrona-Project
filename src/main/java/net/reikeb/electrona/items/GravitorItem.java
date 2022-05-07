@@ -7,10 +7,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-
 import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.common.util.NonNullLazy;
-
 import net.reikeb.electrona.blockentities.GravitorBlockEntity;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.setup.ItemGroups;

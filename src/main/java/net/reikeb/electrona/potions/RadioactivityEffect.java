@@ -4,7 +4,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.misc.vm.RadioactivityFunction;
 

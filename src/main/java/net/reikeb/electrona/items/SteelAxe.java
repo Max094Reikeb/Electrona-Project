@@ -5,7 +5,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
-
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.setup.ItemGroups;
 

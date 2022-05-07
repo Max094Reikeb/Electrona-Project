@@ -3,14 +3,12 @@ package net.reikeb.electrona.misc.vm;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
-
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-
 import net.reikeb.electrona.misc.Tags;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -34,9 +32,9 @@ public class FluidFunction {
             if (generatorLevel <= 0) return; // we have no more fluid
 
             BlockEntity blockEntity = world.getBlockEntity(pos.relative(dir));
-            Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
+            BlockState offsetBlockState = world.getBlockState(pos.relative(dir));
             if (blockEntity == null) continue;
-            if (!(Tags.WATER_TANK.contains(offsetBlock) || Tags.WATER_CABLE.contains(offsetBlock))) continue;
+            if (!(offsetBlockState.is(Tags.WATER_TANK) || offsetBlockState.is(Tags.WATER_CABLE))) continue;
 
             AtomicInteger machineLevel = getFluidAmount(blockEntity);
             AtomicInteger machineCapacity = getTankCapacity(blockEntity);

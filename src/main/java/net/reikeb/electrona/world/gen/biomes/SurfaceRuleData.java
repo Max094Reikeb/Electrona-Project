@@ -2,7 +2,6 @@ package net.reikeb.electrona.world.gen.biomes;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.SurfaceRules;
-
 import net.reikeb.electrona.init.BiomeInit;
 import net.reikeb.electrona.init.BlockInit;
 

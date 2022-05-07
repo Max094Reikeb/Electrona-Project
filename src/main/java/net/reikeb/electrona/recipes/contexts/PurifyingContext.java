@@ -2,9 +2,7 @@ package net.reikeb.electrona.recipes.contexts;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-
 import net.minecraftforge.items.IItemHandlerModifiable;
-
 import net.reikeb.electrona.inventory.ItemHandlerWrapper;
 
 import javax.annotation.Nullable;

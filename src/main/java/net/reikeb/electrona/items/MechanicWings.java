@@ -12,7 +12,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
-
 import net.reikeb.electrona.setup.ItemGroups;
 
 import javax.annotation.Nullable;

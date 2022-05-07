@@ -242,7 +242,8 @@ public class NuclearExplosion extends Explosion {
                     double yy = this.y + Y;
                     if (YY < onepointfiveradiussqrd) {
                         BlockPos blockPos = new BlockPos(xx, yy, zz);
-                        Block block = this.level.getBlockState(blockPos).getBlock();
+                        BlockState blockState = this.level.getBlockState(blockPos);
+                        Block block = blockState.getBlock();
                         if ((!Gravity.isAir(this.level, blockPos)) && (block != Blocks.BEDROCK)) {
                             int dist = (int) Math.sqrt(YY);
                             boolean flag = false;
@@ -262,12 +263,12 @@ public class NuclearExplosion extends Explosion {
                             }
                             if (dist < onepointfiveradius) {
                                 flag = true;
-                                if ((Y >= tworadius) || (Y >= this.size) || (Tags.GLASS.contains(block)) || (Tags.PANES.contains(block))
-                                        || (Tags.DOORS.contains(block)) || (block == Blocks.TORCH) || (block == Blocks.WATER)) {
+                                if ((Y >= tworadius) || (Y >= this.size) || (blockState.is(Tags.GLASS)) || (blockState.is(Tags.PANES))
+                                        || (blockState.is(Tags.DOORS)) || (block == Blocks.TORCH) || (block == Blocks.WATER)) {
                                     this.level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
-                                } else if ((Tags.PLANKS.contains(block)) || (Tags.STAIRS.contains(block)) || (Tags.SLABS.contains(block))) {
+                                } else if ((blockState.is(Tags.PLANKS)) || (blockState.is(Tags.STAIRS)) || (blockState.is(Tags.SLABS))) {
                                     this.level.setBlockAndUpdate(blockPos, Blocks.FIRE.defaultBlockState());
-                                } else if (Tags.LOGS.contains(block)) {
+                                } else if (blockState.is(Tags.LOGS)) {
                                     if (this.random.nextFloat() > 0.5) {
                                         this.level.setBlockAndUpdate(blockPos, Blocks.FIRE.defaultBlockState());
                                     } else {

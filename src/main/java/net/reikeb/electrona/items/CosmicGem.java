@@ -13,7 +13,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-
 import net.reikeb.electrona.misc.vm.CosmicGemFunction;
 import net.reikeb.electrona.setup.ItemGroups;
 import net.reikeb.electrona.utils.GemPower;

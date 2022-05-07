@@ -1,7 +1,6 @@
 package net.reikeb.electrona.misc;
 
 import net.minecraft.resources.ResourceLocation;
-
 import net.reikeb.electrona.Electrona;
 
 public class Keys {

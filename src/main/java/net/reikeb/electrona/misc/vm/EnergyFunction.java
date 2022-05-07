@@ -7,7 +7,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-
 import net.reikeb.electrona.blockentities.AbstractEnergyBlockEntity;
 import net.reikeb.electrona.misc.Tags;
 
@@ -109,7 +108,8 @@ public class EnergyFunction {
 
     /**
      * Small method to set the energy of a BlockEntity
-     * @param be The BlockEntity we set energy to
+     *
+     * @param be     The BlockEntity we set energy to
      * @param amount The amount of energy we set
      */
     public static void setEnergy(AbstractEnergyBlockEntity be, double amount) {

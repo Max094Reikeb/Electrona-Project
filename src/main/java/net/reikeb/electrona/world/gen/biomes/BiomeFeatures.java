@@ -1,6 +1,7 @@
 package net.reikeb.electrona.world.gen.biomes;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.util.valueproviders.BiasedToBottomInt;
@@ -14,13 +15,12 @@ import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConf
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.placement.*;
-
 import net.reikeb.electrona.init.BlockInit;
 
 public class BiomeFeatures {
 
     public static final ConfiguredFeature<RandomPatchConfiguration, ?> RADIOACTIVE_GRASS_FEATURE = FeatureUtils.register("patch_radioactive_grass", Feature.RANDOM_PATCH.configured(grassPatch(BlockStateProvider.simple(BlockInit.RADIOACTIVE_GRASS.get()), 5)));
-    public static final PlacedFeature PATCH_RADIOACTIVE_GRASS = PlacementUtils.register("patch_radioactive_grass", RADIOACTIVE_GRASS_FEATURE.placed(RarityFilter.onAverageOnceEvery(4), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome()));
+    public static final Holder<PlacedFeature> PATCH_RADIOACTIVE_GRASS = PlacementUtils.register("patch_radioactive_grass", RADIOACTIVE_GRASS_FEATURE.placed(RarityFilter.onAverageOnceEvery(4), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome()));
 
     public static final ConfiguredFeature<RandomPatchConfiguration, ?> RADIOACTIVE_TALL_GRASS_FEATURE = FeatureUtils.register("patch_radioactive_tall_grass", Feature.RANDOM_PATCH.configured(grassPatch(BlockStateProvider.simple(BlockInit.RADIOACTIVE_TALL_GRASS.get()), 2)));
     public static final PlacedFeature PATCH_RADIOACTIVE_TALL_GRASS = PlacementUtils.register("patch_radioactive_tall_grass", RADIOACTIVE_TALL_GRASS_FEATURE.placed(RarityFilter.onAverageOnceEvery(4), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome()));

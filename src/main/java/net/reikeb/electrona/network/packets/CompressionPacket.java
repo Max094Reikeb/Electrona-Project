@@ -2,9 +2,7 @@ package net.reikeb.electrona.network.packets;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-
 import net.minecraftforge.network.NetworkEvent;
-
 import net.reikeb.electrona.advancements.TTriggers;
 
 import java.util.function.Supplier;

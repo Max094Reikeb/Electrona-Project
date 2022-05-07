@@ -1,10 +1,7 @@
 package net.reikeb.electrona.init;
 
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.DoubleHighBlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.*;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -18,39 +15,39 @@ public class ItemInit {
             Electrona.MODID);
 
     // Items
-    public static final RegistryObject<Item> RAW_TIN = ITEMS.register("raw_tin", RawTin::new);
-    public static final RegistryObject<Item> TIN_INGOT = ITEMS.register("tin_ingot", TinIngot::new);
-    public static final RegistryObject<Item> TIN_PLATE = ITEMS.register("tin_plate", TinPlate::new);
-    public static final RegistryObject<Item> STEEL_INGOT = ITEMS.register("steel_ingot", SteelIngot::new);
-    public static final RegistryObject<Item> STEEL_PLATE = ITEMS.register("steel_plate", SteelPlate::new);
-    public static final RegistryObject<Item> RAW_LEAD = ITEMS.register("raw_lead", RawLead::new);
-    public static final RegistryObject<Item> LEAD_INGOT = ITEMS.register("lead_ingot", LeadIngot::new);
-    public static final RegistryObject<Item> GRAVITONIUM = ITEMS.register("gravitonium", Gravitonium::new);
+    public static final RegistryObject<Item> RAW_TIN = ITEMS.register("raw_tin", () -> new Item(new Item.Properties().tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> TIN_INGOT = ITEMS.register("tin_ingot", () -> new Item(new Item.Properties().tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> TIN_PLATE = ITEMS.register("tin_plate", () -> new Item(new Item.Properties().tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> STEEL_INGOT = ITEMS.register("steel_ingot", () -> new Item(new Item.Properties().tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> STEEL_PLATE = ITEMS.register("steel_plate", () -> new Item(new Item.Properties().tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> RAW_LEAD = ITEMS.register("raw_lead", () -> new Item(new Item.Properties().tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> LEAD_INGOT = ITEMS.register("lead_ingot", () -> new Item(new Item.Properties().tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> GRAVITONIUM = ITEMS.register("gravitonium", () -> new Item(new Item.Properties().rarity(Rarity.RARE).tab(ItemGroups.ELECTRONA_ITEMS)));
     public static final RegistryObject<Item> PORTABLE_BATTERY = ITEMS.register("portable_battery", PortableBattery::new);
-    public static final RegistryObject<Item> ELECTRONIC_CIRCUIT = ITEMS.register("electronic_circuit", ElectronicCircuit::new);
-    public static final RegistryObject<Item> MOTOR = ITEMS.register("motor", Motor::new);
-    public static final RegistryObject<Item> PADDLE = ITEMS.register("paddle", Paddle::new);
-    public static final RegistryObject<Item> PUMP = ITEMS.register("pump", Pump::new);
+    public static final RegistryObject<Item> ELECTRONIC_CIRCUIT = ITEMS.register("electronic_circuit", () -> new Item(new Item.Properties().tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> MOTOR = ITEMS.register("motor", () -> new Item(new Item.Properties().stacksTo(1).tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> PADDLE = ITEMS.register("paddle", () -> new Item(new Item.Properties().tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> PUMP = ITEMS.register("pump", () -> new Item(new Item.Properties().tab(ItemGroups.ELECTRONA_ITEMS)));
     public static final RegistryObject<Item> TELEPORT_SAVER = ITEMS.register("teleport_saver", TeleportSaver::new);
     public static final RegistryObject<Item> PORTABLE_TELEPORTER = ITEMS.register("portable_teleporter", PortableTeleporter::new);
     public static final RegistryObject<Item> ADVANCED_TOTEM_OF_UNDYING = ITEMS.register("advanced_totem_of_undying", AdvancedTotemOfUndying::new);
     public static final RegistryObject<Item> EMPTY_CELL = ITEMS.register("empty_cell", EmptyCell::new);
-    public static final RegistryObject<Item> WATER_CELL = ITEMS.register("water_cell", WaterCell::new);
-    public static final RegistryObject<Item> LAVA_CELL = ITEMS.register("lava_cell", LavaCell::new);
-    public static final RegistryObject<Item> BIOMASS_CELL = ITEMS.register("biomass_cell", BiomassCell::new);
-    public static final RegistryObject<Item> SUGAR_BOTTLE = ITEMS.register("sugar_bottle", SugarBottle::new);
-    public static final RegistryObject<Item> YELLOWCAKE = ITEMS.register("yellowcake", Yellowcake::new);
-    public static final RegistryObject<Item> CONCENTRATED_URANIUM = ITEMS.register("concentrated_uranium", ConcentratedUranium::new);
-    public static final RegistryObject<Item> PURIFIED_URANIUM = ITEMS.register("purified_uranium", PurifiedUranium::new);
-    public static final RegistryObject<Item> URANIUM_BAR = ITEMS.register("uranium_bar", UraniumBar::new);
-    public static final RegistryObject<Item> URANIUM_DUAL_BAR = ITEMS.register("uranium_dual_bar", UraniumDualBar::new);
-    public static final RegistryObject<Item> URANIUM_QUAD_BAR = ITEMS.register("uranium_quad_bar", UraniumQuadBar::new);
-    public static final RegistryObject<Item> EMITTER = ITEMS.register("emitter", Emitter::new);
-    public static final RegistryObject<Item> WIRELESS_BOOSTER = ITEMS.register("wireless_booster", WirelessBooster::new);
+    public static final RegistryObject<Item> WATER_CELL = ITEMS.register("water_cell", () -> new Item(new Item.Properties().stacksTo(1).tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> LAVA_CELL = ITEMS.register("lava_cell", () -> new Item(new Item.Properties().stacksTo(1).tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> BIOMASS_CELL = ITEMS.register("biomass_cell", () -> new Item(new Item.Properties().stacksTo(1).tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> SUGAR_BOTTLE = ITEMS.register("sugar_bottle", () -> new Item(new Item.Properties().stacksTo(16).tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> YELLOWCAKE = ITEMS.register("yellowcake", () -> new RadioactiveItem(200, 0, new Item.Properties().stacksTo(16).tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> CONCENTRATED_URANIUM = ITEMS.register("concentrated_uranium", () -> new RadioactiveItem(200, 1, new Item.Properties().stacksTo(3).tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> PURIFIED_URANIUM = ITEMS.register("purified_uranium", () -> new RadioactiveItem(200, 2, new Item.Properties().tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> URANIUM_BAR = ITEMS.register("uranium_bar", () -> new RadioactiveItem(300, 3, new Item.Properties().durability(6000).tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> URANIUM_DUAL_BAR = ITEMS.register("uranium_dual_bar", () -> new RadioactiveItem(400, 3, new Item.Properties().durability(12000).tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> URANIUM_QUAD_BAR = ITEMS.register("uranium_quad_bar", () -> new RadioactiveItem(600, 3, new Item.Properties().durability(24000).tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> EMITTER = ITEMS.register("emitter", () -> new Item(new Item.Properties().tab(ItemGroups.ELECTRONA_ITEMS)));
+    public static final RegistryObject<Item> WIRELESS_BOOSTER = ITEMS.register("wireless_booster", () -> new Item(new Item.Properties().stacksTo(1).tab(ItemGroups.ELECTRONA_ITEMS)));
     public static final RegistryObject<SpawnEggItem> RADIOACTIVE_ZOMBIE_SPAWN_EGG = ITEMS.register("radioactive_zombie_spawn_egg", RadioactiveZombieEgg::new);
     public static final RegistryObject<Item> GEIGER_POINTER = ITEMS.register("geiger_pointer", GeigerPointer::new);
     public static final RegistryObject<Item> COSMIC_GEM = ITEMS.register("cosmic_gem", CosmicGem::new);
-    public static final RegistryObject<Item> GRAVITY_DEVICE = ITEMS.register("gravity_device", GravityDevice::new);
+    public static final RegistryObject<Item> GRAVITY_DEVICE = ITEMS.register("gravity_device", () -> new Item(new Item.Properties().rarity(Rarity.RARE).tab(ItemGroups.ELECTRONA_ITEMS)));
     public static final RegistryObject<Item> ENERGY_ANALYZER = ITEMS.register("energy_analyzer", EnergyAnalyzer::new);
 
     // Tools and armors

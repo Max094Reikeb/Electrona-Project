@@ -3,12 +3,10 @@ package net.reikeb.electrona.world.gen;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.sounds.SoundEvent;
-
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.world.gen.objects.SoundBuilder;

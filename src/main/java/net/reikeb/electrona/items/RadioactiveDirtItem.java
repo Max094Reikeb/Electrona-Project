@@ -6,7 +6,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.misc.vm.RadioactivityFunction;
 import net.reikeb.electrona.setup.ItemGroups;
