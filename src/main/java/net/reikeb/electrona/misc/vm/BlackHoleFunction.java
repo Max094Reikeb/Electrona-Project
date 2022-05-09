@@ -11,12 +11,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.reikeb.electrona.gempower.PowerUtils;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.init.ParticleInit;
 import net.reikeb.electrona.misc.GameEvents;
 import net.reikeb.electrona.misc.Tags;
-import net.reikeb.electrona.utils.GemPower;
 import net.reikeb.electrona.world.Gamerules;
 import net.reikeb.maxilib.utils.Utils;
 
@@ -87,7 +87,7 @@ public class BlackHoleFunction {
     public static void singularityDelay(Level world, BlockPos pos) {
         if (world.isClientSide) return;
         ItemStack stack = new ItemStack(ItemInit.COSMIC_GEM.get(), 1);
-        stack.getOrCreateTag().putString("power", GemPower.randomPowerId());
+        PowerUtils.setRandomPower(stack);
         ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack);
         itemEntity.setPickUpDelay(10);
         world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
