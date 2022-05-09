@@ -136,7 +136,7 @@ public class PowerUtils {
                 text.add(new TranslatableComponent("power.electrona.cosmic_gem_cooldown", cooldown).withStyle(ChatFormatting.DARK_GRAY));
                 if (stack.getOrCreateTag().getBoolean("dimensionTravel")) {
                     String dimension = stack.getOrCreateTag().getString("dimension");
-                    text.add(new TranslatableComponent(gemPower.getDescriptionId() + "_" + dimension).withStyle(ChatFormatting.GRAY));
+                    text.add(new TranslatableComponent(gemPower.getDescriptionId() + "_" + dimension).withStyle(ChatFormatting.DARK_GRAY));
                 }
             }
         }
