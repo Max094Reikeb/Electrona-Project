@@ -7,15 +7,17 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.reikeb.electrona.init.GemInit;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 import java.util.function.Supplier;
 
 public class PowerUtils {
@@ -101,26 +103,9 @@ public class PowerUtils {
     }
 
     public static void setRandomPower(ItemStack stack) {
-        List<GemPowerInstance> list = getPower(stack);
-        if (!list.isEmpty()) return;
-        List<Set<Map.Entry<ResourceKey<GemObject>, GemObject>>> gemObjects = List.of(GemInit.GEM_REGISTRY.get().getEntries());
-        Set<Map.Entry<ResourceKey<GemObject>, GemObject>> randomGemObject = gemObjects.get(new Random().nextInt(gemObjects.size()));
-        for (Map.Entry<ResourceKey<GemObject>, GemObject> gemObject : randomGemObject) {
-            setGem(stack, gemObject.getValue());
-        }
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void addGemItemTooltip(ItemStack stack, List<Component> text) {
-        List<GemPowerInstance> list = getPower(stack);
-        if (list.isEmpty()) {
-            text.add(NO_CONTENT);
-        } else {
-            for (GemPowerInstance gemPowerInstance : list) {
-                GemPower gemPower = gemPowerInstance.getGemPower();
-                text.add(new TranslatableComponent(gemPower.getDescriptionId()).withStyle(ChatFormatting.GRAY));
-            }
-        }
+        if (!getPower(stack).isEmpty()) return;
+        @NotNull Collection<GemObject> values = GemInit.GEM_REGISTRY.get().getValues();
+        setGem(stack, values.stream().skip(new Random().nextInt(values.size())).findFirst().orElseThrow());
     }
 
     @OnlyIn(Dist.CLIENT)
