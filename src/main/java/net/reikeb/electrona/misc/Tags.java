@@ -29,8 +29,4 @@ public class Tags {
     public static TagKey<Block> STOPS_BLACK_HOLE = BlockTags.create(Keys.STOPS_BLACK_HOLES_TAG);
     public static TagKey<Block> WATER_CABLE = BlockTags.create(Keys.WATER_CABLE_TAG);
     public static TagKey<Block> WATER_TANK = BlockTags.create(Keys.HAS_WATER_TANK_TAG);
-
-    public static boolean isBlockTag(Block block, TagKey<Block> blockTagKey) {
-        return block.builtInRegistryHolder().is(blockTagKey);
-    }
 }

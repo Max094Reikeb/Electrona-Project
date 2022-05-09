@@ -8,17 +8,17 @@ import net.reikeb.electrona.misc.vm.RadioactivityFunction;
 
 public class RadioactiveItem extends Item {
 
-    private final int radioDura;
-    private final int radioPower;
+    private final int durability;
+    private final int power;
 
-    public RadioactiveItem(int radioDura, int radioPower, Item.Properties properties) {
+    public RadioactiveItem(int durability, int power, Item.Properties properties) {
         super(properties);
-        this.radioDura = radioDura;
-        this.radioPower = radioPower;
+        this.durability = durability;
+        this.power = power;
     }
 
     @Override
     public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
-        RadioactivityFunction.radioactiveItemInInventory(world, entity, radioDura, radioPower);
+        RadioactivityFunction.radioactiveItemInInventory(world, entity, durability, power);
     }
 }

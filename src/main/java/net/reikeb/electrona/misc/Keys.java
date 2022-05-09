@@ -58,6 +58,7 @@ public class Keys {
 
     // Dimensions
     public static final ResourceLocation OVERWORLD = Electrona.MRL("overworld");
+    public static final ResourceLocation ELECTRONA_OVERWORLD = Electrona.RL("overworld");
 
     // Engineer House
     public static final ResourceLocation ENGINEER_HOUSE_PLAINS = Electrona.RL("villages/engineer_house_plains");
