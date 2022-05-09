@@ -25,6 +25,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.reikeb.electrona.blockentities.WaterTurbineBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.misc.vm.CustomShapes;
+import net.reikeb.maxilib.abs.AbstractWaterLoggableBlock;
 import net.reikeb.maxilib.utils.Utils;
 
 import javax.annotation.Nullable;

@@ -11,6 +11,7 @@ import net.reikeb.electrona.containers.DimensionLinkerContainer;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.DimensionIDPacket;
+import net.reikeb.maxilib.abs.AbstractWindow;
 
 public class DimensionLinkerWindow extends AbstractWindow<DimensionLinkerContainer> {
 

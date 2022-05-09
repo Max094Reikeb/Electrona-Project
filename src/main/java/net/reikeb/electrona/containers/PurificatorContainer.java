@@ -5,6 +5,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.reikeb.electrona.blockentities.PurificatorBlockEntity;
+import net.reikeb.electrona.misc.Slots;
+import net.reikeb.maxilib.abs.AbstractContainer;
 
 import static net.reikeb.electrona.init.ContainerInit.PURIFICATOR_CONTAINER;
 
@@ -19,9 +21,9 @@ public class PurificatorContainer extends AbstractContainer {
         if (purificatorBlockEntity == null) return;
 
         purificatorBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            addSlot(new WaterBucketSlot(h, 0, 27, 27));
-            addSlot(new BasicInputSlot(h, 1, 56, 40));
-            addSlot(new PurificatorOutputSlot(h, 2, 136, 40));
+            addSlot(new Slots.WaterBucketSlot(h, 0, 27, 27));
+            addSlot(new Slots.BasicInputSlot(h, 1, 56, 40));
+            addSlot(new Slots.PurificatorOutputSlot(h, 2, 136, 40));
         });
 
         this.layoutPlayerInventorySlots(inv);

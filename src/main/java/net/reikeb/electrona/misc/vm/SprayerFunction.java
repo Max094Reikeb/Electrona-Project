@@ -12,7 +12,7 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
 import net.reikeb.electrona.blockentities.SprayerBlockEntity;
 import net.reikeb.electrona.init.ItemInit;
-import net.reikeb.electrona.inventory.ItemHandler;
+import net.reikeb.maxilib.inventory.ItemHandler;
 import net.reikeb.maxilib.utils.Utils;
 
 public class SprayerFunction {

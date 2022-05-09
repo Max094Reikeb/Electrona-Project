@@ -15,12 +15,15 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.blocks.WaterPump;
 import net.reikeb.electrona.containers.WaterPumpContainer;
 import net.reikeb.electrona.init.SoundsInit;
-import net.reikeb.electrona.inventory.ItemHandler;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.electrona.misc.vm.FluidFunction;
+import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
+import net.reikeb.maxilib.abs.AbstractFluidBlockEntity;
+import net.reikeb.maxilib.inventory.ItemHandler;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -35,7 +38,7 @@ public class WaterPumpBlockEntity extends AbstractFluidBlockEntity implements Ab
     private int wait;
 
     public WaterPumpBlockEntity(BlockPos pos, BlockState state) {
-        super(WATER_PUMP_BLOCK_ENTITY.get(), pos, state, "water_pump", 2, 10000);
+        super(WATER_PUMP_BLOCK_ENTITY.get(), pos, state, "water_pump", Electrona.MODID, 2, 10000);
     }
 
     @Override

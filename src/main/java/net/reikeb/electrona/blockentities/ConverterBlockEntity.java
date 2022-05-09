@@ -15,9 +15,12 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.ConverterContainer;
-import net.reikeb.electrona.inventory.ItemHandler;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
+import net.reikeb.maxilib.abs.AbstractBlockEntity;
+import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
+import net.reikeb.maxilib.inventory.ItemHandler;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -55,7 +58,7 @@ public class ConverterBlockEntity extends AbstractBlockEntity implements Abstrac
     private int wait;
 
     public ConverterBlockEntity(BlockPos pos, BlockState state) {
-        super(CONVERTER_BLOCK_ENTITY.get(), pos, state, "el_converter", 3);
+        super(CONVERTER_BLOCK_ENTITY.get(), pos, state, "el_converter", Electrona.MODID, 3);
     }
 
     @Override

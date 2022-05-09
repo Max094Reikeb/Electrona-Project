@@ -25,6 +25,7 @@ import net.reikeb.electrona.blockentities.BlueCableBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.misc.DamageSources;
 import net.reikeb.electrona.misc.Tags;
+import net.reikeb.maxilib.abs.AbstractCable;
 
 import javax.annotation.Nullable;
 import java.util.Collections;

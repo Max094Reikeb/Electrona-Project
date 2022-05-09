@@ -20,8 +20,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ParticleInit;
-import net.reikeb.electrona.inventory.ItemHandler;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
+import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
+import net.reikeb.maxilib.inventory.ItemHandler;
 import net.reikeb.maxilib.utils.Gravity;
 
 import javax.annotation.Nullable;

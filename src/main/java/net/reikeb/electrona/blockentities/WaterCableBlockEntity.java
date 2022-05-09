@@ -14,6 +14,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.reikeb.electrona.misc.vm.CableFunction;
+import net.reikeb.maxilib.abs.AbstractFluidBlockEntity;
 
 import javax.annotation.Nullable;
 import java.util.Objects;

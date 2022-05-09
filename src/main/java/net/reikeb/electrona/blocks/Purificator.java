@@ -32,6 +32,7 @@ import net.minecraftforge.network.NetworkHooks;
 import net.reikeb.electrona.blockentities.PurificatorBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.misc.vm.CustomShapes;
+import net.reikeb.maxilib.abs.AbstractWaterLoggableBlock;
 
 import javax.annotation.Nullable;
 import java.util.Collections;

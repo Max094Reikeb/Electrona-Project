@@ -26,6 +26,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.reikeb.electrona.blockentities.MiningPipeBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
+import net.reikeb.maxilib.abs.AbstractWaterLoggableBlock;
 
 import javax.annotation.Nullable;
 import java.util.Collections;

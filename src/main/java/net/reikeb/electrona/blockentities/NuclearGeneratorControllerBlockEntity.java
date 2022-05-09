@@ -15,15 +15,18 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.blocks.NuclearGeneratorController;
 import net.reikeb.electrona.containers.NuclearGeneratorControllerContainer;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.init.SoundsInit;
-import net.reikeb.electrona.inventory.ItemHandler;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.electrona.misc.vm.FluidFunction;
 import net.reikeb.electrona.misc.vm.NuclearFunction;
+import net.reikeb.maxilib.abs.AbstractBlockEntity;
+import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
+import net.reikeb.maxilib.inventory.ItemHandler;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -46,7 +49,7 @@ public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity i
     private int wait;
 
     public NuclearGeneratorControllerBlockEntity(BlockPos pos, BlockState state) {
-        super(NUCLEAR_GENERATOR_CONTROLLER_BLOCK_ENTITY.get(), pos, state, "nuclear_generator_controller", 2);
+        super(NUCLEAR_GENERATOR_CONTROLLER_BLOCK_ENTITY.get(), pos, state, "nuclear_generator_controller", Electrona.MODID, 2);
     }
 
     @Override

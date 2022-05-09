@@ -5,6 +5,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.reikeb.electrona.blockentities.NuclearBombBlockEntity;
+import net.reikeb.electrona.misc.Slots;
+import net.reikeb.maxilib.abs.AbstractContainer;
 
 import static net.reikeb.electrona.init.ContainerInit.NUCLEAR_BOMB_CONTAINER;
 
@@ -19,8 +21,8 @@ public class NuclearBombContainer extends AbstractContainer {
         if (nuclearBombBlockEntity == null) return;
 
         nuclearBombBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            addSlot(new BasicInputSlot(h, 0, 53, 36));
-            addSlot(new BasicInputSlot(h, 1, 96, 36));
+            addSlot(new Slots.BasicInputSlot(h, 0, 53, 36));
+            addSlot(new Slots.BasicInputSlot(h, 1, 96, 36));
         });
 
         this.layoutPlayerInventorySlots(inv);

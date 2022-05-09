@@ -11,11 +11,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
+import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.BiomassGeneratorContainer;
 import net.reikeb.electrona.init.SoundsInit;
-import net.reikeb.electrona.inventory.ItemHandler;
 import net.reikeb.electrona.misc.Tags;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
+import net.reikeb.maxilib.abs.AbstractBlockEntity;
+import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
+import net.reikeb.maxilib.inventory.ItemHandler;
 
 import static net.reikeb.electrona.init.BlockEntityInit.BIOMASS_GENERATOR_BLOCK_ENTITY;
 
@@ -27,7 +30,7 @@ public class BiomassGeneratorBlockEntity extends AbstractBlockEntity implements 
     private int wait;
 
     public BiomassGeneratorBlockEntity(BlockPos pos, BlockState state) {
-        super(BIOMASS_GENERATOR_BLOCK_ENTITY.get(), pos, state, "biomass_generator", 1);
+        super(BIOMASS_GENERATOR_BLOCK_ENTITY.get(), pos, state, "biomass_generator", Electrona.MODID, 1);
     }
 
     @Override

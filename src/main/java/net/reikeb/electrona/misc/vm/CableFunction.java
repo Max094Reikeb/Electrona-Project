@@ -2,13 +2,14 @@ package net.reikeb.electrona.misc.vm;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.reikeb.electrona.blockentities.AbstractEnergyBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.blockentities.WaterCableBlockEntity;
 import net.reikeb.electrona.misc.Tags;
+import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -28,29 +29,29 @@ public class CableFunction {
         double transferPerTick = transferPerSecond * 0.05;
         double cablePower = cableBlockEntity.getElectronicPower();
 
-        Tag<Block> machineTag = isBlue ? Tags.BLUE_MACHINES : Tags.MACHINES;
-        Tag<Block> cableTag = isBlue ? Tags.BLUE_CABLE : Tags.CABLE;
+        TagKey<Block> machineTag = isBlue ? Tags.BLUE_MACHINES : Tags.MACHINES;
+        TagKey<Block> cableTag = isBlue ? Tags.BLUE_CABLE : Tags.CABLE;
 
         for (Direction dir : directions) {
             if (cablePower > 0) {
                 BlockEntity blockEntity = world.getBlockEntity(pos.relative(dir));
-                Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
+                BlockState offsetBlockState = world.getBlockState(pos.relative(dir));
                 if (blockEntity == null) continue;
-                if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
+                if (!(offsetBlockState.is(machineTag) || offsetBlockState.is(cableTag))) continue;
                 if (!(blockEntity instanceof AbstractEnergyBlockEntity energyBlockEntity)) continue;
 
                 double machinePower = energyBlockEntity.getElectronicPower();
                 int machineMax = energyBlockEntity.getMaxStorage();
                 boolean machineLogic = energyBlockEntity.getLogic();
 
-                if (machineTag.contains(offsetBlock)) {
+                if (offsetBlockState.is(machineTag)) {
                     if (machinePower < (machineMax - cablePower)) {
                         EnergyFunction.fillEnergy(energyBlockEntity, transferPerTick);
                         EnergyFunction.drainEnergy(cableBlockEntity, transferPerTick);
                     } else {
                         EnergyFunction.setEnergy(energyBlockEntity, machineMax);
                     }
-                } else if (cableTag.contains(offsetBlock)) {
+                } else if (offsetBlockState.is(cableTag)) {
                     if ((!machineLogic) && ((transferPerTick + machinePower) < machineMax)) {
                         EnergyFunction.fillEnergy(energyBlockEntity, transferPerTick);
                         EnergyFunction.drainEnergy(cableBlockEntity, transferPerTick);
@@ -81,22 +82,22 @@ public class CableFunction {
         for (Direction dir : directions) {
             if (cableFLuid > 0) {
                 BlockEntity blockEntity = world.getBlockEntity(pos.relative(dir));
-                Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
+                BlockState offsetBlockState = world.getBlockState(pos.relative(dir));
                 if (blockEntity == null) continue;
-                if (!(Tags.WATER_TANK.contains(offsetBlock) || Tags.WATER_CABLE.contains(offsetBlock))) continue;
+                if (!(offsetBlockState.is(Tags.WATER_TANK) || offsetBlockState.is(Tags.WATER_CABLE))) continue;
 
                 AtomicInteger machineFluid = FluidFunction.getFluidAmount(blockEntity);
                 AtomicInteger machineMax = FluidFunction.getTankCapacity(blockEntity);
                 boolean machineLogic = (blockEntity instanceof WaterCableBlockEntity waterCableBlock) && waterCableBlock.getLogic();
 
-                if (Tags.WATER_TANK.contains(offsetBlock)) {
+                if (offsetBlockState.is(Tags.WATER_TANK)) {
                     if (machineFluid.get() < (machineMax.get() - cableFLuid)) {
                         FluidFunction.fillWater(blockEntity, (int) transferPerTick);
                         FluidFunction.drainWater(waterCableBlockEntity, (int) transferPerTick);
                     } else {
                         FluidFunction.fillWater(blockEntity, (machineMax.get() - machineFluid.get()));
                     }
-                } else if (Tags.WATER_CABLE.contains(offsetBlock)) {
+                } else if (offsetBlockState.is(Tags.WATER_CABLE)) {
                     if ((!machineLogic) && ((transferPerTick + machineFluid.get()) < machineMax.get())) {
                         FluidFunction.fillWater(blockEntity, (int) transferPerTick);
                         FluidFunction.drainWater(waterCableBlockEntity, (int) transferPerTick);

@@ -5,6 +5,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.reikeb.electrona.blockentities.SprayerBlockEntity;
+import net.reikeb.electrona.misc.Slots;
+import net.reikeb.maxilib.abs.AbstractContainer;
 
 import static net.reikeb.electrona.init.ContainerInit.SPRAYER_CONTAINER;
 
@@ -19,10 +21,10 @@ public class SprayerContainer extends AbstractContainer {
         if (sprayerBlockEntity == null) return;
 
         sprayerBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            addSlot(new BasicInputSlot(h, 0, 80, 14));
-            addSlot(new WirelessSlot(h, 1, 20, 44));
-            addSlot(new WirelessSlot(h, 2, 50, 44));
-            addSlot(new WirelessSlot(h, 3, 80, 44));
+            addSlot(new Slots.BasicInputSlot(h, 0, 80, 14));
+            addSlot(new Slots.WirelessSlot(h, 1, 20, 44));
+            addSlot(new Slots.WirelessSlot(h, 2, 50, 44));
+            addSlot(new Slots.WirelessSlot(h, 3, 80, 44));
         });
 
         this.layoutPlayerInventorySlots(inv);

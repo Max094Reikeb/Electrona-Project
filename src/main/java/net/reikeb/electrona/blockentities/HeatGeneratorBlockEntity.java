@@ -12,9 +12,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.blocks.HeatGenerator;
-import net.reikeb.electrona.inventory.ItemHandler;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
+import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
+import net.reikeb.maxilib.inventory.ItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.Objects;

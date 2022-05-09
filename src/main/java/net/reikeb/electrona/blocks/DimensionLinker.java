@@ -21,6 +21,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import net.reikeb.electrona.blockentities.DimensionLinkerBlockEntity;
+import net.reikeb.maxilib.abs.AbstractWaterLoggableBlock;
 
 import java.util.Collections;
 import java.util.List;

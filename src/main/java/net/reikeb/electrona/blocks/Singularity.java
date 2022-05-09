@@ -29,6 +29,7 @@ import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.misc.Tags;
 import net.reikeb.electrona.world.Gamerules;
+import net.reikeb.maxilib.abs.AbstractWaterLoggableBlock;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -54,7 +55,7 @@ public class Singularity extends AbstractWaterLoggableBlock implements EntityBlo
         if (world.getLevelData().getGameRules().getBoolean(Gamerules.DO_BLACK_HOLES_EXIST)) {
 
             for (BlockPos testPos : BlockPos.spiralAround(pos, 1000, Direction.EAST, Direction.SOUTH)) {
-                if (!Tags.STOPS_BLACK_HOLE.contains(world.getBlockState(testPos).getBlock())) {
+                if (!world.getBlockState(testPos).is(Tags.STOPS_BLACK_HOLE)) {
                     world.setBlockAndUpdate(testPos, BlockInit.HOLE.get().defaultBlockState());
                     return;
                 }

@@ -6,6 +6,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.reikeb.electrona.containers.SteelCrateContainer;
 import net.reikeb.electrona.misc.Keys;
+import net.reikeb.maxilib.abs.AbstractWindow;
 
 public class SteelCrateWindow extends AbstractWindow<SteelCrateContainer> {
 

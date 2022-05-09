@@ -15,11 +15,13 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.PurificatorContainer;
 import net.reikeb.electrona.events.local.PurificationEvent;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.misc.vm.FluidFunction;
 import net.reikeb.electrona.recipes.Recipes;
+import net.reikeb.maxilib.abs.AbstractFluidBlockEntity;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -34,7 +36,7 @@ public class PurificatorBlockEntity extends AbstractFluidBlockEntity {
     private boolean canPurify;
 
     public PurificatorBlockEntity(BlockPos pos, BlockState state) {
-        super(PURIFICATOR_BLOCK_ENTITY.get(), pos, state, "purificator", 3, 10000);
+        super(PURIFICATOR_BLOCK_ENTITY.get(), pos, state, "purificator", Electrona.MODID, 3, 10000);
     }
 
     @Override

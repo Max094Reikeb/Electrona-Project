@@ -12,8 +12,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.reikeb.electrona.blockentities.AbstractEnergyBlockEntity;
 import net.reikeb.electrona.setup.ItemGroups;
+import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
 
 import java.util.List;
 

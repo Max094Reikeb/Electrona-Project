@@ -12,13 +12,16 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
+import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.blocks.Compressor;
 import net.reikeb.electrona.containers.CompressorContainer;
 import net.reikeb.electrona.events.local.CompressionEvent;
 import net.reikeb.electrona.init.SoundsInit;
-import net.reikeb.electrona.inventory.ItemHandler;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.electrona.recipes.Recipes;
+import net.reikeb.maxilib.abs.AbstractBlockEntity;
+import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
+import net.reikeb.maxilib.inventory.ItemHandler;
 
 import static net.reikeb.electrona.init.BlockEntityInit.COMPRESSOR_BLOCK_ENTITY;
 
@@ -33,7 +36,7 @@ public class CompressorBlockEntity extends AbstractBlockEntity implements Abstra
     private boolean canCompress;
 
     public CompressorBlockEntity(BlockPos pos, BlockState state) {
-        super(COMPRESSOR_BLOCK_ENTITY.get(), pos, state, "compressor", 3);
+        super(COMPRESSOR_BLOCK_ENTITY.get(), pos, state, "compressor", Electrona.MODID, 3);
     }
 
     @Override

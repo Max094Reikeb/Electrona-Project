@@ -1,6 +1,7 @@
 package net.reikeb.electrona.items;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
@@ -17,12 +18,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.Electrona;
+import net.reikeb.electrona.init.BiomeInit;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.setup.ItemGroups;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class GeigerPointer extends Item {
 
@@ -70,7 +73,7 @@ public class GeigerPointer extends Item {
 
     @Nullable
     private BlockPos getBiomePosition(Level world, Entity entity) {
-        Optional<Biome> biome = world.getServer().registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getOptional(Keys.NUCLEAR_BIOME);
+        Optional<Holder<Biome>> biome = world.getServer().registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getHolder(BiomeInit.NUCLEAR);
 
         if (biome.isPresent() && (world.getServer() != null)) {
             return world.getServer().overworld().findNearestBiome(biome.get(), entity.blockPosition(), 6400, 8);

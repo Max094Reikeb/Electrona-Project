@@ -10,6 +10,7 @@ import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.TeleporterAutoDeletePacket;
 import net.reikeb.electrona.network.packets.TeleporterLinkPacket;
+import net.reikeb.maxilib.abs.AbstractWindow;
 
 public class TeleporterWindow extends AbstractWindow<TeleporterContainer> {
 

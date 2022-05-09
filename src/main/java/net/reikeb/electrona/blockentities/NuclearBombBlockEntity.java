@@ -5,15 +5,17 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
+import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.NuclearBombContainer;
 import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.maxilib.abs.AbstractBlockEntity;
 
 import static net.reikeb.electrona.init.BlockEntityInit.NUCLEAR_BOMB_BLOCK_ENTITY;
 
 public class NuclearBombBlockEntity extends AbstractBlockEntity {
 
     public NuclearBombBlockEntity(BlockPos pos, BlockState state) {
-        super(NUCLEAR_BOMB_BLOCK_ENTITY.get(), pos, state, "nuclear_bomb", 2);
+        super(NUCLEAR_BOMB_BLOCK_ENTITY.get(), pos, state, "nuclear_bomb", Electrona.MODID, 2);
     }
 
     @Override

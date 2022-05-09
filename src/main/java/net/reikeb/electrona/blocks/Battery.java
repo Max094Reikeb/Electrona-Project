@@ -29,6 +29,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 import net.reikeb.electrona.blockentities.BatteryBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
+import net.reikeb.maxilib.abs.AbstractWaterLoggableBlock;
 
 import javax.annotation.Nullable;
 import java.util.Collections;

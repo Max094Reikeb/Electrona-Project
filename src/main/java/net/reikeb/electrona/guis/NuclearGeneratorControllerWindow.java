@@ -12,6 +12,7 @@ import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.NuclearActivatePacket;
 import net.reikeb.electrona.network.packets.NuclearBarStatusPacket;
+import net.reikeb.maxilib.abs.AbstractWindow;
 import net.reikeb.maxilib.utils.Utils;
 
 public class NuclearGeneratorControllerWindow extends AbstractWindow<NuclearGeneratorControllerContainer> {

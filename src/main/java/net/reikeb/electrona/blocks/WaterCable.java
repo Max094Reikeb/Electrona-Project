@@ -22,6 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.reikeb.electrona.blockentities.WaterCableBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.misc.Tags;
+import net.reikeb.maxilib.abs.AbstractCable;
 
 import javax.annotation.Nullable;
 import java.util.Collections;

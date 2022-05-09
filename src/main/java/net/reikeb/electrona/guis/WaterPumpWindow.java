@@ -11,6 +11,7 @@ import net.reikeb.electrona.containers.WaterPumpContainer;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.WaterPumpActivationPacket;
+import net.reikeb.maxilib.abs.AbstractWindow;
 import net.reikeb.maxilib.utils.Utils;
 
 public class WaterPumpWindow extends AbstractWindow<WaterPumpContainer> {

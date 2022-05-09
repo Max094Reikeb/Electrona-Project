@@ -9,8 +9,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.init.ParticleInit;
@@ -34,15 +34,15 @@ public class BlackHoleFunction {
 
         if (world.getLevelData().getGameRules().getBoolean(Gamerules.DO_BLACK_HOLES_EXIST)) {
             for (Direction dir : directions) {
-                Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
+                BlockState offsetBlockState = world.getBlockState(pos.relative(dir));
 
-                if ((Math.random() >= 0.5) && (!Tags.STOPS_BLACK_HOLE.contains(offsetBlock))) {
+                if ((Math.random() >= 0.5) && (!offsetBlockState.is(Tags.STOPS_BLACK_HOLE))) {
                     world.setBlock(pos.relative(dir), BlockInit.HOLE.get().defaultBlockState(), 3);
                 }
-                if (!Tags.STOPS_BLACK_HOLE.contains(world.getBlockState(pos.below()).getBlock())) {
+                if (!world.getBlockState(pos.below()).is(Tags.STOPS_BLACK_HOLE)) {
                     world.setBlock(pos.below(), BlockInit.HOLE.get().defaultBlockState(), 3);
                 }
-                if (!Tags.STOPS_BLACK_HOLE.contains(world.getBlockState(pos.above()).getBlock())) {
+                if (!world.getBlockState(pos.above()).is(Tags.STOPS_BLACK_HOLE)) {
                     world.setBlock(pos.above(), BlockInit.HOLE.get().defaultBlockState(), 3);
                 }
             }

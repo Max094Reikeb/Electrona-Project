@@ -10,10 +10,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
+import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.blocks.XPGenerator;
 import net.reikeb.electrona.containers.XPGeneratorContainer;
-import net.reikeb.electrona.inventory.ItemHandler;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
+import net.reikeb.maxilib.abs.AbstractBlockEntity;
+import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
+import net.reikeb.maxilib.inventory.ItemHandler;
 
 import static net.reikeb.electrona.init.BlockEntityInit.XP_GENERATOR_BLOCK_ENTITY;
 
@@ -26,7 +29,7 @@ public class XPGeneratorBlockEntity extends AbstractBlockEntity implements Abstr
     private int xpLevels;
 
     public XPGeneratorBlockEntity(BlockPos pos, BlockState state) {
-        super(XP_GENERATOR_BLOCK_ENTITY.get(), pos, state, "xp_generator", 1);
+        super(XP_GENERATOR_BLOCK_ENTITY.get(), pos, state, "xp_generator", Electrona.MODID, 1);
     }
 
     @Override

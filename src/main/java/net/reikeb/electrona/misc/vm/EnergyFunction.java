@@ -2,13 +2,14 @@ package net.reikeb.electrona.misc.vm;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.reikeb.electrona.blockentities.AbstractEnergyBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.misc.Tags;
+import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
 
 public class EnergyFunction {
 
@@ -27,16 +28,16 @@ public class EnergyFunction {
         double transferPerTick = transferPerSecond * 0.05;
         double generatorPower = getEnergy(generatorBlockEntity);
 
-        Tag<Block> machineTag = isGenerator ? Tags.MACHINES : Tags.BLUE_MACHINES;
-        Tag<Block> cableTag = isGenerator ? Tags.CABLE : Tags.BLUE_CABLE;
+        TagKey<Block> machineTag = isGenerator ? Tags.MACHINES : Tags.BLUE_MACHINES;
+        TagKey<Block> cableTag = isGenerator ? Tags.CABLE : Tags.BLUE_CABLE;
 
         for (Direction dir : directions) {
             if (generatorPower <= 0) return; // we have no more power
 
             BlockEntity blockEntity = world.getBlockEntity(pos.relative(dir));
-            Block offsetBlock = world.getBlockState(pos.relative(dir)).getBlock();
+            BlockState offsetBlockState = world.getBlockState(pos.relative(dir));
             if (!(blockEntity instanceof AbstractEnergyBlockEntity energyBlockEntity)) continue;
-            if (!(machineTag.contains(offsetBlock) || cableTag.contains(offsetBlock))) continue;
+            if (!(offsetBlockState.is(machineTag) || offsetBlockState.is(cableTag))) continue;
 
             double machinePower = getEnergy(energyBlockEntity);
             int machineMax = getMaxEnergy(energyBlockEntity);
@@ -63,7 +64,7 @@ public class EnergyFunction {
         double electronicPower = getEnergy(generatorBlockEntity);
 
         if (fromGenerator && (electronicPower <= 0)) return; // we have no more power
-        if (!Tags.POWERED_ITEMS.contains(stackInSlot.getItem())) return; // the itemstack is not the one required
+        if (!stackInSlot.is(Tags.POWERED_ITEMS)) return; // the itemstack is not the one required
 
         double itemPower = stackInSlot.getOrCreateTag().getDouble("ElectronicPower");
         double actualTransfer = Math.min(transferPerTick, (fromGenerator ? electronicPower : itemPower));

@@ -9,6 +9,7 @@ import net.reikeb.electrona.containers.XPGeneratorContainer;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.ExperienceHarvestPacket;
+import net.reikeb.maxilib.abs.AbstractWindow;
 
 public class XPGeneratorWindow extends AbstractWindow<XPGeneratorContainer> {
 

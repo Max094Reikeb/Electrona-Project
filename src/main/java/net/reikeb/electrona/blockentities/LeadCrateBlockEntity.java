@@ -5,14 +5,16 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
+import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.LeadCrateContainer;
+import net.reikeb.maxilib.abs.AbstractBlockEntity;
 
 import static net.reikeb.electrona.init.BlockEntityInit.LEAD_CRATE_BLOCK_ENTITY;
 
 public class LeadCrateBlockEntity extends AbstractBlockEntity {
 
     public LeadCrateBlockEntity(BlockPos pos, BlockState state) {
-        super(LEAD_CRATE_BLOCK_ENTITY.get(), pos, state, "lead_crate", 27);
+        super(LEAD_CRATE_BLOCK_ENTITY.get(), pos, state, "lead_crate", Electrona.MODID, 27);
     }
 
     @Override

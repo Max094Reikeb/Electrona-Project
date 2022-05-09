@@ -6,7 +6,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
+import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.DimensionLinkerContainer;
+import net.reikeb.maxilib.abs.AbstractBlockEntity;
 
 import static net.reikeb.electrona.init.BlockEntityInit.DIMENSION_LINKER_BLOCK_ENTITY;
 
@@ -15,7 +17,7 @@ public class DimensionLinkerBlockEntity extends AbstractBlockEntity {
     public String dimensionID;
 
     public DimensionLinkerBlockEntity(BlockPos pos, BlockState state) {
-        super(DIMENSION_LINKER_BLOCK_ENTITY.get(), pos, state, "dimension_linker", 1);
+        super(DIMENSION_LINKER_BLOCK_ENTITY.get(), pos, state, "dimension_linker", Electrona.MODID, 1);
     }
 
     @Override

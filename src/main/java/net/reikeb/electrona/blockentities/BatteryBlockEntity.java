@@ -10,9 +10,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
+import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.BatteryContainer;
-import net.reikeb.electrona.inventory.ItemHandler;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
+import net.reikeb.maxilib.abs.AbstractBlockEntity;
+import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
+import net.reikeb.maxilib.inventory.ItemHandler;
 
 import static net.reikeb.electrona.init.BlockEntityInit.BATTERY_BLOCK_ENTITY;
 
@@ -23,7 +26,7 @@ public class BatteryBlockEntity extends AbstractBlockEntity implements AbstractE
     public int maxStorage;
 
     public BatteryBlockEntity(BlockPos pos, BlockState state) {
-        super(BATTERY_BLOCK_ENTITY.get(), pos, state, "battery", 2);
+        super(BATTERY_BLOCK_ENTITY.get(), pos, state, "battery", Electrona.MODID, 2);
     }
 
     @Override

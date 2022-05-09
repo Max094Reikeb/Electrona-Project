@@ -5,6 +5,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.reikeb.electrona.blockentities.CompressorBlockEntity;
+import net.reikeb.electrona.misc.Slots;
+import net.reikeb.maxilib.abs.AbstractContainer;
 
 import static net.reikeb.electrona.init.ContainerInit.COMPRESSOR_CONTAINER;
 
@@ -19,9 +21,9 @@ public class CompressorContainer extends AbstractContainer {
         if (compressorBlockEntity == null) return;
 
         compressorBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            addSlot(new BasicInputSlot(h, 0, 27, 39));
-            addSlot(new BasicInputSlot(h, 1, 81, 39));
-            addSlot(new CompressorOutputSlot(h, 2, 135, 39));
+            addSlot(new Slots.BasicInputSlot(h, 0, 27, 39));
+            addSlot(new Slots.BasicInputSlot(h, 1, 81, 39));
+            addSlot(new Slots.CompressorOutputSlot(h, 2, 135, 39));
         });
 
         this.layoutPlayerInventorySlots(inv);

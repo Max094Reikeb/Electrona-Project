@@ -35,6 +35,7 @@ import net.reikeb.electrona.blockentities.TeleporterBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.misc.vm.CustomShapes;
 import net.reikeb.electrona.misc.vm.TeleporterFunction;
+import net.reikeb.maxilib.abs.AbstractWaterLoggableBlock;
 
 import javax.annotation.Nullable;
 import java.util.Collections;

@@ -20,6 +20,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.reikeb.electrona.blockentities.CoolerBlockEntity;
+import net.reikeb.maxilib.abs.AbstractWaterLoggableBlock;
 
 import java.util.Collections;
 import java.util.List;

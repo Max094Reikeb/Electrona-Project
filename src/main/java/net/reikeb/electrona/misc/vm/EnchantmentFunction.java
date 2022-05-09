@@ -36,7 +36,7 @@ public class EnchantmentFunction {
         if (EnchantmentHelper.getItemEnchantmentLevel(EnchantmentInit.LUMBERJACK.get(), player.getMainHandItem()) > 0) {
             for (Direction dir : directions) {
                 BlockPos otherPos = pos.relative(dir);
-                if (Tags.LOGS.contains(world.getBlockState(otherPos).getBlock())) {
+                if (world.getBlockState(otherPos).is(Tags.LOGS)) {
                     Block.dropResources(world.getBlockState(otherPos), world, otherPos);
                     world.destroyBlock(otherPos, false);
                     lumberjackDef(world, otherPos, directions);
@@ -55,7 +55,7 @@ public class EnchantmentFunction {
     public static void lumberjackDef(Level world, BlockPos pos, Direction[] directions) {
         for (Direction dir : directions) {
             BlockPos otherPos = pos.relative(dir);
-            if (Tags.LOGS.contains(world.getBlockState(otherPos).getBlock())) {
+            if (world.getBlockState(otherPos).is(Tags.LOGS)) {
                 Block.dropResources(world.getBlockState(otherPos), world, otherPos);
                 world.destroyBlock(otherPos, false);
                 lumberjackDef(world, otherPos, directions);
@@ -75,9 +75,9 @@ public class EnchantmentFunction {
         if (EnchantmentHelper.getItemEnchantmentLevel(EnchantmentInit.VEINMINER.get(), player.getMainHandItem()) > 0) {
             for (Direction dir : directions) {
                 BlockPos otherPos = pos.relative(dir);
-                if ((Tags.MINECRAFT_ORES.contains(world.getBlockState(otherPos).getBlock()))
-                        || (Tags.FORGE_ORES.contains(world.getBlockState(otherPos).getBlock()))
-                        || (Tags.ELECTRONA_ORES.contains(world.getBlockState(otherPos).getBlock()))) {
+                if ((world.getBlockState(otherPos).is(Tags.MINECRAFT_ORES)) ||
+                        (world.getBlockState(otherPos).is(Tags.FORGE_ORES)) ||
+                        (world.getBlockState(otherPos).is(Tags.ELECTRONA_ORES))) {
                     Block.dropResources(world.getBlockState(otherPos), world, otherPos);
                     world.destroyBlock(otherPos, false);
                     veinminerDef(world, otherPos, directions);
@@ -96,9 +96,9 @@ public class EnchantmentFunction {
     public static void veinminerDef(Level world, BlockPos pos, Direction[] directions) {
         for (Direction dir : directions) {
             BlockPos otherPos = pos.relative(dir);
-            if ((Tags.MINECRAFT_ORES.contains(world.getBlockState(otherPos).getBlock()))
-                    || (Tags.FORGE_ORES.contains(world.getBlockState(otherPos).getBlock()))
-                    || (Tags.ELECTRONA_ORES.contains(world.getBlockState(otherPos).getBlock()))) {
+            if ((world.getBlockState(otherPos).is(Tags.MINECRAFT_ORES)) ||
+                    (world.getBlockState(otherPos).is(Tags.FORGE_ORES)) ||
+                    (world.getBlockState(otherPos).is(Tags.ELECTRONA_ORES))) {
                 Block.dropResources(world.getBlockState(otherPos), world, otherPos);
                 world.destroyBlock(otherPos, false);
                 veinminerDef(world, otherPos, directions);

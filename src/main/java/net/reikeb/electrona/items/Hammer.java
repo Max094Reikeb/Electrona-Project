@@ -64,7 +64,7 @@ public class Hammer extends DiggerItem {
 
         boolean validHarvest = !checkHarvestLevel || player.getMainHandItem().isCorrectToolForDrops(state);
         boolean isEffective = !notEffectiveOn.contains(state.getBlock());
-        boolean witherImmune = BlockTags.WITHER_IMMUNE.contains(state.getBlock());
+        boolean witherImmune = state.is(BlockTags.WITHER_IMMUNE);
 
         if (validHarvest && isEffective && !witherImmune) {
             Block.dropResources(state, world, pos, null, player, player.getMainHandItem());

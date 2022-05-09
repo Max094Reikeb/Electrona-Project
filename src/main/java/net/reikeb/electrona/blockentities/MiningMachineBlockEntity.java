@@ -15,10 +15,13 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
+import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.MiningMachineContainer;
 import net.reikeb.electrona.init.BlockInit;
-import net.reikeb.electrona.inventory.ItemHandler;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
+import net.reikeb.maxilib.abs.AbstractBlockEntity;
+import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
+import net.reikeb.maxilib.inventory.ItemHandler;
 
 import java.util.Random;
 
@@ -32,7 +35,7 @@ public class MiningMachineBlockEntity extends AbstractBlockEntity implements Abs
     private int wait;
 
     public MiningMachineBlockEntity(BlockPos pos, BlockState state) {
-        super(MINING_MACHINE_BLOCK_ENTITY.get(), pos, state, "mining_machine", 3);
+        super(MINING_MACHINE_BLOCK_ENTITY.get(), pos, state, "mining_machine", Electrona.MODID, 3);
     }
 
     @Override

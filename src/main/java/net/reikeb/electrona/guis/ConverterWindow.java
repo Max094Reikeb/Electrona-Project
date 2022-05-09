@@ -9,6 +9,7 @@ import net.reikeb.electrona.containers.ConverterContainer;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.ConverterPacket;
+import net.reikeb.maxilib.abs.AbstractWindow;
 
 public class ConverterWindow extends AbstractWindow<ConverterContainer> {
 
