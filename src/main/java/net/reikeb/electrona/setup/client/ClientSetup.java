@@ -175,8 +175,8 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void registerModels(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(EntityInit.RADIOACTIVE_ZOMBIE_TYPE, RadioactiveZombieRenderer::new);
-        event.registerEntityRenderer(EntityInit.ENERGETIC_LIGHTNING_BOLT_TYPE, EnergeticLightningBoltRenderer::new);
+        event.registerEntityRenderer(EntityInit.RADIOACTIVE_ZOMBIE.get(), RadioactiveZombieRenderer::new);
+        event.registerEntityRenderer(EntityInit.ENERGETIC_LIGHTNING_BOLT.get(), EnergeticLightningBoltRenderer::new);
 
         event.registerBlockEntityRenderer(BlockEntityInit.SINGULARITY_BLOCK_ENTITY.get(), SingularityBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntityInit.GRAVITOR_BLOCK_ENTITY.get(), GravitorBlockEntityRenderer::new);

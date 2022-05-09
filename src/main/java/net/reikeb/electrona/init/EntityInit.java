@@ -9,24 +9,16 @@ import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.entity.EnergeticLightningBolt;
 import net.reikeb.electrona.entity.RadioactiveZombie;
 
+import java.util.function.Supplier;
+
 public class EntityInit {
 
-    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES,
-            Electrona.MODID);
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, Electrona.MODID);
 
-    public static final EntityType<RadioactiveZombie> RADIOACTIVE_ZOMBIE_TYPE = EntityType.Builder
-            .<RadioactiveZombie>of(RadioactiveZombie::new, MobCategory.MONSTER)
-            .sized(0.7F, 1.8F)
-            .build("radioactive_zombie");
+    public static final RegistryObject<EntityType<RadioactiveZombie>> RADIOACTIVE_ZOMBIE = register("radioactive_zombie", () -> EntityType.Builder.of(RadioactiveZombie::new, MobCategory.MONSTER).sized(0.7F, 1.0F));
+    public static final RegistryObject<EntityType<EnergeticLightningBolt>> ENERGETIC_LIGHTNING_BOLT = register("energetic_lightning_bolt", () -> EntityType.Builder.of(EnergeticLightningBolt::new, MobCategory.MISC).noSave().sized(0.0F, 0.0F).clientTrackingRange(16).updateInterval(Integer.MAX_VALUE));
 
-    public static final EntityType<EnergeticLightningBolt> ENERGETIC_LIGHTNING_BOLT_TYPE = EntityType.Builder
-            .of(EnergeticLightningBolt::new, MobCategory.MISC)
-            .noSave()
-            .sized(0.0F, 0.0F)
-            .clientTrackingRange(16)
-            .updateInterval(Integer.MAX_VALUE)
-            .build("energetic_lightning_bolt");
-
-    public static final RegistryObject<EntityType<RadioactiveZombie>> RADIOACTIVE_ZOMBIE = ENTITIES.register("radioactive_zombie", () -> RADIOACTIVE_ZOMBIE_TYPE);
-    public static final RegistryObject<EntityType<EnergeticLightningBolt>> ENERGETIC_LIGHTNING_BOLT = ENTITIES.register("energetic_lightning_bolt", () -> ENERGETIC_LIGHTNING_BOLT_TYPE);
+    private static <T extends net.minecraft.world.entity.Entity> RegistryObject<EntityType<T>> register(String name, Supplier<EntityType.Builder<T>> builder) {
+        return ENTITIES.register(name, () -> builder.get().build(name));
+    }
 }

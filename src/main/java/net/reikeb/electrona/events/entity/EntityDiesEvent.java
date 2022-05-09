@@ -51,7 +51,7 @@ public class EntityDiesEvent {
             }
         } else if ((event.getEntity() instanceof Zombie || event.getEntity() instanceof Husk)
                 && (event.getSource() == DamageSources.RADIOACTIVITY) && (event.getEntity().level instanceof ServerLevel)) {
-            RadioactiveZombie radioactiveZombie = ((Zombie) event.getEntity()).convertTo(EntityInit.RADIOACTIVE_ZOMBIE_TYPE, true);
+            RadioactiveZombie radioactiveZombie = ((Zombie) event.getEntity()).convertTo(EntityInit.RADIOACTIVE_ZOMBIE.get(), true);
             net.minecraftforge.event.ForgeEventFactory.onLivingConvert((LivingEntity) event.getEntity(), radioactiveZombie);
         }
     }

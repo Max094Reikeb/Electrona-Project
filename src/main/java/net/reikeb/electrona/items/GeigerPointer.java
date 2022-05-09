@@ -1,15 +1,11 @@
 package net.reikeb.electrona.items;
 
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -18,16 +14,15 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.BiomeInit;
 import net.reikeb.electrona.setup.ItemGroups;
+import net.reikeb.maxilib.utils.BiomeUtil;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.function.Predicate;
 
 public class GeigerPointer extends Item {
 
@@ -101,7 +96,7 @@ public class GeigerPointer extends Item {
 
             }
             @Nullable
-            BlockPos biomePosition = getBiomePosition(level, playerPos, BiomeInit.NUCLEAR);
+            BlockPos biomePosition = BiomeUtil.getNearestBiomePosition(level, playerPos, BiomeInit.NUCLEAR);
             if (biomePosition == null) {
                 // Write where the player last attempted to search.
                 stackTag.put("LastSearchPos", NbtUtils.writeBlockPos(playerPos));
@@ -123,34 +118,5 @@ public class GeigerPointer extends Item {
                 return InteractionResultHolder.success(stack);
             }
         }
-    }
-
-    @Nullable // This runs server side ONLY, so `ServerLevel` is safe here.
-    private static BlockPos getBiomePosition(ServerLevel world, BlockPos startPosition, ResourceKey<Biome> biomeToFind) {
-        Registry<Biome> biomes = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
-        // The holder for biome resource key
-        Holder<Biome> holderToFind = biomes.getHolder(biomeToFind).orElseThrow(() -> new IllegalArgumentException("This biome does not exist in the biome registry!"));
-
-        // Biome doesn't exist in this biome source, therefore we don't want to search (which causes INSANE server side lag) and return null
-        if (!world.getChunkSource().getGenerator().getBiomeSource().possibleBiomes().contains(holderToFind)) {
-            Electrona.LOGGER.error(new TranslatableComponent("commands.locatebiome.notFound"));
-            return null;
-        }
-
-        // We want to check if the holder found in the search matches our biome's holder, effectively the filter that determines when the nearest biome is found.
-        Predicate<Holder<Biome>> holderToFindPredicate = biomeHolder -> biomeHolder == holderToFind;
-
-        int searchRadius = 6400;
-        // Each time the search loops, this increases the xz position from the origin,
-        // think of it as a "precision", this will check every 8 blocks, if this is "8", until the search radius is reached.
-        int incrementInBlocks = 8;
-        Pair<BlockPos, Holder<Biome>> nearestBiome = world.findNearestBiome(holderToFindPredicate, startPosition, searchRadius, incrementInBlocks);
-        // If this returns null, no biome was found.
-        if (nearestBiome == null) {
-            Electrona.LOGGER.error(new TranslatableComponent("commands.locatebiome.notFound"));
-            return null;
-        }
-        // Position of the nearest biome.
-        return nearestBiome.getFirst();
     }
 }

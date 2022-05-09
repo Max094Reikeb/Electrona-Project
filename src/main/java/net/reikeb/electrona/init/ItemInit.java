@@ -8,6 +8,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.items.*;
 import net.reikeb.electrona.setup.ItemGroups;
+import net.reikeb.maxilib.abs.AbstractEggItem;
 
 public class ItemInit {
 
@@ -44,7 +45,7 @@ public class ItemInit {
     public static final RegistryObject<Item> URANIUM_QUAD_BAR = ITEMS.register("uranium_quad_bar", () -> new RadioactiveItem(600, 3, new Item.Properties().durability(24000).tab(ItemGroups.ELECTRONA_ITEMS)));
     public static final RegistryObject<Item> EMITTER = ITEMS.register("emitter", () -> new Item(new Item.Properties().tab(ItemGroups.ELECTRONA_ITEMS)));
     public static final RegistryObject<Item> WIRELESS_BOOSTER = ITEMS.register("wireless_booster", () -> new Item(new Item.Properties().stacksTo(1).tab(ItemGroups.ELECTRONA_ITEMS)));
-    public static final RegistryObject<SpawnEggItem> RADIOACTIVE_ZOMBIE_SPAWN_EGG = ITEMS.register("radioactive_zombie_spawn_egg", RadioactiveZombieEgg::new);
+    public static final RegistryObject<SpawnEggItem> RADIOACTIVE_ZOMBIE_SPAWN_EGG = ITEMS.register("radioactive_zombie_spawn_egg", () -> new AbstractEggItem(EntityInit.RADIOACTIVE_ZOMBIE, 7958625, 7969893));
     public static final RegistryObject<Item> GEIGER_POINTER = ITEMS.register("geiger_pointer", GeigerPointer::new);
     public static final RegistryObject<Item> COSMIC_GEM = ITEMS.register("cosmic_gem", CosmicGem::new);
     public static final RegistryObject<Item> GRAVITY_DEVICE = ITEMS.register("gravity_device", () -> new Item(new Item.Properties().rarity(Rarity.RARE).tab(ItemGroups.ELECTRONA_ITEMS)));

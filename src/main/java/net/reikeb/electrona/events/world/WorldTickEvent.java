@@ -54,7 +54,7 @@ public class WorldTickEvent {
             BlockPos pos = world.findLightningTargetAround(world.getBlockRandomPos(chunkPos.getMinBlockX(),
                     0, chunkPos.getMinBlockZ(), 15));
             if (!world.isRainingAt(pos)) return;
-            EnergeticLightningBolt energeticLightningBolt = EntityInit.ENERGETIC_LIGHTNING_BOLT_TYPE.create(world);
+            EnergeticLightningBolt energeticLightningBolt = EntityInit.ENERGETIC_LIGHTNING_BOLT.get().create(world);
             if (energeticLightningBolt == null) return;
             energeticLightningBolt.moveTo(Vec3.atBottomCenterOf(pos));
             world.addFreshEntity(energeticLightningBolt);
