@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "electrona:ruins",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 2102200194,
+    "spacing": 20,
+    "separation": 10,
+    "type": "minecraft:random_spread"
+  }
+}
