@@ -20,7 +20,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -41,7 +40,6 @@ import net.reikeb.electrona.villages.POIFixup;
 import net.reikeb.electrona.villages.StructureGen;
 import net.reikeb.electrona.world.Gamerules;
 import net.reikeb.electrona.world.gen.biomes.SurfaceRuleData;
-import net.reikeb.electrona.world.structures.RuinsStructure;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import terrablender.api.Region;
@@ -49,7 +47,6 @@ import terrablender.api.RegionType;
 import terrablender.api.Regions;
 import terrablender.api.SurfaceRuleManager;
 
-import java.lang.reflect.Method;
 import java.util.function.Consumer;
 
 @Mod(Electrona.MODID)
@@ -64,7 +61,6 @@ public class Electrona {
     // Creates a new recipe type. This is used for storing recipes in the map, and looking them up.
     public static final RecipeType<CompressorRecipe> COMPRESSING = new RecipeTypeCompressor();
     public static final RecipeType<PurificatorRecipe> PURIFYING = new RecipeTypePurificator();
-    private static Method GETCODEC_METHOD;
 
     public Electrona() {
 
@@ -79,7 +75,6 @@ public class Electrona {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(new EntityDiesEvent());
         MinecraftForge.EVENT_BUS.register(new Gamerules());
-        MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, RuinsStructure::setupStructureSpawns);
         MinecraftForge.EVENT_BUS.addListener(this::setupEngineerHouses);
         MinecraftForge.EVENT_BUS.register(this);
     }
