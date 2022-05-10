@@ -18,7 +18,7 @@ public class Tabs {
 
     public static final ItemGroup ELECTRONA_ITEMS = FabricItemGroupBuilder.create(
             Utils.ELIdentifier("items"))
-            .icon(() -> new ItemStack(Items.LEAD_INGOT))
+            .icon(() -> new ItemStack(Items.LEAD_INGOT.getIfCreated()))
             .build();
 
     public static final ItemGroup ELECTRONA_TOOLS = FabricItemGroupBuilder.create(

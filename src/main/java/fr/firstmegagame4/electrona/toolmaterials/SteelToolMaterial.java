@@ -35,7 +35,7 @@ public class SteelToolMaterial implements ToolMaterial {
 
     @Override
     public Ingredient getRepairIngredient() {
-        return Ingredient.ofItems(Items.STEEL_INGOT);
+        return Ingredient.ofItems(Items.STEEL_INGOT.getIfCreated());
     }
 
 }

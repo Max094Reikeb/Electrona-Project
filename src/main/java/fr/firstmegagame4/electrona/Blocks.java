@@ -2,8 +2,8 @@ package fr.firstmegagame4.electrona;
 
 import fr.firstmegagame4.electrona.blocks.LeadCrate;
 import fr.firstmegagame4.electrona.blocks.SteelCrate;
+import fr.firstmegagame4.mega_lib.lib.blocks.ConditionalCustomBlock;
 import fr.firstmegagame4.mega_lib.lib.blocks.CustomBlock;
-import fr.firstmegagame4.mega_lib.lib.blocks.CustomConditionalBlock;
 import fr.firstmegagame4.mega_lib.lib.initialization.BlocksInitializer;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.loader.api.FabricLoader;
@@ -12,7 +12,7 @@ import net.minecraft.sound.BlockSoundGroup;
 
 public class Blocks implements BlocksInitializer {
 
-    public static CustomConditionalBlock TIN_ORE = new CustomConditionalBlock(FabricBlockSettings.of(Material.STONE)
+    public static final ConditionalCustomBlock TIN_ORE = new ConditionalCustomBlock(FabricBlockSettings.of(Material.STONE)
             .hardness(3.0F)
             .sounds(BlockSoundGroup.STONE)
             .requiresTool(),
@@ -20,7 +20,7 @@ public class Blocks implements BlocksInitializer {
             Tabs.ELECTRONA_BLOCKS
     );
 
-    public static CustomConditionalBlock LEAD_ORE = new CustomConditionalBlock(FabricBlockSettings.of(Material.STONE)
+    public static final ConditionalCustomBlock LEAD_ORE = new ConditionalCustomBlock(FabricBlockSettings.of(Material.STONE)
             .hardness(3.0F)
             .sounds(BlockSoundGroup.STONE)
             .requiresTool(),
@@ -44,7 +44,7 @@ public class Blocks implements BlocksInitializer {
             Tabs.ELECTRONA_BLOCKS
     );
 
-    public static CustomConditionalBlock TIN_BLOCK = new CustomConditionalBlock(FabricBlockSettings.of(Material.METAL)
+    public static final ConditionalCustomBlock TIN_BLOCK = new ConditionalCustomBlock(FabricBlockSettings.of(Material.METAL)
             .hardness(5.0F)
             .sounds(BlockSoundGroup.METAL)
             .requiresTool(),
@@ -52,7 +52,7 @@ public class Blocks implements BlocksInitializer {
             Tabs.ELECTRONA_BLOCKS
     );
 
-    public static CustomConditionalBlock LEAD_BLOCK = new CustomConditionalBlock(FabricBlockSettings.of(Material.METAL)
+    public static final ConditionalCustomBlock LEAD_BLOCK = new ConditionalCustomBlock(FabricBlockSettings.of(Material.METAL)
             .hardness(5.0F)
             .sounds(BlockSoundGroup.METAL)
             .requiresTool(),
@@ -60,7 +60,7 @@ public class Blocks implements BlocksInitializer {
             Tabs.ELECTRONA_BLOCKS
     );
 
-    public static CustomConditionalBlock STEEL_BLOCK = new CustomConditionalBlock(FabricBlockSettings.of(Material.METAL)
+    public static final ConditionalCustomBlock STEEL_BLOCK = new ConditionalCustomBlock(FabricBlockSettings.of(Material.METAL)
             .hardness(5.0F)
             .sounds(BlockSoundGroup.METAL)
             .requiresTool(),
@@ -102,9 +102,7 @@ public class Blocks implements BlocksInitializer {
             LEAD_ORE.create().register(Utils.ELIdentifier("lead_ore"));
 
             TIN_BLOCK.create().register(Utils.ELIdentifier("tin_block"));
-
             LEAD_BLOCK.create().register(Utils.ELIdentifier("lead_block"));
-
             STEEL_BLOCK.create().register(Utils.ELIdentifier("steel_block"));
         }
 

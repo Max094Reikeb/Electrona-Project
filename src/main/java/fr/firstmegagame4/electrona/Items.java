@@ -6,6 +6,7 @@ import fr.firstmegagame4.electrona.items.CustomHoeItem;
 import fr.firstmegagame4.electrona.items.CustomPickaxeItem;
 import fr.firstmegagame4.electrona.toolmaterials.SteelToolMaterial;
 import fr.firstmegagame4.mega_lib.lib.initialization.ItemsInitializer;
+import fr.firstmegagame4.mega_lib.lib.item.ConditionalCustomItem;
 import fr.firstmegagame4.mega_lib.lib.item.CustomItem;
 import fr.firstmegagame4.mega_lib.lib.utils.RegistrationUtils;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
@@ -15,11 +16,11 @@ import net.minecraft.item.*;
 
 public class Items implements ItemsInitializer {
 
-    public static CustomItem RAW_TIN;
-    public static CustomItem TIN_INGOT;
-    public static CustomItem RAW_LEAD;
-    public static CustomItem LEAD_INGOT;
-    public static CustomItem STEEL_INGOT;
+    public static final ConditionalCustomItem RAW_TIN = new ConditionalCustomItem(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
+    public static final ConditionalCustomItem TIN_INGOT = new ConditionalCustomItem(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
+    public static final ConditionalCustomItem RAW_LEAD = new ConditionalCustomItem(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
+    public static final ConditionalCustomItem LEAD_INGOT = new ConditionalCustomItem(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
+    public static final ConditionalCustomItem STEEL_INGOT = new ConditionalCustomItem(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
     public static final CustomItem GRAVITONIUM = new CustomItem(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
 
     public static final ToolItem STEEL_SWORD = new SwordItem(
@@ -45,20 +46,11 @@ public class Items implements ItemsInitializer {
 
     public void register() {
         if (!FabricLoader.getInstance().isModLoaded("techreborn")) {
-            RAW_TIN = new CustomItem(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
-            RAW_TIN.register(Utils.ELIdentifier("raw_tin"));
-
-            TIN_INGOT = new CustomItem(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
-            TIN_INGOT.register(Utils.ELIdentifier("tin_ingot"));
-
-            RAW_LEAD = new CustomItem(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
-            RAW_LEAD.register(Utils.ELIdentifier("raw_lead"));
-
-            LEAD_INGOT = new CustomItem(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
-            LEAD_INGOT.register(Utils.ELIdentifier("lead_ingot"));
-
-            STEEL_INGOT = new CustomItem(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
-            STEEL_INGOT.register(Utils.ELIdentifier("steel_ingot"));
+            RAW_TIN.create().register(Utils.ELIdentifier("raw_tin"));
+            TIN_INGOT.create().register(Utils.ELIdentifier("tin_ingot"));
+            RAW_LEAD.create().register(Utils.ELIdentifier("raw_lead"));
+            LEAD_INGOT.create().register(Utils.ELIdentifier("lead_ingot"));
+            STEEL_INGOT.create().register(Utils.ELIdentifier("steel_ingot"));
         }
 
         GRAVITONIUM.register(Utils.ELIdentifier("gravitonium"));

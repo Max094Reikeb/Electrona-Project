@@ -33,7 +33,7 @@ public class LeadArmorMaterial implements ArmorMaterial {
 
     @Override
     public Ingredient getRepairIngredient() {
-        return Ingredient.ofItems(Items.LEAD_INGOT);
+        return Ingredient.ofItems(Items.LEAD_INGOT.getIfCreated());
     }
 
     @Override
