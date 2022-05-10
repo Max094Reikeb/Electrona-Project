@@ -1,10 +1,12 @@
 package fr.firstmegagame4.electrona.blocks;
 
 import fr.firstmegagame4.electrona.blockentities.CrateEntity;
-
-import net.minecraft.block.*;
+import fr.firstmegagame4.mega_lib.lib.blocks.FacingBlockWithEntity;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -12,13 +14,12 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
 import org.jetbrains.annotations.Nullable;
 
 public class Crate extends FacingBlockWithEntity {
 
-    public Crate(Settings settings) {
-        super(settings);
+    public Crate(Settings settings, boolean hasItem, ItemGroup itemGroup) {
+        super(settings, hasItem, itemGroup);
     }
 
     @Nullable

@@ -1,7 +1,6 @@
 package fr.firstmegagame4.electrona.armormaterials;
 
 import fr.firstmegagame4.electrona.Items;
-
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.recipe.Ingredient;

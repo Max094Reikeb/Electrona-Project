@@ -28,7 +28,7 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
-    modImplementation 'com.github.FirstMegaGame4:Mega-Lib:main-SNAPSHOT'
+    modImplementation "com.github.FirstMegaGame4:Mega-Lib:${project.mega_lib_version}"
 
 }
 

@@ -1,7 +1,6 @@
 package fr.firstmegagame4.electrona.screenhandlers;
 
 import fr.firstmegagame4.electrona.ScreenHandlers;
-
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
