@@ -102,14 +102,14 @@ public class NuclearFunction {
                 }
                 if ((waterLevel < 800) && (temperature >= 2800)) {
                     if (nuclearGeneratorControllerBlockEntity.getLevel() == null) return;
-                    Level world = nuclearGeneratorControllerBlockEntity.getLevel();
+                    Level level = nuclearGeneratorControllerBlockEntity.getLevel();
                     BlockPos pos = nuclearGeneratorControllerBlockEntity.getBlockPos();
-                    world.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
-                    world.setBlock(coolerBlockEntity.getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
-                    new NuclearExplosion(world, null, pos, 20);
-                    if ((Math.random() < 0.45) && world.getLevelData().getGameRules().getBoolean(Gamerules.DO_BLACK_HOLES_EXIST)) {
-                        world.setBlock(pos, BlockInit.SINGULARITY.get().defaultBlockState(), 3);
-                        advancementInevitableFunction(world, pos);
+                    level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                    level.setBlock(coolerBlockEntity.getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
+                    new NuclearExplosion(level, null, pos, 20);
+                    if ((Math.random() < 0.45) && level.getLevelData().getGameRules().getBoolean(Gamerules.DO_BLACK_HOLES_EXIST)) {
+                        level.setBlock(pos, BlockInit.SINGULARITY.get().defaultBlockState(), 3);
+                        advancementInevitableFunction(level, pos);
                     }
                 }
                 if ((waterLevel > 400) && (temperature >= 2000)) {
@@ -132,11 +132,11 @@ public class NuclearFunction {
     /**
      * Handles the I Am... Inevitable! advancement
      *
-     * @param world World of the player(s)
+     * @param level World of the player(s)
      * @param pos   Position of the Singularity
      */
-    public static void advancementInevitableFunction(Level world, BlockPos pos) {
-        for (LivingEntity entityiterator : Utils.getLivingEntitiesInRadius(world, pos, 5)) {
+    public static void advancementInevitableFunction(Level level, BlockPos pos) {
+        for (LivingEntity entityiterator : Utils.getLivingEntitiesInRadius(level, pos, 5)) {
             if (entityiterator instanceof ServerPlayer serverPlayer) {
                 Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(Keys.I_AM_INEVITABLE_ADVANCEMENT);
                 Utils.awardAdvancement(serverPlayer, advancement, "I Am... Inevitable!");

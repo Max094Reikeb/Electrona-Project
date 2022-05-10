@@ -45,13 +45,13 @@ public class RadioactivityFunction {
     /**
      * Applies Radioactivity effect to the entity if it has radioactive item in his inventory
      *
-     * @param world    The world the entity is in
+     * @param level    The level the entity is in
      * @param entity   The entity who has the item
      * @param duration The duration of the given effect
      * @param power    The power of the give effect
      */
-    public static void radioactiveItemInInventory(Level world, Entity entity, int duration, int power) {
-        for (LivingEntity entityiterator : Utils.getLivingEntitiesInRadius(world, entity.blockPosition(), (int) (10 / 2d))) {
+    public static void radioactiveItemInInventory(Level level, Entity entity, int duration, int power) {
+        for (LivingEntity entityiterator : Utils.getLivingEntitiesInRadius(level, entity.blockPosition(), (int) (10 / 2d))) {
             if ((entityiterator instanceof Skeleton) || (entityiterator instanceof RadioactiveZombie)) return;
             if (!(entity instanceof LivingEntity livingEntity)) return;
             if (entityiterator instanceof Player player) {

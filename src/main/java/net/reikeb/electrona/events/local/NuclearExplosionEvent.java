@@ -23,16 +23,16 @@ import java.util.List;
  */
 public class NuclearExplosionEvent extends Event {
 
-    private final Level world;
+    private final Level level;
     private final NuclearExplosion nuclearExplosion;
 
-    public NuclearExplosionEvent(Level world, NuclearExplosion nuclearExplosion) {
-        this.world = world;
+    public NuclearExplosionEvent(Level level, NuclearExplosion nuclearExplosion) {
+        this.level = level;
         this.nuclearExplosion = nuclearExplosion;
     }
 
-    public Level getWorld() {
-        return world;
+    public Level getLevel() {
+        return level;
     }
 
     public NuclearExplosion getNuclearExplosion() {
@@ -48,8 +48,8 @@ public class NuclearExplosionEvent extends Event {
      */
     @Cancelable
     public static class Start extends NuclearExplosionEvent {
-        public Start(Level world, NuclearExplosion nuclearExplosion) {
-            super(world, nuclearExplosion);
+        public Start(Level level, NuclearExplosion nuclearExplosion) {
+            super(level, nuclearExplosion);
         }
     }
 
@@ -64,8 +64,8 @@ public class NuclearExplosionEvent extends Event {
         private final List<Entity> entityList;
         private final List<BlockPos> blockPositionsList;
 
-        public Detonate(Level world, NuclearExplosion nuclearExplosion, List<Entity> entityList, List<BlockPos> blockPositionsList) {
-            super(world, nuclearExplosion);
+        public Detonate(Level level, NuclearExplosion nuclearExplosion, List<Entity> entityList, List<BlockPos> blockPositionsList) {
+            super(level, nuclearExplosion);
             this.entityList = entityList;
             this.blockPositionsList = blockPositionsList;
         }

@@ -14,8 +14,8 @@ import net.reikeb.electrona.misc.vm.RadioactivityFunction;
 
 public class RadioactiveZombie extends Zombie {
 
-    public RadioactiveZombie(EntityType<? extends Zombie> entityType, Level world) {
-        super(entityType, world);
+    public RadioactiveZombie(EntityType<? extends Zombie> entityType, Level level) {
+        super(entityType, level);
     }
 
     public static AttributeSupplier.Builder createAttributes() {

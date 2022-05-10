@@ -45,8 +45,8 @@ public class EnergeticLightningBolt extends Entity {
     private ServerPlayer cause;
     private int blocksSetOnFire;
 
-    public EnergeticLightningBolt(EntityType<? extends EnergeticLightningBolt> entityType, Level world) {
-        super(entityType, world);
+    public EnergeticLightningBolt(EntityType<? extends EnergeticLightningBolt> entityType, Level level) {
+        super(entityType, level);
         this.noCulling = true;
         this.life = 2;
         this.seed = this.random.nextLong();

@@ -11,8 +11,8 @@ public class DarkMatter extends TextureSheetParticle {
     private final float angularAcceleration;
     private float angularVelocity;
 
-    protected DarkMatter(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, SpriteSet spriteSet) {
-        super(world, x, y, z);
+    protected DarkMatter(ClientLevel clientLevel, double x, double y, double z, double vx, double vy, double vz, SpriteSet spriteSet) {
+        super(clientLevel, x, y, z);
         this.setSize((float) 0.4, (float) 0.4);
         this.quadSize *= (float) 1;
         this.lifetime = Math.max(1, 10 + (this.random.nextInt(30) - 15));
@@ -47,8 +47,8 @@ public class DarkMatter extends TextureSheetParticle {
             this.spriteSet = spriteSet;
         }
 
-        public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new DarkMatter(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, this.spriteSet);
+        public Particle createParticle(SimpleParticleType typeIn, ClientLevel clientLevel, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            return new DarkMatter(clientLevel, x, y, z, xSpeed, ySpeed, zSpeed, this.spriteSet);
         }
     }
 }

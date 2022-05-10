@@ -109,15 +109,15 @@ public class UsePower {
                     ResourceKey<Level> key = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dimension));
                     if ((!dimension.equals("")) && (serverLevel.getServer().getLevel(key) != null)) {
                         ResourceKey<Level> newKey = ResourceKey.create(Registry.DIMENSION_REGISTRY, Keys.OVERWORLD);
-                        ServerLevel _newWorld = serverLevel.getServer().getLevel(key);
-                        ServerLevel _defaultWorld = serverLevel.getServer().getLevel(newKey);
-                        if (level == _defaultWorld) {
+                        ServerLevel keyLevel = serverLevel.getServer().getLevel(key);
+                        ServerLevel newLevel = serverLevel.getServer().getLevel(newKey);
+                        if (level == newLevel) {
                             if (!player.level.isClientSide && player instanceof ServerPlayer serverPlayer) {
-                                if (_newWorld != null) {
+                                if (keyLevel != null) {
                                     player.fallDistance = 0;
                                     {
                                         serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
-                                        serverPlayer.teleportTo(_newWorld, _newWorld.getSharedSpawnPos().getX(), _newWorld.getSharedSpawnPos().getY() + 1, _newWorld.getSharedSpawnPos().getZ(), player.yRot, player.xRot);
+                                        serverPlayer.teleportTo(keyLevel, keyLevel.getSharedSpawnPos().getX(), keyLevel.getSharedSpawnPos().getY() + 1, keyLevel.getSharedSpawnPos().getZ(), player.yRot, player.xRot);
                                         serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(player.abilities));
                                         for (MobEffectInstance effectInstance : player.getActiveEffects()) {
                                             serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(player.getId(), effectInstance));
@@ -126,43 +126,43 @@ public class UsePower {
                                     }
                                     if (stack.getOrCreateTag().getString("dimension").equals("nether")) {
                                         BlockPos teleportPos = new BlockPos(playerPos.getX() / 8, 50, playerPos.getZ() / 8);
-                                        TeleporterFunction.teleport(_newWorld, playerPos, teleportPos, player);
-                                        Block teleportBlock = _newWorld.getBlockState(teleportPos).getBlock();
-                                        Block aboveTpBlock = _newWorld.getBlockState(teleportPos.above()).getBlock();
-                                        Block belowTpBlock = _newWorld.getBlockState(teleportPos.below()).getBlock();
+                                        TeleporterFunction.teleport(keyLevel, playerPos, teleportPos, player);
+                                        Block teleportBlock = keyLevel.getBlockState(teleportPos).getBlock();
+                                        Block aboveTpBlock = keyLevel.getBlockState(teleportPos.above()).getBlock();
+                                        Block belowTpBlock = keyLevel.getBlockState(teleportPos.below()).getBlock();
                                         if (teleportBlock != Blocks.AIR) {
-                                            _newWorld.setBlockAndUpdate(teleportPos, Blocks.AIR.defaultBlockState());
+                                            keyLevel.setBlockAndUpdate(teleportPos, Blocks.AIR.defaultBlockState());
                                         }
                                         if (aboveTpBlock != Blocks.AIR) {
-                                            _newWorld.setBlockAndUpdate(teleportPos.above(), Blocks.AIR.defaultBlockState());
+                                            keyLevel.setBlockAndUpdate(teleportPos.above(), Blocks.AIR.defaultBlockState());
                                         }
                                         if (belowTpBlock == Blocks.AIR || belowTpBlock == Blocks.LAVA || belowTpBlock == Blocks.MAGMA_BLOCK) {
-                                            _newWorld.setBlockAndUpdate(teleportPos.below(), Blocks.NETHERRACK.defaultBlockState());
+                                            keyLevel.setBlockAndUpdate(teleportPos.below(), Blocks.NETHERRACK.defaultBlockState());
                                         }
                                     }
                                     if (stack.getOrCreateTag().getString("dimension").equals("end")) {
-                                        BlockPos endPos = _newWorld.getSharedSpawnPos().below();
-                                        _newWorld.setBlockAndUpdate(endPos, Blocks.OBSIDIAN.defaultBlockState());
-                                        _newWorld.setBlockAndUpdate(endPos.east(), Blocks.OBSIDIAN.defaultBlockState());
-                                        _newWorld.setBlockAndUpdate(endPos.north(), Blocks.OBSIDIAN.defaultBlockState());
-                                        _newWorld.setBlockAndUpdate(endPos.north().west(), Blocks.OBSIDIAN.defaultBlockState());
-                                        _newWorld.setBlockAndUpdate(endPos.north().east(), Blocks.OBSIDIAN.defaultBlockState());
-                                        _newWorld.setBlockAndUpdate(endPos.south(), Blocks.OBSIDIAN.defaultBlockState());
-                                        _newWorld.setBlockAndUpdate(endPos.south().west(), Blocks.OBSIDIAN.defaultBlockState());
-                                        _newWorld.setBlockAndUpdate(endPos.south().east(), Blocks.OBSIDIAN.defaultBlockState());
-                                        _newWorld.setBlockAndUpdate(endPos.west(), Blocks.OBSIDIAN.defaultBlockState());
+                                        BlockPos endPos = keyLevel.getSharedSpawnPos().below();
+                                        keyLevel.setBlockAndUpdate(endPos, Blocks.OBSIDIAN.defaultBlockState());
+                                        keyLevel.setBlockAndUpdate(endPos.east(), Blocks.OBSIDIAN.defaultBlockState());
+                                        keyLevel.setBlockAndUpdate(endPos.north(), Blocks.OBSIDIAN.defaultBlockState());
+                                        keyLevel.setBlockAndUpdate(endPos.north().west(), Blocks.OBSIDIAN.defaultBlockState());
+                                        keyLevel.setBlockAndUpdate(endPos.north().east(), Blocks.OBSIDIAN.defaultBlockState());
+                                        keyLevel.setBlockAndUpdate(endPos.south(), Blocks.OBSIDIAN.defaultBlockState());
+                                        keyLevel.setBlockAndUpdate(endPos.south().west(), Blocks.OBSIDIAN.defaultBlockState());
+                                        keyLevel.setBlockAndUpdate(endPos.south().east(), Blocks.OBSIDIAN.defaultBlockState());
+                                        keyLevel.setBlockAndUpdate(endPos.west(), Blocks.OBSIDIAN.defaultBlockState());
                                     }
                                     flag = true;
                                     cooldown = GemPowerInit.DIMENSION_TRAVEL.get().getCooldown();
                                 }
                             }
-                        } else if (level == _newWorld) {
+                        } else if (level == keyLevel) {
                             if (!player.level.isClientSide && player instanceof ServerPlayer serverPlayer) {
-                                if (_defaultWorld != null) {
+                                if (newLevel != null) {
                                     player.fallDistance = 0;
                                     {
                                         serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
-                                        serverPlayer.teleportTo(_defaultWorld, _defaultWorld.getSharedSpawnPos().getX(), _defaultWorld.getSharedSpawnPos().getY() + 1, _defaultWorld.getSharedSpawnPos().getZ(), player.yRot, player.xRot);
+                                        serverPlayer.teleportTo(newLevel, newLevel.getSharedSpawnPos().getX(), newLevel.getSharedSpawnPos().getY() + 1, newLevel.getSharedSpawnPos().getZ(), player.yRot, player.xRot);
                                         serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(player.abilities));
                                         for (MobEffectInstance effectInstance : player.getActiveEffects()) {
                                             serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(player.getId(), effectInstance));
@@ -171,18 +171,18 @@ public class UsePower {
                                     }
                                     if (stack.getOrCreateTag().getString("dimension").equals("nether")) {
                                         BlockPos teleportPos = new BlockPos(playerPos.getX() * 8, 50, playerPos.getZ() * 8);
-                                        TeleporterFunction.teleport(_defaultWorld, playerPos, teleportPos, player);
-                                        Block teleportBlock = _defaultWorld.getBlockState(teleportPos).getBlock();
-                                        Block aboveTpBlock = _defaultWorld.getBlockState(teleportPos.above()).getBlock();
-                                        Block belowTpBlock = _defaultWorld.getBlockState(teleportPos.below()).getBlock();
+                                        TeleporterFunction.teleport(newLevel, playerPos, teleportPos, player);
+                                        Block teleportBlock = newLevel.getBlockState(teleportPos).getBlock();
+                                        Block aboveTpBlock = newLevel.getBlockState(teleportPos.above()).getBlock();
+                                        Block belowTpBlock = newLevel.getBlockState(teleportPos.below()).getBlock();
                                         if (teleportBlock != Blocks.AIR) {
-                                            _defaultWorld.setBlockAndUpdate(teleportPos, Blocks.AIR.defaultBlockState());
+                                            newLevel.setBlockAndUpdate(teleportPos, Blocks.AIR.defaultBlockState());
                                         }
                                         if (aboveTpBlock != Blocks.AIR) {
-                                            _defaultWorld.setBlockAndUpdate(teleportPos.above(), Blocks.AIR.defaultBlockState());
+                                            newLevel.setBlockAndUpdate(teleportPos.above(), Blocks.AIR.defaultBlockState());
                                         }
                                         if (belowTpBlock == Blocks.AIR || belowTpBlock == Blocks.LAVA) {
-                                            _defaultWorld.setBlockAndUpdate(teleportPos.below(), Blocks.STONE.defaultBlockState());
+                                            newLevel.setBlockAndUpdate(teleportPos.below(), Blocks.STONE.defaultBlockState());
                                         }
                                         flag = true;
                                         cooldown = GemPowerInit.DIMENSION_TRAVEL.get().getCooldown();

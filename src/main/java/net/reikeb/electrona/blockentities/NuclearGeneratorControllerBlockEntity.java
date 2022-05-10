@@ -57,12 +57,12 @@ public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity i
         return new NuclearGeneratorControllerContainer(id, this.getBlockPos(), playerInventory, player);
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
-        if (world == null) return;
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
+        if (level == null) return;
         ItemStack stackInSlot0 = this.inventory.getStackInSlot(0);
 
-        BlockEntity blockEntityUnder = world.getBlockEntity(blockPos.below());
-        Block blockUnder = world.getBlockState(blockPos.below()).getBlock();
+        BlockEntity blockEntityUnder = level.getBlockEntity(blockPos.below());
+        Block blockUnder = level.getBlockState(blockPos.below()).getBlock();
 
         this.isOverCooler = blockUnder == BlockInit.COOLER.get();
         this.posXUnder = blockPos.below().getX();
@@ -71,7 +71,7 @@ public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity i
 
         this.setMaxStorage(10000);
 
-        world.setBlockAndUpdate(blockPos, this.getBlockState()
+        level.setBlockAndUpdate(blockPos, this.getBlockState()
                 .setValue(NuclearGeneratorController.ACTIVATED, this.powered));
 
         if (blockEntityUnder instanceof CoolerBlockEntity coolerBlockEntity) {
@@ -110,16 +110,16 @@ public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity i
             NuclearFunction.nuclearGeneration(this, coolerBlockEntity, stackInSlot1.get());
         }
 
-        if ((this.alert) && (world.getGameTime() % 20 == 0)) {
-            world.playSound(null, blockPos, SoundsInit.NUCLEAR_GENERATOR_CONTROLLER_ALERT.get(),
+        if ((this.alert) && (level.getGameTime() % 20 == 0)) {
+            level.playSound(null, blockPos, SoundsInit.NUCLEAR_GENERATOR_CONTROLLER_ALERT.get(),
                     SoundSource.BLOCKS, 0.6F, 1.0F);
         }
 
         // Transfer energy
-        EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this, 10, true);
+        EnergyFunction.generatorTransferEnergy(level, blockPos, Direction.values(), this, 10, true);
 
         this.setChanged();
-        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
+        level.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
     }
 
     public ItemHandler getItemInventory() {

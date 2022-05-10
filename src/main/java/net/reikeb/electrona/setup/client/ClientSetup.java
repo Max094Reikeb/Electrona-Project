@@ -11,18 +11,14 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CompassItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -41,7 +37,6 @@ import net.reikeb.electrona.particles.RadioactiveFallout;
 import net.reikeb.electrona.setup.client.render.*;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
 
 import static net.reikeb.electrona.init.ContainerInit.*;
 
@@ -84,15 +79,15 @@ public class ClientSetup {
                 private final ItemProperties.CompassWobble wobble = new ItemProperties.CompassWobble();
                 private final ItemProperties.CompassWobble wobbleRandom = new ItemProperties.CompassWobble();
 
-                public float unclampedCall(ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity player, int hash) {
+                public float unclampedCall(ItemStack stack, @Nullable ClientLevel clientLevel, @Nullable LivingEntity player, int hash) {
                     Entity entity = player != null ? player : stack.getEntityRepresentation();
                     if (entity == null) return 0.0F;
-                    if (world == null && entity.level instanceof ClientLevel) {
-                        world = (ClientLevel) entity.level;
+                    if (clientLevel == null && entity.level instanceof ClientLevel) {
+                        clientLevel = (ClientLevel) entity.level;
                     }
-                    if (world == null) return 0.0F;
+                    if (clientLevel == null) return 0.0F;
                     BlockPos blockpos = NbtUtils.readBlockPos(stack.getOrCreateTag().getCompound("CounterPos"));
-                    long i = world.getGameTime();
+                    long i = clientLevel.getGameTime();
                     if (!(entity.position().distanceToSqr((double) blockpos.getX() + 0.5D, entity.position().y(), (double) blockpos.getZ() + 0.5D) < (double) 1.0E-5F)) {
                         boolean flag = player instanceof Player && ((Player) player).isLocalPlayer();
                         double d1 = 0.0D;
@@ -132,25 +127,6 @@ public class ClientSetup {
 
                 private int hash(int hash) {
                     return hash * 1327217883;
-                }
-
-                @Nullable
-                private BlockPos getSpawnPosition(ClientLevel world) {
-                    return world.dimensionType().natural() ? world.getSharedSpawnPos() : null;
-                }
-
-                @Nullable
-                private BlockPos getLodestonePosition(Level world, CompoundTag tag) {
-                    boolean flag = tag.contains("LodestonePos");
-                    boolean flag1 = tag.contains("LodestoneDimension");
-                    if (flag && flag1) {
-                        Optional<ResourceKey<Level>> optional = CompassItem.getLodestoneDimension(tag);
-                        if (optional.isPresent() && world.dimension() == optional.get()) {
-                            return NbtUtils.readBlockPos(tag.getCompound("LodestonePos"));
-                        }
-                    }
-
-                    return null;
                 }
 
                 private double getFrameRotation(ItemFrame frame) {

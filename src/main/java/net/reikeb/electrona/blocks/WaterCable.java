@@ -36,15 +36,14 @@ public class WaterCable extends AbstractCable implements EntityBlock {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
-        super.appendHoverText(itemstack, world, list, flag);
+    public void appendHoverText(ItemStack itemstack, BlockGetter blockGetter, List<Component> list, TooltipFlag flag) {
+        super.appendHoverText(itemstack, blockGetter, list, flag);
         list.add(new TranslatableComponent("block.electrona.water_cable.desc"));
     }
 
     @Override
-    public boolean canConnectTo(BlockState wireState, Level worldIn, BlockPos wirePos, BlockPos connectPos, Direction direction) {
-        BlockState otherState = worldIn.getBlockState(connectPos);
-
+    public boolean canConnectTo(BlockState wireState, Level level, BlockPos wirePos, BlockPos connectPos, Direction direction) {
+        BlockState otherState = level.getBlockState(connectPos);
         return (otherState.is(Tags.WATER_TANK)) || (otherState.is(Tags.WATER_CABLE));
     }
 
@@ -74,7 +73,7 @@ public class WaterCable extends AbstractCable implements EntityBlock {
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return blockEntityType == BlockEntityInit.WATER_CABLE_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) WaterCableBlockEntity.TICKER : null;
     }
 }

@@ -29,9 +29,9 @@ public class MechanicWings extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
+    public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
         int EL = 0;
-        super.appendHoverText(itemstack, world, list, flag);
+        super.appendHoverText(itemstack, level, list, flag);
         EL = (itemstack).getOrCreateTag().getInt("ElectronicPower");
         list.add(new TextComponent((("\u00A77") + "" + ((EL)) + "" + (" EL"))));
     }
@@ -43,14 +43,14 @@ public class MechanicWings extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         EquipmentSlot equipmentslottype = Mob.getEquipmentSlotForItem(itemstack);
         ItemStack itemstack1 = player.getItemBySlot(equipmentslottype);
         if (itemstack1.isEmpty()) {
             player.setItemSlot(equipmentslottype, itemstack.copy());
             itemstack.setCount(0);
-            return InteractionResultHolder.sidedSuccess(itemstack, world.isClientSide());
+            return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
         } else {
             return InteractionResultHolder.fail(itemstack);
         }

@@ -17,8 +17,8 @@ public class BombFallingEntity extends FallingBlockEntity {
         super(entityType, level);
     }
 
-    public BombFallingEntity(Level worldIn, double v, double y, double v1, BlockState blockState, boolean isCharged, int nuclearCharge) {
-        super(worldIn, v, y, v1, blockState);
+    public BombFallingEntity(Level level, double v, double y, double v1, BlockState blockState, boolean isCharged, int nuclearCharge) {
+        super(level, v, y, v1, blockState);
         this.isCharged = isCharged;
         this.nuclearCharge = nuclearCharge;
     }

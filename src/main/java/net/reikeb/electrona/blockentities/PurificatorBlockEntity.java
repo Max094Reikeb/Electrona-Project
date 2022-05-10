@@ -44,8 +44,8 @@ public class PurificatorBlockEntity extends AbstractFluidBlockEntity {
         return new PurificatorContainer(id, this.getBlockPos(), playerInventory, player);
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
-        if (world == null) return;
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
+        if (level == null) return;
         ItemStack stackInSlot1 = this.inventory.getStackInSlot(1);
 
         AtomicInteger waterLevel = new AtomicInteger();
@@ -61,7 +61,7 @@ public class PurificatorBlockEntity extends AbstractFluidBlockEntity {
             FluidFunction.fillWater(this, 1000);
         }
 
-        if (world.isClientSide) return;
+        if (level.isClientSide) return;
 
         if ((waterLevel.get() > 0) && (Recipes.getRecipe(this, stackInSlot1) != null)) {
             if (this.canPurify) {
@@ -73,15 +73,15 @@ public class PurificatorBlockEntity extends AbstractFluidBlockEntity {
                 if (this.currentPurifyingTime < (this.purifyingTime * 20)) {
                     this.currentPurifyingTime += 1;
                     FluidFunction.drainWater(this, (int) (waterPerSecond * 0.05));
-                    world.playSound(null, blockPos, SoundsInit.PURIFICATOR_PURIFICATION.get(),
+                    level.playSound(null, blockPos, SoundsInit.PURIFICATOR_PURIFICATION.get(),
                             SoundSource.BLOCKS, 0.6F, 1.0F);
 
                 } else {
-                    if (!MinecraftForge.EVENT_BUS.post(new PurificationEvent(world, blockPos, stackInSlot1, new ItemStack(output.copy().getItem(), Recipes.getRecipe(this, stackInSlot1).getCountOutput()), this.purifyingTime, this.waterRequired))) {
+                    if (!MinecraftForge.EVENT_BUS.post(new PurificationEvent(level, blockPos, stackInSlot1, new ItemStack(output.copy().getItem(), Recipes.getRecipe(this, stackInSlot1).getCountOutput()), this.purifyingTime, this.waterRequired))) {
                         this.currentPurifyingTime = 0;
                         this.inventory.insertItem(2, new ItemStack(output.copy().getItem(), Recipes.getRecipe(this, stackInSlot1).getCountOutput()), false);
                         this.inventory.decrStackSize(1, Recipes.getRecipe(this, stackInSlot1).getCountInput());
-                        world.playSound(null, blockPos, SoundEvents.BREWING_STAND_BREW,
+                        level.playSound(null, blockPos, SoundEvents.BREWING_STAND_BREW,
                                 SoundSource.BLOCKS, 0.6F, 1.0F);
                     }
                 }
@@ -93,7 +93,7 @@ public class PurificatorBlockEntity extends AbstractFluidBlockEntity {
         }
 
         this.setChanged();
-        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
+        level.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
     }
 
     public int getWaterLevel() {

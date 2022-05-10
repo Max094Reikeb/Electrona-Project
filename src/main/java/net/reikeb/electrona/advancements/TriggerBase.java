@@ -196,9 +196,9 @@ public class TriggerBase implements CriterionTrigger<TriggerBase.Instance> {
         /**
          * Trigger.
          *
-         * @param player the player
+         * @param serverPlayer The serverPlayer
          */
-        public void trigger(ServerPlayer player) {
+        public void trigger(ServerPlayer serverPlayer) {
             ArrayList<CriterionTrigger.Listener<TriggerBase.Instance>> list = null;
 
             for (CriterionTrigger.Listener<TriggerBase.Instance> listener : listeners) {

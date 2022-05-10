@@ -49,10 +49,10 @@ public class LeadDoor extends DoorBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player playerEntity, InteractionHand hand, BlockHitResult hit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player playerEntity, InteractionHand hand, BlockHitResult hit) {
         state = state.cycle(OPEN);
-        world.setBlock(pos, state, 10);
-        world.levelEvent(playerEntity, state.getValue(OPEN) ? this.getOpenSound() : this.getCloseSound(), pos, 0);
-        return InteractionResult.sidedSuccess(world.isClientSide);
+        level.setBlock(pos, state, 10);
+        level.levelEvent(playerEntity, state.getValue(OPEN) ? this.getOpenSound() : this.getCloseSound(), pos, 0);
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 }

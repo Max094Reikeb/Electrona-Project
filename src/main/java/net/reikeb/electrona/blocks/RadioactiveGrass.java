@@ -21,15 +21,15 @@ public class RadioactiveGrass extends FlowerBlock {
     }
 
     @Override
-    public boolean mayPlaceOn(BlockState state, BlockGetter worldIn, BlockPos pos) {
+    public boolean mayPlaceOn(BlockState state, BlockGetter blockGetter, BlockPos pos) {
         Block block = state.getBlock();
         return (block == BlockInit.RADIOACTIVE_DIRT.get());
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader levelReader, BlockPos pos) {
         BlockPos blockpos = pos.below();
-        BlockState blockstate = world.getBlockState(blockpos);
-        return this.mayPlaceOn(blockstate, world, blockpos);
+        BlockState blockstate = levelReader.getBlockState(blockpos);
+        return this.mayPlaceOn(blockstate, levelReader, blockpos);
     }
 }

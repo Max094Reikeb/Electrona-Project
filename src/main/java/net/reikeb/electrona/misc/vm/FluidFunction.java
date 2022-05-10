@@ -18,21 +18,21 @@ public class FluidFunction {
     /**
      * This method is used by fluid generators to transfer fluids to Machines.
      *
-     * @param world             The world of the blocks
+     * @param level             The level of the blocks
      * @param pos               The blockpos of the generator
      * @param directions        The directions of the generator
      * @param generatorBE       The BlockEntity of the generator
      * @param generatorLevel    The current fluid amount of the generator
      * @param transferPerSecond The amount of fluid transfered per second
      */
-    public static void generatorTransferFluid(Level world, BlockPos pos, Direction[] directions, BlockEntity generatorBE, int generatorLevel, int transferPerSecond) {
+    public static void generatorTransferFluid(Level level, BlockPos pos, Direction[] directions, BlockEntity generatorBE, int generatorLevel, int transferPerSecond) {
         double transferPerTick = transferPerSecond * 0.05;
 
         for (Direction dir : directions) {
             if (generatorLevel <= 0) return; // we have no more fluid
 
-            BlockEntity blockEntity = world.getBlockEntity(pos.relative(dir));
-            BlockState offsetBlockState = world.getBlockState(pos.relative(dir));
+            BlockEntity blockEntity = level.getBlockEntity(pos.relative(dir));
+            BlockState offsetBlockState = level.getBlockState(pos.relative(dir));
             if (blockEntity == null) continue;
             if (!(offsetBlockState.is(Tags.WATER_TANK) || offsetBlockState.is(Tags.WATER_CABLE))) continue;
 

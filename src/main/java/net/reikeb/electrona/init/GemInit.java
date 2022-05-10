@@ -15,9 +15,7 @@ public class GemInit {
     public static final DeferredRegister<GemObject> GEM_DEFERRED_REGISTER = DeferredRegister.create(GemObject.class, Electrona.MODID);
 
     public static Supplier<IForgeRegistry<GemObject>> GEM_REGISTRY = GEM_DEFERRED_REGISTER.makeRegistry("gem", () ->
-            new RegistryBuilder<GemObject>().setMaxID(Integer.MAX_VALUE - 1).onAdd((owner, stage, id, obj, oldObj) ->
-                    Electrona.LOGGER.info("Wand added: " + getName(obj).toString() + " ")
-            ).setDefaultKey(Electrona.RL("empty"))
+            new RegistryBuilder<GemObject>().setMaxID(Integer.MAX_VALUE - 1).setDefaultKey(Electrona.RL("empty"))
     );
 
     public static final RegistryObject<GemObject> EMPTY = GEM_DEFERRED_REGISTER.register("empty", GemObject::new);

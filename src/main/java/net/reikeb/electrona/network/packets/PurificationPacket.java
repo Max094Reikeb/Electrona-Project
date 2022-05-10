@@ -21,9 +21,9 @@ public class PurificationPacket {
 
     public void whenThisPacketIsReceived(Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> {
-            ServerPlayer playerEntity = context.get().getSender();
-            if (playerEntity == null) return;
-            TTriggers.A_NEW_MECHANIC.trigger(playerEntity);
+            ServerPlayer serverPlayer = context.get().getSender();
+            if (serverPlayer == null) return;
+            TTriggers.A_NEW_MECHANIC.trigger(serverPlayer);
         });
         context.get().setPacketHandled(true);
     }

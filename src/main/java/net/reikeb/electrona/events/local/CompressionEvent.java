@@ -17,7 +17,7 @@ import net.minecraftforge.eventbus.api.Event;
 @Cancelable
 public class CompressionEvent extends Event {
 
-    private final Level world;
+    private final Level level;
     private final BlockPos pos;
     private final ItemStack input1;
     private final ItemStack input2;
@@ -25,9 +25,9 @@ public class CompressionEvent extends Event {
     private final int compressingTime;
     private final int energyRequired;
 
-    public CompressionEvent(Level world, BlockPos pos, ItemStack input1, ItemStack input2, ItemStack output,
+    public CompressionEvent(Level level, BlockPos pos, ItemStack input1, ItemStack input2, ItemStack output,
                             int compressingTime, int energyRequired) {
-        this.world = world;
+        this.level = level;
         this.pos = pos;
         this.input1 = input1;
         this.input2 = input2;
@@ -36,8 +36,8 @@ public class CompressionEvent extends Event {
         this.energyRequired = energyRequired;
     }
 
-    public Level getWorld() {
-        return this.world;
+    public Level getLevel() {
+        return this.level;
     }
 
     public BlockPos getPos() {

@@ -33,7 +33,7 @@ public class RadioactiveDirtItem extends BlockItem {
     }
 
     @Override
-    public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
-        RadioactivityFunction.radioactiveItemInInventory(world, entity, 200, 1);
+    public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int slot, boolean selected) {
+        RadioactivityFunction.radioactiveItemInInventory(level, entity, 200, 1);
     }
 }

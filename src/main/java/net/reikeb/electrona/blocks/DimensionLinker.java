@@ -49,14 +49,14 @@ public class DimensionLinker extends AbstractWaterLoggableBlock implements Entit
     }
 
     @Override
-    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
+            BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof DimensionLinkerBlockEntity dimensionLinkerBlockEntity) {
-                dimensionLinkerBlockEntity.dropItems(world, pos);
-                world.updateNeighbourForOutputSignal(pos, this);
+                dimensionLinkerBlockEntity.dropItems(level, pos);
+                level.updateNeighbourForOutputSignal(pos, this);
             }
-            super.onRemove(state, world, pos, newState, isMoving);
+            super.onRemove(state, level, pos, newState, isMoving);
         }
     }
 
@@ -90,9 +90,9 @@ public class DimensionLinker extends AbstractWaterLoggableBlock implements Entit
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        if (!worldIn.isClientSide) {
-            BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (!level.isClientSide) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof DimensionLinkerBlockEntity) {
                 NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) blockEntity, pos);
             } else {
@@ -103,8 +103,8 @@ public class DimensionLinker extends AbstractWaterLoggableBlock implements Entit
     }
 
     @Override
-    public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
-        BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+    public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
         return blockEntity instanceof MenuProvider ? (MenuProvider) blockEntity : null;
     }
 
@@ -114,9 +114,9 @@ public class DimensionLinker extends AbstractWaterLoggableBlock implements Entit
     }
 
     @Override
-    public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
-        super.triggerEvent(state, world, pos, eventID, eventParam);
-        BlockEntity blockEntity = world.getBlockEntity(pos);
+    public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int eventID, int eventParam) {
+        super.triggerEvent(state, level, pos, eventID, eventParam);
+        BlockEntity blockEntity = level.getBlockEntity(pos);
         return blockEntity != null && blockEntity.triggerEvent(eventID, eventParam);
     }
 }

@@ -58,19 +58,19 @@ public class NuclearBomb extends FallingBlock implements EntityBlock {
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
         Direction facing = state.getValue(FACING);
         return CustomShapes.getVoxelShape(facing, CustomShapes.NuclearBomb);
     }
 
     @Override
-    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
+            BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof NuclearBombBlockEntity) {
-                world.updateNeighbourForOutputSignal(pos, this);
+                level.updateNeighbourForOutputSignal(pos, this);
             }
-            super.onRemove(state, world, pos, newState, isMoving);
+            super.onRemove(state, level, pos, newState, isMoving);
         }
     }
 
@@ -85,17 +85,17 @@ public class NuclearBomb extends FallingBlock implements EntityBlock {
     }
 
     @Override
-    public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
-        if (world.isEmptyBlock(pos.below()) || isFree(world.getBlockState(pos.below())) && pos.getY() >= 0) {
-            explode(world, pos);
+    public void tick(BlockState state, ServerLevel serverLevel, BlockPos pos, Random random) {
+        if (serverLevel.isEmptyBlock(pos.below()) || isFree(serverLevel.getBlockState(pos.below())) && pos.getY() >= 0) {
+            explode(serverLevel, pos);
         }
     }
 
-    public void wasExploded(Level world, BlockPos pos, Explosion explosion) {
-        if (!world.isClientSide) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
+    public void wasExploded(Level level, BlockPos pos, Explosion explosion) {
+        if (!level.isClientSide) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof NuclearBombBlockEntity nuclearBombBlockEntity) {
-                new NuclearExplosion(world, null, pos, nuclearBombBlockEntity.getNuclearCharge());
+                new NuclearExplosion(level, null, pos, nuclearBombBlockEntity.getNuclearCharge());
             }
         }
     }
@@ -107,12 +107,12 @@ public class NuclearBomb extends FallingBlock implements EntityBlock {
         return false;
     }
 
-    private void explode(ServerLevel world, BlockPos pos) {
-        BlockEntity blockEntity = world.getBlockEntity(pos);
+    private void explode(ServerLevel serverLevel, BlockPos pos) {
+        BlockEntity blockEntity = serverLevel.getBlockEntity(pos);
         if (blockEntity instanceof NuclearBombBlockEntity nuclearBombBlockEntity) {
-            BombFallingEntity bombFallingEntity = new BombFallingEntity(world, (double) pos.getX() + 0.5D, pos.getY(), (double) pos.getZ() + 0.5D, world.getBlockState(pos), nuclearBombBlockEntity.isCharged(), nuclearBombBlockEntity.getNuclearCharge());
+            BombFallingEntity bombFallingEntity = new BombFallingEntity(serverLevel, (double) pos.getX() + 0.5D, pos.getY(), (double) pos.getZ() + 0.5D, serverLevel.getBlockState(pos), nuclearBombBlockEntity.isCharged(), nuclearBombBlockEntity.getNuclearCharge());
             this.falling(bombFallingEntity);
-            world.addFreshEntity(bombFallingEntity);
+            serverLevel.addFreshEntity(bombFallingEntity);
         }
     }
 
@@ -136,23 +136,23 @@ public class NuclearBomb extends FallingBlock implements EntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        if (!worldIn.isClientSide) {
-            BlockEntity blockEntity = worldIn.getBlockEntity(pos);
-            if (player.isCrouching() && player.getItemInHand(handIn).isEmpty()) {
-                player.setItemInHand(handIn, new ItemStack(this, 1));
-                worldIn.removeBlock(pos, true);
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (!level.isClientSide) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (player.isCrouching() && player.getItemInHand(hand).isEmpty()) {
+                player.setItemInHand(hand, new ItemStack(this, 1));
+                level.removeBlock(pos, true);
                 return InteractionResult.SUCCESS;
-            } else if (player.getItemInHand(handIn).getItem() == Items.FLINT_AND_STEEL) {
+            } else if (player.getItemInHand(hand).getItem() == Items.FLINT_AND_STEEL) {
                 if (blockEntity instanceof NuclearBombBlockEntity nuclearBombBlockEntity) {
                     if (nuclearBombBlockEntity.isCharged()
-                            && worldIn.getLevelData().getGameRules().getBoolean(Gamerules.DO_NUCLEAR_BOMBS_EXPLODE)) {
+                            && level.getLevelData().getGameRules().getBoolean(Gamerules.DO_NUCLEAR_BOMBS_EXPLODE)) {
                         if (!player.isCreative()) {
-                            player.getItemInHand(handIn).hurtAndBreak(1, player, (p_220287_1_) -> {
-                                p_220287_1_.broadcastBreakEvent(handIn);
+                            player.getItemInHand(hand).hurtAndBreak(1, player, (p_220287_1_) -> {
+                                p_220287_1_.broadcastBreakEvent(hand);
                             });
                         }
-                        new NuclearExplosion(worldIn, player, pos, nuclearBombBlockEntity.getNuclearCharge());
+                        new NuclearExplosion(level, player, pos, nuclearBombBlockEntity.getNuclearCharge());
                         return InteractionResult.SUCCESS;
                     }
                 }
@@ -168,8 +168,8 @@ public class NuclearBomb extends FallingBlock implements EntityBlock {
     }
 
     @Override
-    public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
-        BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+    public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
         return blockEntity instanceof MenuProvider ? (MenuProvider) blockEntity : null;
     }
 
@@ -179,9 +179,9 @@ public class NuclearBomb extends FallingBlock implements EntityBlock {
     }
 
     @Override
-    public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
-        super.triggerEvent(state, world, pos, eventID, eventParam);
-        BlockEntity blockEntity = world.getBlockEntity(pos);
+    public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int eventID, int eventParam) {
+        super.triggerEvent(state, level, pos, eventID, eventParam);
+        BlockEntity blockEntity = level.getBlockEntity(pos);
         return blockEntity != null && blockEntity.triggerEvent(eventID, eventParam);
     }
 }

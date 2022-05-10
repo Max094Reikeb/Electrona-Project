@@ -46,7 +46,7 @@ public class CosmicGem extends Item {
         return PowerUtils.setGem(super.getDefaultInstance(), GemInit.EMPTY.get());
     }
 
-    public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
+    public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
         PowerUtils.addGemTooltip(itemstack, list);
     }
 
@@ -58,10 +58,10 @@ public class CosmicGem extends Item {
         }
     }
 
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        new UsePower(world, player, stack);
-        return InteractionResultHolder.sidedSuccess(stack, world.isClientSide());
+        new UsePower(level, player, stack);
+        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
 
     @Override

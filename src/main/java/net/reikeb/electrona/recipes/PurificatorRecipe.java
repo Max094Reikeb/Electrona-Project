@@ -41,24 +41,18 @@ public class PurificatorRecipe implements Recipe<Container> {
         this.randomOutput = randomOutput;
         this.purifyingTime = purifyingTime;
         this.waterRequired = waterRequired;
-
-        // This output is not required, but it can be used to detect when a recipe has been
-        // loaded into the game.
-        System.out.println("Loaded " + this.toString());
     }
 
-    public static Optional<PurificatorRecipe> getRecipe(Level world, @Nullable BlockPos pos, ItemStack stack) {
-        return getRecipe(world, new PurifyingContext(new SingletonInventory(stack), null, pos != null ? () -> Vec3.atCenterOf(pos) : null, null));
+    public static Optional<PurificatorRecipe> getRecipe(Level level, @Nullable BlockPos pos, ItemStack stack) {
+        return getRecipe(level, new PurifyingContext(new SingletonInventory(stack), null, pos != null ? () -> Vec3.atCenterOf(pos) : null, null));
     }
 
-    public static Optional<PurificatorRecipe> getRecipe(Level world, PurifyingContext ctx) {
-        return world.getRecipeManager().getRecipeFor(Electrona.PURIFYING, ctx, world);
+    public static Optional<PurificatorRecipe> getRecipe(Level level, PurifyingContext ctx) {
+        return level.getRecipeManager().getRecipeFor(Electrona.PURIFYING, ctx, level);
     }
 
     @Override
     public String toString() {
-
-        // Overriding toString is not required, it's just useful for debugging.
         return "Purificator recipe [input=" + this.input + ", output=" + this.output + ", id=" + this.id + "]";
     }
 
@@ -80,7 +74,7 @@ public class PurificatorRecipe implements Recipe<Container> {
     }
 
     @Override
-    public boolean matches(Container inv, Level worldIn) {
+    public boolean matches(Container inv, Level level) {
         return ItemStack.matches(this.input, inv.getItem(1));
     }
 

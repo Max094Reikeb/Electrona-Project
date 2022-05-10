@@ -44,8 +44,8 @@ public class TeleportSaver extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-        super.appendHoverText(itemstack, world, list, flag);
+    public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
+        super.appendHoverText(itemstack, level, list, flag);
         if ((itemstack).getOrCreateTag().getBoolean("linked")) {
             list.add(new TranslatableComponent("item.electrona.teleport_saver.desc"));
             list.add(new TextComponent("\u00A77" + (itemstack).getOrCreateTag().getDouble("teleportX") + " "

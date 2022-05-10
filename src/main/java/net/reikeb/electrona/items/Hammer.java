@@ -34,10 +34,10 @@ public class Hammer extends DiggerItem {
                 new Properties().stacksTo(1).rarity(Rarity.COMMON).tab(ItemGroups.ELECTRONA_TOOLS));
     }
 
-    public static void attemptBreakNeighbors(Level world, BlockPos pos, Player player, Set<Block> notEffectiveOn, boolean checkHarvestLevel, int radioImpar) {
-        world.setBlockAndUpdate(pos, Blocks.GLASS.defaultBlockState());
-        BlockHitResult trace = Utils.rayTrace(world, player, ClipContext.Fluid.ANY);
-        world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+    public static void attemptBreakNeighbors(Level level, BlockPos pos, Player player, Set<Block> notEffectiveOn, boolean checkHarvestLevel, int radioImpar) {
+        level.setBlockAndUpdate(pos, Blocks.GLASS.defaultBlockState());
+        BlockHitResult trace = Utils.rayTrace(level, player, ClipContext.Fluid.ANY);
+        level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 
         if (trace.getType() == BlockHitResult.Type.BLOCK) {
             Direction face = trace.getDirection();
@@ -53,22 +53,22 @@ public class Hammer extends DiggerItem {
                     if (face == Direction.NORTH || face == Direction.SOUTH) target = pos.offset(a, b, 0);
                     if (face == Direction.EAST || face == Direction.WEST) target = pos.offset(0, a, b);
 
-                    attemptBreak(world, target, player, notEffectiveOn, checkHarvestLevel);
+                    attemptBreak(level, target, player, notEffectiveOn, checkHarvestLevel);
                 }
             }
         }
     }
 
-    public static void attemptBreak(Level world, BlockPos pos, Player player, Set<Block> notEffectiveOn, boolean checkHarvestLevel) {
-        BlockState state = world.getBlockState(pos);
+    public static void attemptBreak(Level level, BlockPos pos, Player player, Set<Block> notEffectiveOn, boolean checkHarvestLevel) {
+        BlockState state = level.getBlockState(pos);
 
         boolean validHarvest = !checkHarvestLevel || player.getMainHandItem().isCorrectToolForDrops(state);
         boolean isEffective = !notEffectiveOn.contains(state.getBlock());
         boolean witherImmune = state.is(BlockTags.WITHER_IMMUNE);
 
         if (validHarvest && isEffective && !witherImmune) {
-            Block.dropResources(state, world, pos, null, player, player.getMainHandItem());
-            world.destroyBlock(pos, false);
+            Block.dropResources(state, level, pos, null, player, player.getMainHandItem());
+            level.destroyBlock(pos, false);
         }
     }
 
@@ -78,12 +78,12 @@ public class Hammer extends DiggerItem {
                 (toolAction.equals(ToolActions.PICKAXE_DIG)) || (toolAction.equals(ToolActions.HOE_DIG)));
     }
 
-    public boolean mineBlock(ItemStack stack, Level world, BlockState state, BlockPos pos, LivingEntity entity) {
-        if (!world.isClientSide && state.getDestroySpeed(world, pos) != 0.0F) {
+    public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity) {
+        if (!level.isClientSide && state.getDestroySpeed(level, pos) != 0.0F) {
             stack.hurtAndBreak(1, entity, (e) -> {
                 e.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
-            attemptBreakNeighbors(world, pos, (Player) entity, NOT_EFFECTIVE_BLOCKS, false, 3);
+            attemptBreakNeighbors(level, pos, (Player) entity, NOT_EFFECTIVE_BLOCKS, false, 3);
         }
         return true;
     }

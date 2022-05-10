@@ -13,8 +13,8 @@ import java.util.Random;
 
 public class RadioactiveFallout extends BaseAshSmokeParticle {
 
-    protected RadioactiveFallout(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, float n, SpriteSet spriteSet) {
-        super(world, x, y, z, 0.1F, -0.1F, 0.1F, vx, vy, vz, n, spriteSet, 0.0F, 20, (float) -5.0E-4D, false);
+    protected RadioactiveFallout(ClientLevel clientLevel, double x, double y, double z, double vx, double vy, double vz, float n, SpriteSet spriteSet) {
+        super(clientLevel, x, y, z, 0.1F, -0.1F, 0.1F, vx, vy, vz, n, spriteSet, 0.0F, 20, (float) -5.0E-4D, false);
         this.rCol = 0.7294118F;
         this.gCol = 0.69411767F;
         this.bCol = 0.7607843F;
@@ -28,12 +28,12 @@ public class RadioactiveFallout extends BaseAshSmokeParticle {
             this.sprites = sprites;
         }
 
-        public Particle createParticle(SimpleParticleType particleType, ClientLevel world, double x, double y, double z, double vx, double vy, double vz) {
-            Random random = world.random;
+        public Particle createParticle(SimpleParticleType particleType, ClientLevel clientLevel, double x, double y, double z, double vx, double vy, double vz) {
+            Random random = clientLevel.random;
             double d0 = (double) random.nextFloat() * -1.9D * (double) random.nextFloat() * 0.1D;
             double d1 = (double) random.nextFloat() * -0.5D * (double) random.nextFloat() * 0.1D * 5.0D;
             double d2 = (double) random.nextFloat() * -1.9D * (double) random.nextFloat() * 0.1D;
-            return new RadioactiveFallout(world, x, y, z, d0, d1, d2, 1.0F, this.sprites);
+            return new RadioactiveFallout(clientLevel, x, y, z, d0, d1, d2, 1.0F, this.sprites);
         }
     }
 }

@@ -44,13 +44,13 @@ public class CompressorBlockEntity extends AbstractBlockEntity implements Abstra
         return new CompressorContainer(id, this.getBlockPos(), playerInventory, player);
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         ItemStack stackInSlot0 = this.inventory.getStackInSlot(0);
         ItemStack stackInSlot1 = this.inventory.getStackInSlot(1);
 
         this.setMaxStorage(5000);
 
-        if ((world == null) || (world.isClientSide)) return;
+        if ((level == null) || (level.isClientSide)) return;
 
         if ((this.electronicPower > 0) && (Recipes.getRecipe(this, stackInSlot0, stackInSlot1) != null)) {
             if (this.canCompress) {
@@ -64,12 +64,12 @@ public class CompressorBlockEntity extends AbstractBlockEntity implements Abstra
                     EnergyFunction.drainEnergy(this, energyPerSecond * 0.05);
 
                 } else {
-                    if (!MinecraftForge.EVENT_BUS.post(new CompressionEvent(world, blockPos, stackInSlot0, stackInSlot1, output.copy(), this.compressingTime, this.energyRequired))) {
+                    if (!MinecraftForge.EVENT_BUS.post(new CompressionEvent(level, blockPos, stackInSlot0, stackInSlot1, output.copy(), this.compressingTime, this.energyRequired))) {
                         this.currentCompressingTime = 0;
                         this.inventory.insertItem(2, output.copy(), false);
                         this.inventory.decrStackSize(0, 1);
                         this.inventory.decrStackSize(1, 1);
-                        world.playSound(null, blockPos, SoundsInit.COMPRESSOR_END_COMPRESSION.get(),
+                        level.playSound(null, blockPos, SoundsInit.COMPRESSOR_END_COMPRESSION.get(),
                                 SoundSource.BLOCKS, 0.6F, 1.0F);
                     }
                 }
@@ -79,11 +79,11 @@ public class CompressorBlockEntity extends AbstractBlockEntity implements Abstra
         } else {
             this.currentCompressingTime = 0;
         }
-        world.setBlockAndUpdate(blockPos, state
+        level.setBlockAndUpdate(blockPos, state
                 .setValue(Compressor.COMPRESSING, this.currentCompressingTime > 0));
 
         t.setChanged();
-        world.sendBlockUpdated(blockPos, state, state, 3);
+        level.sendBlockUpdated(blockPos, state, state, 3);
     }
 
     public ItemHandler getItemInventory() {

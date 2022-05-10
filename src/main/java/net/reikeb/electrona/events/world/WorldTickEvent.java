@@ -40,24 +40,24 @@ public class WorldTickEvent {
         });
     }
 
-    private static void lightnings(ServerLevel world, LevelChunk chunk) {
+    private static void lightnings(ServerLevel serverLevel, LevelChunk chunk) {
         ChunkPos chunkPos = chunk.getPos();
         int delay = 10000;
-        if (world.getDifficulty() == Difficulty.PEACEFUL) {
+        if (serverLevel.getDifficulty() == Difficulty.PEACEFUL) {
             delay = 1000;
-        } else if (world.getDifficulty() == Difficulty.EASY) {
+        } else if (serverLevel.getDifficulty() == Difficulty.EASY) {
             delay = 5000;
-        } else if (world.getDifficulty() == Difficulty.NORMAL) {
+        } else if (serverLevel.getDifficulty() == Difficulty.NORMAL) {
             delay = 8000;
         }
-        if (world.isRaining() && world.isThundering() && world.random.nextInt(delay) == 0) {
-            BlockPos pos = world.findLightningTargetAround(world.getBlockRandomPos(chunkPos.getMinBlockX(),
+        if (serverLevel.isRaining() && serverLevel.isThundering() && serverLevel.random.nextInt(delay) == 0) {
+            BlockPos pos = serverLevel.findLightningTargetAround(serverLevel.getBlockRandomPos(chunkPos.getMinBlockX(),
                     0, chunkPos.getMinBlockZ(), 15));
-            if (!world.isRainingAt(pos)) return;
-            EnergeticLightningBolt energeticLightningBolt = EntityInit.ENERGETIC_LIGHTNING_BOLT.get().create(world);
+            if (!serverLevel.isRainingAt(pos)) return;
+            EnergeticLightningBolt energeticLightningBolt = EntityInit.ENERGETIC_LIGHTNING_BOLT.get().create(serverLevel);
             if (energeticLightningBolt == null) return;
             energeticLightningBolt.moveTo(Vec3.atBottomCenterOf(pos));
-            world.addFreshEntity(energeticLightningBolt);
+            serverLevel.addFreshEntity(energeticLightningBolt);
         }
     }
 }

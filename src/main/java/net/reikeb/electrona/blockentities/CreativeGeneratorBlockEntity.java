@@ -53,17 +53,17 @@ public class CreativeGeneratorBlockEntity extends BlockEntity implements Abstrac
         super(CREATIVE_GENERATOR_BLOCK_ENTITY.get(), pos, state);
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         this.setMaxStorage(999999999);
         EnergyFunction.setEnergy(this, 999999999);
 
-        if (world == null) return;
+        if (level == null) return;
 
         this.getCapability(CapabilityEnergy.ENERGY, null).ifPresent(cap ->
                 cap.receiveEnergy(999999999, false));
 
         // We pass energy to blocks around (this part is common to all generators)
-        EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this, 20, true);
+        EnergyFunction.generatorTransferEnergy(level, blockPos, Direction.values(), this, 20, true);
     }
 
     public ItemHandler getItemInventory() {

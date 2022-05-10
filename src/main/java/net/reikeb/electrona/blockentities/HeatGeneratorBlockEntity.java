@@ -32,15 +32,15 @@ public class HeatGeneratorBlockEntity extends BlockEntity implements AbstractEne
         super(HEAT_GENERATOR_BLOCK_ENTITY.get(), pos, state);
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         this.setMaxStorage(2000);
 
-        if (world == null) return;
+        if (level == null) return;
 
         // We generate the energy (this part is uncommon for all generators)
-        ResourceLocation biomeRL = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(world.getBiome(blockPos).value());
+        ResourceLocation biomeRL = level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(level.getBiome(blockPos).value());
 
-        world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(HeatGenerator.HEATING, this.electronicPower > 0));
+        level.setBlockAndUpdate(blockPos, this.getBlockState().setValue(HeatGenerator.HEATING, this.electronicPower > 0));
 
         if ((biomeRL != null) && (biomeRL.equals(Keys.DESERT_BIOME)
                 || biomeRL.equals(Keys.NETHER_WASTES_BIOME)
@@ -66,7 +66,7 @@ public class HeatGeneratorBlockEntity extends BlockEntity implements AbstractEne
         }
 
         // We pass energy to blocks around (this part is common to all generators)
-        EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this, 3, true);
+        EnergyFunction.generatorTransferEnergy(level, blockPos, Direction.values(), this, 3, true);
 
         this.setChanged();
     }

@@ -18,14 +18,14 @@ public class CableFunction {
     /**
      * This method is used by Cables to transfer energy to Machines or other cables
      *
-     * @param world             The world the blocks are in
+     * @param level             The level the blocks are in
      * @param pos               The blockpos of the Cable
      * @param directions        The directions of the Cable
      * @param cableBlockEntity  The BlockEntity of the Cable
      * @param transferPerSecond The amount of energy transfered each second
      * @param isBlue            Defines if the Cable is a normal Cable or a Blue Cable
      */
-    public static <T extends AbstractEnergyBlockEntity> void cableTransferEnergy(Level world, BlockPos pos, Direction[] directions, T cableBlockEntity, int transferPerSecond, Boolean isBlue) {
+    public static <T extends AbstractEnergyBlockEntity> void cableTransferEnergy(Level level, BlockPos pos, Direction[] directions, T cableBlockEntity, int transferPerSecond, Boolean isBlue) {
         double transferPerTick = transferPerSecond * 0.05;
         double cablePower = cableBlockEntity.getElectronicPower();
 
@@ -34,8 +34,8 @@ public class CableFunction {
 
         for (Direction dir : directions) {
             if (cablePower > 0) {
-                BlockEntity blockEntity = world.getBlockEntity(pos.relative(dir));
-                BlockState offsetBlockState = world.getBlockState(pos.relative(dir));
+                BlockEntity blockEntity = level.getBlockEntity(pos.relative(dir));
+                BlockState offsetBlockState = level.getBlockState(pos.relative(dir));
                 if (blockEntity == null) continue;
                 if (!(offsetBlockState.is(machineTag) || offsetBlockState.is(cableTag))) continue;
                 if (!(blockEntity instanceof AbstractEnergyBlockEntity energyBlockEntity)) continue;
@@ -69,20 +69,20 @@ public class CableFunction {
     /**
      * This method is used by Cables to transfer fluid to Machines or other cables
      *
-     * @param world                 The world the blocks are in
+     * @param level                 The level the blocks are in
      * @param pos                   The blockpos of the Cable
      * @param directions            The directions of the Cable
      * @param waterCableBlockEntity The Block Entity of the Cable
      * @param cableFLuid            The amount of fluid in the Cable
      * @param transferPerSecond     The amount of fluid transfered each second by the Cable
      */
-    public static void cableTransferFluid(Level world, BlockPos pos, Direction[] directions, WaterCableBlockEntity waterCableBlockEntity, double cableFLuid, int transferPerSecond) {
+    public static void cableTransferFluid(Level level, BlockPos pos, Direction[] directions, WaterCableBlockEntity waterCableBlockEntity, double cableFLuid, int transferPerSecond) {
         double transferPerTick = transferPerSecond * 0.05;
 
         for (Direction dir : directions) {
             if (cableFLuid > 0) {
-                BlockEntity blockEntity = world.getBlockEntity(pos.relative(dir));
-                BlockState offsetBlockState = world.getBlockState(pos.relative(dir));
+                BlockEntity blockEntity = level.getBlockEntity(pos.relative(dir));
+                BlockState offsetBlockState = level.getBlockState(pos.relative(dir));
                 if (blockEntity == null) continue;
                 if (!(offsetBlockState.is(Tags.WATER_TANK) || offsetBlockState.is(Tags.WATER_CABLE))) continue;
 

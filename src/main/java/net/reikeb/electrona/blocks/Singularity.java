@@ -49,14 +49,14 @@ public class Singularity extends AbstractWaterLoggableBlock implements EntityBlo
                 .setValue(WATERLOGGED, false));
     }
 
-    public static void singularitySpawn(Level world, BlockPos pos) {
-        if (world.isClientSide) return;
+    public static void singularitySpawn(Level level, BlockPos pos) {
+        if (level.isClientSide) return;
 
-        if (world.getLevelData().getGameRules().getBoolean(Gamerules.DO_BLACK_HOLES_EXIST)) {
+        if (level.getLevelData().getGameRules().getBoolean(Gamerules.DO_BLACK_HOLES_EXIST)) {
 
             for (BlockPos testPos : BlockPos.spiralAround(pos, 1000, Direction.EAST, Direction.SOUTH)) {
-                if (!world.getBlockState(testPos).is(Tags.STOPS_BLACK_HOLE)) {
-                    world.setBlockAndUpdate(testPos, BlockInit.HOLE.get().defaultBlockState());
+                if (!level.getBlockState(testPos).is(Tags.STOPS_BLACK_HOLE)) {
+                    level.setBlockAndUpdate(testPos, BlockInit.HOLE.get().defaultBlockState());
                     return;
                 }
             }
@@ -77,8 +77,8 @@ public class Singularity extends AbstractWaterLoggableBlock implements EntityBlo
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-        Vec3 offset = state.getOffset(world, pos);
+    public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
+        Vec3 offset = state.getOffset(blockGetter, pos);
         return Shapes.or(box(1, 1, 1, 15, 15, 15)).move(offset.x, offset.y, offset.z);
     }
 
@@ -105,13 +105,13 @@ public class Singularity extends AbstractWaterLoggableBlock implements EntityBlo
     }
 
     @Override
-    public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean moving) {
-        singularitySpawn(world, pos);
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean moving) {
+        singularitySpawn(level, pos);
     }
 
     @Override
-    public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack itemstack) {
-        singularitySpawn(world, pos);
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack itemstack) {
+        singularitySpawn(level, pos);
     }
 
     @Nullable
@@ -122,7 +122,7 @@ public class Singularity extends AbstractWaterLoggableBlock implements EntityBlo
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return blockEntityType == BlockEntityInit.SINGULARITY_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) SingularityBlockEntity.TICKER : null;
     }
 }

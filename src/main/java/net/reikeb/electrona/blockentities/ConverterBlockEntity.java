@@ -66,7 +66,7 @@ public class ConverterBlockEntity extends AbstractBlockEntity implements Abstrac
         return new ConverterContainer(id, this.getBlockPos(), playerInventory, player);
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         this.setMaxStorage(10000);
 
         if (world == null) return;

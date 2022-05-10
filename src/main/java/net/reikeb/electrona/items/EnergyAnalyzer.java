@@ -42,23 +42,23 @@ public class EnergyAnalyzer extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-        super.appendHoverText(itemstack, world, list, flag);
+    public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
+        super.appendHoverText(itemstack, level, list, flag);
         list.add(new TranslatableComponent("item.electrona.energy_analyzer.desc"));
     }
 
     @Override
     public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
         InteractionResult action = super.onItemUseFirst(stack, context);
-        Level world = context.getLevel();
+        Level level = context.getLevel();
         Player entity = context.getPlayer();
 
         if (entity == null) return InteractionResult.FAIL;
 
-        BlockEntity blockEntity = world.getBlockEntity(context.getClickedPos());
+        BlockEntity blockEntity = level.getBlockEntity(context.getClickedPos());
         double electronicPower = (blockEntity instanceof AbstractEnergyBlockEntity energyBlockEntity) ? energyBlockEntity.getElectronicPower() : 0;
 
-        if (!world.isClientSide) {
+        if (!level.isClientSide) {
             entity.displayClientMessage(new TranslatableComponent("message.electrona.energy_analyzed", electronicPower), true);
         }
         return action;

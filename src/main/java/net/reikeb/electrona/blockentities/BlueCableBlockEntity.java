@@ -29,11 +29,11 @@ public class BlueCableBlockEntity extends BlockEntity implements AbstractEnergyB
         super(BLUE_CABLE_BLOCK_ENTITY.get(), pos, state);
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         this.setMaxStorage(36);
 
         // We pass energy to blocks around (this part is common to all cables)
-        CableFunction.cableTransferEnergy(world, blockPos, Direction.values(), this, 6, true);
+        CableFunction.cableTransferEnergy(level, blockPos, Direction.values(), this, 6, true);
 
         t.setChanged();
     }

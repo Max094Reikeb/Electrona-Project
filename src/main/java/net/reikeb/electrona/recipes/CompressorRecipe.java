@@ -39,24 +39,18 @@ public class CompressorRecipe implements Recipe<Container> {
         this.output = output;
         this.compressingTime = compressingTime;
         this.energyRequired = energyRequired;
-
-        // This output is not required, but it can be used to detect when a recipe has been
-        // loaded into the game.
-        System.out.println("Loaded " + this.toString());
     }
 
-    public static Optional<CompressorRecipe> getRecipe(Level world, @Nullable BlockPos pos, ItemStack stack) {
-        return getRecipe(world, new CompressingContext(new SingletonInventory(stack), null, pos != null ? () -> Vec3.atCenterOf(pos) : null, null));
+    public static Optional<CompressorRecipe> getRecipe(Level level, @Nullable BlockPos pos, ItemStack stack) {
+        return getRecipe(level, new CompressingContext(new SingletonInventory(stack), null, pos != null ? () -> Vec3.atCenterOf(pos) : null, null));
     }
 
-    public static Optional<CompressorRecipe> getRecipe(Level world, CompressingContext ctx) {
-        return world.getRecipeManager().getRecipeFor(Electrona.COMPRESSING, ctx, world);
+    public static Optional<CompressorRecipe> getRecipe(Level level, CompressingContext ctx) {
+        return level.getRecipeManager().getRecipeFor(Electrona.COMPRESSING, ctx, level);
     }
 
     @Override
     public String toString() {
-
-        // Overriding toString is not required, it's just useful for debugging.
         return "Compressor recipe [input=" + this.input + ", input2=" + this.input2 + ", output=" + this.output + ", id=" + this.id + "]";
     }
 
@@ -69,7 +63,7 @@ public class CompressorRecipe implements Recipe<Container> {
     }
 
     @Override
-    public boolean matches(Container inv, Level worldIn) {
+    public boolean matches(Container inv, Level level) {
         return (this.input.test(inv.getItem(0)) && (this.input2.test(inv.getItem(1))));
     }
 

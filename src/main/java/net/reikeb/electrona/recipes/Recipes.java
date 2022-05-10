@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 
 public class Recipes {
 
-    private static Set<Recipe<?>> findRecipesByType(RecipeType<?> typeIn, Level world) {
-        return world != null ? world.getRecipeManager().getRecipes().stream()
+    private static Set<Recipe<?>> findRecipesByType(RecipeType<?> typeIn, Level level) {
+        return level != null ? level.getRecipeManager().getRecipes().stream()
                 .filter(recipe -> recipe.getType() == typeIn).collect(Collectors.toSet()) : Collections.emptySet();
     }
 

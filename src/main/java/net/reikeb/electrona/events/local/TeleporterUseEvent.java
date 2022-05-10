@@ -19,27 +19,27 @@ import net.minecraftforge.eventbus.api.Event;
  */
 public class TeleporterUseEvent extends Event {
 
-    private final Level world;
-    private final Level destinationWorld;
+    private final Level level;
+    private final Level destinationLevel;
     private final BlockPos pos;
     private final BlockPos destinationPos;
     private final Entity entity;
 
-    public TeleporterUseEvent(Level world, Level destinationWorld, BlockPos pos, BlockPos destinationPos,
+    public TeleporterUseEvent(Level level, Level destinationLevel, BlockPos pos, BlockPos destinationPos,
                               Entity entity) {
-        this.world = world;
-        this.destinationWorld = destinationWorld;
+        this.level = level;
+        this.destinationLevel = destinationLevel;
         this.pos = pos;
         this.destinationPos = destinationPos;
         this.entity = entity;
     }
 
-    public Level getWorld() {
-        return world;
+    public Level getLevel() {
+        return level;
     }
 
-    public Level getDestinationWorld() {
-        return destinationWorld;
+    public Level getDestinationLevel() {
+        return destinationLevel;
     }
 
     public BlockPos getPos() {
@@ -63,8 +63,8 @@ public class TeleporterUseEvent extends Event {
      */
     @Cancelable
     public static class Pre extends TeleporterUseEvent {
-        public Pre(Level world, Level destinationWorld, BlockPos pos, BlockPos destinationPos, Entity entity) {
-            super(world, destinationWorld, pos, destinationPos, entity);
+        public Pre(Level level, Level destinationLevel, BlockPos pos, BlockPos destinationPos, Entity entity) {
+            super(level, destinationLevel, pos, destinationPos, entity);
         }
     }
 
@@ -76,8 +76,8 @@ public class TeleporterUseEvent extends Event {
      * This event is fired on the {@link MinecraftForge#EVENT_BUS}.<br>
      */
     public static class Post extends TeleporterUseEvent {
-        public Post(Level world, Level destinationWorld, BlockPos pos, BlockPos destinationPos, Entity entity) {
-            super(world, destinationWorld, pos, destinationPos, entity);
+        public Post(Level level, Level destinationLevel, BlockPos pos, BlockPos destinationPos, Entity entity) {
+            super(level, destinationLevel, pos, destinationPos, entity);
         }
     }
 }

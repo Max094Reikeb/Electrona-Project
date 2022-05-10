@@ -12,8 +12,8 @@ public class Gravitorium extends TextureSheetParticle {
     private final double yStart;
     private final double zStart;
 
-    private Gravitorium(ClientLevel world, double x, double y, double z, double vx, double vy, double vz) {
-        super(world, x, y, z);
+    private Gravitorium(ClientLevel clientLevel, double x, double y, double z, double vx, double vy, double vz) {
+        super(clientLevel, x, y, z);
         this.xd = vx;
         this.yd = vy;
         this.zd = vz;
@@ -85,8 +85,8 @@ public class Gravitorium extends TextureSheetParticle {
             this.sprite = sprite;
         }
 
-        public Particle createParticle(SimpleParticleType type, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            Gravitorium gravitorium = new Gravitorium(world, x, y, z, xSpeed, ySpeed, zSpeed);
+        public Particle createParticle(SimpleParticleType type, ClientLevel clientLevel, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            Gravitorium gravitorium = new Gravitorium(clientLevel, x, y, z, xSpeed, ySpeed, zSpeed);
             gravitorium.pickSprite(this.sprite);
             return gravitorium;
         }

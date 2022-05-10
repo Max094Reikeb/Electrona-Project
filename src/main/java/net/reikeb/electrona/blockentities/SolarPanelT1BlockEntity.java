@@ -28,15 +28,15 @@ public class SolarPanelT1BlockEntity extends BlockEntity implements AbstractEner
         super(SOLAR_PANEL_T_1_BLOCK_ENTITY.get(), pos, state);
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         this.setMaxStorage(1000);
 
-        if (world == null) return;
+        if (level == null) return;
 
         // We generate the energy (this part is uncommon for all generators)
-        if (world.canSeeSky(blockPos.above()) && world.isDay()) {
+        if (level.canSeeSky(blockPos.above()) && level.isDay()) {
             if (this.electronicPower < 996) {
-                if ((world.getLevelData().isRaining() || world.getLevelData().isThundering())) {
+                if ((level.getLevelData().isRaining() || level.getLevelData().isThundering())) {
                     EnergyFunction.fillEnergy(this, 0.1);
                 } else {
                     EnergyFunction.fillEnergy(this, 0.2);
@@ -53,7 +53,7 @@ public class SolarPanelT1BlockEntity extends BlockEntity implements AbstractEner
         }
 
         // We pass energy to blocks around (this part is common to all generators)
-        EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this, 4, true);
+        EnergyFunction.generatorTransferEnergy(level, blockPos, Direction.values(), this, 4, true);
     }
 
     public ItemHandler getItemInventory() {

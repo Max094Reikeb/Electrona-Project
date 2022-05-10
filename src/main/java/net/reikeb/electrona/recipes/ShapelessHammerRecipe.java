@@ -77,7 +77,7 @@ public class ShapelessHammerRecipe implements CraftingRecipe {
         return ShapedHammerRecipe.checkHammer(container) && i == this.ingredients.size() && (isSimple ? stackedContents.canCraft(this, null) : RecipeMatcher.findMatches(inputs, this.ingredients) != null);
     }
 
-    public ItemStack assemble(CraftingContainer p_44260_) {
+    public ItemStack assemble(CraftingContainer container) {
         return this.result.copy();
     }
 

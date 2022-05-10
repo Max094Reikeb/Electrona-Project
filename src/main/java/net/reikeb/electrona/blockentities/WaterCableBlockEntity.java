@@ -40,7 +40,7 @@ public class WaterCableBlockEntity extends BlockEntity {
         super(WATER_CABLE_BLOCK_ENTITY.get(), pos, state);
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         // We pass energy to blocks around (this part is common to all cables)
         CableFunction.cableTransferFluid(this.level, this.getBlockPos(), Direction.values(), this, this.fluidTank.getFluidAmount(), 100);
 

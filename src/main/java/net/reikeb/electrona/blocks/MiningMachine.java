@@ -50,21 +50,21 @@ public class MiningMachine extends Block implements EntityBlock {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
-        super.appendHoverText(itemstack, world, list, flag);
+    public void appendHoverText(ItemStack itemstack, BlockGetter blockGetter, List<Component> list, TooltipFlag flag) {
+        super.appendHoverText(itemstack, blockGetter, list, flag);
         list.add(new TranslatableComponent("block.electrona.mining_machine.desc1"));
         list.add(new TranslatableComponent("block.electrona.mining_machine.desc2"));
     }
 
     @Override
-    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
+            BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof MiningMachineBlockEntity miningMachineBlockEntity) {
-                miningMachineBlockEntity.dropItems(world, pos);
-                world.updateNeighbourForOutputSignal(pos, this);
+                miningMachineBlockEntity.dropItems(level, pos);
+                level.updateNeighbourForOutputSignal(pos, this);
             }
-            super.onRemove(state, world, pos, newState, isMoving);
+            super.onRemove(state, level, pos, newState, isMoving);
         }
     }
 
@@ -91,14 +91,13 @@ public class MiningMachine extends Block implements EntityBlock {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        ;
         return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        if (!worldIn.isClientSide) {
-            BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (!level.isClientSide) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof MiningMachineBlockEntity) {
                 NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) blockEntity, pos);
             } else {
@@ -109,8 +108,8 @@ public class MiningMachine extends Block implements EntityBlock {
     }
 
     @Override
-    public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
-        BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+    public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
         return blockEntity instanceof MenuProvider ? (MenuProvider) blockEntity : null;
     }
 
@@ -120,15 +119,15 @@ public class MiningMachine extends Block implements EntityBlock {
     }
 
     @Override
-    public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
-        super.triggerEvent(state, world, pos, eventID, eventParam);
-        BlockEntity blockEntity = world.getBlockEntity(pos);
+    public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int eventID, int eventParam) {
+        super.triggerEvent(state, level, pos, eventID, eventParam);
+        BlockEntity blockEntity = level.getBlockEntity(pos);
         return blockEntity != null && blockEntity.triggerEvent(eventID, eventParam);
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return blockEntityType == BlockEntityInit.MINING_MACHINE_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) MiningMachineBlockEntity.TICKER : null;
     }
 }

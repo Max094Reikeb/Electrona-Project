@@ -20,9 +20,9 @@ public class PlayerInventoryChangedPacket {
 
     public void whenThisPacketIsReceived(Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> {
-            ServerPlayer playerEntity = context.get().getSender();
-            if (playerEntity == null) return;
-            playerEntity.inventory.setChanged();
+            ServerPlayer serverPlayer = context.get().getSender();
+            if (serverPlayer == null) return;
+            serverPlayer.inventory.setChanged();
         });
         context.get().setPacketHandled(true);
     }

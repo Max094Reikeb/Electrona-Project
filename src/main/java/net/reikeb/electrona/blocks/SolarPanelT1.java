@@ -41,8 +41,8 @@ public class SolarPanelT1 extends Block implements EntityBlock {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
-        super.appendHoverText(itemstack, world, list, flag);
+    public void appendHoverText(ItemStack itemstack, BlockGetter blockGetter, List<Component> list, TooltipFlag flag) {
+        super.appendHoverText(itemstack, blockGetter, list, flag);
         list.add(new TranslatableComponent("block.electrona.solar_panel_tiers1.desc1"));
         list.add(new TranslatableComponent("block.electrona.solar_panel_tiers1.desc2"));
     }
@@ -81,7 +81,7 @@ public class SolarPanelT1 extends Block implements EntityBlock {
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return blockEntityType == BlockEntityInit.SOLAR_PANEL_T_1_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) SolarPanelT1BlockEntity.TICKER : null;
     }
 }

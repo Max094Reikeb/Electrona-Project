@@ -17,14 +17,14 @@ public class EnergyFunction {
      * This method is used by Generators and Batteries to transfer
      * energy from them to Batteries or Machines
      *
-     * @param world                The world of the blocks
+     * @param level                The level of the blocks
      * @param pos                  The blockpos of the Generator/Machine
      * @param directions           The directions of the Generator/Machine
      * @param generatorBlockEntity The BlockEntity of the Generator/Machine
      * @param transferPerSecond    THe amount of energy transfered each second
      * @param isGenerator          Defines if the method is used by a Generator or a Machine
      */
-    public static <T extends AbstractEnergyBlockEntity> void generatorTransferEnergy(Level world, BlockPos pos, Direction[] directions, T generatorBlockEntity, int transferPerSecond, Boolean isGenerator) {
+    public static <T extends AbstractEnergyBlockEntity> void generatorTransferEnergy(Level level, BlockPos pos, Direction[] directions, T generatorBlockEntity, int transferPerSecond, Boolean isGenerator) {
         double transferPerTick = transferPerSecond * 0.05;
         double generatorPower = getEnergy(generatorBlockEntity);
 
@@ -34,8 +34,8 @@ public class EnergyFunction {
         for (Direction dir : directions) {
             if (generatorPower <= 0) return; // we have no more power
 
-            BlockEntity blockEntity = world.getBlockEntity(pos.relative(dir));
-            BlockState offsetBlockState = world.getBlockState(pos.relative(dir));
+            BlockEntity blockEntity = level.getBlockEntity(pos.relative(dir));
+            BlockState offsetBlockState = level.getBlockState(pos.relative(dir));
             if (!(blockEntity instanceof AbstractEnergyBlockEntity energyBlockEntity)) continue;
             if (!(offsetBlockState.is(machineTag) || offsetBlockState.is(cableTag))) continue;
 

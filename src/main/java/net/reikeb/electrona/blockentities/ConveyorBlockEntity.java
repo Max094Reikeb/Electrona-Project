@@ -28,18 +28,18 @@ public class ConveyorBlockEntity extends BlockEntity implements AbstractEnergyBl
         super(CONVEYOR_BLOCK_ENTITY.get(), pos, state);
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         this.setMaxStorage(100);
 
-        if (world == null) return;
+        if (level == null) return;
 
-        world.setBlockAndUpdate(blockPos, state
+        level.setBlockAndUpdate(blockPos, state
                 .setValue(Conveyor.ACTIVATED, this.electronicPower > 0));
 
         EnergyFunction.drainEnergy(this, 0.05);
 
         this.setChanged();
-        world.sendBlockUpdated(blockPos, state, state, 3);
+        level.sendBlockUpdated(blockPos, state, state, 3);
     }
 
     public ItemHandler getItemInventory() {

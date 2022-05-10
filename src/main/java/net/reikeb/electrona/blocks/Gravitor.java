@@ -54,12 +54,12 @@ public class Gravitor extends BaseEntityBlock implements SimpleWaterloggedBlock 
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState state2, LevelAccessor world, BlockPos pos, BlockPos pos2) {
+    public BlockState updateShape(BlockState state, Direction direction, BlockState state2, LevelAccessor levelAccessor, BlockPos pos, BlockPos pos2) {
         if (state.getValue(WATERLOGGED)) {
-            world.scheduleTick(pos, Fluids.WATER, 0);
+            levelAccessor.scheduleTick(pos, Fluids.WATER, 0);
         }
 
-        return super.updateShape(state, direction, state2, world, pos, pos2);
+        return super.updateShape(state, direction, state2, levelAccessor, pos, pos2);
     }
 
     @Override
@@ -85,9 +85,9 @@ public class Gravitor extends BaseEntityBlock implements SimpleWaterloggedBlock 
     }
 
     @Override
-    public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
         if (stack.hasCustomHoverName()) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
+            BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof BeaconBlockEntity beaconBlockEntity) {
                 beaconBlockEntity.setCustomName(stack.getHoverName());
             }
@@ -102,7 +102,7 @@ public class Gravitor extends BaseEntityBlock implements SimpleWaterloggedBlock 
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return blockEntityType == BlockEntityInit.GRAVITOR_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) GravitorBlockEntity.TICKER : null;
     }
 }

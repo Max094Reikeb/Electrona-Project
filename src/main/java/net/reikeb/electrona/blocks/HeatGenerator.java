@@ -29,6 +29,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.reikeb.electrona.blockentities.HeatGeneratorBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
+import net.reikeb.electrona.misc.BlockStateProperties;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 
 import javax.annotation.Nullable;
@@ -38,7 +39,7 @@ import java.util.List;
 public class HeatGenerator extends Block implements EntityBlock {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    public static final BooleanProperty HEATING = BooleanProperty.create("heating");
+    public static final BooleanProperty HEATING = BlockStateProperties.HEATING;
 
     public HeatGenerator() {
         super(Properties.of(Material.STONE)
@@ -52,8 +53,8 @@ public class HeatGenerator extends Block implements EntityBlock {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
-        super.appendHoverText(itemstack, world, list, flag);
+    public void appendHoverText(ItemStack itemstack, BlockGetter blockGetter, List<Component> list, TooltipFlag flag) {
+        super.appendHoverText(itemstack, blockGetter, list, flag);
         list.add(new TranslatableComponent("block.electrona.heat_generator.desc1"));
         list.add(new TranslatableComponent("block.electrona.heat_generator.desc2"));
     }
@@ -85,13 +86,13 @@ public class HeatGenerator extends Block implements EntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
-        BlockEntity tile = world.getBlockEntity(pos);
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
+        BlockEntity tile = level.getBlockEntity(pos);
         if (tile instanceof HeatGeneratorBlockEntity tileHeatGenerator) {
             if (player instanceof ServerPlayer serverPlayer) {
                 double electronicPower = tileHeatGenerator.getElectronicPower();
                 if ((serverPlayer.getMainHandItem().getItem() == Items.LAVA_BUCKET) && (electronicPower <= 800)) {
-                    if (!world.isClientSide()) {
+                    if (!level.isClientSide()) {
                         EnergyFunction.fillEnergy(tileHeatGenerator, 200);
                     }
                     if (!serverPlayer.isCreative()) {
@@ -99,7 +100,7 @@ public class HeatGenerator extends Block implements EntityBlock {
                         serverPlayer.inventory.setChanged();
                     }
                 } else if ((serverPlayer.getMainHandItem().getItem() == Items.LAVA_BUCKET) && (electronicPower > 800)) {
-                    if (!world.isClientSide()) {
+                    if (!level.isClientSide()) {
                         EnergyFunction.setEnergy(tileHeatGenerator, electronicPower + (1000 - electronicPower));
                     }
                     if (!serverPlayer.isCreative()) {
@@ -121,7 +122,7 @@ public class HeatGenerator extends Block implements EntityBlock {
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return blockEntityType == BlockEntityInit.HEAT_GENERATOR_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) HeatGeneratorBlockEntity.TICKER : null;
     }
 }

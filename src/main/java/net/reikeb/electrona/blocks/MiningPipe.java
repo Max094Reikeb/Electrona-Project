@@ -53,7 +53,7 @@ public class MiningPipe extends AbstractWaterLoggableBlock implements EntityBloc
     }
 
     @Override
-    public float[] getBeaconColorMultiplier(BlockState state, LevelReader world, BlockPos pos, BlockPos beaconPos) {
+    public float[] getBeaconColorMultiplier(BlockState state, LevelReader levelReader, BlockPos pos, BlockPos beaconPos) {
         return new float[]{0.4f, 0.4f, 0.4f};
     }
 
@@ -63,8 +63,8 @@ public class MiningPipe extends AbstractWaterLoggableBlock implements EntityBloc
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-        Vec3 offset = state.getOffset(world, pos);
+    public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
+        Vec3 offset = state.getOffset(blockGetter, pos);
         return Shapes.or(box(4, 4, 4, 12, 12, 12)).move(offset.x, offset.y, offset.z);
     }
 
@@ -80,7 +80,7 @@ public class MiningPipe extends AbstractWaterLoggableBlock implements EntityBloc
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter blockGetter, BlockPos pos, Player player) {
         return new ItemStack(Blocks.AIR, 1);
     }
 
@@ -97,7 +97,7 @@ public class MiningPipe extends AbstractWaterLoggableBlock implements EntityBloc
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return blockEntityType == BlockEntityInit.MINING_PIPE_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) MiningPipeBlockEntity.TICKER : null;
     }
 }

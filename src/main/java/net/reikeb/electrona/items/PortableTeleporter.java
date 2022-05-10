@@ -28,9 +28,9 @@ public class PortableTeleporter extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
+    public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
         int EL = 0;
-        super.appendHoverText(itemstack, world, list, flag);
+        super.appendHoverText(itemstack, level, list, flag);
         list.add(new TranslatableComponent("item.electrona.portable_teleporter.desc1"));
         list.add(new TranslatableComponent("item.electrona.portable_teleporter.desc2",
                 (itemstack).getOrCreateTag().getDouble("teleportX"),
@@ -56,21 +56,22 @@ public class PortableTeleporter extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-        ItemStack stack = playerIn.getItemInHand(handIn);
-        return TeleporterFunction.teleportPortable(worldIn, playerIn, handIn)
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        return TeleporterFunction.teleportPortable(level, player, hand)
                 ? InteractionResultHolder.success(stack) : InteractionResultHolder.fail(stack);
     }
 
     @Override
     public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
         InteractionResult action = super.onItemUseFirst(stack, context);
-        Level world = context.getLevel();
+        Level level = context.getLevel();
         Player entity = context.getPlayer();
         InteractionHand hand = context.getHand();
 
         if (entity == null) return InteractionResult.FAIL;
 
-        return TeleporterFunction.teleportPortable(world, entity, hand) ? action : action;
+        TeleporterFunction.teleportPortable(level, entity, hand);
+        return action;
     }
 }

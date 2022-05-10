@@ -30,7 +30,7 @@ public class SingularityBlockEntity extends BlockEntity {
         super.setRemoved();
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         if (this.level == null) return;
 
         wait += 1;

@@ -52,29 +52,29 @@ public class EmptyCell extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-        super.appendHoverText(itemstack, world, list, flag);
+    public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
+        super.appendHoverText(itemstack, level, list, flag);
         list.add(new TranslatableComponent("item.electrona.empty_cell.desc"));
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-        ItemStack itemstack = playerIn.getItemInHand(handIn);
-        BlockHitResult raytraceresult = getPlayerPOVHitResult(worldIn, playerIn, ClipContext.Fluid.SOURCE_ONLY);
-        InteractionResultHolder<ItemStack> ret = ForgeEventFactory.onBucketUse(playerIn, worldIn, itemstack, raytraceresult);
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        BlockHitResult raytraceresult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
+        InteractionResultHolder<ItemStack> ret = ForgeEventFactory.onBucketUse(player, level, itemstack, raytraceresult);
         if (ret != null) return ret;
         if (raytraceresult.getType() == HitResult.Type.MISS) return InteractionResultHolder.pass(itemstack);
         if (raytraceresult.getType() != HitResult.Type.BLOCK) return InteractionResultHolder.pass(itemstack);
         BlockPos blockpos = raytraceresult.getBlockPos();
         Direction direction = raytraceresult.getDirection();
         BlockPos blockpos1 = blockpos.relative(direction);
-        if (worldIn.mayInteract(playerIn, blockpos) && playerIn.mayUseItemAt(blockpos1, direction, itemstack)) {
-            BlockState blockstate1 = worldIn.getBlockState(blockpos);
+        if (level.mayInteract(player, blockpos) && player.mayUseItemAt(blockpos1, direction, itemstack)) {
+            BlockState blockstate1 = level.getBlockState(blockpos);
             if (blockstate1.getBlock() instanceof BucketPickup) {
                 BucketPickup bucketPickup = (BucketPickup) blockstate1.getBlock();
-                ItemStack itemStack1 = bucketPickup.pickupBlock(worldIn, blockpos, blockstate1);
+                ItemStack itemStack1 = bucketPickup.pickupBlock(level, blockpos, blockstate1);
                 if (!itemStack1.isEmpty()) {
-                    ItemStack itemStack2 = ItemUtils.createFilledResult(itemstack, playerIn, itemStack1);
+                    ItemStack itemStack2 = ItemUtils.createFilledResult(itemstack, player, itemStack1);
                 /*
                 Fluid fluid = ((BucketPickup) blockstate1.getBlock()).takeLiquid(worldIn, blockpos, blockstate1);
                 if ((fluid != Fluids.WATER) && (fluid != Fluids.LAVA)) return InteractionResultHolder.fail(itemstack);
@@ -85,11 +85,11 @@ public class EmptyCell extends Item {
                         playerIn.inventory.add(new ItemStack((fluid == Fluids.WATER ? ItemInit.WATER_CELL.get() : ItemInit.LAVA_CELL.get()), 1));
                     }
                 } else {
-                    playerIn.setItemInHand(handIn, new ItemStack((fluid == Fluids.WATER ? ItemInit.WATER_CELL.get() : ItemInit.LAVA_CELL.get()), 1));
+                    playerIn.setItemInHand(hand, new ItemStack((fluid == Fluids.WATER ? ItemInit.WATER_CELL.get() : ItemInit.LAVA_CELL.get()), 1));
                 }
                 return InteractionResultHolder.success(itemstack);
                 */
-                    return InteractionResultHolder.sidedSuccess(itemStack2, worldIn.isClientSide);
+                    return InteractionResultHolder.sidedSuccess(itemStack2, level.isClientSide);
                 }
             }
         }
@@ -99,15 +99,15 @@ public class EmptyCell extends Item {
     @Override
     public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
         InteractionResult action = super.onItemUseFirst(stack, context);
-        Level world = context.getLevel();
-        BlockState state = world.getBlockState(context.getClickedPos());
+        Level level = context.getLevel();
+        BlockState state = level.getBlockState(context.getClickedPos());
         Player entity = context.getPlayer();
 
         if (entity == null) return InteractionResult.FAIL;
 
         if (state.is(Blocks.COMPOSTER)) {
-            int level = state.getValue(BlockStateProperties.LEVEL_COMPOSTER);
-            if (level >= 4) {
+            int composterLevel = state.getValue(BlockStateProperties.LEVEL_COMPOSTER);
+            if (composterLevel >= 4) {
                 if (entity.isCreative()) {
                     if (!entity.inventory.contains(new ItemStack(ItemInit.BIOMASS_CELL.get(), 1))) {
                         entity.inventory.add(new ItemStack(ItemInit.BIOMASS_CELL.get(), 1));
@@ -115,7 +115,7 @@ public class EmptyCell extends Item {
                 } else {
                     entity.setItemInHand(context.getHand(), new ItemStack(ItemInit.BIOMASS_CELL.get(), 1));
                 }
-                world.setBlock(context.getClickedPos(), state.setValue(BlockStateProperties.LEVEL_COMPOSTER, (level - 4)), 3);
+                level.setBlock(context.getClickedPos(), state.setValue(BlockStateProperties.LEVEL_COMPOSTER, (composterLevel - 4)), 3);
                 if (entity instanceof ServerPlayer) {
                     entity.inventory.setChanged();
                 } else {

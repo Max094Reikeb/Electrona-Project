@@ -27,6 +27,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.reikeb.electrona.blockentities.ConveyorBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
+import net.reikeb.electrona.misc.BlockStateProperties;
 import net.reikeb.electrona.misc.vm.CustomShapes;
 import net.reikeb.maxilib.abs.AbstractWaterLoggableBlock;
 import net.reikeb.maxilib.utils.Utils;
@@ -38,7 +39,7 @@ import java.util.List;
 public class Conveyor extends AbstractWaterLoggableBlock implements EntityBlock {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    public static final BooleanProperty ACTIVATED = BooleanProperty.create("activated");
+    public static final BooleanProperty ACTIVATED = BlockStateProperties.ACTIVATED;
 
     public Conveyor() {
         super(Properties.of(Material.METAL)
@@ -56,8 +57,8 @@ public class Conveyor extends AbstractWaterLoggableBlock implements EntityBlock 
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
-        super.appendHoverText(itemstack, world, list, flag);
+    public void appendHoverText(ItemStack itemstack, BlockGetter blockGetter, List<Component> list, TooltipFlag flag) {
+        super.appendHoverText(itemstack, blockGetter, list, flag);
         list.add(new TranslatableComponent("block.electrona.conveyor.desc1"));
         list.add(new TranslatableComponent("block.electrona.conveyor.desc2"));
     }
@@ -68,7 +69,7 @@ public class Conveyor extends AbstractWaterLoggableBlock implements EntityBlock 
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
         Direction facing = state.getValue(FACING);
         if (facing == Direction.NORTH) {
             return Utils.rotateShape(Direction.NORTH, Direction.SOUTH, CustomShapes.Conveyor);
@@ -110,9 +111,9 @@ public class Conveyor extends AbstractWaterLoggableBlock implements EntityBlock 
     }
 
     @Override
-    public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
-        super.stepOn(world, pos, state, entity);
-        if (!(world.getBlockEntity(pos) instanceof ConveyorBlockEntity conveyorBlockEntity)) return;
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
+        super.stepOn(level, pos, state, entity);
+        if (!(level.getBlockEntity(pos) instanceof ConveyorBlockEntity conveyorBlockEntity)) return;
         if (conveyorBlockEntity.getElectronicPower() <= 0) return;
         Direction facing = conveyorBlockEntity.getBlockState().getValue(FACING);
         if (facing == Direction.NORTH) {
@@ -127,8 +128,8 @@ public class Conveyor extends AbstractWaterLoggableBlock implements EntityBlock 
     }
 
     @Override
-    public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
-        BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+    public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
         return blockEntity instanceof MenuProvider ? (MenuProvider) blockEntity : null;
     }
 
@@ -138,15 +139,15 @@ public class Conveyor extends AbstractWaterLoggableBlock implements EntityBlock 
     }
 
     @Override
-    public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
-        super.triggerEvent(state, world, pos, eventID, eventParam);
-        BlockEntity blockEntity = world.getBlockEntity(pos);
+    public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int eventID, int eventParam) {
+        super.triggerEvent(state, level, pos, eventID, eventParam);
+        BlockEntity blockEntity = level.getBlockEntity(pos);
         return blockEntity != null && blockEntity.triggerEvent(eventID, eventParam);
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return blockEntityType == BlockEntityInit.CONVEYOR_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) ConveyorBlockEntity.TICKER : null;
     }
 }

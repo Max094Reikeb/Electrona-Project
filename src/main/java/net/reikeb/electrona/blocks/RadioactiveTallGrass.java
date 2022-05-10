@@ -37,18 +37,18 @@ public class RadioactiveTallGrass extends DoublePlantBlock {
     }
 
     @Override
-    public boolean mayPlaceOn(BlockState state, BlockGetter world, BlockPos pos) {
+    public boolean mayPlaceOn(BlockState state, BlockGetter blockGetter, BlockPos pos) {
         Block block = state.getBlock();
         return (block == BlockInit.RADIOACTIVE_DIRT.get());
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader levelReader, BlockPos pos) {
         BlockPos blockpos = pos.below();
-        BlockState blockstate = world.getBlockState(blockpos);
+        BlockState blockstate = levelReader.getBlockState(blockpos);
         if (state.getValue(HALF) == DoubleBlockHalf.UPPER)
             return blockstate.is(this) && blockstate.getValue(HALF) == DoubleBlockHalf.LOWER;
         else
-            return this.mayPlaceOn(blockstate, world, blockpos);
+            return this.mayPlaceOn(blockstate, levelReader, blockpos);
     }
 }

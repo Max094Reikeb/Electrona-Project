@@ -37,9 +37,9 @@ public class PortableBattery extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
+    public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
         int EL = 0;
-        super.appendHoverText(itemstack, world, list, flag);
+        super.appendHoverText(itemstack, level, list, flag);
         EL = (itemstack).getOrCreateTag().getInt("ElectronicPower");
         list.add(new TextComponent((("\u00A77") + "" + ((EL)) + "" + (" EL"))));
     }

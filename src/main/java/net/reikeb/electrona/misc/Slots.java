@@ -10,6 +10,7 @@ import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.network.NetworkManager;
 import net.reikeb.electrona.network.packets.CompressionPacket;
 import net.reikeb.electrona.network.packets.PurificationPacket;
+import org.jetbrains.annotations.NotNull;
 
 public class Slots {
 
@@ -19,7 +20,7 @@ public class Slots {
             super(itemHandler, id, x, y);
         }
 
-        public boolean mayPlace(ItemStack itemStack) {
+        public boolean mayPlace(@NotNull ItemStack itemStack) {
             return true;
         }
 
@@ -34,7 +35,7 @@ public class Slots {
             super(itemHandler, id, x, y);
         }
 
-        public boolean mayPlace(ItemStack itemStack) {
+        public boolean mayPlace(@NotNull ItemStack itemStack) {
             return true;
         }
     }
@@ -74,11 +75,11 @@ public class Slots {
             super(itemHandler, id, x, y);
         }
 
-        public boolean mayPlace(ItemStack itemStack) {
+        public boolean mayPlace(@NotNull ItemStack itemStack) {
             return false;
         }
 
-        public void onTake(Player playerEntity, ItemStack stack) {
+        public void onTake(@NotNull Player playerEntity, @NotNull ItemStack stack) {
             // Trigger Advancement
             NetworkManager.INSTANCE.sendToServer(new CompressionPacket());
         }
@@ -90,11 +91,11 @@ public class Slots {
             super(itemHandler, id, x, y);
         }
 
-        public boolean mayPlace(ItemStack itemStack) {
+        public boolean mayPlace(@NotNull ItemStack itemStack) {
             return false;
         }
 
-        public void onTake(Player playerEntity, ItemStack stack) {
+        public void onTake(@NotNull Player playerEntity, ItemStack stack) {
             if (stack.getItem() == ItemInit.PURIFIED_URANIUM.get()) {
                 // Trigger Advancement
                 NetworkManager.INSTANCE.sendToServer(new PurificationPacket());
@@ -153,7 +154,7 @@ public class Slots {
             this.nuclearGeneratorControllerBlockEntity = nuclearGeneratorControllerBlockEntity;
         }
 
-        public boolean mayPlace(ItemStack itemStack) {
+        public boolean mayPlace(@NotNull ItemStack itemStack) {
             return nuclearGeneratorControllerBlockEntity.areUbIn() == 0;
         }
 

@@ -46,7 +46,7 @@ public class WaterPumpBlockEntity extends AbstractFluidBlockEntity implements Ab
         return new WaterPumpContainer(id, this.getBlockPos(), playerInventory, player);
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         this.setMaxStorage(1000);
 
         AtomicInteger waterLevel = new AtomicInteger();
@@ -65,36 +65,36 @@ public class WaterPumpBlockEntity extends AbstractFluidBlockEntity implements Ab
         // Output slot - Handling slots
         EnergyFunction.transferEnergyWithItemSlot(this, false, 1, 4);
 
-        world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(WaterPump.PUMPING, isOn));
+        level.setBlockAndUpdate(blockPos, this.getBlockState().setValue(WaterPump.PUMPING, isOn));
 
-        if (world.isClientSide) return;
+        if (level.isClientSide) return;
 
         // Pump water
         if (this.isOn) {
             wait += 1;
             if (wait >= 15) {
                 if (this.electronicPower >= 20
-                        && Blocks.WATER == world.getBlockState(blockPos.below()).getBlock()) {
+                        && Blocks.WATER == level.getBlockState(blockPos.below()).getBlock()) {
                     if (tankCapacity.get() >= (waterLevel.get() + 100)) {
                         FluidFunction.fillWater(this, 100);
                         EnergyFunction.drainEnergy(this, 20);
-                        world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
-                        world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
+                        level.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
+                        level.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                     } else if (tankCapacity.get() >= (waterLevel.get() + 50)) {
                         FluidFunction.fillWater(this, 50);
                         EnergyFunction.drainEnergy(this, 10);
-                        world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
-                        world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
+                        level.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
+                        level.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                     } else if (tankCapacity.get() >= (waterLevel.get() + 10)) {
                         FluidFunction.fillWater(this, 10);
                         EnergyFunction.drainEnergy(this, 2);
-                        world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
-                        world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
+                        level.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
+                        level.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                     } else if (tankCapacity.get() > waterLevel.get()) {
                         FluidFunction.fillWater(this, 1);
                         EnergyFunction.drainEnergy(this, 0.2);
-                        world.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
-                        world.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
+                        level.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
+                        level.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                     } else {
                         this.isOn = false;
                     }
@@ -108,10 +108,10 @@ public class WaterPumpBlockEntity extends AbstractFluidBlockEntity implements Ab
         }
 
         // We pass water to blocks around
-        FluidFunction.generatorTransferFluid(world, blockPos, Direction.values(), this, waterLevel.get(), 100);
+        FluidFunction.generatorTransferFluid(level, blockPos, Direction.values(), this, waterLevel.get(), 100);
 
         this.setChanged();
-        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
+        level.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
     }
 
     public ItemHandler getItemInventory() {

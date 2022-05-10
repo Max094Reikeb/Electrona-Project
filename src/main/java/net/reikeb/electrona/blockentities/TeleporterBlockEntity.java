@@ -43,10 +43,10 @@ public class TeleporterBlockEntity extends AbstractBlockEntity implements Abstra
         return new TeleporterContainer(id, this.getBlockPos(), playerInventory, player);
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         this.setMaxStorage(2000);
 
-        if (world == null) return;
+        if (level == null) return;
         ItemStack stack = inventory.getStackInSlot(0);
         if ((stack.getItem() == ItemInit.TELEPORT_SAVER.get()) || (stack.getItem() == ItemInit.PORTABLE_TELEPORTER.get())) {
             this.itemTeleportX = stack.getOrCreateTag().getDouble("teleportX");
@@ -57,7 +57,7 @@ public class TeleporterBlockEntity extends AbstractBlockEntity implements Abstra
         }
 
         this.setChanged();
-        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
+        level.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
     }
 
     public ItemHandler getItemInventory() {

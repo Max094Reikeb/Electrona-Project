@@ -43,9 +43,9 @@ public class MiningMachineBlockEntity extends AbstractBlockEntity implements Abs
         return new MiningMachineContainer(id, this.getBlockPos(), playerInventory, player);
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         this.setMaxStorage(6000);
-        if (world == null) return;
+        if (level == null) return;
 
         wait++;
         if (wait < 30) return;
@@ -58,26 +58,26 @@ public class MiningMachineBlockEntity extends AbstractBlockEntity implements Abs
         double z = blockPos.getZ();
         ItemStack item;
 
-        if ((world.hasNeighborSignal(blockPos)) && (this.electronicPower >= 50)) {
+        if ((level.hasNeighborSignal(blockPos)) && (this.electronicPower >= 50)) {
             ny = 1;
-            while ((BlockInit.MINING_PIPE.get() == (world.getBlockState(new BlockPos((int) x, (int) (y - (ny)), (int) z)))
+            while ((BlockInit.MINING_PIPE.get() == (level.getBlockState(new BlockPos((int) x, (int) (y - (ny)), (int) z)))
                     .getBlock())) {
                 ny = (ny) + 1;
             }
             BlockPos _tempPos = new BlockPos(x, (y - ny), z);
-            Block _tempBlock = world.getBlockState(_tempPos).getBlock();
+            Block _tempBlock = level.getBlockState(_tempPos).getBlock();
             if ((Blocks.AIR == _tempBlock) || (Blocks.VOID_AIR == _tempBlock) || (Blocks.CAVE_AIR == _tempBlock)) {
-                world.setBlock(_tempPos, BlockInit.MINING_PIPE.get().defaultBlockState(), 3);
+                level.setBlock(_tempPos, BlockInit.MINING_PIPE.get().defaultBlockState(), 3);
             } else {
-                if ((!(world.getBlockState(_tempPos)).getFluidState().isSource()) && (!(_tempBlock instanceof LiquidBlock))) {
+                if ((!(level.getBlockState(_tempPos)).getFluidState().isSource()) && (!(_tempBlock instanceof LiquidBlock))) {
                     item = this.inventory.getStackInSlot(0);
-                    if (item.isCorrectToolForDrops(world.getBlockState(_tempPos)) && (Blocks.BEDROCK != _tempBlock)) {
-                        if (!world.isClientSide()) {
-                            ItemEntity entityToSpawn = new ItemEntity(world, x, (y + 1), z, (new ItemStack(_tempBlock)));
+                    if (item.isCorrectToolForDrops(level.getBlockState(_tempPos)) && (Blocks.BEDROCK != _tempBlock)) {
+                        if (!level.isClientSide()) {
+                            ItemEntity entityToSpawn = new ItemEntity(level, x, (y + 1), z, (new ItemStack(_tempBlock)));
                             entityToSpawn.setPickUpDelay(10);
-                            world.addFreshEntity(entityToSpawn);
+                            level.addFreshEntity(entityToSpawn);
                         }
-                        world.destroyBlock(_tempPos, false);
+                        level.destroyBlock(_tempPos, false);
                         if (this.inventory.getStackInSlot(0).hurt(1, new Random(), null)) {
                             this.inventory.getStackInSlot(0).shrink(1);
                             this.inventory.getStackInSlot(0).setDamageValue(0);
@@ -85,7 +85,7 @@ public class MiningMachineBlockEntity extends AbstractBlockEntity implements Abs
                         EnergyFunction.drainEnergy(this, 50);
                     }
                 } else {
-                    if (world.getBlockState(_tempPos).getFluidState().isSource()) {
+                    if (level.getBlockState(_tempPos).getFluidState().isSource()) {
                         boolean flag = false;
                         int slot = 0;
                         if (Items.BUCKET == this.inventory.getStackInSlot(1).getItem()) {
@@ -96,12 +96,12 @@ public class MiningMachineBlockEntity extends AbstractBlockEntity implements Abs
                             slot = 2;
                         }
                         if (flag) {
-                            if (Blocks.WATER == (world.getFluidState(_tempPos).createLegacyBlock()).getBlock()) {
+                            if (Blocks.WATER == (level.getFluidState(_tempPos).createLegacyBlock()).getBlock()) {
                                 this.inventory.setStackInSlot(slot, new ItemStack(Items.WATER_BUCKET, 1));
-                            } else if (Blocks.LAVA == (world.getFluidState(_tempPos).createLegacyBlock()).getBlock()) {
+                            } else if (Blocks.LAVA == (level.getFluidState(_tempPos).createLegacyBlock()).getBlock()) {
                                 this.inventory.setStackInSlot(slot, new ItemStack(Items.LAVA_BUCKET, 1));
                             }
-                            world.setBlock(_tempPos, Blocks.AIR.defaultBlockState(), 3);
+                            level.setBlock(_tempPos, Blocks.AIR.defaultBlockState(), 3);
                             EnergyFunction.drainEnergy(this, 50);
                         }
                     }
@@ -109,20 +109,20 @@ public class MiningMachineBlockEntity extends AbstractBlockEntity implements Abs
             }
         } else {
             sy = 1;
-            while ((BlockInit.MINING_PIPE.get() == (world.getBlockState(new BlockPos(x, (y - (sy)), z)))
+            while ((BlockInit.MINING_PIPE.get() == (level.getBlockState(new BlockPos(x, (y - (sy)), z)))
                     .getBlock())) {
                 sy = (sy) + 1;
             }
             BlockPos _tempPosNew = new BlockPos(x, (y - sy), z);
-            Block _tempBlockNew = world.getBlockState(_tempPosNew).getBlock();
+            Block _tempBlockNew = level.getBlockState(_tempPosNew).getBlock();
             if ((BlockInit.MINING_PIPE.get() != _tempBlockNew)
-                    && (BlockInit.MINING_MACHINE.get() != (world.getBlockState(new BlockPos(x, ((y - (sy)) + 1), z))).getBlock())) {
-                world.setBlock(new BlockPos(x, ((y - (sy)) + 1), z), Blocks.AIR.defaultBlockState(), 3);
+                    && (BlockInit.MINING_MACHINE.get() != (level.getBlockState(new BlockPos(x, ((y - (sy)) + 1), z))).getBlock())) {
+                level.setBlock(new BlockPos(x, ((y - (sy)) + 1), z), Blocks.AIR.defaultBlockState(), 3);
             }
         }
 
         this.setChanged();
-        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
+        level.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
     }
 
     public ItemHandler getItemInventory() {

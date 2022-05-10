@@ -35,10 +35,10 @@ public class SprayerBlockEntity extends AbstractBlockEntity implements AbstractE
         return new SprayerContainer(id, this.getBlockPos(), playerInventory, player);
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         this.setMaxStorage(3000);
 
-        if (world == null) return;
+        if (level == null) return;
         SprayerFunction.mainSprayer(this);
         wait++;
         if (wait >= 30) {
@@ -47,7 +47,7 @@ public class SprayerBlockEntity extends AbstractBlockEntity implements AbstractE
         }
 
         this.setChanged();
-        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
+        level.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
     }
 
     public ItemHandler getItemInventory() {

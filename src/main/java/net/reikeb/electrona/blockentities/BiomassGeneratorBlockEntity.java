@@ -38,9 +38,9 @@ public class BiomassGeneratorBlockEntity extends AbstractBlockEntity implements 
         return new BiomassGeneratorContainer(id, this.getBlockPos(), playerInventory, player);
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         this.setMaxStorage(3000);
-        if (world == null) return;
+        if (level == null) return;
 
         // Handle slot
         if (this.inventory.getStackInSlot(0).is(Tags.BIOMASS) && this.electronicPower < 3000) {
@@ -52,7 +52,7 @@ public class BiomassGeneratorBlockEntity extends AbstractBlockEntity implements 
                     EnergyFunction.setEnergy(this, 300);
                 }
                 this.inventory.decrStackSize(0, 1);
-                world.playSound(null, blockPos, SoundsInit.BIOMASS_GENERATOR_ACTIVE.get(),
+                level.playSound(null, blockPos, SoundsInit.BIOMASS_GENERATOR_ACTIVE.get(),
                         SoundSource.BLOCKS, 0.6F, 1.0F);
                 wait = 0;
             }
@@ -61,10 +61,10 @@ public class BiomassGeneratorBlockEntity extends AbstractBlockEntity implements 
         }
 
         // Transfer energy
-        EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this, 3, true);
+        EnergyFunction.generatorTransferEnergy(level, blockPos, Direction.values(), this, 3, true);
 
         t.setChanged();
-        world.sendBlockUpdated(blockPos, t.getBlockState(), t.getBlockState(), 3);
+        level.sendBlockUpdated(blockPos, t.getBlockState(), t.getBlockState(), 3);
     }
 
     public ItemHandler getItemInventory() {

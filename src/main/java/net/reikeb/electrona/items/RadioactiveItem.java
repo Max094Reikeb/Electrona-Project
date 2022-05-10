@@ -18,7 +18,7 @@ public class RadioactiveItem extends Item {
     }
 
     @Override
-    public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
-        RadioactivityFunction.radioactiveItemInInventory(world, entity, durability, power);
+    public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int slot, boolean selected) {
+        RadioactivityFunction.radioactiveItemInInventory(level, entity, durability, power);
     }
 }

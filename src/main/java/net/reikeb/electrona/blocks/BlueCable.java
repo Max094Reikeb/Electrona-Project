@@ -39,15 +39,14 @@ public class BlueCable extends AbstractCable implements EntityBlock {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
-        super.appendHoverText(itemstack, world, list, flag);
+    public void appendHoverText(ItemStack itemstack, BlockGetter blockGetter, List<Component> list, TooltipFlag flag) {
+        super.appendHoverText(itemstack, blockGetter, list, flag);
         list.add(new TranslatableComponent("block.electrona.blue_cable.desc"));
     }
 
     @Override
-    public boolean canConnectTo(BlockState wireState, Level worldIn, BlockPos wirePos, BlockPos connectPos, Direction direction) {
-        BlockState otherState = worldIn.getBlockState(connectPos);
-
+    public boolean canConnectTo(BlockState wireState, Level level, BlockPos wirePos, BlockPos connectPos, Direction direction) {
+        BlockState otherState = level.getBlockState(connectPos);
         return (otherState.is(Tags.GENERATORS)) || (otherState.is(Tags.MACHINES)) || (otherState.is(Tags.BLUE_CABLE));
     }
 
@@ -70,13 +69,13 @@ public class BlueCable extends AbstractCable implements EntityBlock {
     }
 
     @Override
-    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
-        BlockState stateIn = worldIn.getBlockState(pos);
-        BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+        BlockState stateIn = level.getBlockState(pos);
+        BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof BlueCableBlockEntity blueCableBlockEntity) {
-            if ((hasOpenEnd(stateIn)) && (entityIn instanceof LivingEntity) && (blueCableBlockEntity.getElectronicPower() > 0)) {
+            if ((hasOpenEnd(stateIn)) && (entity instanceof LivingEntity) && (blueCableBlockEntity.getElectronicPower() > 0)) {
                 double damage = Math.random() * 10;
-                if (damage > 0) entityIn.hurt(DamageSources.ELECTRIC_SHOCK.bypassArmor(), (float) damage);
+                if (damage > 0) entity.hurt(DamageSources.ELECTRIC_SHOCK.bypassArmor(), (float) damage);
             }
         }
     }
@@ -89,7 +88,7 @@ public class BlueCable extends AbstractCable implements EntityBlock {
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return blockEntityType == BlockEntityInit.BLUE_CABLE_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) BlueCableBlockEntity.TICKER : null;
     }
 }

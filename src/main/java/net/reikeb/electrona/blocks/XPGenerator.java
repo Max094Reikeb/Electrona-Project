@@ -30,6 +30,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 import net.reikeb.electrona.blockentities.XPGeneratorBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
+import net.reikeb.electrona.misc.BlockStateProperties;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -38,7 +39,7 @@ import java.util.List;
 public class XPGenerator extends Block implements EntityBlock {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    public static final BooleanProperty ACTIVATED = BooleanProperty.create("activated");
+    public static final BooleanProperty ACTIVATED = BlockStateProperties.ACTIVATED;
 
     public XPGenerator() {
         super(Properties.of(Material.METAL)
@@ -52,22 +53,22 @@ public class XPGenerator extends Block implements EntityBlock {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
-        super.appendHoverText(itemstack, world, list, flag);
+    public void appendHoverText(ItemStack itemstack, BlockGetter blockGetter, List<Component> list, TooltipFlag flag) {
+        super.appendHoverText(itemstack, blockGetter, list, flag);
         list.add(new TranslatableComponent("block.electrona.xp_generator.desc1"));
         list.add(new TranslatableComponent("block.electrona.xp_generator.desc2"));
         list.add(new TranslatableComponent("block.electrona.xp_generator.desc3"));
     }
 
     @Override
-    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
+            BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof XPGeneratorBlockEntity xpGeneratorBlockEntity) {
-                xpGeneratorBlockEntity.dropItems(world, pos);
-                world.updateNeighbourForOutputSignal(pos, this);
+                xpGeneratorBlockEntity.dropItems(level, pos);
+                level.updateNeighbourForOutputSignal(pos, this);
             }
-            super.onRemove(state, world, pos, newState, isMoving);
+            super.onRemove(state, level, pos, newState, isMoving);
         }
     }
 
@@ -98,9 +99,9 @@ public class XPGenerator extends Block implements EntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        if (!worldIn.isClientSide) {
-            BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (!level.isClientSide) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof XPGeneratorBlockEntity) {
                 NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) blockEntity, pos);
             } else {
@@ -111,8 +112,8 @@ public class XPGenerator extends Block implements EntityBlock {
     }
 
     @Override
-    public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
-        BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+    public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
         return blockEntity instanceof MenuProvider ? (MenuProvider) blockEntity : null;
     }
 
@@ -122,15 +123,15 @@ public class XPGenerator extends Block implements EntityBlock {
     }
 
     @Override
-    public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
-        super.triggerEvent(state, world, pos, eventID, eventParam);
-        BlockEntity blockEntity = world.getBlockEntity(pos);
+    public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int eventID, int eventParam) {
+        super.triggerEvent(state, level, pos, eventID, eventParam);
+        BlockEntity blockEntity = level.getBlockEntity(pos);
         return blockEntity != null && blockEntity.triggerEvent(eventID, eventParam);
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return blockEntityType == BlockEntityInit.XP_GENERATOR_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) XPGeneratorBlockEntity.TICKER : null;
     }
 }

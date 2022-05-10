@@ -18,7 +18,7 @@ public class EntitySpawnsEvent {
         if (event == null) return;
 
         Entity entity = event.getEntity();
-        Level world = event.getWorld();
+        Level level = event.getWorld();
 
         if (event.getEntity() instanceof EnergeticLightningBolt energeticLightningBolt) {
             double x = entity.getX();
@@ -28,7 +28,7 @@ public class EntitySpawnsEvent {
             for (int cx = -32; cx < 32; cx++) {
                 for (int cy = -32; cy < 32; cy++) {
                     for (int cz = -32; cz < 32; cz++) {
-                        if (world.getBlockState(new BlockPos(x + cx, y + cy, z + cz)).getBlock() == BlockInit.ENERGETIC_LIGHTNING_ROD.get()) {
+                        if (level.getBlockState(new BlockPos(x + cx, y + cy, z + cz)).getBlock() == BlockInit.ENERGETIC_LIGHTNING_ROD.get()) {
                             energeticLightningBolt.teleportTo(x + cx, y + cy, z + cz);
                             return;
                         }

@@ -28,13 +28,13 @@ public class EnergeticLightningRodBlockEntity extends BlockEntity implements Abs
         super(ENERGETIC_LIGHTNING_ROD_BLOCK_ENTITY.get(), pos, state);
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         this.setMaxStorage(3000);
 
-        if (world == null) return;
+        if (level == null) return;
 
         // We pass energy to blocks around (this part is common to all generators)
-        EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this, 50, true);
+        EnergyFunction.generatorTransferEnergy(level, blockPos, Direction.values(), this, 50, true);
     }
 
     public void struckByLightning() {

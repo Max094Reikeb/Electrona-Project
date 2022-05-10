@@ -13,9 +13,7 @@ public class GemPowerInit {
     public static final DeferredRegister<GemPower> GEM_POWER_DEFERRED_REGISTER = DeferredRegister.create(GemPower.class, Electrona.MODID);
 
     public static Supplier<IForgeRegistry<GemPower>> GEM_POWER_REGISTRY = GEM_POWER_DEFERRED_REGISTER.makeRegistry("gempower", () ->
-            new RegistryBuilder<GemPower>().setMaxID(Integer.MAX_VALUE - 1).onAdd((owner, stage, id, obj, oldObj) ->
-                    Electrona.LOGGER.info("Gem Power added: " + getName(obj).toString() + " ")
-            ).setDefaultKey(Electrona.RL("empty")));
+            new RegistryBuilder<GemPower>().setMaxID(Integer.MAX_VALUE - 1).setDefaultKey(Electrona.RL("empty")));
 
     public static final RegistryObject<GemPower> INVISIBILITY = register("invisibility", 2400);
     public static final RegistryObject<GemPower> STRENGTH = register("strength", 3600);

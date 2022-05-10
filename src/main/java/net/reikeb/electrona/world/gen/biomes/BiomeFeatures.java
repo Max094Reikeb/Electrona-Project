@@ -14,7 +14,10 @@ import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.*;
+import net.minecraft.world.level.levelgen.feature.configurations.BlockColumnConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
@@ -61,11 +64,7 @@ public class BiomeFeatures {
     }
 
     private static RandomPatchConfiguration grassPatch(BlockStateProvider stateProvider, int xzSpread) {
-        return randomPatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(stateProvider), List.of(), xzSpread);
-    }
-
-    private static <FC extends FeatureConfiguration, F extends Feature<FC>> RandomPatchConfiguration randomPatchConfiguration(F feature, FC featureConfigured, List<Block> blocks, int xz) {
-        return radioactiveGrassConfiguration(xz, PlacementUtils.filtered(feature, featureConfigured, simplePatchPredicate(blocks)));
+        return radioactiveGrassConfiguration(xzSpread, PlacementUtils.filtered(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(stateProvider), simplePatchPredicate(List.of())));
     }
 
     private static RandomPatchConfiguration radioactiveGrassConfiguration(int xzSpread, Holder<PlacedFeature> placedFeature) {
@@ -79,7 +78,6 @@ public class BiomeFeatures {
         } else {
             blockpredicate = BlockPredicate.ONLY_IN_AIR_PREDICATE;
         }
-
         return blockpredicate;
     }
 

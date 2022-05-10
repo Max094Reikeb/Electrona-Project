@@ -37,9 +37,9 @@ public class XPGeneratorBlockEntity extends AbstractBlockEntity implements Abstr
         return new XPGeneratorContainer(id, this.getBlockPos(), playerInventory, player);
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         this.setMaxStorage(10000);
-        if (world == null) return;
+        if (level == null) return;
 
         // Handle slot
         if ((this.electronicPower >= 0.8) && (this.inventory.getStackInSlot(0).getItem() == Items.EMERALD)) {
@@ -53,11 +53,11 @@ public class XPGeneratorBlockEntity extends AbstractBlockEntity implements Abstr
         } else {
             this.setWait(0);
         }
-        world.setBlockAndUpdate(blockPos, this.getBlockState()
+        level.setBlockAndUpdate(blockPos, this.getBlockState()
                 .setValue(XPGenerator.ACTIVATED, (this.xpLevels > 0 || wait > 0)));
 
         this.setChanged();
-        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
+        level.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
     }
 
     public ItemHandler getItemInventory() {

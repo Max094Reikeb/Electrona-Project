@@ -21,9 +21,9 @@ public class CompressionPacket {
 
     public void whenThisPacketIsReceived(Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> {
-            ServerPlayer playerEntity = context.get().getSender();
-            if (playerEntity == null) return;
-            TTriggers.FIRST_COMPRESSION.trigger(playerEntity);
+            ServerPlayer serverPlayer = context.get().getSender();
+            if (serverPlayer == null) return;
+            TTriggers.FIRST_COMPRESSION.trigger(serverPlayer);
         });
         context.get().setPacketHandled(true);
     }

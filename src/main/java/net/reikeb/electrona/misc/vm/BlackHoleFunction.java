@@ -25,45 +25,45 @@ public class BlackHoleFunction {
     /**
      * Method that handles the Black Hole expansion
      *
-     * @param world      The world
+     * @param level      The level
      * @param pos        The position of the Hole
      * @param directions The directions the Hole expands
      */
-    public static void HoleProcedure(Level world, BlockPos pos, Direction[] directions) {
-        if (world.isClientSide) return;
+    public static void HoleProcedure(Level level, BlockPos pos, Direction[] directions) {
+        if (level.isClientSide) return;
 
-        if (world.getLevelData().getGameRules().getBoolean(Gamerules.DO_BLACK_HOLES_EXIST)) {
+        if (level.getLevelData().getGameRules().getBoolean(Gamerules.DO_BLACK_HOLES_EXIST)) {
             for (Direction dir : directions) {
-                BlockState offsetBlockState = world.getBlockState(pos.relative(dir));
+                BlockState offsetBlockState = level.getBlockState(pos.relative(dir));
 
                 if ((Math.random() >= 0.5) && (!offsetBlockState.is(Tags.STOPS_BLACK_HOLE))) {
-                    world.setBlock(pos.relative(dir), BlockInit.HOLE.get().defaultBlockState(), 3);
+                    level.setBlock(pos.relative(dir), BlockInit.HOLE.get().defaultBlockState(), 3);
                 }
-                if (!world.getBlockState(pos.below()).is(Tags.STOPS_BLACK_HOLE)) {
-                    world.setBlock(pos.below(), BlockInit.HOLE.get().defaultBlockState(), 3);
+                if (!level.getBlockState(pos.below()).is(Tags.STOPS_BLACK_HOLE)) {
+                    level.setBlock(pos.below(), BlockInit.HOLE.get().defaultBlockState(), 3);
                 }
-                if (!world.getBlockState(pos.above()).is(Tags.STOPS_BLACK_HOLE)) {
-                    world.setBlock(pos.above(), BlockInit.HOLE.get().defaultBlockState(), 3);
+                if (!level.getBlockState(pos.above()).is(Tags.STOPS_BLACK_HOLE)) {
+                    level.setBlock(pos.above(), BlockInit.HOLE.get().defaultBlockState(), 3);
                 }
             }
         }
-        if (BlockInit.SINGULARITY.get() != world.getBlockState(pos).getBlock()) {
-            world.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+        if (BlockInit.SINGULARITY.get() != level.getBlockState(pos).getBlock()) {
+            level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
         }
     }
 
     /**
      * Method that handles Singularity's particles
      *
-     * @param world The world of the Singularity
+     * @param level The level of the Singularity
      * @param pos   The position of the Singularity
      */
-    public static void singularityParticles(Level world, BlockPos pos) {
-        if (world.isClientSide) return;
+    public static void singularityParticles(Level level, BlockPos pos) {
+        if (level.isClientSide) return;
 
-        AreaEffectCloud areaEffectCloudEntity = new AreaEffectCloud(world, pos.getX(), pos.getY(), pos.getZ());
+        AreaEffectCloud areaEffectCloudEntity = new AreaEffectCloud(level, pos.getX(), pos.getY(), pos.getZ());
 
-        for (LivingEntity entityiterator : Utils.getLivingEntitiesInRadius(world, pos, 100)) {
+        for (LivingEntity entityiterator : Utils.getLivingEntitiesInRadius(level, pos, 100)) {
             areaEffectCloudEntity.setOwner(entityiterator);
         }
 
@@ -73,24 +73,24 @@ public class BlackHoleFunction {
         areaEffectCloudEntity.setRadiusPerTick((7.0F - areaEffectCloudEntity.getRadius()) / (float) areaEffectCloudEntity.getDuration());
         areaEffectCloudEntity.addEffect(new MobEffectInstance(MobEffects.HARM, 1, 1));
 
-        world.levelEvent(2006, pos, 1);
-        world.addFreshEntity(areaEffectCloudEntity);
-        world.gameEvent(GameEvents.SINGULARITY, pos);
+        level.levelEvent(2006, pos, 1);
+        level.addFreshEntity(areaEffectCloudEntity);
+        level.gameEvent(GameEvents.SINGULARITY, pos);
     }
 
     /**
      * Method that handles Singularity's delay
      *
-     * @param world The world of the Singularity
+     * @param level The level of the Singularity
      * @param pos   The position of the Singularity
      */
-    public static void singularityDelay(Level world, BlockPos pos) {
-        if (world.isClientSide) return;
+    public static void singularityDelay(Level level, BlockPos pos) {
+        if (level.isClientSide) return;
         ItemStack stack = new ItemStack(ItemInit.COSMIC_GEM.get(), 1);
         PowerUtils.setRandomPower(stack);
-        ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+        ItemEntity itemEntity = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), stack);
         itemEntity.setPickUpDelay(10);
-        world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-        world.addFreshEntity(itemEntity);
+        level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+        level.addFreshEntity(itemEntity);
     }
 }

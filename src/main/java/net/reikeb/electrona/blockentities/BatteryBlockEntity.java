@@ -34,19 +34,19 @@ public class BatteryBlockEntity extends AbstractBlockEntity implements AbstractE
         return new BatteryContainer(id, this.getBlockPos(), playerInventory, player);
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         this.setMaxStorage(10000);
-        if (world == null) return;
+        if (level == null) return;
 
         // Input & Output slots - Handling slots
         EnergyFunction.transferEnergyWithItemSlot(this, true, 1, 4);
         EnergyFunction.transferEnergyWithItemSlot(this, false, 0, 4);
 
         // We pass energy to blocks around (this part is common to all generators)
-        EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this, 6, false);
+        EnergyFunction.generatorTransferEnergy(level, blockPos, Direction.values(), this, 6, false);
 
         t.setChanged();
-        world.sendBlockUpdated(blockPos, t.getBlockState(), t.getBlockState(), 3);
+        level.sendBlockUpdated(blockPos, t.getBlockState(), t.getBlockState(), 3);
     }
 
     public ItemHandler getItemInventory() {

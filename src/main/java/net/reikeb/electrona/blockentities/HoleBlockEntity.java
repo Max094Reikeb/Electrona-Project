@@ -30,7 +30,7 @@ public class HoleBlockEntity extends BlockEntity {
         super.setRemoved();
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         if (this.level == null) return; // Avoid NullPointerExceptions
         wait += 1;
         if (wait >= 100) {

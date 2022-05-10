@@ -18,17 +18,17 @@ public class BlockMinedEvent {
 
     @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
-        ServerPlayer player = (ServerPlayer) event.getPlayer();
+        ServerPlayer serverPlayer = (ServerPlayer) event.getPlayer();
         Block eventBlock = event.getState().getBlock();
 
         if (eventBlock == BlockInit.TIN_ORE.get()) {
-            Advancement advancement = player.server.getAdvancements().getAdvancement(Keys.A_WHOLE_NEW_WORLD_ADVANCEMENT);
-            Utils.awardAdvancement(player, advancement, "A Whole New World");
+            Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(Keys.A_WHOLE_NEW_WORLD_ADVANCEMENT);
+            Utils.awardAdvancement(serverPlayer, advancement, "A Whole New World");
         }
 
         // Enchantments triggered
-        EnchantmentFunction.lumberjackMain(player, player.level, event.getPos(), Direction.values());
-        EnchantmentFunction.veinminerMain(player, player.level, event.getPos(), Direction.values());
-        EnchantmentFunction.smelting(player.level, event.getPos(), eventBlock, player, player.getUsedItemHand());
+        EnchantmentFunction.lumberjackMain(serverPlayer, serverPlayer.level, event.getPos(), Direction.values());
+        EnchantmentFunction.veinminerMain(serverPlayer, serverPlayer.level, event.getPos(), Direction.values());
+        EnchantmentFunction.smelting(serverPlayer.level, event.getPos(), eventBlock, serverPlayer, serverPlayer.getUsedItemHand());
     }
 }

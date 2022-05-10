@@ -47,10 +47,10 @@ public class BiomeUpdatePacket {
 
         @Override
         public Object call() throws Exception {
-            ClientLevel world = Minecraft.getInstance().level;
-            if (world == null) return null;
+            ClientLevel clientLevel = Minecraft.getInstance().level;
+            if (clientLevel == null) return null;
             for (BlockPos pos : this.blockPositions) {
-                BiomeUtil.setBiomeAtPos(world, pos, world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getOptional(BiomeInit.NUCLEAR).orElseThrow());
+                BiomeUtil.setBiomeAtPos(clientLevel, pos, clientLevel.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getOptional(BiomeInit.NUCLEAR).orElseThrow());
             }
             return null;
         }

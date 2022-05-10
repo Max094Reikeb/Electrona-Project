@@ -35,24 +35,24 @@ public class WaterTurbineBlockEntity extends BlockEntity implements AbstractEner
         return this.getBlockState().getValue(WaterTurbine.FACING);
     }
 
-    public <T extends BlockEntity> void tick(Level world, BlockPos blockPos, BlockState state, T t) {
+    public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         // We get the variables
         BlockPos frontPos = blockPos.relative(this.getDirection().getOpposite());
         BlockPos backPos = blockPos.relative(this.getDirection());
 
         this.setMaxStorage(1000);
-        if (world == null) return;
+        if (level == null) return;
 
         // We generate the energy (this part is uncommon for all generators)
-        if ((Blocks.AIR == world.getBlockState(backPos).getBlock())
-                && (Material.WATER == world.getBlockState(frontPos).getMaterial())) {
-            world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(WaterTurbine.WATERLOGGED, true));
-        } else if (Material.WATER != world.getBlockState(frontPos).getMaterial()) {
-            world.setBlockAndUpdate(blockPos, this.getBlockState().setValue(WaterTurbine.WATERLOGGED, false));
+        if ((Blocks.AIR == level.getBlockState(backPos).getBlock())
+                && (Material.WATER == level.getBlockState(frontPos).getMaterial())) {
+            level.setBlockAndUpdate(blockPos, this.getBlockState().setValue(WaterTurbine.WATERLOGGED, true));
+        } else if (Material.WATER != level.getBlockState(frontPos).getMaterial()) {
+            level.setBlockAndUpdate(blockPos, this.getBlockState().setValue(WaterTurbine.WATERLOGGED, false));
         }
 
-        if ((Material.WATER == world.getBlockState(backPos).getMaterial())
-                && (Material.WATER == world.getBlockState(frontPos).getMaterial())) {
+        if ((Material.WATER == level.getBlockState(backPos).getMaterial())
+                && (Material.WATER == level.getBlockState(frontPos).getMaterial())) {
             if ((this.electronicPower < 996)) {
                 EnergyFunction.fillEnergy(this, 0.2);
             } else if (((this.electronicPower >= 996) && (this.electronicPower <= 999.95))) {
@@ -67,7 +67,7 @@ public class WaterTurbineBlockEntity extends BlockEntity implements AbstractEner
         }
 
         // We pass energy to blocks around (this part is common to all generators)
-        EnergyFunction.generatorTransferEnergy(world, blockPos, Direction.values(), this, 4, true);
+        EnergyFunction.generatorTransferEnergy(level, blockPos, Direction.values(), this, 4, true);
     }
 
     public ItemHandler getItemInventory() {

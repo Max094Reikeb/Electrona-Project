@@ -17,16 +17,16 @@ import net.minecraftforge.eventbus.api.Event;
 @Cancelable
 public class PurificationEvent extends Event {
 
-    private final Level world;
+    private final Level level;
     private final BlockPos pos;
     private final ItemStack input;
     private final ItemStack output;
     private final int purifyingTime;
     private final int waterRequired;
 
-    public PurificationEvent(Level world, BlockPos pos, ItemStack input, ItemStack output, int purifyingTime,
+    public PurificationEvent(Level level, BlockPos pos, ItemStack input, ItemStack output, int purifyingTime,
                              int waterRequired) {
-        this.world = world;
+        this.level = level;
         this.pos = pos;
         this.input = input;
         this.output = output;
@@ -34,8 +34,8 @@ public class PurificationEvent extends Event {
         this.waterRequired = waterRequired;
     }
 
-    public Level getWorld() {
-        return this.world;
+    public Level getLevel() {
+        return this.level;
     }
 
     public BlockPos getPos() {

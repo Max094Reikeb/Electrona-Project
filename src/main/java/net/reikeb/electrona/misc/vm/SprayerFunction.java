@@ -26,20 +26,20 @@ public class SprayerFunction {
         double electronicPower = sprayerBlockEntity.getElectronicPower();
         ItemHandler inv = sprayerBlockEntity.getItemInventory();
         int boostCount = 0;
-        Level world = sprayerBlockEntity.getLevel();
+        Level level = sprayerBlockEntity.getLevel();
         if (inv.getStackInSlot(1).getItem() == ItemInit.WIRELESS_BOOSTER.get()) boostCount += 1;
         if (inv.getStackInSlot(2).getItem() == ItemInit.WIRELESS_BOOSTER.get()) boostCount += 1;
         if (inv.getStackInSlot(3).getItem() == ItemInit.WIRELESS_BOOSTER.get()) boostCount += 1;
         sprayerBlockEntity.setRadius(5 + (boostCount * 3));
         if ((!(inv.getStackInSlot(0).isEmpty())) && (electronicPower >= 200)) {
-            if (world == null) return;
-            for (LivingEntity entityiterator : Utils.getLivingEntitiesInRadius(world, sprayerBlockEntity.getBlockPos(), sprayerBlockEntity.getRadius())) {
+            if (level == null) return;
+            for (LivingEntity entityiterator : Utils.getLivingEntitiesInRadius(level, sprayerBlockEntity.getBlockPos(), sprayerBlockEntity.getRadius())) {
                 if (inv.getStackInSlot(0).getItem().isEdible()) {
                     EnergyFunction.drainEnergy(sprayerBlockEntity, 200);
                     FoodProperties usedFood = inv.getStackInSlot(0).getItem().getFoodProperties();
                     if (usedFood == null) return;
                     for (Pair<MobEffectInstance, Float> pairiterator : usedFood.getEffects()) {
-                        if (world.getRandom().nextFloat() < pairiterator.getSecond()) {
+                        if (level.getRandom().nextFloat() < pairiterator.getSecond()) {
                             entityiterator.addEffect(pairiterator.getFirst());
                         }
                     }
@@ -61,15 +61,15 @@ public class SprayerFunction {
      * @param sprayerBlockEntity The BlockEntity of the Sprayer
      */
     public static void sprayerParticles(SprayerBlockEntity sprayerBlockEntity) {
-        Level world = sprayerBlockEntity.getLevel();
-        assert world != null;
-        if (world.isClientSide) return;
+        Level level = sprayerBlockEntity.getLevel();
+        assert level != null;
+        if (level.isClientSide) return;
         BlockPos pos = sprayerBlockEntity.getBlockPos();
         double xzRadius = sprayerBlockEntity.getRadius();
         double loop = 0;
         double particleAmount = (xzRadius) * 4;
         while (loop < particleAmount) {
-            if (world instanceof ServerLevel serverLevel) {
+            if (level instanceof ServerLevel serverLevel) {
                 serverLevel.sendParticles(ParticleTypes.CLOUD, (pos.getX() + (Math.cos((((Math.PI * 2) / (particleAmount)) * (loop))) * (xzRadius))),
                         pos.getY(), (pos.getZ() + (Math.sin((((Math.PI * 2) / (particleAmount)) * (loop))) * (xzRadius))), 3, 0, 0, 0, 0.05);
             }

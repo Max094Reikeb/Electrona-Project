@@ -51,7 +51,7 @@ public class EnergeticLightningRod extends AbstractWaterLoggableBlock implements
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
         Direction facing = state.getValue(FACING);
         if (facing == Direction.DOWN) {
             return CustomShapes.EnergeticLightningRodDown;
@@ -104,7 +104,7 @@ public class EnergeticLightningRod extends AbstractWaterLoggableBlock implements
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return blockEntityType == BlockEntityInit.ENERGETIC_LIGHTNING_ROD_BLOCK_ENTITY.get() ? (BlockEntityTicker<T>) EnergeticLightningRodBlockEntity.TICKER : null;
     }
 }

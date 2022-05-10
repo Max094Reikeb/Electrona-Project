@@ -38,12 +38,12 @@ public class TeleporterFunction {
     /**
      * This method is the function of the Teleporter
      *
-     * @param world  The world of the Teleporter
+     * @param level  The level of the Teleporter
      * @param pos    The position of the Teleporter
      * @param entity The entity which travels through the Teleporter
      */
-    public static void stepOnTeleporter(Level world, BlockPos pos, Entity entity) {
-        if (!(world.getBlockEntity(pos) instanceof TeleporterBlockEntity teleporterBlockEntity)) return;
+    public static void stepOnTeleporter(Level level, BlockPos pos, Entity entity) {
+        if (!(level.getBlockEntity(pos) instanceof TeleporterBlockEntity teleporterBlockEntity)) return;
         boolean isTeleporter = false;
         boolean autoDeletion = teleporterBlockEntity.isAutoDeletion() == 1;
         double teleportXCo = teleporterBlockEntity.getTeleportX();
@@ -52,11 +52,11 @@ public class TeleporterFunction {
         BlockPos teleportPos = new BlockPos(teleportXCo, teleportYCo, teleportZCo);
         double electronicPower = teleporterBlockEntity.getElectronicPower();
         if (electronicPower >= 1000) {
-            if (BlockInit.DIMENSION_LINKER.get() == world.getBlockState(pos.below()).getBlock()) {
-                BlockEntity blockEntityBelow = world.getBlockEntity(pos.below());
+            if (BlockInit.DIMENSION_LINKER.get() == level.getBlockState(pos.below()).getBlock()) {
+                BlockEntity blockEntityBelow = level.getBlockEntity(pos.below());
                 if (!(blockEntityBelow instanceof DimensionLinkerBlockEntity dimensionLinkerBlockEntity)) return;
                 String dimension = dimensionLinkerBlockEntity.getDimensionID();
-                if (world instanceof ServerLevel serverLevel) {
+                if (level instanceof ServerLevel serverLevel) {
                     ResourceKey<Level> key = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dimension));
                     if ((!dimension.equals("")) && (serverLevel.getServer().getLevel(key) != null)) {
                         if ((BlockInit.TELEPORTER.get() == (serverLevel.getServer().getLevel(key)
@@ -72,15 +72,15 @@ public class TeleporterFunction {
                 }
                 if (isTeleporter) {
                     ResourceKey<Level> newKey = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dimension));
-                    ServerLevel _newWorld = ((ServerLevel) world).getServer().getLevel(newKey);
-                    if (world != _newWorld) {
-                        if (!MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Pre(world, _newWorld, pos, teleportPos, entity))) {
+                    ServerLevel _newLevel = ((ServerLevel) level).getServer().getLevel(newKey);
+                    if (level != _newLevel) {
+                        if (!MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Pre(level, _newLevel, pos, teleportPos, entity))) {
                             {
                                 if (!entity.level.isClientSide && (entity instanceof ServerPlayer serverPlayer)) {
-                                    if (_newWorld != null) {
+                                    if (_newLevel != null) {
                                         serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
-                                        serverPlayer.teleportTo(_newWorld, _newWorld.getSharedSpawnPos().getX(), _newWorld.getSharedSpawnPos().getY() + 1,
-                                                _newWorld.getSharedSpawnPos().getZ(), entity.yRot, entity.xRot);
+                                        serverPlayer.teleportTo(_newLevel, _newLevel.getSharedSpawnPos().getX(), _newLevel.getSharedSpawnPos().getY() + 1,
+                                                _newLevel.getSharedSpawnPos().getZ(), entity.yRot, entity.xRot);
                                         serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(serverPlayer.abilities));
                                         for (MobEffectInstance effectinstance : serverPlayer.getActiveEffects()) {
                                             serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(entity.getId(), effectinstance));
@@ -89,16 +89,16 @@ public class TeleporterFunction {
                                     }
                                 }
                             }
-                            teleport(_newWorld, pos, teleportPos, entity);
-                            MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(world, _newWorld, pos, teleportPos, entity));
-                            if (!world.isClientSide()) {
+                            teleport(_newLevel, pos, teleportPos, entity);
+                            MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(level, _newLevel, pos, teleportPos, entity));
+                            if (!level.isClientSide()) {
                                 EnergyFunction.drainEnergy(teleporterBlockEntity, 1000);
                                 if (autoDeletion) {
                                     teleporterBlockEntity.setTeleportX(0);
                                     teleporterBlockEntity.setTeleportY(0);
                                     teleporterBlockEntity.setTeleportZ(0);
                                 }
-                                world.sendBlockUpdated(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                                level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos), 3);
                             }
                         }
                     }
@@ -107,19 +107,19 @@ public class TeleporterFunction {
                         player.displayClientMessage(new TranslatableComponent("message.electrona.no_world_coos_info"), true);
                     }
                 }
-            } else if ((BlockInit.TELEPORTER.get() == (world.getBlockState(new
+            } else if ((BlockInit.TELEPORTER.get() == (level.getBlockState(new
                     BlockPos((int) (teleportXCo - 0.5), (int) teleportYCo, (int) (teleportZCo - 0.5)))).getBlock())) {
-                if (!MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Pre(world, world, pos, teleportPos, entity))) {
-                    teleport(world, pos, teleportPos, entity);
-                    MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(world, world, pos, teleportPos, entity));
-                    if (!world.isClientSide()) {
+                if (!MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Pre(level, level, pos, teleportPos, entity))) {
+                    teleport(level, pos, teleportPos, entity);
+                    MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(level, level, pos, teleportPos, entity));
+                    if (!level.isClientSide()) {
                         EnergyFunction.drainEnergy(teleporterBlockEntity, 1000);
                         if (autoDeletion) {
                             teleporterBlockEntity.setTeleportX(0);
                             teleporterBlockEntity.setTeleportY(0);
                             teleporterBlockEntity.setTeleportZ(0);
                         }
-                        world.sendBlockUpdated(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                        level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos), 3);
                     }
                 }
             } else {
@@ -137,12 +137,12 @@ public class TeleporterFunction {
     /**
      * Method that teleports an entity
      *
-     * @param world       The departure world
+     * @param level       The departure level
      * @param pos         The departure position
      * @param teleportPos The arrival position
      * @param entity      The entity that is teleported
      */
-    public static void teleport(Level world, BlockPos pos, BlockPos teleportPos, Entity entity) {
+    public static void teleport(Level level, BlockPos pos, BlockPos teleportPos, Entity entity) {
         double teleportXCo = teleportPos.getX();
         double teleportYCo = teleportPos.getY();
         double teleportZCo = teleportPos.getZ();
@@ -155,11 +155,11 @@ public class TeleporterFunction {
         }
         entity.gameEvent(GameEvents.TELEPORTER_USE, teleportPos);
         SoundEvent teleportSound = SoundEvents.ENDERMAN_TELEPORT;
-        teleportParticles(world, pos, 300);
-        teleportParticles(world, teleportPos, 300);
-        world.playSound(null, pos, teleportSound, SoundSource.NEUTRAL,
+        teleportParticles(level, pos, 300);
+        teleportParticles(level, teleportPos, 300);
+        level.playSound(null, pos, teleportSound, SoundSource.NEUTRAL,
                 0.6F, 1.0F);
-        world.playSound(null, teleportPos, teleportSound, SoundSource.NEUTRAL,
+        level.playSound(null, teleportPos, teleportSound, SoundSource.NEUTRAL,
                 0.6F, 1.0F);
     }
 
@@ -187,12 +187,12 @@ public class TeleporterFunction {
     /**
      * Method that teleports the player with the Portable Teleporter
      *
-     * @param world  The world of the player
+     * @param level  The level of the player
      * @param player The player
      * @param hand   The hand of the player that holds the Portable Teleporter
      * @return boolean indicates if everything went good
      */
-    public static boolean teleportPortable(Level world, Player player, InteractionHand hand) {
+    public static boolean teleportPortable(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         double electronicPower = stack.getOrCreateTag().getDouble("ElectronicPower");
         double teleportXCo = stack.getOrCreateTag().getDouble("teleportX");
@@ -201,11 +201,11 @@ public class TeleporterFunction {
         BlockPos pos = new BlockPos(player.getX(), player.getY(), player.getZ());
         BlockPos teleportPos = new BlockPos(teleportXCo, teleportYCo, teleportZCo);
         if (electronicPower >= 500) {
-            if (BlockInit.TELEPORTER.get() == (world.getBlockState(new
+            if (BlockInit.TELEPORTER.get() == (level.getBlockState(new
                     BlockPos((int) (teleportXCo - 0.5), (int) teleportYCo, (int) (teleportZCo - 0.5)))).getBlock()) {
-                if (!MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Pre(world, world, pos, teleportPos, player))) {
-                    teleport(world, pos, teleportPos, player);
-                    MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(world, world, pos, teleportPos, player));
+                if (!MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Pre(level, level, pos, teleportPos, player))) {
+                    teleport(level, pos, teleportPos, player);
+                    MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(level, level, pos, teleportPos, player));
                     if (!player.isCreative())
                         stack.getOrCreateTag().putDouble("ElectronicPower", (electronicPower - 500));
                     return true;
@@ -226,19 +226,19 @@ public class TeleporterFunction {
     /**
      * Method that handles particle spawning
      *
-     * @param world  The world of the teleport
+     * @param level  The level of the teleport
      * @param pos    The position where to spawn particles
      * @param number The number of particles to spawn
      */
-    public static void teleportParticles(Level world, BlockPos pos, int number) {
+    public static void teleportParticles(Level level, BlockPos pos, int number) {
         for (int l = 0; l < number; l++) {
-            double d0 = (pos.getX() + world.random.nextFloat());
-            double d1 = (pos.getY() + world.random.nextFloat());
-            double d2 = (pos.getZ() + world.random.nextFloat());
-            double d3 = (world.random.nextFloat() - 0.2D) * 0.5D;
-            double d4 = (world.random.nextFloat() - 0.2D) * 0.5D;
-            double d5 = (world.random.nextFloat() - 0.2D) * 0.5D;
-            world.addParticle(ParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5);
+            double d0 = (pos.getX() + level.random.nextFloat());
+            double d1 = (pos.getY() + level.random.nextFloat());
+            double d2 = (pos.getZ() + level.random.nextFloat());
+            double d3 = (level.random.nextFloat() - 0.2D) * 0.5D;
+            double d4 = (level.random.nextFloat() - 0.2D) * 0.5D;
+            double d5 = (level.random.nextFloat() - 0.2D) * 0.5D;
+            level.addParticle(ParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5);
         }
     }
 }
