@@ -30,7 +30,6 @@ dependencies {
 
     // Mega Library
     modImplementation "com.github.FirstMegaGame4:Mega-Lib:${project.mega_lib_version}"
-
 }
 
 processResources {
