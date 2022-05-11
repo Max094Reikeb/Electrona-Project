@@ -9,8 +9,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.blocks.Conveyor;
-import net.reikeb.electrona.misc.vm.EnergyFunction;
-import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
+import net.reikeb.maxilib.intface.EnergyInterface;
+import net.reikeb.maxilib.intface.IEnergy;
 import net.reikeb.maxilib.inventory.ItemHandler;
 
 import javax.annotation.Nullable;
@@ -18,11 +18,11 @@ import java.util.Objects;
 
 import static net.reikeb.electrona.init.BlockEntityInit.CONVEYOR_BLOCK_ENTITY;
 
-public class ConveyorBlockEntity extends BlockEntity implements AbstractEnergyBlockEntity {
+public class ConveyorBlockEntity extends BlockEntity implements EnergyInterface {
 
     public static final BlockEntityTicker<ConveyorBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
-    public double electronicPower;
-    public int maxStorage;
+    private double electronicPower;
+    private int maxStorage;
 
     public ConveyorBlockEntity(BlockPos pos, BlockState state) {
         super(CONVEYOR_BLOCK_ENTITY.get(), pos, state);
@@ -36,7 +36,7 @@ public class ConveyorBlockEntity extends BlockEntity implements AbstractEnergyBl
         level.setBlockAndUpdate(blockPos, state
                 .setValue(Conveyor.ACTIVATED, this.electronicPower > 0));
 
-        EnergyFunction.drainEnergy(this, 0.05);
+        IEnergy.drainEnergy(this, 0.05);
 
         this.setChanged();
         level.sendBlockUpdated(blockPos, state, state, 3);

@@ -20,8 +20,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ParticleInit;
-import net.reikeb.electrona.misc.vm.EnergyFunction;
-import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
+import net.reikeb.maxilib.intface.EnergyInterface;
+import net.reikeb.maxilib.intface.IEnergy;
 import net.reikeb.maxilib.inventory.ItemHandler;
 import net.reikeb.maxilib.utils.Gravity;
 
@@ -29,12 +29,12 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class GravitorBlockEntity extends BlockEntity implements AbstractEnergyBlockEntity {
+public class GravitorBlockEntity extends BlockEntity implements EnergyInterface {
 
     public static final BlockEntityTicker<GravitorBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private final List<BlockPos> effectBlocks = Lists.newArrayList();
     public int tickCount;
-    public double electronicPower;
+    private double electronicPower;
     private float activeRotation;
     private boolean isActive;
     private boolean isHunting;
@@ -61,7 +61,7 @@ public class GravitorBlockEntity extends BlockEntity implements AbstractEnergyBl
             boolean flag = (this.updateShape()) && (this.electronicPower >= 10);
             this.setActive(flag);
             if (!this.level.isClientSide && this.isActive()) {
-                EnergyFunction.drainEnergy(this, 10);
+                IEnergy.drainEnergy(this, 10);
                 this.applyGravity();
             }
         }
@@ -211,12 +211,14 @@ public class GravitorBlockEntity extends BlockEntity implements AbstractEnergyBl
     public void setLogic(boolean logic) {
     }
 
+    @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
         this.electronicPower = nbt.getDouble("ElectronicPower");
         this.maxStorage = nbt.getInt("MaxStorage");
     }
 
+    @Override
     public void saveAdditional(CompoundTag nbt) {
         super.saveAdditional(nbt);
         nbt.putDouble("ElectronicPower", this.electronicPower);

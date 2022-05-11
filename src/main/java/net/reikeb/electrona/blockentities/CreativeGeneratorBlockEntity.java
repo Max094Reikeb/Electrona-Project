@@ -14,7 +14,8 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
-import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
+import net.reikeb.maxilib.intface.EnergyInterface;
+import net.reikeb.maxilib.intface.IEnergy;
 import net.reikeb.maxilib.inventory.ItemHandler;
 
 import javax.annotation.Nullable;
@@ -22,7 +23,7 @@ import java.util.Objects;
 
 import static net.reikeb.electrona.init.BlockEntityInit.CREATIVE_GENERATOR_BLOCK_ENTITY;
 
-public class CreativeGeneratorBlockEntity extends BlockEntity implements AbstractEnergyBlockEntity {
+public class CreativeGeneratorBlockEntity extends BlockEntity implements EnergyInterface {
 
     public static final BlockEntityTicker<CreativeGeneratorBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private final EnergyStorage energyStorage = new EnergyStorage(999999999, 999999999, 999999999, 999999999) {
@@ -46,8 +47,8 @@ public class CreativeGeneratorBlockEntity extends BlockEntity implements Abstrac
             return retval;
         }
     };
-    public double electronicPower;
-    public int maxStorage;
+    private double electronicPower;
+    private int maxStorage;
 
     public CreativeGeneratorBlockEntity(BlockPos pos, BlockState state) {
         super(CREATIVE_GENERATOR_BLOCK_ENTITY.get(), pos, state);
@@ -55,7 +56,7 @@ public class CreativeGeneratorBlockEntity extends BlockEntity implements Abstrac
 
     public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         this.setMaxStorage(999999999);
-        EnergyFunction.setEnergy(this, 999999999);
+        IEnergy.setEnergy(this, 999999999);
 
         if (level == null) return;
 

@@ -13,18 +13,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.blocks.XPGenerator;
 import net.reikeb.electrona.containers.XPGeneratorContainer;
-import net.reikeb.electrona.misc.vm.EnergyFunction;
-import net.reikeb.maxilib.abs.AbstractBlockEntity;
 import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
-import net.reikeb.maxilib.inventory.ItemHandler;
+import net.reikeb.maxilib.intface.IEnergy;
 
 import static net.reikeb.electrona.init.BlockEntityInit.XP_GENERATOR_BLOCK_ENTITY;
 
-public class XPGeneratorBlockEntity extends AbstractBlockEntity implements AbstractEnergyBlockEntity {
+public class XPGeneratorBlockEntity extends AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<XPGeneratorBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
-    public double electronicPower;
-    private int maxStorage;
     private int wait;
     private int xpLevels;
 
@@ -42,9 +38,9 @@ public class XPGeneratorBlockEntity extends AbstractBlockEntity implements Abstr
         if (level == null) return;
 
         // Handle slot
-        if ((this.electronicPower >= 0.8) && (this.inventory.getStackInSlot(0).getItem() == Items.EMERALD)) {
+        if ((this.getElectronicPower() >= 0.8) && (this.inventory.getStackInSlot(0).getItem() == Items.EMERALD)) {
             wait += 1;
-            EnergyFunction.drainEnergy(this, 0.8);
+            IEnergy.drainEnergy(this, 0.8);
             if (wait >= 4800) {
                 this.inventory.decrStackSize(0, 1);
                 this.setXpLevels(this.xpLevels + 1);
@@ -58,34 +54,6 @@ public class XPGeneratorBlockEntity extends AbstractBlockEntity implements Abstr
 
         this.setChanged();
         level.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
-    }
-
-    public ItemHandler getItemInventory() {
-        return this.inventory;
-    }
-
-    public int getElectronicPowerTimesHundred() {
-        return (int) (this.electronicPower * 100);
-    }
-
-    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
-        this.electronicPower = electronicPowerTimesHundred / 100.0;
-    }
-
-    public double getElectronicPower() {
-        return this.electronicPower;
-    }
-
-    public void setElectronicPower(double electronicPower) {
-        this.electronicPower = electronicPower;
-    }
-
-    public int getMaxStorage() {
-        return this.maxStorage;
-    }
-
-    public void setMaxStorage(int maxStorage) {
-        this.maxStorage = maxStorage;
     }
 
     public int getWait() {
@@ -104,18 +72,9 @@ public class XPGeneratorBlockEntity extends AbstractBlockEntity implements Abstr
         this.xpLevels = xpLevels;
     }
 
-    public boolean getLogic() {
-        return false;
-    }
-
-    public void setLogic(boolean logic) {
-    }
-
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
-        this.electronicPower = compound.getDouble("ElectronicPower");
-        this.maxStorage = compound.getInt("MaxStorage");
         this.xpLevels = compound.getInt("XPLevels");
         this.wait = compound.getInt("wait");
     }
@@ -123,8 +82,6 @@ public class XPGeneratorBlockEntity extends AbstractBlockEntity implements Abstr
     @Override
     public void saveAdditional(CompoundTag compound) {
         super.saveAdditional(compound);
-        compound.putDouble("ElectronicPower", this.electronicPower);
-        compound.putInt("MaxStorage", this.maxStorage);
         compound.putInt("XPLevels", this.xpLevels);
         compound.putInt("wait", this.wait);
     }

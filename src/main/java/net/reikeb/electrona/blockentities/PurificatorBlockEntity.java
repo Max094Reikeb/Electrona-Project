@@ -14,16 +14,13 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.PurificatorContainer;
 import net.reikeb.electrona.events.local.PurificationEvent;
 import net.reikeb.electrona.init.SoundsInit;
-import net.reikeb.electrona.misc.vm.FluidFunction;
 import net.reikeb.electrona.recipes.Recipes;
 import net.reikeb.maxilib.abs.AbstractFluidBlockEntity;
-
-import java.util.concurrent.atomic.AtomicInteger;
+import net.reikeb.maxilib.intface.IFluid;
 
 import static net.reikeb.electrona.init.BlockEntityInit.PURIFICATOR_BLOCK_ENTITY;
 
@@ -48,22 +45,20 @@ public class PurificatorBlockEntity extends AbstractFluidBlockEntity {
         if (level == null) return;
         ItemStack stackInSlot1 = this.inventory.getStackInSlot(1);
 
-        AtomicInteger waterLevel = new AtomicInteger();
-        this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).ifPresent(cap -> waterLevel.set(cap.getFluidInTank(1).getAmount()));
-        AtomicInteger tankCapacity = new AtomicInteger();
-        this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).ifPresent(cap -> tankCapacity.set(cap.getTankCapacity(1)));
+        int waterLevel = this.getWaterLevel();
+        int tankCapacity = this.getMaxCapacity();
 
         // Input slot - Handling slots
         if ((this.inventory.getStackInSlot(0).getItem() == Items.WATER_BUCKET)
-                && (waterLevel.get() <= (tankCapacity.get() - 1000))) {
+                && (waterLevel <= (tankCapacity - 1000))) {
             this.inventory.decrStackSize(0, 1);
             this.inventory.insertItem(0, new ItemStack(Items.BUCKET, 1), false);
-            FluidFunction.fillWater(this, 1000);
+            IFluid.fillWater(this, 1000);
         }
 
         if (level.isClientSide) return;
 
-        if ((waterLevel.get() > 0) && (Recipes.getRecipe(this, stackInSlot1) != null)) {
+        if ((waterLevel > 0) && (Recipes.getRecipe(this, stackInSlot1) != null)) {
             if (this.canPurify) {
                 this.waterRequired = getWaterRequired(stackInSlot1);
                 this.purifyingTime = getPurifyingTime(stackInSlot1);
@@ -72,7 +67,7 @@ public class PurificatorBlockEntity extends AbstractFluidBlockEntity {
 
                 if (this.currentPurifyingTime < (this.purifyingTime * 20)) {
                     this.currentPurifyingTime += 1;
-                    FluidFunction.drainWater(this, (int) (waterPerSecond * 0.05));
+                    IFluid.drainWater(this, (int) (waterPerSecond * 0.05));
                     level.playSound(null, blockPos, SoundsInit.PURIFICATOR_PURIFICATION.get(),
                             SoundSource.BLOCKS, 0.6F, 1.0F);
 
@@ -94,16 +89,6 @@ public class PurificatorBlockEntity extends AbstractFluidBlockEntity {
 
         this.setChanged();
         level.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
-    }
-
-    public int getWaterLevel() {
-        return FluidFunction.getFluidAmount(this).get();
-    }
-
-    public void setWaterLevel(int amount) {
-        AtomicInteger waterLevel = FluidFunction.getFluidAmount(this);
-        FluidFunction.drainWater(this, waterLevel.get());
-        FluidFunction.fillWater(this, amount);
     }
 
     public int getPurifyingTime() {

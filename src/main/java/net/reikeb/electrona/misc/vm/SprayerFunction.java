@@ -12,6 +12,7 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
 import net.reikeb.electrona.blockentities.SprayerBlockEntity;
 import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.maxilib.intface.IEnergy;
 import net.reikeb.maxilib.inventory.ItemHandler;
 import net.reikeb.maxilib.utils.Utils;
 
@@ -35,7 +36,7 @@ public class SprayerFunction {
             if (level == null) return;
             for (LivingEntity entityiterator : Utils.getLivingEntitiesInRadius(level, sprayerBlockEntity.getBlockPos(), sprayerBlockEntity.getRadius())) {
                 if (inv.getStackInSlot(0).getItem().isEdible()) {
-                    EnergyFunction.drainEnergy(sprayerBlockEntity, 200);
+                    IEnergy.drainEnergy(sprayerBlockEntity, 200);
                     FoodProperties usedFood = inv.getStackInSlot(0).getItem().getFoodProperties();
                     if (usedFood == null) return;
                     for (Pair<MobEffectInstance, Float> pairiterator : usedFood.getEffects()) {
@@ -45,7 +46,7 @@ public class SprayerFunction {
                     }
                     inv.decrStackSize(0, 1);
                 } else if (inv.getStackInSlot(0).getItem() instanceof PotionItem) {
-                    EnergyFunction.drainEnergy(sprayerBlockEntity, 200);
+                    IEnergy.drainEnergy(sprayerBlockEntity, 200);
                     for (MobEffectInstance effectiterator : PotionUtils.getMobEffects(inv.getStackInSlot(0))) {
                         entityiterator.addEffect(new MobEffectInstance(effectiterator));
                     }

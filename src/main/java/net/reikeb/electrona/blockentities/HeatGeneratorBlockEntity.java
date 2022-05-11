@@ -14,7 +14,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.blocks.HeatGenerator;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
-import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
+import net.reikeb.maxilib.intface.EnergyInterface;
+import net.reikeb.maxilib.intface.IEnergy;
 import net.reikeb.maxilib.inventory.ItemHandler;
 
 import javax.annotation.Nullable;
@@ -22,7 +23,7 @@ import java.util.Objects;
 
 import static net.reikeb.electrona.init.BlockEntityInit.HEAT_GENERATOR_BLOCK_ENTITY;
 
-public class HeatGeneratorBlockEntity extends BlockEntity implements AbstractEnergyBlockEntity {
+public class HeatGeneratorBlockEntity extends BlockEntity implements EnergyInterface {
 
     public static final BlockEntityTicker<HeatGeneratorBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private double electronicPower;
@@ -53,15 +54,15 @@ public class HeatGeneratorBlockEntity extends BlockEntity implements AbstractEne
                 || biomeRL.equals(Keys.SOUL_SAND_VALLEY_BIOME)
                 || biomeRL.equals(Keys.BASALT_DELTAS_BIOME))) {
             if (this.electronicPower < 1996) {
-                EnergyFunction.fillEnergy(this, 0.15);
+                IEnergy.fillEnergy(this, 0.15);
             } else if ((this.electronicPower >= 1996) && (this.electronicPower <= 1999.95)) {
-                EnergyFunction.fillEnergy(this, 0.05);
+                IEnergy.fillEnergy(this, 0.05);
             }
         } else {
             if (this.electronicPower > 0.15) {
-                EnergyFunction.drainEnergy(this, 0.15);
+                IEnergy.drainEnergy(this, 0.15);
             } else if ((this.electronicPower <= 0.15) && (this.electronicPower >= 0.05)) {
-                EnergyFunction.drainEnergy(this, 0.05);
+                IEnergy.drainEnergy(this, 0.05);
             }
         }
 

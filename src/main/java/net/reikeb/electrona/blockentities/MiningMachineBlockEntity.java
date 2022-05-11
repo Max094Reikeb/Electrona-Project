@@ -18,20 +18,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.MiningMachineContainer;
 import net.reikeb.electrona.init.BlockInit;
-import net.reikeb.electrona.misc.vm.EnergyFunction;
-import net.reikeb.maxilib.abs.AbstractBlockEntity;
 import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
-import net.reikeb.maxilib.inventory.ItemHandler;
+import net.reikeb.maxilib.intface.IEnergy;
 
 import java.util.Random;
 
 import static net.reikeb.electrona.init.BlockEntityInit.MINING_MACHINE_BLOCK_ENTITY;
 
-public class MiningMachineBlockEntity extends AbstractBlockEntity implements AbstractEnergyBlockEntity {
+public class MiningMachineBlockEntity extends AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<MiningMachineBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
-    public double electronicPower;
-    private int maxStorage;
     private int wait;
 
     public MiningMachineBlockEntity(BlockPos pos, BlockState state) {
@@ -58,7 +54,7 @@ public class MiningMachineBlockEntity extends AbstractBlockEntity implements Abs
         double z = blockPos.getZ();
         ItemStack item;
 
-        if ((level.hasNeighborSignal(blockPos)) && (this.electronicPower >= 50)) {
+        if ((level.hasNeighborSignal(blockPos)) && (this.getElectronicPower() >= 50)) {
             ny = 1;
             while ((BlockInit.MINING_PIPE.get() == (level.getBlockState(new BlockPos((int) x, (int) (y - (ny)), (int) z)))
                     .getBlock())) {
@@ -82,7 +78,7 @@ public class MiningMachineBlockEntity extends AbstractBlockEntity implements Abs
                             this.inventory.getStackInSlot(0).shrink(1);
                             this.inventory.getStackInSlot(0).setDamageValue(0);
                         }
-                        EnergyFunction.drainEnergy(this, 50);
+                        IEnergy.drainEnergy(this, 50);
                     }
                 } else {
                     if (level.getBlockState(_tempPos).getFluidState().isSource()) {
@@ -102,7 +98,7 @@ public class MiningMachineBlockEntity extends AbstractBlockEntity implements Abs
                                 this.inventory.setStackInSlot(slot, new ItemStack(Items.LAVA_BUCKET, 1));
                             }
                             level.setBlock(_tempPos, Blocks.AIR.defaultBlockState(), 3);
-                            EnergyFunction.drainEnergy(this, 50);
+                            IEnergy.drainEnergy(this, 50);
                         }
                     }
                 }
@@ -125,54 +121,15 @@ public class MiningMachineBlockEntity extends AbstractBlockEntity implements Abs
         level.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
     }
 
-    public ItemHandler getItemInventory() {
-        return this.inventory;
-    }
-
-    public int getElectronicPowerTimesHundred() {
-        return (int) (this.electronicPower * 100);
-    }
-
-    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
-        this.electronicPower = electronicPowerTimesHundred / 100.0;
-    }
-
-    public double getElectronicPower() {
-        return this.electronicPower;
-    }
-
-    public void setElectronicPower(double electronicPower) {
-        this.electronicPower = electronicPower;
-    }
-
-    public int getMaxStorage() {
-        return this.maxStorage;
-    }
-
-    public void setMaxStorage(int maxStorage) {
-        this.maxStorage = maxStorage;
-    }
-
-    public boolean getLogic() {
-        return false;
-    }
-
-    public void setLogic(boolean logic) {
-    }
-
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
-        electronicPower = compound.getDouble("ElectronicPower");
-        this.maxStorage = compound.getInt("MaxStorage");
         this.wait = compound.getInt("wait");
     }
 
     @Override
     public void saveAdditional(CompoundTag compound) {
         super.saveAdditional(compound);
-        compound.putDouble("ElectronicPower", electronicPower);
-        compound.putInt("MaxStorage", this.maxStorage);
         compound.putInt("wait", this.wait);
     }
 }

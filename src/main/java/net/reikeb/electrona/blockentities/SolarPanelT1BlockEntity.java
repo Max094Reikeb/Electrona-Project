@@ -11,6 +11,8 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
+import net.reikeb.maxilib.intface.EnergyInterface;
+import net.reikeb.maxilib.intface.IEnergy;
 import net.reikeb.maxilib.inventory.ItemHandler;
 
 import javax.annotation.Nullable;
@@ -18,7 +20,7 @@ import java.util.Objects;
 
 import static net.reikeb.electrona.init.BlockEntityInit.SOLAR_PANEL_T_1_BLOCK_ENTITY;
 
-public class SolarPanelT1BlockEntity extends BlockEntity implements AbstractEnergyBlockEntity {
+public class SolarPanelT1BlockEntity extends BlockEntity implements EnergyInterface {
 
     public static final BlockEntityTicker<SolarPanelT1BlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private double electronicPower;
@@ -37,18 +39,18 @@ public class SolarPanelT1BlockEntity extends BlockEntity implements AbstractEner
         if (level.canSeeSky(blockPos.above()) && level.isDay()) {
             if (this.electronicPower < 996) {
                 if ((level.getLevelData().isRaining() || level.getLevelData().isThundering())) {
-                    EnergyFunction.fillEnergy(this, 0.1);
+                    IEnergy.fillEnergy(this, 0.1);
                 } else {
-                    EnergyFunction.fillEnergy(this, 0.2);
+                    IEnergy.fillEnergy(this, 0.2);
                 }
             } else if (this.electronicPower >= 996 && this.electronicPower <= 999.95) {
-                EnergyFunction.fillEnergy(this, 0.05);
+                IEnergy.fillEnergy(this, 0.05);
             }
         } else {
             if (this.electronicPower > 0.2) {
-                EnergyFunction.drainEnergy(this, 0.2);
+                IEnergy.drainEnergy(this, 0.2);
             } else if (this.electronicPower <= 0.2 && this.electronicPower >= 0.05) {
-                EnergyFunction.drainEnergy(this, 0.05);
+                IEnergy.drainEnergy(this, 0.05);
             }
         }
 

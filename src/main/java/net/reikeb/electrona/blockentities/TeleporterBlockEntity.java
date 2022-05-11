@@ -13,17 +13,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.TeleporterContainer;
 import net.reikeb.electrona.init.ItemInit;
-import net.reikeb.maxilib.abs.AbstractBlockEntity;
 import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
-import net.reikeb.maxilib.inventory.ItemHandler;
 
 import static net.reikeb.electrona.init.BlockEntityInit.TELEPORTER_BLOCK_ENTITY;
 
-public class TeleporterBlockEntity extends AbstractBlockEntity implements AbstractEnergyBlockEntity {
+public class TeleporterBlockEntity extends AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<TeleporterBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
-    public double electronicPower;
-    private int maxStorage;
     private double teleportX;
     private double teleportY;
     private double teleportZ;
@@ -58,34 +54,6 @@ public class TeleporterBlockEntity extends AbstractBlockEntity implements Abstra
 
         this.setChanged();
         level.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
-    }
-
-    public ItemHandler getItemInventory() {
-        return this.inventory;
-    }
-
-    public int getElectronicPowerTimesHundred() {
-        return (int) (this.electronicPower * 100);
-    }
-
-    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
-        this.electronicPower = electronicPowerTimesHundred / 100.0;
-    }
-
-    public double getElectronicPower() {
-        return this.electronicPower;
-    }
-
-    public void setElectronicPower(double electronicPower) {
-        this.electronicPower = electronicPower;
-    }
-
-    public int getMaxStorage() {
-        return this.maxStorage;
-    }
-
-    public void setMaxStorage(int maxStorage) {
-        this.maxStorage = maxStorage;
     }
 
     public int getTeleportXTimesHundred() {
@@ -208,18 +176,9 @@ public class TeleporterBlockEntity extends AbstractBlockEntity implements Abstra
         this.isTeleporter = (isTeleporter == 1);
     }
 
-    public boolean getLogic() {
-        return false;
-    }
-
-    public void setLogic(boolean logic) {
-    }
-
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
-        this.electronicPower = compound.getDouble("ElectronicPower");
-        this.maxStorage = compound.getInt("MaxStorage");
         this.teleportX = compound.getDouble("teleportX");
         this.teleportY = compound.getDouble("teleportY");
         this.teleportZ = compound.getDouble("teleportZ");
@@ -229,8 +188,6 @@ public class TeleporterBlockEntity extends AbstractBlockEntity implements Abstra
     @Override
     public void saveAdditional(CompoundTag compound) {
         super.saveAdditional(compound);
-        compound.putDouble("ElectronicPower", this.electronicPower);
-        compound.putInt("MaxStorage", this.maxStorage);
         compound.putDouble("teleportX", this.teleportX);
         compound.putDouble("teleportY", this.teleportY);
         compound.putDouble("teleportZ", this.teleportZ);

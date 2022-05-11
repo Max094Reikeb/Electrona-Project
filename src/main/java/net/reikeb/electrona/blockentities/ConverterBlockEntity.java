@@ -18,15 +18,14 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.ConverterContainer;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
-import net.reikeb.maxilib.abs.AbstractBlockEntity;
 import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
-import net.reikeb.maxilib.inventory.ItemHandler;
+import net.reikeb.maxilib.intface.IEnergy;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static net.reikeb.electrona.init.BlockEntityInit.CONVERTER_BLOCK_ENTITY;
 
-public class ConverterBlockEntity extends AbstractBlockEntity implements AbstractEnergyBlockEntity {
+public class ConverterBlockEntity extends AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<ConverterBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private final EnergyStorage energyStorage = new EnergyStorage(10000, 40, 40, 0) {
@@ -50,8 +49,6 @@ public class ConverterBlockEntity extends AbstractBlockEntity implements Abstrac
             return retval;
         }
     };
-    public double electronicPower;
-    public int maxStorage;
     private boolean toVP;
     private boolean toOthers;
     private double vp;
@@ -79,14 +76,14 @@ public class ConverterBlockEntity extends AbstractBlockEntity implements Abstrac
             }
 
             if (this.toVP) {
-                if (this.electronicPower >= 1) {
+                if (this.getElectronicPower() >= 1) {
                     this.vp += 3;
-                    EnergyFunction.drainEnergy(this, 1);
+                    IEnergy.drainEnergy(this, 1);
                 }
             } else {
-                if (this.electronicPower >= 1) {
+                if (this.getElectronicPower() >= 1) {
                     this.getCapability(CapabilityEnergy.ENERGY, null).ifPresent(cap -> cap.receiveEnergy(3, false));
-                    EnergyFunction.drainEnergy(this, 1);
+                    IEnergy.drainEnergy(this, 1);
                 }
             }
             wait = 0;
@@ -97,34 +94,6 @@ public class ConverterBlockEntity extends AbstractBlockEntity implements Abstrac
 
         this.setChanged();
         level.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
-    }
-
-    public ItemHandler getItemInventory() {
-        return this.inventory;
-    }
-
-    public int getElectronicPowerTimesHundred() {
-        return (int) (this.electronicPower * 100);
-    }
-
-    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
-        this.electronicPower = electronicPowerTimesHundred / 100.0;
-    }
-
-    public double getElectronicPower() {
-        return this.electronicPower;
-    }
-
-    public void setElectronicPower(double electronicPower) {
-        this.electronicPower = electronicPower;
-    }
-
-    public int getMaxStorage() {
-        return this.maxStorage;
-    }
-
-    public void setMaxStorage(int maxStorage) {
-        this.maxStorage = maxStorage;
     }
 
     public int getForgeEnergy() {
@@ -172,18 +141,9 @@ public class ConverterBlockEntity extends AbstractBlockEntity implements Abstrac
         this.toOthers = toOthers == 1;
     }
 
-    public boolean getLogic() {
-        return false;
-    }
-
-    public void setLogic(boolean logic) {
-    }
-
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
-        this.electronicPower = compound.getDouble("ElectronicPower");
-        this.maxStorage = compound.getInt("MaxStorage");
         this.toVP = compound.getBoolean("toVP");
         this.toOthers = compound.getBoolean("toOthers");
         this.vp = compound.getDouble("vp");
@@ -196,8 +156,6 @@ public class ConverterBlockEntity extends AbstractBlockEntity implements Abstrac
     @Override
     public void saveAdditional(CompoundTag compound) {
         super.saveAdditional(compound);
-        compound.putDouble("ElectronicPower", this.electronicPower);
-        compound.putInt("MaxStorage", this.maxStorage);
         compound.putBoolean("toVP", this.toVP);
         compound.putBoolean("toOthers", this.toOthers);
         compound.putDouble("vp", this.vp);

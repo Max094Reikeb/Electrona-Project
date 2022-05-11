@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.misc.vm.CableFunction;
-import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
+import net.reikeb.maxilib.intface.EnergyInterface;
 import net.reikeb.maxilib.inventory.ItemHandler;
 
 import javax.annotation.Nullable;
@@ -18,7 +18,7 @@ import java.util.Objects;
 
 import static net.reikeb.electrona.init.BlockEntityInit.CABLE_BLOCK_ENTITY;
 
-public class CableBlockEntity extends BlockEntity implements AbstractEnergyBlockEntity {
+public class CableBlockEntity extends BlockEntity implements EnergyInterface {
 
     public static final BlockEntityTicker<CableBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private double electronicPower;

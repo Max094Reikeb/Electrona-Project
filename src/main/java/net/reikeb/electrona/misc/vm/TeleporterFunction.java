@@ -30,6 +30,7 @@ import net.reikeb.electrona.events.local.TeleporterUseEvent;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.misc.GameEvents;
+import net.reikeb.maxilib.intface.IEnergy;
 
 import java.util.Collections;
 
@@ -92,7 +93,7 @@ public class TeleporterFunction {
                             teleport(_newLevel, pos, teleportPos, entity);
                             MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(level, _newLevel, pos, teleportPos, entity));
                             if (!level.isClientSide()) {
-                                EnergyFunction.drainEnergy(teleporterBlockEntity, 1000);
+                                IEnergy.drainEnergy(teleporterBlockEntity, 1000);
                                 if (autoDeletion) {
                                     teleporterBlockEntity.setTeleportX(0);
                                     teleporterBlockEntity.setTeleportY(0);
@@ -113,7 +114,7 @@ public class TeleporterFunction {
                     teleport(level, pos, teleportPos, entity);
                     MinecraftForge.EVENT_BUS.post(new TeleporterUseEvent.Post(level, level, pos, teleportPos, entity));
                     if (!level.isClientSide()) {
-                        EnergyFunction.drainEnergy(teleporterBlockEntity, 1000);
+                        IEnergy.drainEnergy(teleporterBlockEntity, 1000);
                         if (autoDeletion) {
                             teleporterBlockEntity.setTeleportX(0);
                             teleporterBlockEntity.setTeleportY(0);

@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
-import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
+import net.reikeb.maxilib.intface.EnergyInterface;
 import net.reikeb.maxilib.inventory.ItemHandler;
 
 import javax.annotation.Nullable;
@@ -18,7 +18,7 @@ import java.util.Objects;
 
 import static net.reikeb.electrona.init.BlockEntityInit.ENERGETIC_LIGHTNING_ROD_BLOCK_ENTITY;
 
-public class EnergeticLightningRodBlockEntity extends BlockEntity implements AbstractEnergyBlockEntity {
+public class EnergeticLightningRodBlockEntity extends BlockEntity implements EnergyInterface {
 
     public static final BlockEntityTicker<EnergeticLightningRodBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private double electronicPower;

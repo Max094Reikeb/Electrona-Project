@@ -13,7 +13,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.reikeb.electrona.blocks.WaterTurbine;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
-import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
+import net.reikeb.maxilib.intface.EnergyInterface;
+import net.reikeb.maxilib.intface.IEnergy;
 import net.reikeb.maxilib.inventory.ItemHandler;
 
 import javax.annotation.Nullable;
@@ -21,7 +22,7 @@ import java.util.Objects;
 
 import static net.reikeb.electrona.init.BlockEntityInit.WATER_TURBINE_BLOCK_ENTITY;
 
-public class WaterTurbineBlockEntity extends BlockEntity implements AbstractEnergyBlockEntity {
+public class WaterTurbineBlockEntity extends BlockEntity implements EnergyInterface {
 
     public static final BlockEntityTicker<WaterTurbineBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
     private double electronicPower;
@@ -54,15 +55,15 @@ public class WaterTurbineBlockEntity extends BlockEntity implements AbstractEner
         if ((Material.WATER == level.getBlockState(backPos).getMaterial())
                 && (Material.WATER == level.getBlockState(frontPos).getMaterial())) {
             if ((this.electronicPower < 996)) {
-                EnergyFunction.fillEnergy(this, 0.2);
+                IEnergy.fillEnergy(this, 0.2);
             } else if (((this.electronicPower >= 996) && (this.electronicPower <= 999.95))) {
-                EnergyFunction.fillEnergy(this, 0.05);
+                IEnergy.fillEnergy(this, 0.05);
             }
         } else {
             if ((this.electronicPower > 0.2)) {
-                EnergyFunction.drainEnergy(this, 0.2);
+                IEnergy.drainEnergy(this, 0.2);
             } else if (((this.electronicPower <= 0.2) && (this.electronicPower >= 0.05))) {
-                EnergyFunction.drainEnergy(this, 0.05);
+                IEnergy.drainEnergy(this, 0.05);
             }
         }
 

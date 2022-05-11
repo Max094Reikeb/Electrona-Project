@@ -17,21 +17,17 @@ import net.reikeb.electrona.blocks.Compressor;
 import net.reikeb.electrona.containers.CompressorContainer;
 import net.reikeb.electrona.events.local.CompressionEvent;
 import net.reikeb.electrona.init.SoundsInit;
-import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.electrona.recipes.Recipes;
-import net.reikeb.maxilib.abs.AbstractBlockEntity;
 import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
-import net.reikeb.maxilib.inventory.ItemHandler;
+import net.reikeb.maxilib.intface.IEnergy;
 
 import static net.reikeb.electrona.init.BlockEntityInit.COMPRESSOR_BLOCK_ENTITY;
 
-public class CompressorBlockEntity extends AbstractBlockEntity implements AbstractEnergyBlockEntity {
+public class CompressorBlockEntity extends AbstractEnergyBlockEntity {
 
     public static final BlockEntityTicker<CompressorBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
-    public int compressingTime;
-    public int currentCompressingTime;
-    public double electronicPower;
-    public int maxStorage;
+    private int compressingTime;
+    private int currentCompressingTime;
     private int energyRequired;
     private boolean canCompress;
 
@@ -52,7 +48,7 @@ public class CompressorBlockEntity extends AbstractBlockEntity implements Abstra
 
         if ((level == null) || (level.isClientSide)) return;
 
-        if ((this.electronicPower > 0) && (Recipes.getRecipe(this, stackInSlot0, stackInSlot1) != null)) {
+        if ((this.getElectronicPower() > 0) && (Recipes.getRecipe(this, stackInSlot0, stackInSlot1) != null)) {
             if (this.canCompress) {
                 this.energyRequired = getEnergyRequired(stackInSlot0, stackInSlot1);
                 this.compressingTime = getCompressingTime(stackInSlot0, stackInSlot1);
@@ -61,7 +57,7 @@ public class CompressorBlockEntity extends AbstractBlockEntity implements Abstra
 
                 if (this.currentCompressingTime < (this.compressingTime * 20)) {
                     this.currentCompressingTime += 1;
-                    EnergyFunction.drainEnergy(this, energyPerSecond * 0.05);
+                    IEnergy.drainEnergy(this, energyPerSecond * 0.05);
 
                 } else {
                     if (!MinecraftForge.EVENT_BUS.post(new CompressionEvent(level, blockPos, stackInSlot0, stackInSlot1, output.copy(), this.compressingTime, this.energyRequired))) {
@@ -86,34 +82,6 @@ public class CompressorBlockEntity extends AbstractBlockEntity implements Abstra
         level.sendBlockUpdated(blockPos, state, state, 3);
     }
 
-    public ItemHandler getItemInventory() {
-        return this.inventory;
-    }
-
-    public int getElectronicPowerTimesHundred() {
-        return (int) (this.electronicPower * 100);
-    }
-
-    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
-        this.electronicPower = electronicPowerTimesHundred / 100.0;
-    }
-
-    public double getElectronicPower() {
-        return this.electronicPower;
-    }
-
-    public void setElectronicPower(double electronicPower) {
-        this.electronicPower = electronicPower;
-    }
-
-    public int getMaxStorage() {
-        return this.maxStorage;
-    }
-
-    public void setMaxStorage(int maxStorage) {
-        this.maxStorage = maxStorage;
-    }
-
     public int getCompressingTime() {
         return this.compressingTime;
     }
@@ -134,13 +102,6 @@ public class CompressorBlockEntity extends AbstractBlockEntity implements Abstra
         this.canCompress = canCompress;
     }
 
-    public boolean getLogic() {
-        return false;
-    }
-
-    public void setLogic(boolean logic) {
-    }
-
     public int getCompressingTime(ItemStack stack, ItemStack stack1) {
         if (ItemStack.EMPTY == stack || ItemStack.EMPTY == stack1) return 0;
         return Recipes.getRecipe(this, stack, stack1).getCompressingTime();
@@ -154,8 +115,6 @@ public class CompressorBlockEntity extends AbstractBlockEntity implements Abstra
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
-        this.electronicPower = compound.getDouble("ElectronicPower");
-        this.maxStorage = compound.getInt("MaxStorage");
         this.compressingTime = compound.getInt("CompressingTime");
         this.currentCompressingTime = compound.getInt("CurrentCompressingTime");
         this.energyRequired = compound.getInt("EnergyRequired");
@@ -164,8 +123,6 @@ public class CompressorBlockEntity extends AbstractBlockEntity implements Abstra
     @Override
     public void saveAdditional(CompoundTag compound) {
         super.saveAdditional(compound);
-        compound.putDouble("ElectronicPower", this.electronicPower);
-        compound.putInt("MaxStorage", this.maxStorage);
         compound.putInt("CompressingTime", this.compressingTime);
         compound.putInt("CurrentCompressingTime", this.currentCompressingTime);
         compound.putInt("EnergyRequired", this.energyRequired);

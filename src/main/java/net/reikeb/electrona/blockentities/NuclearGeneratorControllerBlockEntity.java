@@ -14,6 +14,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.blocks.NuclearGeneratorController;
@@ -22,22 +26,19 @@ import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
-import net.reikeb.electrona.misc.vm.FluidFunction;
 import net.reikeb.electrona.misc.vm.NuclearFunction;
-import net.reikeb.maxilib.abs.AbstractBlockEntity;
 import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
-import net.reikeb.maxilib.inventory.ItemHandler;
+import net.reikeb.maxilib.intface.FluidInterface;
+import net.reikeb.maxilib.intface.IFluid;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static net.reikeb.electrona.init.BlockEntityInit.NUCLEAR_GENERATOR_CONTROLLER_BLOCK_ENTITY;
 
-public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity implements AbstractEnergyBlockEntity {
+public class NuclearGeneratorControllerBlockEntity extends AbstractEnergyBlockEntity implements FluidInterface {
 
     public static final BlockEntityTicker<NuclearGeneratorControllerBlockEntity> TICKER = (level, pos, state, be) -> be.tick(level, pos, state, be);
-    public double electronicPower;
-    private int maxStorage;
     private int temperature;
     private boolean powered;
     private boolean ubIn;
@@ -80,15 +81,15 @@ public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity i
                 stackInSlot1.set(h.getStackInSlot(0));
             });
 
-            AtomicInteger waterLevel = FluidFunction.getFluidAmount(coolerBlockEntity);
-            AtomicInteger tankCapacity = FluidFunction.getTankCapacity(coolerBlockEntity);
+            int waterLevel = IFluid.getFluidAmount(coolerBlockEntity);
+            int tankCapacity = IFluid.getTankCapacity(coolerBlockEntity);
 
             // Input slot - Handling slots
             if ((stackInSlot0.getItem() == Items.WATER_BUCKET)
-                    && (waterLevel.get() <= (tankCapacity.get() - 1000)) && (blockUnder == BlockInit.COOLER.get())) {
+                    && (waterLevel <= (tankCapacity - 1000)) && (blockUnder == BlockInit.COOLER.get())) {
                 this.inventory.decrStackSize(0, 1);
                 this.inventory.insertItem(0, new ItemStack(Items.BUCKET, 1), false);
-                FluidFunction.fillWater(coolerBlockEntity, 1000);
+                IFluid.fillWater(coolerBlockEntity, 1000);
             }
 
             if (blockUnder == BlockInit.COOLER.get()) {
@@ -122,48 +123,41 @@ public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity i
         level.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
     }
 
-    public ItemHandler getItemInventory() {
-        return this.inventory;
-    }
-
-    public int getElectronicPowerTimesHundred() {
-        return (int) (this.electronicPower * 100);
-    }
-
-    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
-        this.electronicPower = electronicPowerTimesHundred / 100.0;
-    }
-
-    public double getElectronicPower() {
-        return this.electronicPower;
-    }
-
-    public void setElectronicPower(double electronicPower) {
-        this.electronicPower = electronicPower;
-    }
-
-    public int getMaxStorage() {
-        return this.maxStorage;
-    }
-
-    public void setMaxStorage(int maxStorage) {
-        this.maxStorage = maxStorage;
-    }
-
     public int getUnderWater() {
         BlockEntity underBlockEntity = this.getLevel().getBlockEntity(this.getBlockPos().below());
         if (underBlockEntity instanceof CoolerBlockEntity coolerBlockEntity) {
-            return FluidFunction.getFluidAmount(coolerBlockEntity).get();
+            return IFluid.getFluidAmount(coolerBlockEntity);
         }
         return 0;
     }
 
     public void setUnderWater(int amount) {
         BlockEntity underBlockEntity = this.getLevel().getBlockEntity(this.getBlockPos().below());
-        if (!(underBlockEntity instanceof CoolerBlockEntity)) return;
-        AtomicInteger waterLevel = FluidFunction.getFluidAmount(underBlockEntity);
-        FluidFunction.drainWater(underBlockEntity, waterLevel.get());
-        FluidFunction.fillWater(underBlockEntity, amount);
+        if (!(underBlockEntity instanceof CoolerBlockEntity coolerBlockEntity)) return;
+        int waterLevel = IFluid.getFluidAmount(coolerBlockEntity);
+        IFluid.drainWater(coolerBlockEntity, waterLevel);
+        IFluid.fillWater(coolerBlockEntity, amount);
+    }
+
+    public int getWaterLevel() {
+        AtomicInteger amount = new AtomicInteger();
+        this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+                .ifPresent(cap -> amount.set(cap.getFluidInTank(1).getAmount()));
+        return amount.get();
+    }
+
+    public void setWaterLevel(int amount) {
+        this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+                .ifPresent(cap -> cap.drain(getWaterLevel(), IFluidHandler.FluidAction.EXECUTE));
+        this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+                .ifPresent(cap -> cap.fill(new FluidStack(Fluids.WATER, amount), IFluidHandler.FluidAction.EXECUTE));
+    }
+
+    public int getMaxCapacity() {
+        AtomicInteger capacity = new AtomicInteger();
+        this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+                .ifPresent(cap -> capacity.set(cap.getTankCapacity(1)));
+        return capacity.get();
     }
 
     public int getTemperature() {
@@ -240,8 +234,6 @@ public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity i
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
-        this.electronicPower = compound.getDouble("ElectronicPower");
-        this.maxStorage = compound.getInt("MaxStorage");
         this.temperature = compound.getInt("temperature");
         this.powered = compound.getBoolean("powered");
         this.ubIn = compound.getBoolean("UBIn");
@@ -251,8 +243,6 @@ public class NuclearGeneratorControllerBlockEntity extends AbstractBlockEntity i
     @Override
     public void saveAdditional(CompoundTag compound) {
         super.saveAdditional(compound);
-        compound.putDouble("ElectronicPower", this.electronicPower);
-        compound.putInt("MaxStorage", this.maxStorage);
         compound.putInt("temperature", this.temperature);
         compound.putBoolean("powered", this.powered);
         compound.putBoolean("UBIn", this.ubIn);

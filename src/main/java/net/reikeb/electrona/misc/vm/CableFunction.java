@@ -7,11 +7,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.reikeb.electrona.blockentities.WaterCableBlockEntity;
 import net.reikeb.electrona.misc.Tags;
-import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
-
-import java.util.concurrent.atomic.AtomicInteger;
+import net.reikeb.maxilib.intface.EnergyInterface;
+import net.reikeb.maxilib.intface.FluidInterface;
+import net.reikeb.maxilib.intface.IEnergy;
+import net.reikeb.maxilib.intface.IFluid;
 
 public class CableFunction {
 
@@ -25,7 +25,7 @@ public class CableFunction {
      * @param transferPerSecond The amount of energy transfered each second
      * @param isBlue            Defines if the Cable is a normal Cable or a Blue Cable
      */
-    public static <T extends AbstractEnergyBlockEntity> void cableTransferEnergy(Level level, BlockPos pos, Direction[] directions, T cableBlockEntity, int transferPerSecond, Boolean isBlue) {
+    public static <T extends EnergyInterface> void cableTransferEnergy(Level level, BlockPos pos, Direction[] directions, T cableBlockEntity, int transferPerSecond, Boolean isBlue) {
         double transferPerTick = transferPerSecond * 0.05;
         double cablePower = cableBlockEntity.getElectronicPower();
 
@@ -38,7 +38,7 @@ public class CableFunction {
                 BlockState offsetBlockState = level.getBlockState(pos.relative(dir));
                 if (blockEntity == null) continue;
                 if (!(offsetBlockState.is(machineTag) || offsetBlockState.is(cableTag))) continue;
-                if (!(blockEntity instanceof AbstractEnergyBlockEntity energyBlockEntity)) continue;
+                if (!(blockEntity instanceof EnergyInterface energyBlockEntity)) continue;
 
                 double machinePower = energyBlockEntity.getElectronicPower();
                 int machineMax = energyBlockEntity.getMaxStorage();
@@ -46,15 +46,15 @@ public class CableFunction {
 
                 if (offsetBlockState.is(machineTag)) {
                     if (machinePower < (machineMax - cablePower)) {
-                        EnergyFunction.fillEnergy(energyBlockEntity, transferPerTick);
-                        EnergyFunction.drainEnergy(cableBlockEntity, transferPerTick);
+                        IEnergy.fillEnergy(energyBlockEntity, transferPerTick);
+                        IEnergy.drainEnergy(cableBlockEntity, transferPerTick);
                     } else {
-                        EnergyFunction.setEnergy(energyBlockEntity, machineMax);
+                        IEnergy.setEnergy(energyBlockEntity, machineMax);
                     }
                 } else if (offsetBlockState.is(cableTag)) {
                     if ((!machineLogic) && ((transferPerTick + machinePower) < machineMax)) {
-                        EnergyFunction.fillEnergy(energyBlockEntity, transferPerTick);
-                        EnergyFunction.drainEnergy(cableBlockEntity, transferPerTick);
+                        IEnergy.fillEnergy(energyBlockEntity, transferPerTick);
+                        IEnergy.drainEnergy(cableBlockEntity, transferPerTick);
                         cableBlockEntity.setLogic(!(cableBlockEntity.getElectronicPower() > 0));
                         energyBlockEntity.setLogic(false);
                     }
@@ -73,37 +73,37 @@ public class CableFunction {
      * @param pos                   The blockpos of the Cable
      * @param directions            The directions of the Cable
      * @param waterCableBlockEntity The Block Entity of the Cable
-     * @param cableFLuid            The amount of fluid in the Cable
      * @param transferPerSecond     The amount of fluid transfered each second by the Cable
      */
-    public static void cableTransferFluid(Level level, BlockPos pos, Direction[] directions, WaterCableBlockEntity waterCableBlockEntity, double cableFLuid, int transferPerSecond) {
+    public static <T extends FluidInterface> void cableTransferFluid(Level level, BlockPos pos, Direction[] directions, T waterCableBlockEntity, int transferPerSecond) {
         double transferPerTick = transferPerSecond * 0.05;
+        int cableFluid = waterCableBlockEntity.getWaterLevel();
 
         for (Direction dir : directions) {
-            if (cableFLuid > 0) {
+            if (cableFluid > 0) {
                 BlockEntity blockEntity = level.getBlockEntity(pos.relative(dir));
                 BlockState offsetBlockState = level.getBlockState(pos.relative(dir));
                 if (blockEntity == null) continue;
                 if (!(offsetBlockState.is(Tags.WATER_TANK) || offsetBlockState.is(Tags.WATER_CABLE))) continue;
+                if (!(blockEntity instanceof FluidInterface fluidBlockEntity)) continue;
 
-                AtomicInteger machineFluid = FluidFunction.getFluidAmount(blockEntity);
-                AtomicInteger machineMax = FluidFunction.getTankCapacity(blockEntity);
-                boolean machineLogic = (blockEntity instanceof WaterCableBlockEntity waterCableBlock) && waterCableBlock.getLogic();
+                int machineFluid = IFluid.getFluidAmount(fluidBlockEntity);
+                int machineMax = IFluid.getTankCapacity(fluidBlockEntity);
+                boolean machineLogic = fluidBlockEntity.getLogic();
 
                 if (offsetBlockState.is(Tags.WATER_TANK)) {
-                    if (machineFluid.get() < (machineMax.get() - cableFLuid)) {
-                        FluidFunction.fillWater(blockEntity, (int) transferPerTick);
-                        FluidFunction.drainWater(waterCableBlockEntity, (int) transferPerTick);
+                    if (machineFluid < (machineMax - cableFluid)) {
+                        IFluid.fillWater(fluidBlockEntity, (int) transferPerTick);
+                        IFluid.drainWater(waterCableBlockEntity, (int) transferPerTick);
                     } else {
-                        FluidFunction.fillWater(blockEntity, (machineMax.get() - machineFluid.get()));
+                        IFluid.fillWater(fluidBlockEntity, (machineMax - machineFluid));
                     }
                 } else if (offsetBlockState.is(Tags.WATER_CABLE)) {
-                    if ((!machineLogic) && ((transferPerTick + machineFluid.get()) < machineMax.get())) {
-                        FluidFunction.fillWater(blockEntity, (int) transferPerTick);
-                        FluidFunction.drainWater(waterCableBlockEntity, (int) transferPerTick);
-                        waterCableBlockEntity.setLogic(!(FluidFunction.getFluidAmount(waterCableBlockEntity).get() > 0));
-                        if (blockEntity instanceof WaterCableBlockEntity waterCableBlock)
-                            waterCableBlock.setLogic(false);
+                    if ((!machineLogic) && ((transferPerTick + machineFluid) < machineMax)) {
+                        IFluid.fillWater(fluidBlockEntity, (int) transferPerTick);
+                        IFluid.drainWater(waterCableBlockEntity, (int) transferPerTick);
+                        waterCableBlockEntity.setLogic(!(waterCableBlockEntity.getWaterLevel() > 0));
+                        fluidBlockEntity.setLogic(false);
                     }
                 }
             } else {
