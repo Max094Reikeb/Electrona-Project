@@ -18,5 +18,4 @@ public class Compressor extends HorizontalFacingBlockWithEntity {
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return null;
     }
-
 }
