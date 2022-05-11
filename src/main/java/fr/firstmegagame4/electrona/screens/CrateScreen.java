@@ -1,10 +1,8 @@
 package fr.firstmegagame4.electrona.screens;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-
 import fr.firstmegagame4.electrona.Utils;
 import fr.firstmegagame4.electrona.screenhandlers.CrateScreenHandler;
-
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -14,7 +12,7 @@ import net.minecraft.util.Identifier;
 
 public class CrateScreen extends HandledScreen<CrateScreenHandler> {
 
-    public static final Identifier TEXTURE = Utils.electronaIdentifier("textures/guis/crate_gui.png");
+    public static final Identifier TEXTURE = Utils.ELIdentifier("textures/guis/crate_gui.png");
 
     public CrateScreen(CrateScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);

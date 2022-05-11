@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
-
 import org.jetbrains.annotations.Nullable;
 
 public class CrateScreenHandler extends ScreenHandler {

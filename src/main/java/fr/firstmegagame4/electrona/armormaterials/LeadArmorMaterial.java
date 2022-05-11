@@ -1,7 +1,6 @@
 package fr.firstmegagame4.electrona.armormaterials;
 
 import fr.firstmegagame4.electrona.Items;
-
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.recipe.Ingredient;
@@ -34,7 +33,7 @@ public class LeadArmorMaterial implements ArmorMaterial {
 
     @Override
     public Ingredient getRepairIngredient() {
-        return Ingredient.ofItems(Items.LEAD_INGOT);
+        return Ingredient.ofItems(Items.LEAD_INGOT.getIfCreated());
     }
 
     @Override

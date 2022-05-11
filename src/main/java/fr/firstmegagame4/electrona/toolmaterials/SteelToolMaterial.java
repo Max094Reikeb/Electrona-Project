@@ -1,7 +1,6 @@
 package fr.firstmegagame4.electrona.toolmaterials;
 
 import fr.firstmegagame4.electrona.Items;
-
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
 
@@ -36,7 +35,7 @@ public class SteelToolMaterial implements ToolMaterial {
 
     @Override
     public Ingredient getRepairIngredient() {
-        return Ingredient.ofItems(Items.STEEL_INGOT);
+        return Ingredient.ofItems(Items.STEEL_INGOT.getIfCreated());
     }
 
 }

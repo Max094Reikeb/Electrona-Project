@@ -5,20 +5,23 @@ import fr.firstmegagame4.electrona.items.CustomAxeItem;
 import fr.firstmegagame4.electrona.items.CustomHoeItem;
 import fr.firstmegagame4.electrona.items.CustomPickaxeItem;
 import fr.firstmegagame4.electrona.toolmaterials.SteelToolMaterial;
-
+import fr.firstmegagame4.mega_lib.lib.initialization.ItemsInitializer;
+import fr.firstmegagame4.mega_lib.lib.item.ConditionalCustomItem;
+import fr.firstmegagame4.mega_lib.lib.item.CustomItem;
+import fr.firstmegagame4.mega_lib.lib.utils.RegistrationUtils;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 
-public class Items {
+public class Items implements ItemsInitializer {
 
-    public static final Item RAW_TIN = new Item(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
-    public static final Item TIN_INGOT = new Item(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
-    public static final Item RAW_LEAD = new Item(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
-    public static final Item LEAD_INGOT = new Item(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
-    public static final Item STEEL_INGOT = new Item(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
-    public static final Item GRAVITONIUM = new Item(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
+    public static final ConditionalCustomItem RAW_TIN = new ConditionalCustomItem(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
+    public static final ConditionalCustomItem TIN_INGOT = new ConditionalCustomItem(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
+    public static final ConditionalCustomItem RAW_LEAD = new ConditionalCustomItem(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
+    public static final ConditionalCustomItem LEAD_INGOT = new ConditionalCustomItem(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
+    public static final ConditionalCustomItem STEEL_INGOT = new ConditionalCustomItem(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
+    public static final CustomItem GRAVITONIUM = new CustomItem(new FabricItemSettings().group(Tabs.ELECTRONA_ITEMS));
 
     public static final ToolItem STEEL_SWORD = new SwordItem(
             SteelToolMaterial.INSTANCE, 3, -2.4F, new FabricItemSettings().group(Tabs.ELECTRONA_TOOLS)
@@ -40,5 +43,28 @@ public class Items {
     public static final Item LEAD_CHESTPLATE = new ArmorItem(LeadArmorMaterial.INSTANCE, EquipmentSlot.CHEST, new FabricItemSettings().group(Tabs.ELECTRONA_TOOLS));
     public static final Item LEAD_LEGGINGS = new ArmorItem(LeadArmorMaterial.INSTANCE, EquipmentSlot.LEGS, new FabricItemSettings().group(Tabs.ELECTRONA_TOOLS));
     public static final Item LEAD_BOOTS = new ArmorItem(LeadArmorMaterial.INSTANCE, EquipmentSlot.FEET, new FabricItemSettings().group(Tabs.ELECTRONA_TOOLS));
+
+    public void register() {
+        if (!FabricLoader.getInstance().isModLoaded("techreborn")) {
+            RAW_TIN.create().register(Utils.ELIdentifier("raw_tin"));
+            TIN_INGOT.create().register(Utils.ELIdentifier("tin_ingot"));
+            RAW_LEAD.create().register(Utils.ELIdentifier("raw_lead"));
+            LEAD_INGOT.create().register(Utils.ELIdentifier("lead_ingot"));
+            STEEL_INGOT.create().register(Utils.ELIdentifier("steel_ingot"));
+        }
+
+        GRAVITONIUM.register(Utils.ELIdentifier("gravitonium"));
+
+        RegistrationUtils.registerItem(Utils.ELIdentifier("steel_sword"), Items.STEEL_SWORD);
+        RegistrationUtils.registerItem(Utils.ELIdentifier("steel_pickaxe"), Items.STEEL_PICKAXE);
+        RegistrationUtils.registerItem(Utils.ELIdentifier("steel_axe"), Items.STEEL_AXE);
+        RegistrationUtils.registerItem(Utils.ELIdentifier("steel_shovel"), Items.STEEL_SHOVEL);
+        RegistrationUtils.registerItem(Utils.ELIdentifier("steel_hoe"), Items.STEEL_HOE);
+
+        RegistrationUtils.registerItem(Utils.ELIdentifier("lead_helmet"), Items.LEAD_HELMET);
+        RegistrationUtils.registerItem(Utils.ELIdentifier("lead_chestplate"), Items.LEAD_CHESTPLATE);
+        RegistrationUtils.registerItem(Utils.ELIdentifier("lead_leggings"), Items.LEAD_LEGGINGS);
+        RegistrationUtils.registerItem(Utils.ELIdentifier("lead_boots"), Items.LEAD_BOOTS);
+    }
 
 }
