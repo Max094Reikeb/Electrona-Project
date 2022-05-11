@@ -69,7 +69,7 @@ public class ConverterBlockEntity extends AbstractBlockEntity implements Abstrac
     public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         this.setMaxStorage(10000);
 
-        if (world == null) return;
+        if (level == null) return;
 
         wait += 1;
         if (wait >= 15) {
@@ -96,7 +96,7 @@ public class ConverterBlockEntity extends AbstractBlockEntity implements Abstrac
         EnergyFunction.transferEnergyWithItemSlot(this, false, 0, 4);
 
         this.setChanged();
-        world.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
+        level.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);
     }
 
     public ItemHandler getItemInventory() {
