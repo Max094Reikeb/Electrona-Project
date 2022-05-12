@@ -1,4 +1,4 @@
-package net.reikeb.electrona.misc.vm;
+package net.reikeb.electrona.misc;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;

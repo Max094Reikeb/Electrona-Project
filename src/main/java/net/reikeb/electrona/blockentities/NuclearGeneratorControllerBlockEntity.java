@@ -1,7 +1,6 @@
 package net.reikeb.electrona.blockentities;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
@@ -117,7 +116,7 @@ public class NuclearGeneratorControllerBlockEntity extends AbstractEnergyBlockEn
         }
 
         // Transfer energy
-        EnergyFunction.generatorTransferEnergy(level, blockPos, Direction.values(), this, 10, true);
+        EnergyFunction.generatorTransferEnergy(level, blockPos, this, 10, true);
 
         this.setChanged();
         level.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);

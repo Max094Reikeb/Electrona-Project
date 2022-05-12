@@ -64,7 +64,7 @@ public class CreativeGeneratorBlockEntity extends BlockEntity implements EnergyI
                 cap.receiveEnergy(999999999, false));
 
         // We pass energy to blocks around (this part is common to all generators)
-        EnergyFunction.generatorTransferEnergy(level, blockPos, Direction.values(), this, 20, true);
+        EnergyFunction.generatorTransferEnergy(level, blockPos, this, 20, true);
     }
 
     public ItemHandler getItemInventory() {

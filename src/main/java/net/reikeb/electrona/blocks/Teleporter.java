@@ -33,7 +33,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 import net.reikeb.electrona.blockentities.TeleporterBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
-import net.reikeb.electrona.misc.vm.CustomShapes;
+import net.reikeb.electrona.misc.CustomShapes;
 import net.reikeb.electrona.misc.vm.TeleporterFunction;
 import net.reikeb.maxilib.abs.AbstractWaterLoggableBlock;
 

@@ -36,8 +36,8 @@ import net.reikeb.electrona.blockentities.NuclearGeneratorControllerBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.misc.BlockStateProperties;
+import net.reikeb.electrona.misc.CustomShapes;
 import net.reikeb.electrona.misc.Keys;
-import net.reikeb.electrona.misc.vm.CustomShapes;
 import net.reikeb.maxilib.utils.Utils;
 
 import javax.annotation.Nullable;

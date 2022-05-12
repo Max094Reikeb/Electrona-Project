@@ -1,7 +1,6 @@
 package net.reikeb.electrona.blockentities;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -10,7 +9,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
-import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
 import net.reikeb.maxilib.intface.EnergyInterface;
 import net.reikeb.maxilib.intface.IEnergy;
 import net.reikeb.maxilib.inventory.ItemHandler;
@@ -55,7 +53,7 @@ public class SolarPanelT1BlockEntity extends BlockEntity implements EnergyInterf
         }
 
         // We pass energy to blocks around (this part is common to all generators)
-        EnergyFunction.generatorTransferEnergy(level, blockPos, Direction.values(), this, 4, true);
+        EnergyFunction.generatorTransferEnergy(level, blockPos, this, 4, true);
     }
 
     public ItemHandler getItemInventory() {

@@ -1,7 +1,6 @@
 package net.reikeb.electrona.blockentities;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -67,7 +66,7 @@ public class HeatGeneratorBlockEntity extends BlockEntity implements EnergyInter
         }
 
         // We pass energy to blocks around (this part is common to all generators)
-        EnergyFunction.generatorTransferEnergy(level, blockPos, Direction.values(), this, 3, true);
+        EnergyFunction.generatorTransferEnergy(level, blockPos, this, 3, true);
 
         this.setChanged();
     }

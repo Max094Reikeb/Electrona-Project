@@ -1,7 +1,6 @@
 package net.reikeb.electrona.blockentities;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -33,7 +32,7 @@ public class BlueCableBlockEntity extends BlockEntity implements EnergyInterface
         this.setMaxStorage(36);
 
         // We pass energy to blocks around (this part is common to all cables)
-        CableFunction.cableTransferEnergy(level, blockPos, Direction.values(), this, 6, true);
+        CableFunction.cableTransferEnergy(level, blockPos, this, 6, true);
 
         t.setChanged();
     }

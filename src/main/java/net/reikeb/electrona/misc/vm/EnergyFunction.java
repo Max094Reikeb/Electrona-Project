@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.misc.Tags;
-import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
 import net.reikeb.maxilib.intface.EnergyInterface;
 import net.reikeb.maxilib.intface.IEnergy;
 
@@ -21,19 +20,18 @@ public class EnergyFunction {
      *
      * @param level                The level of the blocks
      * @param pos                  The blockpos of the Generator/Machine
-     * @param directions           The directions of the Generator/Machine
      * @param generatorBlockEntity The BlockEntity of the Generator/Machine
      * @param transferPerSecond    THe amount of energy transfered each second
      * @param isGenerator          Defines if the method is used by a Generator or a Machine
      */
-    public static <T extends EnergyInterface> void generatorTransferEnergy(Level level, BlockPos pos, Direction[] directions, T generatorBlockEntity, int transferPerSecond, Boolean isGenerator) {
+    public static <T extends EnergyInterface> void generatorTransferEnergy(Level level, BlockPos pos, T generatorBlockEntity, int transferPerSecond, Boolean isGenerator) {
         double transferPerTick = transferPerSecond * 0.05;
         double generatorPower = IEnergy.getEnergy(generatorBlockEntity);
 
         TagKey<Block> machineTag = isGenerator ? Tags.MACHINES : Tags.BLUE_MACHINES;
         TagKey<Block> cableTag = isGenerator ? Tags.CABLE : Tags.BLUE_CABLE;
 
-        for (Direction dir : directions) {
+        for (Direction dir : Direction.values()) {
             if (generatorPower <= 0) return; // we have no more power
 
             BlockEntity blockEntity = level.getBlockEntity(pos.relative(dir));

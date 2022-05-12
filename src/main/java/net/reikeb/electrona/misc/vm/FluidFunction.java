@@ -14,17 +14,16 @@ public class FluidFunction {
     /**
      * This method is used by fluid generators to transfer fluids to Machines.
      *
-     * @param level             The level of the blocks
-     * @param pos               The blockpos of the generator
-     * @param directions        The directions of the generator
-     * @param generatorBE       The BlockEntity of the generator
-     * @param transferPerSecond The amount of fluid transfered per second
+     * @param level                The level of the blocks
+     * @param pos                  The blockpos of the generator
+     * @param generatorBlockEntity The BlockEntity of the generator
+     * @param transferPerSecond    The amount of fluid transfered per second
      */
-    public static <T extends FluidInterface> void generatorTransferFluid(Level level, BlockPos pos, Direction[] directions, T generatorBE, int transferPerSecond) {
+    public static <T extends FluidInterface> void generatorTransferFluid(Level level, BlockPos pos, T generatorBlockEntity, int transferPerSecond) {
         double transferPerTick = transferPerSecond * 0.05;
-        int generatorLevel = generatorBE.getWaterLevel();
+        int generatorLevel = generatorBlockEntity.getWaterLevel();
 
-        for (Direction dir : directions) {
+        for (Direction dir : Direction.values()) {
             if (generatorLevel <= 0) return; // we have no more fluid
 
             BlockEntity blockEntity = level.getBlockEntity(pos.relative(dir));
@@ -38,7 +37,7 @@ public class FluidFunction {
             double headroom = machineCapacity - machineLevel;
             double actualTransfer = Math.min(Math.min(transferPerTick, generatorLevel), headroom);
 
-            IFluid.drainWater(generatorBE, (int) actualTransfer);
+            IFluid.drainWater(generatorBlockEntity, (int) actualTransfer);
             IFluid.fillWater(fluidBlockEntity, (int) actualTransfer);
         }
     }

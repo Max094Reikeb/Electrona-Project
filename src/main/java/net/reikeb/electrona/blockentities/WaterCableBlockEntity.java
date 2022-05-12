@@ -46,7 +46,7 @@ public class WaterCableBlockEntity extends BlockEntity implements FluidInterface
 
     public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         // We pass energy to blocks around (this part is common to all cables)
-        CableFunction.cableTransferFluid(this.level, this.getBlockPos(), Direction.values(), this, 100);
+        CableFunction.cableTransferFluid(this.level, this.getBlockPos(), this, 100);
 
         this.setChanged();
     }

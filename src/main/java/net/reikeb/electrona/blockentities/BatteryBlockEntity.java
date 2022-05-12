@@ -1,7 +1,6 @@
 package net.reikeb.electrona.blockentities;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -38,7 +37,7 @@ public class BatteryBlockEntity extends AbstractEnergyBlockEntity {
         EnergyFunction.transferEnergyWithItemSlot(this, false, 0, 4);
 
         // We pass energy to blocks around (this part is common to all generators)
-        EnergyFunction.generatorTransferEnergy(level, blockPos, Direction.values(), this, 6, false);
+        EnergyFunction.generatorTransferEnergy(level, blockPos, this, 6, false);
 
         t.setChanged();
         level.sendBlockUpdated(blockPos, t.getBlockState(), t.getBlockState(), 3);

@@ -20,7 +20,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.reikeb.electrona.blockentities.EnergeticLightningRodBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
-import net.reikeb.electrona.misc.vm.CustomShapes;
+import net.reikeb.electrona.misc.CustomShapes;
 import net.reikeb.maxilib.abs.AbstractWaterLoggableBlock;
 import net.reikeb.maxilib.utils.Utils;
 

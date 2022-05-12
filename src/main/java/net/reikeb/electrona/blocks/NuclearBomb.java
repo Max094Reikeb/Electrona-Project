@@ -28,7 +28,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import net.reikeb.electrona.blockentities.NuclearBombBlockEntity;
 import net.reikeb.electrona.entity.BombFallingEntity;
-import net.reikeb.electrona.misc.vm.CustomShapes;
+import net.reikeb.electrona.misc.CustomShapes;
 import net.reikeb.electrona.world.Gamerules;
 import net.reikeb.electrona.world.NuclearExplosion;
 

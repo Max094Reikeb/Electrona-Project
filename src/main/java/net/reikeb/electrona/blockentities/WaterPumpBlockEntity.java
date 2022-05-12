@@ -1,7 +1,6 @@
 package net.reikeb.electrona.blockentities;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
@@ -110,7 +109,7 @@ public class WaterPumpBlockEntity extends AbstractFluidBlockEntity implements En
         }
 
         // We pass water to blocks around
-        FluidFunction.generatorTransferFluid(level, blockPos, Direction.values(), this, 100);
+        FluidFunction.generatorTransferFluid(level, blockPos, this, 100);
 
         this.setChanged();
         level.sendBlockUpdated(blockPos, this.getBlockState(), this.getBlockState(), 3);

@@ -1,7 +1,6 @@
 package net.reikeb.electrona.blockentities;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
@@ -58,7 +57,7 @@ public class BiomassGeneratorBlockEntity extends AbstractEnergyBlockEntity {
         }
 
         // Transfer energy
-        EnergyFunction.generatorTransferEnergy(level, blockPos, Direction.values(), this, 3, true);
+        EnergyFunction.generatorTransferEnergy(level, blockPos, this, 3, true);
 
         t.setChanged();
         level.sendBlockUpdated(blockPos, t.getBlockState(), t.getBlockState(), 3);

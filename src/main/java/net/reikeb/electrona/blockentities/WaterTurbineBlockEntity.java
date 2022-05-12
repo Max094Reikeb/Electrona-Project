@@ -68,7 +68,7 @@ public class WaterTurbineBlockEntity extends BlockEntity implements EnergyInterf
         }
 
         // We pass energy to blocks around (this part is common to all generators)
-        EnergyFunction.generatorTransferEnergy(level, blockPos, Direction.values(), this, 4, true);
+        EnergyFunction.generatorTransferEnergy(level, blockPos, this, 4, true);
     }
 
     public ItemHandler getItemInventory() {
