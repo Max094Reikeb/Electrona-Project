@@ -21,6 +21,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.reikeb.electrona.blockentities.WaterCableBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
+import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.misc.Tags;
 import net.reikeb.maxilib.abs.AbstractCable;
 
@@ -44,7 +45,8 @@ public class WaterCable extends AbstractCable implements EntityBlock {
     @Override
     public boolean canConnectTo(BlockState wireState, Level level, BlockPos wirePos, BlockPos connectPos, Direction direction) {
         BlockState otherState = level.getBlockState(connectPos);
-        return (otherState.is(Tags.WATER_TANK)) || (otherState.is(Tags.WATER_CABLE));
+        return (otherState.getBlock() == BlockInit.WATER_PUMP.get()) || (otherState.is(Tags.WATER_TANK))
+                || (otherState.is(Tags.WATER_CABLE));
     }
 
     @Override

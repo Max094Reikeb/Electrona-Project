@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.blocks.WaterPump;
 import net.reikeb.electrona.containers.WaterPumpContainer;
@@ -25,8 +24,6 @@ import net.reikeb.maxilib.intface.EnergyInterface;
 import net.reikeb.maxilib.intface.IEnergy;
 import net.reikeb.maxilib.intface.IFluid;
 import net.reikeb.maxilib.inventory.ItemHandler;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static net.reikeb.electrona.init.BlockEntityInit.WATER_PUMP_BLOCK_ENTITY;
 
@@ -50,14 +47,9 @@ public class WaterPumpBlockEntity extends AbstractFluidBlockEntity implements En
     public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         this.setMaxStorage(1000);
 
-        AtomicInteger waterLevel = new AtomicInteger();
-        this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).ifPresent(cap -> waterLevel.set(cap.getFluidInTank(1).getAmount()));
-        AtomicInteger tankCapacity = new AtomicInteger();
-        this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).ifPresent(cap -> tankCapacity.set(cap.getTankCapacity(1)));
-
         // Input slot - Handling slots
         if ((this.inventory.getStackInSlot(0).getItem() == Items.BUCKET)
-                && (waterLevel.get() >= 1000)) {
+                && (this.getWaterLevel() >= 1000)) {
             this.inventory.decrStackSize(0, 1);
             this.inventory.insertItem(0, new ItemStack(Items.WATER_BUCKET, 1), false);
             IFluid.drainWater(this, 1000);
@@ -76,22 +68,22 @@ public class WaterPumpBlockEntity extends AbstractFluidBlockEntity implements En
             if (wait >= 15) {
                 if (this.electronicPower >= 20
                         && Blocks.WATER == level.getBlockState(blockPos.below()).getBlock()) {
-                    if (tankCapacity.get() >= (waterLevel.get() + 100)) {
+                    if (this.getMaxCapacity() >= (this.getWaterLevel() + 100)) {
                         IFluid.fillWater(this, 100);
                         IEnergy.drainEnergy(this, 20);
                         level.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
                         level.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
-                    } else if (tankCapacity.get() >= (waterLevel.get() + 50)) {
+                    } else if (this.getMaxCapacity() >= (this.getWaterLevel() + 50)) {
                         IFluid.fillWater(this, 50);
                         IEnergy.drainEnergy(this, 10);
                         level.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
                         level.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
-                    } else if (tankCapacity.get() >= (waterLevel.get() + 10)) {
+                    } else if (this.getMaxCapacity() >= (this.getWaterLevel() + 10)) {
                         IFluid.fillWater(this, 10);
                         IEnergy.drainEnergy(this, 2);
                         level.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
                         level.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
-                    } else if (tankCapacity.get() > waterLevel.get()) {
+                    } else if (this.getMaxCapacity() > this.getWaterLevel()) {
                         IFluid.fillWater(this, 1);
                         IEnergy.drainEnergy(this, 0.2);
                         level.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
