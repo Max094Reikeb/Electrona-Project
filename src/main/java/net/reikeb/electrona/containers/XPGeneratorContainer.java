@@ -3,10 +3,11 @@ package net.reikeb.electrona.containers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.reikeb.electrona.blockentities.XPGeneratorBlockEntity;
-import net.reikeb.electrona.misc.Slots;
 import net.reikeb.maxilib.abs.AbstractContainer;
+import net.reikeb.maxilib.inventory.Slots;
 
 import static net.reikeb.electrona.init.ContainerInit.XP_GENERATOR_CONTAINER;
 
@@ -21,7 +22,7 @@ public class XPGeneratorContainer extends AbstractContainer {
         if (xpGeneratorBlockEntity == null) return;
 
         xpGeneratorBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            addSlot(new Slots.EmeraldSlot(h, 0, 81, 19));
+            addSlot(new Slots(h, 0, 81, 19, c -> c.getItem() == Items.EMERALD));
         });
 
         this.layoutPlayerInventorySlots(inv);

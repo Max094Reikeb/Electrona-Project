@@ -3,10 +3,11 @@ package net.reikeb.electrona.containers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.reikeb.electrona.blockentities.WaterPumpBlockEntity;
-import net.reikeb.electrona.misc.Slots;
 import net.reikeb.maxilib.abs.AbstractContainer;
+import net.reikeb.maxilib.inventory.Slots;
 
 import static net.reikeb.electrona.init.ContainerInit.WATER_PUMP_CONTAINER;
 
@@ -21,8 +22,8 @@ public class WaterPumpContainer extends AbstractContainer {
         if (waterPumpBlockEntity == null) return;
 
         waterPumpBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            addSlot(new Slots.BucketSlot(h, 0, 36, 35));
-            addSlot(new Slots.BatterySlot(h, 1, 137, 29));
+            addSlot(new Slots(h, 0, 36, 35, c -> c.getItem() == Items.BUCKET, 1));
+            addSlot(new Slots(h, 1, 137, 29, 1));
         });
 
         this.layoutPlayerInventorySlots(inv);

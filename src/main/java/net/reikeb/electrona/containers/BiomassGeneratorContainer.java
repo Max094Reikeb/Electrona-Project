@@ -5,8 +5,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.reikeb.electrona.blockentities.BiomassGeneratorBlockEntity;
-import net.reikeb.electrona.misc.Slots;
 import net.reikeb.maxilib.abs.AbstractContainer;
+import net.reikeb.maxilib.inventory.Slots;
 
 import static net.reikeb.electrona.init.ContainerInit.BIOMASS_GENERATOR_CONTAINER;
 
@@ -21,7 +21,7 @@ public class BiomassGeneratorContainer extends AbstractContainer {
         if (biomassGeneratorBlockEntity == null) return;
 
         biomassGeneratorBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            addSlot(new Slots.BasicInputSlot(h, 0, 80, 36));
+            addSlot(new Slots(h, 0, 80, 36));
         });
 
         this.layoutPlayerInventorySlots(inv);

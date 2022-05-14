@@ -5,8 +5,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.reikeb.electrona.blockentities.BatteryBlockEntity;
-import net.reikeb.electrona.misc.Slots;
 import net.reikeb.maxilib.abs.AbstractContainer;
+import net.reikeb.maxilib.inventory.Slots;
 
 import static net.reikeb.electrona.init.ContainerInit.BATTERY_CONTAINER;
 
@@ -21,8 +21,8 @@ public class BatteryContainer extends AbstractContainer {
         if (batteryBlockEntity == null) return;
 
         batteryBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            addSlot(new Slots.BatterySlot(h, 0, 45, 33));
-            addSlot(new Slots.BatterySlot(h, 1, 117, 33));
+            addSlot(new Slots(h, 0, 45, 33, 1));
+            addSlot(new Slots(h, 1, 117, 33, 1));
         });
 
         this.layoutPlayerInventorySlots(inv);

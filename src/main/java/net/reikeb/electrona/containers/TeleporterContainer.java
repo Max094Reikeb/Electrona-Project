@@ -5,8 +5,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.reikeb.electrona.blockentities.TeleporterBlockEntity;
-import net.reikeb.electrona.misc.Slots;
+import net.reikeb.electrona.init.ItemInit;
 import net.reikeb.maxilib.abs.AbstractContainer;
+import net.reikeb.maxilib.inventory.Slots;
 
 import static net.reikeb.electrona.init.ContainerInit.TELEPORTER_CONTAINER;
 
@@ -21,7 +22,7 @@ public class TeleporterContainer extends AbstractContainer {
         if (teleporterBlockEntity == null) return;
 
         teleporterBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            addSlot(new Slots.TeleportSlot(h, 0, 81, 27));
+            addSlot(new Slots(h, 0, 81, 27, c -> c.getItem() == ItemInit.TELEPORT_SAVER.get() || c.getItem() == ItemInit.PORTABLE_TELEPORTER.get(), 1));
         });
 
         this.layoutPlayerInventorySlots(inv);

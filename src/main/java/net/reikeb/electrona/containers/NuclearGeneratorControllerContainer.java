@@ -3,10 +3,11 @@ package net.reikeb.electrona.containers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.reikeb.electrona.blockentities.NuclearGeneratorControllerBlockEntity;
-import net.reikeb.electrona.misc.Slots;
 import net.reikeb.maxilib.abs.AbstractContainer;
+import net.reikeb.maxilib.inventory.Slots;
 
 import static net.reikeb.electrona.init.ContainerInit.NUCLEAR_GENERATOR_CONTAINER;
 
@@ -21,8 +22,8 @@ public class NuclearGeneratorControllerContainer extends AbstractContainer {
         if (nuclearGeneratorControllerBlockEntity == null) return;
 
         nuclearGeneratorControllerBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            addSlot(new Slots.WaterBucketSlot(h, 0, 27, 32));
-            addSlot(new Slots.UraniumSlot(h, nuclearGeneratorControllerBlockEntity, 1, 55, 32));
+            addSlot(new Slots(h, 0, 27, 32, c -> c.getItem() == Items.WATER_BUCKET, 1));
+            addSlot(new Slots(h, 1, 55, 32, c -> !areUBIn(), !areUBIn(), 1));
         });
 
         this.layoutPlayerInventorySlots(inv);
