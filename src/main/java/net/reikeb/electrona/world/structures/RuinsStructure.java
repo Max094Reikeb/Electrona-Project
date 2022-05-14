@@ -3,7 +3,6 @@ package net.reikeb.electrona.world.structures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.JigsawConfiguration;
 import net.minecraft.world.level.levelgen.structure.BuiltinStructureSets;
@@ -33,7 +32,6 @@ public class RuinsStructure extends StructureFeature<JigsawConfiguration> {
             return Optional.empty();
         }
         BlockPos blockPos = context.chunkPos().getMiddleBlockPosition(0);
-        blockPos = blockPos.above(context.chunkGenerator().getFirstFreeHeight(blockPos.getX(), blockPos.getZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor()));
 
         return JigsawPlacement.addPieces(
                 context,
