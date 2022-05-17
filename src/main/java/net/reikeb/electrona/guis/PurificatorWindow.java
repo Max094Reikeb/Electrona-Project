@@ -82,7 +82,7 @@ public class PurificatorWindow extends AbstractWindow<PurificatorContainer> {
         double purifyingProgress = (currentPurifyingTime * 0.05) / purifyingTime;
         int yOffset = (int) ((1 - purifyingProgress) * THERMOMETER_HEIGHT);
         // draw thermometer progress bar
-        RenderSystem.setShaderTexture(0, Keys.PURIFICATOR_GUI);
+        Utils.bind(Keys.PURIFICATOR_GUI);
         if (currentPurifyingTime > 0) {
             this.blit(matrixStack, this.leftPos + THERMOMETER_XPOS, this.topPos + THERMOMETER_YPOS + yOffset, THERMOMETER_ICON_U,
                     THERMOMETER_ICON_V + yOffset, THERMOMETER_WIDTH, THERMOMETER_HEIGHT - yOffset);
@@ -91,7 +91,7 @@ public class PurificatorWindow extends AbstractWindow<PurificatorContainer> {
         double waterProgress = (this.menu.getCurrentWater() / 10000.0);
         int yOffsetWater = (int) ((1 - waterProgress) * WATER_HEIGHT);
         // draw water bar
-        RenderSystem.setShaderTexture(0, Keys.PURIFICATOR_GUI);
+        Utils.bind(Keys.PURIFICATOR_GUI);
         if (this.menu.getCurrentWater() > 0) {
             this.blit(matrixStack, this.leftPos + WATER_XPOS, this.topPos + WATER_YPOS + yOffsetWater, WATER_ICON_U, WATER_ICON_V + yOffsetWater,
                     WATER_WIDTH, WATER_HEIGHT - yOffsetWater);

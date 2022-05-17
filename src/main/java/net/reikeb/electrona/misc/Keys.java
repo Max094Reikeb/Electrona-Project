@@ -52,10 +52,6 @@ public class Keys {
     public static final ResourceLocation HAS_WATER_TANK_TAG = Electrona.FRL("electrona/has_water_tank");
     public static final ResourceLocation GENERATORS_TAG = Electrona.FRL("electrona/generators");
 
-    // Configured structures
-    public static final ResourceLocation CONFIGURED_RUINS = Electrona.RL("configured_ruins");
-    public static final ResourceLocation RUINS_START_POOL = Electrona.RL("ruins/start_pool");
-
     // Dimensions
     public static final ResourceLocation OVERWORLD = Electrona.MRL("overworld");
     public static final ResourceLocation ELECTRONA_OVERWORLD = Electrona.RL("overworld");

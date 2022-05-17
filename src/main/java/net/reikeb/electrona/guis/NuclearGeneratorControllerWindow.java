@@ -114,7 +114,7 @@ public class NuclearGeneratorControllerWindow extends AbstractWindow<NuclearGene
         double waterProgress = (this.menu.getUnderWater() / 10000.0);
         int yOffsetWater = (int) ((1.0 - waterProgress) * WATER_HEIGHT);
         // draw water bar
-        RenderSystem.setShaderTexture(0, Keys.NUCLEAR_GENERATOR_CONTROLLER_GUI);
+        Utils.bind(Keys.NUCLEAR_GENERATOR_CONTROLLER_GUI);
         if (this.menu.getUnderWater() > 0) {
             this.blit(matrixStack, this.leftPos + WATER_XPOS, this.topPos + WATER_YPOS + yOffsetWater, WATER_ICON_U, WATER_ICON_V + yOffsetWater,
                     WATER_WIDTH, (int) (WATER_HEIGHT - yOffsetWater));
@@ -122,7 +122,7 @@ public class NuclearGeneratorControllerWindow extends AbstractWindow<NuclearGene
         // get alert status
         boolean isAlerted = this.menu.alert();
         // draw alert sign
-        RenderSystem.setShaderTexture(0, Keys.NUCLEAR_GENERATOR_CONTROLLER_GUI);
+        Utils.bind(Keys.NUCLEAR_GENERATOR_CONTROLLER_GUI);
         if (isAlerted) {
             this.blit(matrixStack, this.leftPos + WARNING_XPOS, this.topPos + WARNING_YPOS, WARNING_ICON_U, WARNING_ICON_V, WARNING_WIDTH,
                     WARNING_HEIGHT);
@@ -133,7 +133,7 @@ public class NuclearGeneratorControllerWindow extends AbstractWindow<NuclearGene
         double powerProgress = (currentPower / 10000.0);
         int yOffsetPower = (int) ((1.0 - powerProgress) * POWER_HEIGHT);
         // draw power bar
-        RenderSystem.setShaderTexture(0, Keys.NUCLEAR_GENERATOR_CONTROLLER_GUI);
+        Utils.bind(Keys.NUCLEAR_GENERATOR_CONTROLLER_GUI);
         if (currentPower > 0) {
             this.blit(matrixStack, this.leftPos + POWER_XPOS, this.topPos + POWER_YPOS + yOffsetPower, POWER_ICON_U, POWER_ICON_V + yOffsetPower,
                     POWER_WIDTH, POWER_HEIGHT - yOffsetPower);
@@ -144,7 +144,7 @@ public class NuclearGeneratorControllerWindow extends AbstractWindow<NuclearGene
         double tempProgress = (currentTemp / 3000.0);
         int yOffsetTemp = (int) ((1.0 - tempProgress) * TEMPERATURE_HEIGHT);
         // draw temperature bar
-        RenderSystem.setShaderTexture(0, Keys.NUCLEAR_GENERATOR_CONTROLLER_GUI);
+        Utils.bind(Keys.NUCLEAR_GENERATOR_CONTROLLER_GUI);
         if (currentTemp > 0) {
             this.blit(matrixStack, this.leftPos + TEMPERATURE_XPOS, this.topPos + TEMPERATURE_YPOS + yOffsetTemp, TEMPERATURE_ICON_U,
                     TEMPERATURE_ICON_V + yOffsetTemp, TEMPERATURE_WIDTH, TEMPERATURE_HEIGHT - yOffsetTemp);

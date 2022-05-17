@@ -67,7 +67,7 @@ public class WaterPumpWindow extends AbstractWindow<WaterPumpContainer> {
         double waterProgress = (this.menu.getWaterLevel() / 10000.0);
         int yOffsetWater = (int) ((1.0 - waterProgress) * WATER_HEIGHT);
         // Draw water bar
-        RenderSystem.setShaderTexture(0, Keys.PURIFICATOR_GUI);
+        Utils.bind(Keys.PURIFICATOR_GUI);
         if (this.menu.getWaterLevel() > 0) {
             this.blit(matrixStack, this.leftPos + WATER_XPOS, this.topPos + WATER_YPOS + yOffsetWater, WATER_ICON_U, WATER_ICON_V + yOffsetWater,
                     WATER_WIDTH, WATER_HEIGHT - yOffsetWater);
