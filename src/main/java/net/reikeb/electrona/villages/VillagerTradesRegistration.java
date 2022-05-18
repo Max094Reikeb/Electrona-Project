@@ -2,7 +2,9 @@ package net.reikeb.electrona.villages;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.common.BasicItemListing;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -27,10 +29,8 @@ public class VillagerTradesRegistration {
          * XP: 2
          * Price multiplier: 0.05F
          */
-        trades.get(1).add(new RandomTradeBuilder(15, 2, 0.05F)
-                .setPrice(ItemInit.TIN_INGOT.get(), 8, 8)
-                .setForSale(Items.EMERALD, 2, 2)
-                .build()
+        trades.get(1).add(new BasicItemListing(new ItemStack(ItemInit.TIN_INGOT.get(), 8),
+                new ItemStack(Items.EMERALD, 2), 15, 2, 0.05F)
         );
         /**
          * Price: 3 Uranium Ore
@@ -40,10 +40,8 @@ public class VillagerTradesRegistration {
          * XP: 4
          * Price multiplier: 0.05F
          */
-        trades.get(2).add(new RandomTradeBuilder(10, 4, 0.05F)
-                .setPrice(BlockInit.URANIUM_ORE.get().asItem(), 3, 3)
-                .setForSale(Items.EMERALD, 5, 5)
-                .build()
+        trades.get(2).add(new BasicItemListing(new ItemStack(BlockInit.URANIUM_ORE.get(), 3),
+                new ItemStack(Items.EMERALD, 5), 10, 4, 0.05F)
         );
         /**
          * Price: 5 Emeralds
@@ -53,10 +51,8 @@ public class VillagerTradesRegistration {
          * XP: 2
          * Price multiplier: 0.05F
          */
-        trades.get(1).add(new RandomTradeBuilder(16, 2, 0.05F)
-                .setPrice(Items.EMERALD, 5, 5)
-                .setForSale(ItemInit.STEEL_INGOT.get(), 1, 1)
-                .build()
+        trades.get(1).add(new BasicItemListing(new ItemStack(Items.EMERALD, 5),
+                new ItemStack(ItemInit.STEEL_INGOT.get(), 1), 16, 2, 0.05F)
         );
         /**
          * Price: 10 Emeralds
@@ -66,10 +62,8 @@ public class VillagerTradesRegistration {
          * XP: 10
          * Price multiplier: 0.05F
          */
-        trades.get(2).add(new RandomTradeBuilder(10, 10, 0.05F)
-                .setPrice(Items.EMERALD, 10, 10)
-                .setForSale(ItemInit.EMITTER.get(), 1, 1)
-                .build()
+        trades.get(2).add(new BasicItemListing(new ItemStack(Items.EMERALD, 10),
+                new ItemStack(ItemInit.EMITTER.get(), 1), 10, 10, 0.05F)
         );
         /**
          * Price: 15 Emeralds
@@ -79,10 +73,8 @@ public class VillagerTradesRegistration {
          * XP: 10
          * Price multiplier: 0.05F
          */
-        trades.get(2).add(new RandomTradeBuilder(10, 10, 0.05F)
-                .setPrice(Items.EMERALD, 15, 15)
-                .setForSale(ItemInit.WIRELESS_BOOSTER.get(), 1, 1)
-                .build()
+        trades.get(2).add(new BasicItemListing(new ItemStack(Items.EMERALD, 15),
+                new ItemStack(ItemInit.WIRELESS_BOOSTER.get(), 1), 10, 10, 0.05F)
         );
         /**
          * Price: 20 Emeralds
@@ -92,10 +84,8 @@ public class VillagerTradesRegistration {
          * XP: 5
          * Price multiplier: 0.05F
          */
-        trades.get(3).add(new RandomTradeBuilder(10, 5, 0.05F)
-                .setPrice(Items.EMERALD, 20, 20)
-                .setForSale(BlockInit.CONVEYOR.get().asItem(), 1, 1)
-                .build()
+        trades.get(3).add(new BasicItemListing(new ItemStack(Items.EMERALD, 20),
+                new ItemStack(BlockInit.CONVEYOR.get()), 10, 5, 0.05F)
         );
         /**
          * Price: 25 Emeralds
@@ -105,10 +95,8 @@ public class VillagerTradesRegistration {
          * XP: 5
          * Price multiplier: 0.05F
          */
-        trades.get(4).add(new RandomTradeBuilder(7, 5, 0.05F)
-                .setPrice(Items.EMERALD, 25, 25)
-                .setForSale(BlockInit.MINING_MACHINE.get().asItem(), 1, 1)
-                .build()
+        trades.get(4).add(new BasicItemListing(new ItemStack(Items.EMERALD, 25),
+                new ItemStack(BlockInit.MINING_MACHINE.get(), 1), 7, 5, 0.05F)
         );
         /**
          * Price: 5 Gravitonium
@@ -118,11 +106,9 @@ public class VillagerTradesRegistration {
          * XP: 5
          * Price multiplier: 0.05F
          */
-        trades.get(4).add(new RandomTradeBuilder(7, 5, 0.05F)
-                .setPrice(ItemInit.GRAVITONIUM.get(), 5, 5)
-                .setPrice2(Items.EMERALD, 27, 27)
-                .setForSale(ItemInit.GRAVITY_DEVICE.get(), 1, 1)
-                .build()
+        trades.get(4).add(new BasicItemListing(new ItemStack(ItemInit.GRAVITONIUM.get(), 5),
+                new ItemStack(Items.EMERALD, 27), new ItemStack(ItemInit.GRAVITY_DEVICE.get(), 1),
+                7, 5, 0.05F)
         );
         /**
          * Price: 30 Emeralds
@@ -132,10 +118,8 @@ public class VillagerTradesRegistration {
          * XP: 5
          * Price multiplier: 0.05F
          */
-        trades.get(5).add(new RandomTradeBuilder(5, 5, 0.05F)
-                .setPrice(Items.EMERALD, 30, 30)
-                .setForSale(ItemInit.MECHANIC_WINGS.get(), 1, 1)
-                .build()
+        trades.get(5).add(new BasicItemListing(new ItemStack(Items.EMERALD, 30),
+                new ItemStack(ItemInit.MECHANIC_WINGS.get(), 1), 5, 5, 0.05F)
         );
         /**
          * Price: 50 Emeralds
@@ -145,10 +129,9 @@ public class VillagerTradesRegistration {
          * XP: 10
          * Price multiplier: 0.05F
          */
-        trades.get(5).add(new RandomTradeBuilder(5, 10, 0.05F)
-                .setPrice(Items.EMERALD, 50, 50)
-                .setPrice2(ItemInit.TELEPORT_SAVER.get(), 1, 1)
-                .setForSale(ItemInit.PORTABLE_TELEPORTER.get(), 1, 1)
-                .build());
+        trades.get(5).add(new BasicItemListing(new ItemStack(Items.EMERALD, 50),
+                new ItemStack(ItemInit.TELEPORT_SAVER.get(), 1),
+                new ItemStack(ItemInit.PORTABLE_TELEPORTER.get(), 1), 5, 10, 0.05F)
+        );
     }
 }
