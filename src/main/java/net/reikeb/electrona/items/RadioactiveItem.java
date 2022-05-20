@@ -18,6 +18,11 @@ public class RadioactiveItem extends Item {
     }
 
     @Override
+    public int getEnchantmentValue() {
+        return 0;
+    }
+
+    @Override
     public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int slot, boolean selected) {
         RadioactivityFunction.radioactiveItemInInventory(level, entity, durability, power);
     }

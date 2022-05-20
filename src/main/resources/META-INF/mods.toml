@@ -39,6 +39,6 @@ It was originally made on MCreator, but then, the r2.0 version ported it off.
 [[dependencies.electrona]]
     modId="maxilib"
     mandatory=true
-    versionRange="[1.18.2-r1.0,1.18.2-r1.1)"
+    versionRange="[1.18.2-r1.0,1.18.2-a1.0.1)"
     ordering="AFTER"
     side="BOTH"
