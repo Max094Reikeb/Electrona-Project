@@ -1,7 +1,0 @@
-{
-  "parent": "block/cross",
-  "textures": {
-    "cross": "electrona:blocks/radioactive_tall_grass_top",
-    "particle": "electrona:blocks/radioactive_tall_grass_top"
-  }
-}

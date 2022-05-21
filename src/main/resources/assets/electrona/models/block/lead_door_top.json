@@ -1,7 +1,0 @@
-{
-  "parent": "block/door_top",
-  "textures": {
-    "bottom": "electrona:blocks/lead_door_lower",
-    "top": "electrona:blocks/lead_door_upper"
-  }
-}
