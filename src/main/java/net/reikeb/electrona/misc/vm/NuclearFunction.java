@@ -3,7 +3,6 @@ package net.reikeb.electrona.misc.vm;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -138,11 +137,11 @@ public class NuclearFunction {
      * @param pos   Position of the Singularity
      */
     public static void advancementInevitableFunction(Level level, BlockPos pos) {
-        for (LivingEntity entityiterator : Utils.getLivingEntitiesInRadius(level, pos, 5)) {
-            if (entityiterator instanceof ServerPlayer serverPlayer) {
+        Utils.forEntitiesInRadius(level, pos, 5, (livingEntity -> {
+            if (livingEntity instanceof ServerPlayer serverPlayer) {
                 Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(Keys.I_AM_INEVITABLE_ADVANCEMENT);
                 Utils.awardAdvancement(serverPlayer, advancement, "I Am... Inevitable!");
             }
-        }
+        }));
     }
 }

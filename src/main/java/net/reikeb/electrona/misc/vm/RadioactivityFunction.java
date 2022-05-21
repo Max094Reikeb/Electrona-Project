@@ -51,17 +51,17 @@ public class RadioactivityFunction {
      * @param power    The power of the give effect
      */
     public static void radioactiveItemInInventory(Level level, Entity entity, int duration, int power) {
-        for (LivingEntity entityiterator : Utils.getLivingEntitiesInRadius(level, entity.blockPosition(), (int) (10 / 2d))) {
-            if ((entityiterator instanceof Skeleton) || (entityiterator instanceof RadioactiveZombie)) return;
+        Utils.forEntitiesInRadius(level, entity.blockPosition(), (int) (10 / 2d), (worldEntity -> {
+            if ((worldEntity instanceof Skeleton) || (worldEntity instanceof RadioactiveZombie)) return;
             if (!(entity instanceof LivingEntity livingEntity)) return;
-            if (entityiterator instanceof Player player) {
+            if (worldEntity instanceof Player player) {
                 if (player.isCreative()) return;
             }
             if (!isEntityWearingAntiRadiationSuit(livingEntity)) {
                 boolean entityWearsLeadArmor = isEntityWearingLeadArmor(livingEntity);
-                (entityWearsLeadArmor ? livingEntity : entityiterator).addEffect(new MobEffectInstance(PotionEffectInit.RADIOACTIVITY.get(), duration, power));
+                (entityWearsLeadArmor ? livingEntity : worldEntity).addEffect(new MobEffectInstance(PotionEffectInit.RADIOACTIVITY.get(), duration, power));
             }
-        }
+        }));
     }
 
     /**

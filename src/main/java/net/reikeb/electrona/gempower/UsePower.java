@@ -15,7 +15,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -205,12 +204,12 @@ public class UsePower {
             }
 
         } else if (gemObject.equals(GemInit.KNOCKBACK.get()) && player.isShiftKeyDown()) {
-            for (LivingEntity entities : Utils.getLivingEntitiesInRadius(level, player.blockPosition(), 5)) {
-                if (entities != player) {
-                    entities.knockback(5F * 0.5F, Mth.sin(player.yRot * ((float) Math.PI / 180F)), -Mth.cos(player.yRot * ((float) Math.PI / 180F)));
+            Utils.forEntitiesInRadius(level, player.blockPosition(), 5, (livingEntity -> {
+                if (livingEntity != player) {
+                    livingEntity.knockback(5F * 0.5F, Mth.sin(player.yRot * ((float) Math.PI / 180F)), -Mth.cos(player.yRot * ((float) Math.PI / 180F)));
                     player.setDeltaMovement(player.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
                 }
-            }
+            }));
             flag = true;
             cooldown = GemPowerInit.KNOCKBACK.get().getCooldown();
         } else if (gemObject.equals(GemInit.FLYING.get())) {

@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.alchemy.PotionUtils;
@@ -34,25 +33,25 @@ public class SprayerFunction {
         sprayerBlockEntity.setRadius(5 + (boostCount * 3));
         if ((!(inv.getStackInSlot(0).isEmpty())) && (electronicPower >= 200)) {
             if (level == null) return;
-            for (LivingEntity entityiterator : Utils.getLivingEntitiesInRadius(level, sprayerBlockEntity.getBlockPos(), sprayerBlockEntity.getRadius())) {
+            Utils.forEntitiesInRadius(level, sprayerBlockEntity.getBlockPos(), sprayerBlockEntity.getRadius(), (livingEntity -> {
                 if (inv.getStackInSlot(0).getItem().isEdible()) {
                     IEnergy.drainEnergy(sprayerBlockEntity, 200);
                     FoodProperties usedFood = inv.getStackInSlot(0).getItem().getFoodProperties();
                     if (usedFood == null) return;
                     for (Pair<MobEffectInstance, Float> pairiterator : usedFood.getEffects()) {
                         if (level.getRandom().nextFloat() < pairiterator.getSecond()) {
-                            entityiterator.addEffect(pairiterator.getFirst());
+                            livingEntity.addEffect(pairiterator.getFirst());
                         }
                     }
                     inv.decrStackSize(0, 1);
                 } else if (inv.getStackInSlot(0).getItem() instanceof PotionItem) {
                     IEnergy.drainEnergy(sprayerBlockEntity, 200);
                     for (MobEffectInstance effectiterator : PotionUtils.getMobEffects(inv.getStackInSlot(0))) {
-                        entityiterator.addEffect(new MobEffectInstance(effectiterator));
+                        livingEntity.addEffect(new MobEffectInstance(effectiterator));
                     }
                     inv.decrStackSize(0, 1);
                 }
-            }
+            }));
         }
     }
 

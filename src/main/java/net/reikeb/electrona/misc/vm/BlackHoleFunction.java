@@ -5,7 +5,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AreaEffectCloud;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -63,9 +62,7 @@ public class BlackHoleFunction {
 
         AreaEffectCloud areaEffectCloudEntity = new AreaEffectCloud(level, pos.getX(), pos.getY(), pos.getZ());
 
-        for (LivingEntity entityiterator : Utils.getLivingEntitiesInRadius(level, pos, 100)) {
-            areaEffectCloudEntity.setOwner(entityiterator);
-        }
+        Utils.forEntitiesInRadius(level, pos, 100, (areaEffectCloudEntity::setOwner));
 
         areaEffectCloudEntity.setParticle(ParticleInit.DARK_MATTER.get());
         areaEffectCloudEntity.setRadius(5.0F);
