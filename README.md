@@ -2,7 +2,7 @@
 
 # Wiki & Crowdin #
 
-Electrona has a [wiki](http://max-electrona.000webhostapp.com/) and a [crowdin page](https://crowdin.com/project/electrona) where you can help to translate into your main language!
+Electrona has a [wiki](https://max094reikeb.github.io/Electrona-Project/index.html) and a [crowdin page](https://crowdin.com/project/electrona) where you can help to translate into your main language!
 
 # Electrona API #
 
