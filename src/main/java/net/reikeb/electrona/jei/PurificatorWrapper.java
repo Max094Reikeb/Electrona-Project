@@ -8,24 +8,22 @@ import net.reikeb.maxilib.Couple;
 
 public class PurificatorWrapper extends PurificatorRecipe {
 
-    private final Couple<ItemStack, ItemStack> inputs;
-    private final ItemStack output;
+    private final Couple<Couple<ItemStack, ItemStack>, ItemStack> wrapped;
 
     public PurificatorWrapper(Couple<Item, Item> inputs, Item output) {
-        this(new Couple<>(new ItemStack(inputs.part1(), 1), new ItemStack(inputs.part2(), 1)), new ItemStack(output, 1));
+        this(new Couple<>(new Couple<>(new ItemStack(inputs.part1(), 1), new ItemStack(inputs.part2(), 1)), new ItemStack(output, 1)));
     }
 
-    public PurificatorWrapper(Couple<ItemStack, ItemStack> inputs, ItemStack output) {
-        super(Keys.PURIFYING, inputs.part2(), output, false, 20, 20);
-        this.inputs = inputs;
-        this.output = output;
+    public PurificatorWrapper(Couple<Couple<ItemStack, ItemStack>, ItemStack> wrapped) {
+        super(Keys.PURIFYING, wrapped.part1().part2(), wrapped.part2(), false, 20, 20);
+        this.wrapped = wrapped;
     }
 
     public Couple<ItemStack, ItemStack> getInput() {
-        return this.inputs;
+        return this.wrapped.part1();
     }
 
     public ItemStack getOutput() {
-        return this.output;
+        return this.wrapped.part2();
     }
 }

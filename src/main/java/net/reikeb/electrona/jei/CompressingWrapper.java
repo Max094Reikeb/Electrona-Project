@@ -10,28 +10,26 @@ import net.reikeb.maxilib.Couple;
 
 public class CompressingWrapper extends CompressorRecipe {
 
-    private final Couple<ItemStack, ItemStack> inputs;
-    private final ItemStack output;
+    private final Couple<Couple<ItemStack, ItemStack>, ItemStack> wrapped;
 
     public CompressingWrapper(Couple<Block, Block> inputs, Block output) {
         this(new Couple<>(inputs.part1().asItem(), inputs.part2().asItem()), output.asItem());
     }
 
     public CompressingWrapper(Couple<Item, Item> inputs, Item output) {
-        this(new Couple<>(new ItemStack(inputs.part1(), 1), new ItemStack(inputs.part2(), 1)), new ItemStack(output, 1));
+        this(new Couple<>(new Couple<>(new ItemStack(inputs.part1(), 1), new ItemStack(inputs.part2(), 1)), new ItemStack(output, 1)));
     }
 
-    public CompressingWrapper(Couple<ItemStack, ItemStack> inputs, ItemStack output) {
-        super(Keys.COMPRESSING, Ingredient.of(inputs.part1()), Ingredient.of(inputs.part2()), output, 20, 20);
-        this.inputs = inputs;
-        this.output = output;
+    public CompressingWrapper(Couple<Couple<ItemStack, ItemStack>, ItemStack> wrapped) {
+        super(Keys.COMPRESSING, Ingredient.of(wrapped.part1().part1()), Ingredient.of(wrapped.part1().part2()), wrapped.part2(), 20, 20);
+        this.wrapped = wrapped;
     }
 
     public Couple<ItemStack, ItemStack> getInput() {
-        return this.inputs;
+        return this.wrapped.part1();
     }
 
     public ItemStack getOutput() {
-        return this.output;
+        return this.wrapped.part2();
     }
 }
