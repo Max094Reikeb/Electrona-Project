@@ -14,7 +14,7 @@ import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.blocks.XPGenerator;
 import net.reikeb.electrona.containers.XPGeneratorContainer;
 import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
-import net.reikeb.maxilib.intface.IEnergy;
+import net.reikeb.maxilib.intface.EnergyInterface;
 
 import static net.reikeb.electrona.init.BlockEntityInit.XP_GENERATOR_BLOCK_ENTITY;
 
@@ -34,13 +34,13 @@ public class XPGeneratorBlockEntity extends AbstractEnergyBlockEntity {
     }
 
     public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
-        this.setMaxStorage(10000);
+        this.setMaxEnergy(10000);
         if (level == null) return;
 
         // Handle slot
-        if ((this.getElectronicPower() >= 0.8) && (this.inventory.getStackInSlot(0).getItem() == Items.EMERALD)) {
+        if ((this.getEnergy() >= 0.8) && (this.inventory.getStackInSlot(0).getItem() == Items.EMERALD)) {
             wait += 1;
-            IEnergy.drainEnergy(this, 0.8);
+            EnergyInterface.drainEnergy(this, 0.8);
             if (wait >= 4800) {
                 this.inventory.decrStackSize(0, 1);
                 this.setXpLevels(this.xpLevels + 1);

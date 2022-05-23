@@ -18,6 +18,6 @@ public class MiningMachineWindow extends AbstractWindow<MiningMachineContainer> 
     protected void renderLabels(PoseStack ms, int mouseX, int mouseY) {
         this.font.draw(ms, new TranslatableComponent("gui.electrona.mining_machine.name"), 6, 8, -16777216);
         this.font.draw(ms, new TranslatableComponent("gui.electrona.generic.power"), 125, 8, -16777216);
-        this.font.draw(ms, "" + (int) this.menu.getElectronicPower() + " ELs", 125, 18, -3407821);
+        this.font.draw(ms, "" + (int) this.menu.getEnergy() + " ELs", 125, 18, -3407821);
     }
 }

@@ -40,7 +40,7 @@ public class TeleporterBlockEntity extends AbstractEnergyBlockEntity {
     }
 
     public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
-        this.setMaxStorage(2000);
+        this.setMaxEnergy(2000);
 
         if (level == null) return;
         ItemStack stack = inventory.getStackInSlot(0);

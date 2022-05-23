@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.blocks.Conveyor;
 import net.reikeb.maxilib.intface.EnergyInterface;
-import net.reikeb.maxilib.intface.IEnergy;
 import net.reikeb.maxilib.inventory.ItemHandler;
 
 import javax.annotation.Nullable;
@@ -29,14 +28,14 @@ public class ConveyorBlockEntity extends BlockEntity implements EnergyInterface 
     }
 
     public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
-        this.setMaxStorage(100);
+        this.setMaxEnergy(100);
 
         if (level == null) return;
 
         level.setBlockAndUpdate(blockPos, state
                 .setValue(Conveyor.ACTIVATED, this.electronicPower > 0));
 
-        IEnergy.drainEnergy(this, 0.05);
+        EnergyInterface.drainEnergy(this, 0.05);
 
         this.setChanged();
         level.sendBlockUpdated(blockPos, state, state, 3);
@@ -46,35 +45,24 @@ public class ConveyorBlockEntity extends BlockEntity implements EnergyInterface 
         return null;
     }
 
-    public int getElectronicPowerTimesHundred() {
-        return (int) (this.electronicPower * 100);
+    public void setHundredEnergy(int hundredEnergy) {
+        this.electronicPower = hundredEnergy / 100.0;
     }
 
-    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
-        this.electronicPower = electronicPowerTimesHundred / 100.0;
-    }
-
-    public double getElectronicPower() {
+    public double getEnergy() {
         return this.electronicPower;
     }
 
-    public void setElectronicPower(double electronicPower) {
-        this.electronicPower = electronicPower;
+    public void setEnergy(double energy) {
+        this.electronicPower = energy;
     }
 
-    public int getMaxStorage() {
+    public int getMaxEnergy() {
         return this.maxStorage;
     }
 
-    public void setMaxStorage(int maxStorage) {
-        this.maxStorage = maxStorage;
-    }
-
-    public boolean getLogic() {
-        return false;
-    }
-
-    public void setLogic(boolean logic) {
+    public void setMaxEnergy(int maxEnergy) {
+        this.maxStorage = maxEnergy;
     }
 
     @Override

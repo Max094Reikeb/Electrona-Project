@@ -114,7 +114,7 @@ public class Conveyor extends AbstractWaterLoggableBlock implements EntityBlock 
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         super.stepOn(level, pos, state, entity);
         if (!(level.getBlockEntity(pos) instanceof ConveyorBlockEntity conveyorBlockEntity)) return;
-        if (conveyorBlockEntity.getElectronicPower() <= 0) return;
+        if (conveyorBlockEntity.getEnergy() <= 0) return;
         Direction facing = conveyorBlockEntity.getBlockState().getValue(FACING);
         if (facing == Direction.NORTH) {
             entity.setDeltaMovement(0, 0, 0.3);

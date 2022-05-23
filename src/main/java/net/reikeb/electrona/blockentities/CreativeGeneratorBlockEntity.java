@@ -15,7 +15,6 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.maxilib.intface.EnergyInterface;
-import net.reikeb.maxilib.intface.IEnergy;
 import net.reikeb.maxilib.inventory.ItemHandler;
 
 import javax.annotation.Nullable;
@@ -55,8 +54,8 @@ public class CreativeGeneratorBlockEntity extends BlockEntity implements EnergyI
     }
 
     public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
-        this.setMaxStorage(999999999);
-        IEnergy.setEnergy(this, 999999999);
+        this.setMaxEnergy(999999999);
+        this.setEnergy(999999999);
 
         if (level == null) return;
 
@@ -71,35 +70,24 @@ public class CreativeGeneratorBlockEntity extends BlockEntity implements EnergyI
         return null;
     }
 
-    public int getElectronicPowerTimesHundred() {
-        return (int) (this.electronicPower * 100);
+    public void setHundredEnergy(int hundredEnergy) {
+        this.electronicPower = hundredEnergy / 100.0;
     }
 
-    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
-        this.electronicPower = electronicPowerTimesHundred / 100.0;
-    }
-
-    public double getElectronicPower() {
+    public double getEnergy() {
         return this.electronicPower;
     }
 
-    public void setElectronicPower(double electronicPower) {
-        this.electronicPower = electronicPower;
+    public void setEnergy(double energy) {
+        this.electronicPower = energy;
     }
 
-    public int getMaxStorage() {
+    public int getMaxEnergy() {
         return this.maxStorage;
     }
 
-    public void setMaxStorage(int maxStorage) {
-        this.maxStorage = maxStorage;
-    }
-
-    public boolean getLogic() {
-        return false;
-    }
-
-    public void setLogic(boolean logic) {
+    public void setMaxEnergy(int maxEnergy) {
+        this.maxStorage = maxEnergy;
     }
 
     @Override

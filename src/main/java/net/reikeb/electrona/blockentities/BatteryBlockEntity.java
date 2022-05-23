@@ -29,7 +29,7 @@ public class BatteryBlockEntity extends AbstractEnergyBlockEntity {
     }
 
     public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
-        this.setMaxStorage(10000);
+        this.setMaxEnergy(10000);
         if (level == null) return;
 
         // Input & Output slots - Handling slots

@@ -36,7 +36,7 @@ public class XPGeneratorWindow extends AbstractWindow<XPGeneratorContainer> {
     protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.xp_generator.name"), 8, 7, -16777216);
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.power"), 121, 7, -16777216);
-        this.font.draw(matrixStack, "" + (int) this.menu.getElectronicPower() + " ELs", 121, 17, -3407821);
+        this.font.draw(matrixStack, "" + (int) this.menu.getEnergy() + " ELs", 121, 17, -3407821);
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.xp_generator.xp_levels"), 121, 26, -16777216);
         this.font.draw(matrixStack, "" + this.menu.getXpLevels() + "", 121, 36, -13395712);
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.xp_generator.fuel"), 79, 37, -16777216);

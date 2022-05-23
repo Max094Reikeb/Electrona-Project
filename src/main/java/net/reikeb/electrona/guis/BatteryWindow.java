@@ -18,7 +18,7 @@ public class BatteryWindow extends AbstractWindow<BatteryContainer> {
     protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.battery.name"), 72, 7, -16777216);
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.storage"), 5, 7, -16777216);
-        this.font.draw(matrixStack, "" + (int) this.menu.getElectronicPower() + "ELs", 5, 17, -3407821);
+        this.font.draw(matrixStack, "" + (int) this.menu.getEnergy() + "ELs", 5, 17, -3407821);
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.output"), 110, 51, -16777216);
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.input"), 40, 51, -16777216);
     }

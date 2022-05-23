@@ -21,8 +21,7 @@ import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.electrona.misc.vm.FluidFunction;
 import net.reikeb.maxilib.abs.AbstractFluidBlockEntity;
 import net.reikeb.maxilib.intface.EnergyInterface;
-import net.reikeb.maxilib.intface.IEnergy;
-import net.reikeb.maxilib.intface.IFluid;
+import net.reikeb.maxilib.intface.FluidInterface;
 import net.reikeb.maxilib.inventory.ItemHandler;
 
 import static net.reikeb.electrona.init.BlockEntityInit.WATER_PUMP_BLOCK_ENTITY;
@@ -45,14 +44,14 @@ public class WaterPumpBlockEntity extends AbstractFluidBlockEntity implements En
     }
 
     public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
-        this.setMaxStorage(1000);
+        this.setMaxEnergy(1000);
 
         // Input slot - Handling slots
         if ((this.inventory.getStackInSlot(0).getItem() == Items.BUCKET)
                 && (this.getWaterLevel() >= 1000)) {
             this.inventory.decrStackSize(0, 1);
             this.inventory.insertItem(0, new ItemStack(Items.WATER_BUCKET, 1), false);
-            IFluid.drainWater(this, 1000);
+            FluidInterface.drainWater(this, 1000);
         }
 
         // Output slot - Handling slots
@@ -68,24 +67,24 @@ public class WaterPumpBlockEntity extends AbstractFluidBlockEntity implements En
             if (wait >= 15) {
                 if (this.electronicPower >= 20
                         && Blocks.WATER == level.getBlockState(blockPos.below()).getBlock()) {
-                    if (this.getMaxCapacity() >= (this.getWaterLevel() + 100)) {
-                        IFluid.fillWater(this, 100);
-                        IEnergy.drainEnergy(this, 20);
+                    if (this.getTankCapacity() >= (this.getWaterLevel() + 100)) {
+                        FluidInterface.fillWater(this, 100);
+                        EnergyInterface.drainEnergy(this, 20);
                         level.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
                         level.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
-                    } else if (this.getMaxCapacity() >= (this.getWaterLevel() + 50)) {
-                        IFluid.fillWater(this, 50);
-                        IEnergy.drainEnergy(this, 10);
+                    } else if (this.getTankCapacity() >= (this.getWaterLevel() + 50)) {
+                        FluidInterface.fillWater(this, 50);
+                        EnergyInterface.drainEnergy(this, 10);
                         level.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
                         level.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
-                    } else if (this.getMaxCapacity() >= (this.getWaterLevel() + 10)) {
-                        IFluid.fillWater(this, 10);
-                        IEnergy.drainEnergy(this, 2);
+                    } else if (this.getTankCapacity() >= (this.getWaterLevel() + 10)) {
+                        FluidInterface.fillWater(this, 10);
+                        EnergyInterface.drainEnergy(this, 2);
                         level.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
                         level.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
-                    } else if (this.getMaxCapacity() > this.getWaterLevel()) {
-                        IFluid.fillWater(this, 1);
-                        IEnergy.drainEnergy(this, 0.2);
+                    } else if (this.getTankCapacity() > this.getWaterLevel()) {
+                        FluidInterface.fillWater(this, 1);
+                        EnergyInterface.drainEnergy(this, 0.2);
                         level.setBlockAndUpdate(blockPos.below(), Blocks.AIR.defaultBlockState());
                         level.playSound(null, this.getBlockPos(), SoundsInit.WATER_PUMPING.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
                     } else {
@@ -111,28 +110,24 @@ public class WaterPumpBlockEntity extends AbstractFluidBlockEntity implements En
         return this.inventory;
     }
 
-    public int getElectronicPowerTimesHundred() {
-        return (int) (this.electronicPower * 100);
+    public void setHundredEnergy(int hundredEnergy) {
+        this.electronicPower = hundredEnergy / 100.0;
     }
 
-    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
-        this.electronicPower = electronicPowerTimesHundred / 100.0;
-    }
-
-    public double getElectronicPower() {
+    public double getEnergy() {
         return this.electronicPower;
     }
 
-    public void setElectronicPower(double electronicPower) {
-        this.electronicPower = electronicPower;
+    public void setEnergy(double energy) {
+        this.electronicPower = energy;
     }
 
-    public int getMaxStorage() {
+    public int getMaxEnergy() {
         return this.maxStorage;
     }
 
-    public void setMaxStorage(int maxStorage) {
-        this.maxStorage = maxStorage;
+    public void setMaxEnergy(int maxEnergy) {
+        this.maxStorage = maxEnergy;
     }
 
     public int isOn() {
@@ -141,13 +136,6 @@ public class WaterPumpBlockEntity extends AbstractFluidBlockEntity implements En
 
     public void setOn(int isOn) {
         this.isOn = (isOn == 1);
-    }
-
-    public boolean getLogic() {
-        return false;
-    }
-
-    public void setLogic(boolean logic) {
     }
 
     @Override

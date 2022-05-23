@@ -73,7 +73,7 @@ public class Cable extends AbstractCable implements EntityBlock {
         BlockState stateIn = level.getBlockState(pos);
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof CableBlockEntity cableBlockEntity) {
-            if ((hasOpenEnd(stateIn)) && (entity instanceof LivingEntity) && (cableBlockEntity.getElectronicPower() > 0)) {
+            if ((hasOpenEnd(stateIn)) && (entity instanceof LivingEntity) && (cableBlockEntity.getEnergy() > 0)) {
                 double damage = Math.random() * 10;
                 if (damage > 0) entity.hurt(DamageSources.ELECTRIC_SHOCK.bypassArmor(), (float) damage);
             }

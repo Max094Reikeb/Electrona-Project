@@ -16,7 +16,7 @@ import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.misc.Tags;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
-import net.reikeb.maxilib.intface.IEnergy;
+import net.reikeb.maxilib.intface.EnergyInterface;
 
 import static net.reikeb.electrona.init.BlockEntityInit.BIOMASS_GENERATOR_BLOCK_ENTITY;
 
@@ -35,17 +35,17 @@ public class BiomassGeneratorBlockEntity extends AbstractEnergyBlockEntity {
     }
 
     public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
-        this.setMaxStorage(3000);
+        this.setMaxEnergy(3000);
         if (level == null) return;
 
         // Handle slot
-        if (this.inventory.getStackInSlot(0).is(Tags.BIOMASS) && this.getElectronicPower() < 3000) {
+        if (this.inventory.getStackInSlot(0).is(Tags.BIOMASS) && this.getEnergy() < 3000) {
             wait += 1;
             if (wait >= 20) {
-                if (this.getElectronicPower() <= 2990) {
-                    IEnergy.fillEnergy(this, 20);
+                if (this.getEnergy() <= 2990) {
+                    EnergyInterface.fillEnergy(this, 20);
                 } else {
-                    IEnergy.setEnergy(this, 300);
+                    this.setEnergy(300);
                 }
                 this.inventory.decrStackSize(0, 1);
                 level.playSound(null, blockPos, SoundsInit.BIOMASS_GENERATOR_ACTIVE.get(),

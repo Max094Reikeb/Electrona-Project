@@ -21,7 +21,6 @@ import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.ParticleInit;
 import net.reikeb.maxilib.intface.EnergyInterface;
-import net.reikeb.maxilib.intface.IEnergy;
 import net.reikeb.maxilib.inventory.ItemHandler;
 import net.reikeb.maxilib.utils.Gravity;
 
@@ -52,7 +51,7 @@ public class GravitorBlockEntity extends BlockEntity implements EnergyInterface 
     public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
         if (this.level == null) return;
 
-        this.setMaxStorage(50);
+        this.setMaxEnergy(50);
         long i = this.level.getGameTime();
 
         ++this.tickCount;
@@ -61,7 +60,7 @@ public class GravitorBlockEntity extends BlockEntity implements EnergyInterface 
             boolean flag = (this.updateShape()) && (this.electronicPower >= 10);
             this.setActive(flag);
             if (!this.level.isClientSide && this.isActive()) {
-                IEnergy.drainEnergy(this, 10);
+                EnergyInterface.drainEnergy(this, 10);
                 this.applyGravity();
             }
         }
@@ -180,35 +179,24 @@ public class GravitorBlockEntity extends BlockEntity implements EnergyInterface 
         return null;
     }
 
-    public int getElectronicPowerTimesHundred() {
-        return (int) (this.electronicPower * 100);
+    public void setHundredEnergy(int hundredEnergy) {
+        this.electronicPower = hundredEnergy / 100.0;
     }
 
-    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
-        this.electronicPower = electronicPowerTimesHundred / 100.0;
-    }
-
-    public double getElectronicPower() {
+    public double getEnergy() {
         return this.electronicPower;
     }
 
-    public void setElectronicPower(double electronicPower) {
-        this.electronicPower = electronicPower;
+    public void setEnergy(double energy) {
+        this.electronicPower = energy;
     }
 
-    public int getMaxStorage() {
+    public int getMaxEnergy() {
         return this.maxStorage;
     }
 
-    public void setMaxStorage(int maxStorage) {
-        this.maxStorage = maxStorage;
-    }
-
-    public boolean getLogic() {
-        return false;
-    }
-
-    public void setLogic(boolean logic) {
+    public void setMaxEnergy(int maxEnergy) {
+        this.maxStorage = maxEnergy;
     }
 
     @Override

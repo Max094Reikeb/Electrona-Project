@@ -26,10 +26,10 @@ public class BatteryContainer extends AbstractContainer {
         });
 
         this.layoutPlayerInventorySlots(inv);
-        this.addSyncedInt(batteryBlockEntity::setElectronicPowerTimesHundred, batteryBlockEntity::getElectronicPowerTimesHundred);
+        this.addSyncedInt(batteryBlockEntity::setHundredEnergy, batteryBlockEntity::getHundredEnergy);
     }
 
-    public double getElectronicPower() {
-        return batteryBlockEntity.getElectronicPower();
+    public double getEnergy() {
+        return batteryBlockEntity.getEnergy();
     }
 }

@@ -32,7 +32,7 @@ public class SprayerBlockEntity extends AbstractEnergyBlockEntity {
     }
 
     public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
-        this.setMaxStorage(3000);
+        this.setMaxEnergy(3000);
 
         if (level == null) return;
         SprayerFunction.mainSprayer(this);

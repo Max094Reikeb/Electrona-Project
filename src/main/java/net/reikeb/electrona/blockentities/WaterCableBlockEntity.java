@@ -65,18 +65,18 @@ public class WaterCableBlockEntity extends BlockEntity implements FluidInterface
                 .ifPresent(cap -> cap.fill(new FluidStack(Fluids.WATER, amount), IFluidHandler.FluidAction.EXECUTE));
     }
 
-    public int getMaxCapacity() {
+    public int getTankCapacity() {
         AtomicInteger capacity = new AtomicInteger();
         this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
                 .ifPresent(cap -> capacity.set(cap.getTankCapacity(1)));
         return capacity.get();
     }
 
-    public boolean getLogic() {
+    public boolean getFluidLogic() {
         return this.cableLogic;
     }
 
-    public void setLogic(boolean logic) {
+    public void setFluidLogic(boolean logic) {
         this.cableLogic = logic;
     }
 

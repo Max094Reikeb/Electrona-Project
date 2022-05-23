@@ -20,7 +20,7 @@ import net.reikeb.electrona.events.local.PurificationEvent;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.recipes.Recipes;
 import net.reikeb.maxilib.abs.AbstractFluidBlockEntity;
-import net.reikeb.maxilib.intface.IFluid;
+import net.reikeb.maxilib.intface.FluidInterface;
 
 import static net.reikeb.electrona.init.BlockEntityInit.PURIFICATOR_BLOCK_ENTITY;
 
@@ -46,14 +46,14 @@ public class PurificatorBlockEntity extends AbstractFluidBlockEntity {
         ItemStack stackInSlot1 = this.inventory.getStackInSlot(1);
 
         int waterLevel = this.getWaterLevel();
-        int tankCapacity = this.getMaxCapacity();
+        int tankCapacity = this.getTankCapacity();
 
         // Input slot - Handling slots
         if ((this.inventory.getStackInSlot(0).getItem() == Items.WATER_BUCKET)
                 && (waterLevel <= (tankCapacity - 1000))) {
             this.inventory.decrStackSize(0, 1);
             this.inventory.insertItem(0, new ItemStack(Items.BUCKET, 1), false);
-            IFluid.fillWater(this, 1000);
+            FluidInterface.fillWater(this, 1000);
         }
 
         if (level.isClientSide) return;
@@ -67,7 +67,7 @@ public class PurificatorBlockEntity extends AbstractFluidBlockEntity {
 
                 if (this.currentPurifyingTime < (this.purifyingTime * 20)) {
                     this.currentPurifyingTime += 1;
-                    IFluid.drainWater(this, (int) (waterPerSecond * 0.05));
+                    FluidInterface.drainWater(this, (int) (waterPerSecond * 0.05));
                     level.playSound(null, blockPos, SoundsInit.PURIFICATOR_PURIFICATION.get(),
                             SoundSource.BLOCKS, 0.6F, 1.0F);
 

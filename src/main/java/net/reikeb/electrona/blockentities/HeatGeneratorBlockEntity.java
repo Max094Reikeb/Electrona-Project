@@ -14,7 +14,6 @@ import net.reikeb.electrona.blocks.HeatGenerator;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.maxilib.intface.EnergyInterface;
-import net.reikeb.maxilib.intface.IEnergy;
 import net.reikeb.maxilib.inventory.ItemHandler;
 
 import javax.annotation.Nullable;
@@ -33,7 +32,7 @@ public class HeatGeneratorBlockEntity extends BlockEntity implements EnergyInter
     }
 
     public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
-        this.setMaxStorage(2000);
+        this.setMaxEnergy(2000);
 
         if (level == null) return;
 
@@ -53,15 +52,15 @@ public class HeatGeneratorBlockEntity extends BlockEntity implements EnergyInter
                 || biomeRL.equals(Keys.SOUL_SAND_VALLEY_BIOME)
                 || biomeRL.equals(Keys.BASALT_DELTAS_BIOME))) {
             if (this.electronicPower < 1996) {
-                IEnergy.fillEnergy(this, 0.15);
+                EnergyInterface.fillEnergy(this, 0.15);
             } else if ((this.electronicPower >= 1996) && (this.electronicPower <= 1999.95)) {
-                IEnergy.fillEnergy(this, 0.05);
+                EnergyInterface.fillEnergy(this, 0.05);
             }
         } else {
             if (this.electronicPower > 0.15) {
-                IEnergy.drainEnergy(this, 0.15);
+                EnergyInterface.drainEnergy(this, 0.15);
             } else if ((this.electronicPower <= 0.15) && (this.electronicPower >= 0.05)) {
-                IEnergy.drainEnergy(this, 0.05);
+                EnergyInterface.drainEnergy(this, 0.05);
             }
         }
 
@@ -75,35 +74,24 @@ public class HeatGeneratorBlockEntity extends BlockEntity implements EnergyInter
         return null;
     }
 
-    public int getElectronicPowerTimesHundred() {
-        return (int) (this.electronicPower * 100);
+    public void setHundredEnergy(int hundredEnergy) {
+        this.electronicPower = hundredEnergy / 100.0;
     }
 
-    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
-        this.electronicPower = electronicPowerTimesHundred / 100.0;
-    }
-
-    public double getElectronicPower() {
+    public double getEnergy() {
         return this.electronicPower;
     }
 
-    public void setElectronicPower(double electronicPower) {
-        this.electronicPower = electronicPower;
+    public void setEnergy(double energy) {
+        this.electronicPower = energy;
     }
 
-    public int getMaxStorage() {
+    public int getMaxEnergy() {
         return this.maxStorage;
     }
 
-    public void setMaxStorage(int maxStorage) {
-        this.maxStorage = maxStorage;
-    }
-
-    public boolean getLogic() {
-        return false;
-    }
-
-    public void setLogic(boolean logic) {
+    public void setMaxEnergy(int maxEnergy) {
+        this.maxStorage = maxEnergy;
     }
 
     @Override

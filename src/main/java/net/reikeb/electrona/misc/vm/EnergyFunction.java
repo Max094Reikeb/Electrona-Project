@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.misc.Tags;
 import net.reikeb.maxilib.intface.EnergyInterface;
-import net.reikeb.maxilib.intface.IEnergy;
 
 public class EnergyFunction {
 
@@ -26,7 +25,7 @@ public class EnergyFunction {
      */
     public static <T extends EnergyInterface> void generatorTransferEnergy(Level level, BlockPos pos, T generatorBlockEntity, int transferPerSecond, Boolean isGenerator) {
         double transferPerTick = transferPerSecond * 0.05;
-        double generatorPower = IEnergy.getEnergy(generatorBlockEntity);
+        double generatorPower = generatorBlockEntity.getEnergy();
 
         TagKey<Block> machineTag = isGenerator ? Tags.MACHINES : Tags.BLUE_MACHINES;
         TagKey<Block> cableTag = isGenerator ? Tags.CABLE : Tags.BLUE_CABLE;
@@ -39,13 +38,13 @@ public class EnergyFunction {
             if (!(blockEntity instanceof EnergyInterface energyBlockEntity)) continue;
             if (!(offsetBlockState.is(machineTag) || offsetBlockState.is(cableTag))) continue;
 
-            double machinePower = IEnergy.getEnergy(energyBlockEntity);
-            int machineMax = IEnergy.getMaxEnergy(energyBlockEntity);
+            double machinePower = energyBlockEntity.getEnergy();
+            int machineMax = energyBlockEntity.getMaxEnergy();
             double headroom = machineMax - machinePower;
             double actualTransfer = Math.min(Math.min(transferPerTick, generatorPower), headroom);
 
-            IEnergy.drainEnergy(generatorBlockEntity, actualTransfer);
-            IEnergy.fillEnergy(energyBlockEntity, actualTransfer);
+            EnergyInterface.drainEnergy(generatorBlockEntity, actualTransfer);
+            EnergyInterface.fillEnergy(energyBlockEntity, actualTransfer);
         }
     }
 
@@ -61,7 +60,7 @@ public class EnergyFunction {
     public static <T extends EnergyInterface> void transferEnergyWithItemSlot(T generatorBlockEntity, Boolean fromGenerator, int slot, double transferPerSecond) {
         double transferPerTick = transferPerSecond * 0.05;
         ItemStack stackInSlot = generatorBlockEntity.getItemInventory().getStackInSlot(slot);
-        double electronicPower = IEnergy.getEnergy(generatorBlockEntity);
+        double electronicPower = generatorBlockEntity.getEnergy();
 
         if (fromGenerator && (electronicPower <= 0)) return; // we have no more power
         if (!stackInSlot.is(Tags.POWERED_ITEMS)) return; // the itemstack is not the one required
@@ -70,9 +69,9 @@ public class EnergyFunction {
         double actualTransfer = Math.min(transferPerTick, (fromGenerator ? electronicPower : itemPower));
 
         if (fromGenerator) {
-            IEnergy.drainEnergy(generatorBlockEntity, actualTransfer);
+            EnergyInterface.drainEnergy(generatorBlockEntity, actualTransfer);
         } else {
-            IEnergy.fillEnergy(generatorBlockEntity, actualTransfer);
+            EnergyInterface.fillEnergy(generatorBlockEntity, actualTransfer);
         }
         stackInSlot.getOrCreateTag().putDouble("ElectronicPower", (fromGenerator ? (itemPower + actualTransfer) : (itemPower - actualTransfer)));
     }

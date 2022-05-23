@@ -19,7 +19,7 @@ import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.MiningMachineContainer;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
-import net.reikeb.maxilib.intface.IEnergy;
+import net.reikeb.maxilib.intface.EnergyInterface;
 
 import java.util.Random;
 
@@ -40,7 +40,7 @@ public class MiningMachineBlockEntity extends AbstractEnergyBlockEntity {
     }
 
     public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
-        this.setMaxStorage(6000);
+        this.setMaxEnergy(6000);
         if (level == null) return;
 
         wait++;
@@ -54,7 +54,7 @@ public class MiningMachineBlockEntity extends AbstractEnergyBlockEntity {
         double z = blockPos.getZ();
         ItemStack item;
 
-        if ((level.hasNeighborSignal(blockPos)) && (this.getElectronicPower() >= 50)) {
+        if ((level.hasNeighborSignal(blockPos)) && (this.getEnergy() >= 50)) {
             ny = 1;
             while ((BlockInit.MINING_PIPE.get() == (level.getBlockState(new BlockPos((int) x, (int) (y - (ny)), (int) z)))
                     .getBlock())) {
@@ -78,7 +78,7 @@ public class MiningMachineBlockEntity extends AbstractEnergyBlockEntity {
                             this.inventory.getStackInSlot(0).shrink(1);
                             this.inventory.getStackInSlot(0).setDamageValue(0);
                         }
-                        IEnergy.drainEnergy(this, 50);
+                        EnergyInterface.drainEnergy(this, 50);
                     }
                 } else {
                     if (level.getBlockState(_tempPos).getFluidState().isSource()) {
@@ -98,7 +98,7 @@ public class MiningMachineBlockEntity extends AbstractEnergyBlockEntity {
                                 this.inventory.setStackInSlot(slot, new ItemStack(Items.LAVA_BUCKET, 1));
                             }
                             level.setBlock(_tempPos, Blocks.AIR.defaultBlockState(), 3);
-                            IEnergy.drainEnergy(this, 50);
+                            EnergyInterface.drainEnergy(this, 50);
                         }
                     }
                 }

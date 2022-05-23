@@ -26,7 +26,7 @@ public class TeleporterContainer extends AbstractContainer {
         });
 
         this.layoutPlayerInventorySlots(inv);
-        this.addSyncedInt(teleporterBlockEntity::setElectronicPowerTimesHundred, teleporterBlockEntity::getElectronicPowerTimesHundred);
+        this.addSyncedInt(teleporterBlockEntity::setHundredEnergy, teleporterBlockEntity::getHundredEnergy);
         this.addSyncedInt(teleporterBlockEntity::setTeleportXTimesHundred, teleporterBlockEntity::getTeleportXTimesHundred);
         this.addSyncedInt(teleporterBlockEntity::setTeleportYTimesHundred, teleporterBlockEntity::getTeleportYTimesHundred);
         this.addSyncedInt(teleporterBlockEntity::setTeleportZTimesHundred, teleporterBlockEntity::getTeleportZTimesHundred);
@@ -38,8 +38,8 @@ public class TeleporterContainer extends AbstractContainer {
         this.addSyncedInt(teleporterBlockEntity::setTeleporter, teleporterBlockEntity::isTeleporter);
     }
 
-    public double getElectronicPower() {
-        return teleporterBlockEntity.getElectronicPower();
+    public double getEnergy() {
+        return teleporterBlockEntity.getEnergy();
     }
 
     public double getTeleportX() {

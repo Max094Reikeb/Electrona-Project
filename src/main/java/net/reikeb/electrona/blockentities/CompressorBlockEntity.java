@@ -19,7 +19,7 @@ import net.reikeb.electrona.events.local.CompressionEvent;
 import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.recipes.Recipes;
 import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
-import net.reikeb.maxilib.intface.IEnergy;
+import net.reikeb.maxilib.intface.EnergyInterface;
 
 import static net.reikeb.electrona.init.BlockEntityInit.COMPRESSOR_BLOCK_ENTITY;
 
@@ -44,11 +44,11 @@ public class CompressorBlockEntity extends AbstractEnergyBlockEntity {
         ItemStack stackInSlot0 = this.inventory.getStackInSlot(0);
         ItemStack stackInSlot1 = this.inventory.getStackInSlot(1);
 
-        this.setMaxStorage(5000);
+        this.setMaxEnergy(5000);
 
         if ((level == null) || (level.isClientSide)) return;
 
-        if ((this.getElectronicPower() > 0) && (Recipes.getRecipe(this, stackInSlot0, stackInSlot1) != null)) {
+        if ((this.getEnergy() > 0) && (Recipes.getRecipe(this, stackInSlot0, stackInSlot1) != null)) {
             if (this.canCompress) {
                 this.energyRequired = getEnergyRequired(stackInSlot0, stackInSlot1);
                 this.compressingTime = getCompressingTime(stackInSlot0, stackInSlot1);
@@ -57,7 +57,7 @@ public class CompressorBlockEntity extends AbstractEnergyBlockEntity {
 
                 if (this.currentCompressingTime < (this.compressingTime * 20)) {
                     this.currentCompressingTime += 1;
-                    IEnergy.drainEnergy(this, energyPerSecond * 0.05);
+                    EnergyInterface.drainEnergy(this, energyPerSecond * 0.05);
 
                 } else {
                     if (!MinecraftForge.EVENT_BUS.post(new CompressionEvent(level, blockPos, stackInSlot0, stackInSlot1, output.copy(), this.compressingTime, this.energyRequired))) {

@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.maxilib.intface.EnergyInterface;
-import net.reikeb.maxilib.intface.IEnergy;
 import net.reikeb.maxilib.inventory.ItemHandler;
 
 import javax.annotation.Nullable;
@@ -29,7 +28,7 @@ public class SolarPanelT1BlockEntity extends BlockEntity implements EnergyInterf
     }
 
     public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
-        this.setMaxStorage(1000);
+        this.setMaxEnergy(1000);
 
         if (level == null) return;
 
@@ -37,18 +36,18 @@ public class SolarPanelT1BlockEntity extends BlockEntity implements EnergyInterf
         if (level.canSeeSky(blockPos.above()) && level.isDay()) {
             if (this.electronicPower < 996) {
                 if ((level.getLevelData().isRaining() || level.getLevelData().isThundering())) {
-                    IEnergy.fillEnergy(this, 0.1);
+                    EnergyInterface.fillEnergy(this, 0.1);
                 } else {
-                    IEnergy.fillEnergy(this, 0.2);
+                    EnergyInterface.fillEnergy(this, 0.2);
                 }
             } else if (this.electronicPower >= 996 && this.electronicPower <= 999.95) {
-                IEnergy.fillEnergy(this, 0.05);
+                EnergyInterface.fillEnergy(this, 0.05);
             }
         } else {
             if (this.electronicPower > 0.2) {
-                IEnergy.drainEnergy(this, 0.2);
+                EnergyInterface.drainEnergy(this, 0.2);
             } else if (this.electronicPower <= 0.2 && this.electronicPower >= 0.05) {
-                IEnergy.drainEnergy(this, 0.05);
+                EnergyInterface.drainEnergy(this, 0.05);
             }
         }
 
@@ -60,35 +59,24 @@ public class SolarPanelT1BlockEntity extends BlockEntity implements EnergyInterf
         return null;
     }
 
-    public int getElectronicPowerTimesHundred() {
-        return (int) (this.electronicPower * 100);
+    public void setHundredEnergy(int hundredEnergy) {
+        this.electronicPower = hundredEnergy / 100.0;
     }
 
-    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
-        this.electronicPower = electronicPowerTimesHundred / 100.0;
-    }
-
-    public double getElectronicPower() {
+    public double getEnergy() {
         return this.electronicPower;
     }
 
-    public void setElectronicPower(double electronicPower) {
-        this.electronicPower = electronicPower;
+    public void setEnergy(double energy) {
+        this.electronicPower = energy;
     }
 
-    public int getMaxStorage() {
+    public int getMaxEnergy() {
         return this.maxStorage;
     }
 
-    public void setMaxStorage(int maxStorage) {
-        this.maxStorage = maxStorage;
-    }
-
-    public boolean getLogic() {
-        return false;
-    }
-
-    public void setLogic(boolean logic) {
+    public void setMaxEnergy(int maxEnergy) {
+        this.maxStorage = maxEnergy;
     }
 
     @Override

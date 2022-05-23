@@ -73,7 +73,7 @@ public class BlueCable extends AbstractCable implements EntityBlock {
         BlockState stateIn = level.getBlockState(pos);
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof BlueCableBlockEntity blueCableBlockEntity) {
-            if ((hasOpenEnd(stateIn)) && (entity instanceof LivingEntity) && (blueCableBlockEntity.getElectronicPower() > 0)) {
+            if ((hasOpenEnd(stateIn)) && (entity instanceof LivingEntity) && (blueCableBlockEntity.getEnergy() > 0)) {
                 double damage = Math.random() * 10;
                 if (damage > 0) entity.hurt(DamageSources.ELECTRIC_SHOCK.bypassArmor(), (float) damage);
             }

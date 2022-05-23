@@ -14,7 +14,6 @@ import net.minecraft.world.level.material.Material;
 import net.reikeb.electrona.blocks.WaterTurbine;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.maxilib.intface.EnergyInterface;
-import net.reikeb.maxilib.intface.IEnergy;
 import net.reikeb.maxilib.inventory.ItemHandler;
 
 import javax.annotation.Nullable;
@@ -41,7 +40,7 @@ public class WaterTurbineBlockEntity extends BlockEntity implements EnergyInterf
         BlockPos frontPos = blockPos.relative(this.getDirection().getOpposite());
         BlockPos backPos = blockPos.relative(this.getDirection());
 
-        this.setMaxStorage(1000);
+        this.setMaxEnergy(1000);
         if (level == null) return;
 
         // We generate the energy (this part is uncommon for all generators)
@@ -55,15 +54,15 @@ public class WaterTurbineBlockEntity extends BlockEntity implements EnergyInterf
         if ((Material.WATER == level.getBlockState(backPos).getMaterial())
                 && (Material.WATER == level.getBlockState(frontPos).getMaterial())) {
             if ((this.electronicPower < 996)) {
-                IEnergy.fillEnergy(this, 0.2);
+                EnergyInterface.fillEnergy(this, 0.2);
             } else if (((this.electronicPower >= 996) && (this.electronicPower <= 999.95))) {
-                IEnergy.fillEnergy(this, 0.05);
+                EnergyInterface.fillEnergy(this, 0.05);
             }
         } else {
             if ((this.electronicPower > 0.2)) {
-                IEnergy.drainEnergy(this, 0.2);
+                EnergyInterface.drainEnergy(this, 0.2);
             } else if (((this.electronicPower <= 0.2) && (this.electronicPower >= 0.05))) {
-                IEnergy.drainEnergy(this, 0.05);
+                EnergyInterface.drainEnergy(this, 0.05);
             }
         }
 
@@ -75,35 +74,24 @@ public class WaterTurbineBlockEntity extends BlockEntity implements EnergyInterf
         return null;
     }
 
-    public int getElectronicPowerTimesHundred() {
-        return (int) (this.electronicPower * 100);
+    public void setHundredEnergy(int hundredEnergy) {
+        this.electronicPower = hundredEnergy / 100.0;
     }
 
-    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
-        this.electronicPower = electronicPowerTimesHundred / 100.0;
-    }
-
-    public double getElectronicPower() {
+    public double getEnergy() {
         return this.electronicPower;
     }
 
-    public void setElectronicPower(double electronicPower) {
-        this.electronicPower = electronicPower;
+    public void setEnergy(double energy) {
+        this.electronicPower = energy;
     }
 
-    public int getMaxStorage() {
+    public int getMaxEnergy() {
         return this.maxStorage;
     }
 
-    public void setMaxStorage(int maxStorage) {
-        this.maxStorage = maxStorage;
-    }
-
-    public boolean getLogic() {
-        return false;
-    }
-
-    public void setLogic(boolean logic) {
+    public void setMaxEnergy(int maxEnergy) {
+        this.maxStorage = maxEnergy;
     }
 
     @Override

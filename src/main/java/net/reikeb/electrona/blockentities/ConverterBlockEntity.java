@@ -19,7 +19,7 @@ import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.containers.ConverterContainer;
 import net.reikeb.electrona.misc.vm.EnergyFunction;
 import net.reikeb.maxilib.abs.AbstractEnergyBlockEntity;
-import net.reikeb.maxilib.intface.IEnergy;
+import net.reikeb.maxilib.intface.EnergyInterface;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -64,7 +64,7 @@ public class ConverterBlockEntity extends AbstractEnergyBlockEntity {
     }
 
     public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
-        this.setMaxStorage(10000);
+        this.setMaxEnergy(10000);
 
         if (level == null) return;
 
@@ -76,14 +76,14 @@ public class ConverterBlockEntity extends AbstractEnergyBlockEntity {
             }
 
             if (this.toVP) {
-                if (this.getElectronicPower() >= 1) {
+                if (this.getEnergy() >= 1) {
                     this.vp += 3;
-                    IEnergy.drainEnergy(this, 1);
+                    EnergyInterface.drainEnergy(this, 1);
                 }
             } else {
-                if (this.getElectronicPower() >= 1) {
+                if (this.getEnergy() >= 1) {
                     this.getCapability(CapabilityEnergy.ENERGY, null).ifPresent(cap -> cap.receiveEnergy(3, false));
-                    IEnergy.drainEnergy(this, 1);
+                    EnergyInterface.drainEnergy(this, 1);
                 }
             }
             wait = 0;

@@ -7,7 +7,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.reikeb.electrona.misc.Tags;
 import net.reikeb.maxilib.intface.FluidInterface;
-import net.reikeb.maxilib.intface.IFluid;
 
 public class FluidFunction {
 
@@ -32,13 +31,13 @@ public class FluidFunction {
             if (!(blockEntity instanceof FluidInterface fluidBlockEntity)) continue;
             if (!(offsetBlockState.is(Tags.WATER_TANK) || offsetBlockState.is(Tags.WATER_CABLE))) continue;
 
-            int machineLevel = IFluid.getFluidAmount(fluidBlockEntity);
-            int machineCapacity = IFluid.getTankCapacity(fluidBlockEntity);
+            int machineLevel = fluidBlockEntity.getWaterLevel();
+            int machineCapacity = fluidBlockEntity.getTankCapacity();
             double headroom = machineCapacity - machineLevel;
             double actualTransfer = Math.min(Math.min(transferPerTick, generatorLevel), headroom);
 
-            IFluid.drainWater(generatorBlockEntity, (int) actualTransfer);
-            IFluid.fillWater(fluidBlockEntity, (int) actualTransfer);
+            FluidInterface.drainWater(generatorBlockEntity, (int) actualTransfer);
+            FluidInterface.fillWater(fluidBlockEntity, (int) actualTransfer);
         }
     }
 }

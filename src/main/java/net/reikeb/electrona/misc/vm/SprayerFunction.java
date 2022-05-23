@@ -11,7 +11,7 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
 import net.reikeb.electrona.blockentities.SprayerBlockEntity;
 import net.reikeb.electrona.init.ItemInit;
-import net.reikeb.maxilib.intface.IEnergy;
+import net.reikeb.maxilib.intface.EnergyInterface;
 import net.reikeb.maxilib.inventory.ItemHandler;
 import net.reikeb.maxilib.utils.Utils;
 
@@ -23,7 +23,7 @@ public class SprayerFunction {
      * @param sprayerBlockEntity The BlockEntity of the Sprayer
      */
     public static void mainSprayer(SprayerBlockEntity sprayerBlockEntity) {
-        double electronicPower = sprayerBlockEntity.getElectronicPower();
+        double electronicPower = sprayerBlockEntity.getEnergy();
         ItemHandler inv = sprayerBlockEntity.getItemInventory();
         int boostCount = 0;
         Level level = sprayerBlockEntity.getLevel();
@@ -35,7 +35,7 @@ public class SprayerFunction {
             if (level == null) return;
             Utils.forEntitiesInRadius(level, sprayerBlockEntity.getBlockPos(), sprayerBlockEntity.getRadius(), (livingEntity -> {
                 if (inv.getStackInSlot(0).getItem().isEdible()) {
-                    IEnergy.drainEnergy(sprayerBlockEntity, 200);
+                    EnergyInterface.drainEnergy(sprayerBlockEntity, 200);
                     FoodProperties usedFood = inv.getStackInSlot(0).getItem().getFoodProperties();
                     if (usedFood == null) return;
                     for (Pair<MobEffectInstance, Float> pairiterator : usedFood.getEffects()) {
@@ -45,7 +45,7 @@ public class SprayerFunction {
                     }
                     inv.decrStackSize(0, 1);
                 } else if (inv.getStackInSlot(0).getItem() instanceof PotionItem) {
-                    IEnergy.drainEnergy(sprayerBlockEntity, 200);
+                    EnergyInterface.drainEnergy(sprayerBlockEntity, 200);
                     for (MobEffectInstance effectiterator : PotionUtils.getMobEffects(inv.getStackInSlot(0))) {
                         livingEntity.addEffect(new MobEffectInstance(effectiterator));
                     }

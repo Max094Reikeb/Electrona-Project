@@ -30,7 +30,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.reikeb.electrona.blockentities.HeatGeneratorBlockEntity;
 import net.reikeb.electrona.init.BlockEntityInit;
 import net.reikeb.electrona.misc.BlockStateProperties;
-import net.reikeb.maxilib.intface.IEnergy;
+import net.reikeb.maxilib.intface.EnergyInterface;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -90,10 +90,10 @@ public class HeatGenerator extends Block implements EntityBlock {
         BlockEntity tile = level.getBlockEntity(pos);
         if (tile instanceof HeatGeneratorBlockEntity tileHeatGenerator) {
             if (player instanceof ServerPlayer serverPlayer) {
-                double electronicPower = tileHeatGenerator.getElectronicPower();
+                double electronicPower = tileHeatGenerator.getEnergy();
                 if ((serverPlayer.getMainHandItem().getItem() == Items.LAVA_BUCKET) && (electronicPower <= 800)) {
                     if (!level.isClientSide()) {
-                        IEnergy.fillEnergy(tileHeatGenerator, 200);
+                        EnergyInterface.fillEnergy(tileHeatGenerator, 200);
                     }
                     if (!serverPlayer.isCreative()) {
                         serverPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
@@ -101,7 +101,7 @@ public class HeatGenerator extends Block implements EntityBlock {
                     }
                 } else if ((serverPlayer.getMainHandItem().getItem() == Items.LAVA_BUCKET) && (electronicPower > 800)) {
                     if (!level.isClientSide()) {
-                        IEnergy.setEnergy(tileHeatGenerator, electronicPower + (1000 - electronicPower));
+                        tileHeatGenerator.setEnergy(electronicPower + (1000 - electronicPower));
                     }
                     if (!serverPlayer.isCreative()) {
                         serverPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));

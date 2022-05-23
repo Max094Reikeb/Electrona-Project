@@ -18,6 +18,6 @@ public class BiomassGeneratorWindow extends AbstractWindow<BiomassGeneratorConta
     protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.biomass_generator.name"), 7, 7, -16777216);
         this.font.draw(matrixStack, new TranslatableComponent("gui.electrona.generic.storage"), 125, 5, -16777216);
-        this.font.draw(matrixStack, "" + (int) this.menu.getElectronicPower() + " ELs", 125, 15, -3407821);
+        this.font.draw(matrixStack, "" + (int) this.menu.getEnergy() + " ELs", 125, 15, -3407821);
     }
 }

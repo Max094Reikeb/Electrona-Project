@@ -56,10 +56,10 @@ public class EnergyAnalyzer extends Item {
         if (entity == null) return InteractionResult.FAIL;
 
         BlockEntity blockEntity = level.getBlockEntity(context.getClickedPos());
-        double electronicPower = (blockEntity instanceof AbstractEnergyBlockEntity energyBlockEntity) ? energyBlockEntity.getElectronicPower() : 0;
+        double energy = (blockEntity instanceof AbstractEnergyBlockEntity energyBlockEntity) ? energyBlockEntity.getEnergy() : 0;
 
         if (!level.isClientSide) {
-            entity.displayClientMessage(new TranslatableComponent("message.electrona.energy_analyzed", electronicPower), true);
+            entity.displayClientMessage(new TranslatableComponent("message.electrona.energy_analyzed", energy), true);
         }
         return action;
     }

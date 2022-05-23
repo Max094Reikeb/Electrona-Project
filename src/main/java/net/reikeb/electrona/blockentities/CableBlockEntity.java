@@ -29,7 +29,7 @@ public class CableBlockEntity extends BlockEntity implements EnergyInterface {
     }
 
     public <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState state, T t) {
-        this.setMaxStorage(36);
+        this.setMaxEnergy(36);
 
         // We pass energy to blocks around (this part is common to all cables)
         CableFunction.cableTransferEnergy(level, blockPos, this, 6, false);
@@ -41,35 +41,31 @@ public class CableBlockEntity extends BlockEntity implements EnergyInterface {
         return null;
     }
 
-    public int getElectronicPowerTimesHundred() {
-        return (int) (this.electronicPower * 100);
+    public void setHundredEnergy(int hundredEnergy) {
+        this.electronicPower = hundredEnergy / 100.0;
     }
 
-    public void setElectronicPowerTimesHundred(int electronicPowerTimesHundred) {
-        this.electronicPower = electronicPowerTimesHundred / 100.0;
-    }
-
-    public double getElectronicPower() {
+    public double getEnergy() {
         return this.electronicPower;
     }
 
-    public void setElectronicPower(double electronicPower) {
-        this.electronicPower = electronicPower;
+    public void setEnergy(double energy) {
+        this.electronicPower = energy;
     }
 
-    public int getMaxStorage() {
+    public int getMaxEnergy() {
         return this.maxStorage;
     }
 
-    public void setMaxStorage(int maxStorage) {
-        this.maxStorage = maxStorage;
+    public void setMaxEnergy(int maxEnergy) {
+        this.maxStorage = maxEnergy;
     }
 
-    public boolean getLogic() {
+    public boolean getEnergyLogic() {
         return this.cableLogic;
     }
 
-    public void setLogic(boolean logic) {
+    public void setEnergyLogic(boolean logic) {
         this.cableLogic = logic;
     }
 
