@@ -223,8 +223,6 @@
   "itemGroup.electrona_items": "Elekcrona Eşyalar",
   "itemGroup.electrona_machines": "Electrona Makineler",
   "itemGroup.electrona_tools": "Electrona Araçlar",
-  "jei.title.compressing": "Sıkıştırılıyor",
-  "jei.title.purifying": "Arındırılıyor",
   "message.electrona.coordinates_transfered_info": "Koordinatlar aktarıldı!",
   "message.electrona.dimension_travel_not_setup": "Henüz kurulu bir boyut yok!",
   "message.electrona.dimension_travel_saved_end": "Taşın Ende bağlandı!",
