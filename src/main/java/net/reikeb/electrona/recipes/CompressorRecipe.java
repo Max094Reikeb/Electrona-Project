@@ -61,6 +61,14 @@ public class CompressorRecipe implements Recipe<Container> {
         return true; // Unnecessary, just needs to be overriden to true.
     }
 
+    public Couple<Ingredient, Ingredient> getInputIngredients() {
+        return this.inputs;
+    }
+
+    public Couple<ItemStack, ItemStack> getInputs() {
+        return new Couple<>(this.inputs.part1().getItems()[0], this.inputs.part2().getItems()[0]);
+    }
+
     @Override
     public ItemStack getResultItem() {
         return this.output;

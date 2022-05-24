@@ -73,6 +73,10 @@ public class PurificatorRecipe implements Recipe<Container> {
         return true; // Unnecessary, just needs to be overriden to true.
     }
 
+    public ItemStack getInput() {
+        return this.input;
+    }
+
     @Override
     public ItemStack getResultItem() {
         return this.output;

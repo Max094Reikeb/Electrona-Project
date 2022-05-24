@@ -228,8 +228,6 @@
   "itemGroup.electrona_items": "Electrona Items",
   "itemGroup.electrona_machines": "Electrona Machines",
   "itemGroup.electrona_tools": "Electrona Tools",
-  "jei.title.compressing": "Compressing",
-  "jei.title.purifying": "Purifying",
   "message.electrona.coordinates_transfered_info": "Coordinates have been transfered!",
   "message.electrona.dimension_travel_not_setup": "There is no dimension setted up yet!",
   "message.electrona.dimension_travel_saved_end": "Your gem is now linked to the End!",
