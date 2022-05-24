@@ -21,7 +21,7 @@ public class CompressingWrapper extends CompressorRecipe {
     }
 
     public CompressingWrapper(Couple<Couple<ItemStack, ItemStack>, ItemStack> wrapped) {
-        super(Keys.COMPRESSING, Ingredient.of(wrapped.part1().part1()), Ingredient.of(wrapped.part1().part2()), wrapped.part2(), 20, 20);
+        super(Keys.COMPRESSING, new Couple<>(Ingredient.of(wrapped.part1().part1()), Ingredient.of(wrapped.part1().part2())), wrapped.part2(), 20, 20);
         this.wrapped = wrapped;
     }
 

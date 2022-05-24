@@ -2,7 +2,6 @@ package net.reikeb.electrona.recipes;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -10,48 +9,33 @@ import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.misc.Keys;
-import net.reikeb.electrona.recipes.contexts.CompressingContext;
-import net.reikeb.maxilib.inventory.SingletonInventory;
-
-import javax.annotation.Nullable;
-import java.util.Optional;
+import net.reikeb.maxilib.Couple;
 
 public class CompressorRecipe implements Recipe<Container> {
 
     public static final Serializer SERIALIZER = new Serializer();
 
-    private final Ingredient input;
-    private final Ingredient input2;
+    private final Couple<Ingredient, Ingredient> inputs;
     private final ItemStack output;
     private final ResourceLocation id;
     private final int compressingTime;
     private final int energyRequired;
 
-    public CompressorRecipe(ResourceLocation id, Ingredient input, Ingredient input2, ItemStack output, int compressingTime, int energyRequired) {
+    public CompressorRecipe(ResourceLocation id, Couple<Ingredient, Ingredient> inputs, ItemStack output, int compressingTime, int energyRequired) {
         this.id = id;
-        this.input = input;
-        this.input2 = input2;
+        this.inputs = inputs;
         this.output = output;
         this.compressingTime = compressingTime;
         this.energyRequired = energyRequired;
     }
 
-    public static Optional<CompressorRecipe> getRecipe(Level level, @Nullable BlockPos pos, ItemStack stack) {
-        return getRecipe(level, new CompressingContext(new SingletonInventory(stack), null, pos != null ? () -> Vec3.atCenterOf(pos) : null, null));
-    }
-
-    public static Optional<CompressorRecipe> getRecipe(Level level, CompressingContext ctx) {
-        return level.getRecipeManager().getRecipeFor(Electrona.COMPRESSING, ctx, level);
-    }
-
     @Override
     public String toString() {
-        return "Compressor recipe [input=" + this.input + ", input2=" + this.input2 + ", output=" + this.output + ", id=" + this.id + "]";
+        return "Compressor recipe [input=" + this.inputs.part1() + ", input2=" + this.inputs.part2() + ", output=" + this.output + ", id=" + this.id + "]";
     }
 
     public int getCompressingTime() {
@@ -64,21 +48,17 @@ public class CompressorRecipe implements Recipe<Container> {
 
     @Override
     public boolean matches(Container inv, Level level) {
-        return (this.input.test(inv.getItem(0)) && (this.input2.test(inv.getItem(1))));
+        return (this.inputs.part1().test(inv.getItem(0)) && (this.inputs.part2().test(inv.getItem(1))));
     }
 
     @Override
     public ItemStack assemble(Container inv) {
-
-        // This method is ignored by our custom recipe system. getRecipeOutput().copy() is used instead.
-        return this.output.copy();
+        return this.output.copy(); // This method is ignored by the system. getRecipeOutput().copy() is used instead.
     }
 
     @Override
     public boolean canCraftInDimensions(int p_194133_1_, int p_194133_2_) {
-
-        // Unnecessary method, just need to override it to true.
-        return true;
+        return true; // Unnecessary, just needs to be overriden to true.
     }
 
     @Override
@@ -108,8 +88,6 @@ public class CompressorRecipe implements Recipe<Container> {
 
     private static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<CompressorRecipe> {
         Serializer() {
-
-            // This registry name is what people will specify in their json files.
             this.setRegistryName(Keys.COMPRESSING);
         }
 
@@ -133,7 +111,7 @@ public class CompressorRecipe implements Recipe<Container> {
             final int compressingTime = GsonHelper.getAsInt(json, "time", 20);
             final int energyRequired = GsonHelper.getAsInt(json, "energy", 20);
 
-            return new CompressorRecipe(recipeId, input, input2, output, compressingTime, energyRequired);
+            return new CompressorRecipe(recipeId, new Couple<>(input, input2), output, compressingTime, energyRequired);
         }
 
         @Override
@@ -146,7 +124,7 @@ public class CompressorRecipe implements Recipe<Container> {
             final int compressingTime = buffer.readInt();
             final int energyRequired = buffer.readInt();
 
-            return new CompressorRecipe(recipeId, input, input2, output, compressingTime, energyRequired);
+            return new CompressorRecipe(recipeId, new Couple<>(input, input2), output, compressingTime, energyRequired);
         }
 
         @Override
@@ -154,11 +132,18 @@ public class CompressorRecipe implements Recipe<Container> {
 
             // Writes the recipe to a packet buffer. This is called on the server when a player
             // connects or when /reload is used.
-            recipe.input.toNetwork(buffer);
-            recipe.input2.toNetwork(buffer);
+            recipe.inputs.part1().toNetwork(buffer);
+            recipe.inputs.part2().toNetwork(buffer);
             buffer.writeItemStack(recipe.output, true);
             buffer.writeInt(recipe.compressingTime);
             buffer.writeInt(recipe.energyRequired);
+        }
+    }
+
+    public static class CompressorRecipeType implements RecipeType<CompressorRecipe> {
+        @Override
+        public String toString() {
+            return Keys.COMPRESSING.toString();
         }
     }
 }

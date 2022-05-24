@@ -1,7 +1,6 @@
 package net.reikeb.electrona.recipes;
 
 import com.google.gson.JsonObject;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -12,16 +11,10 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.misc.Keys;
-import net.reikeb.electrona.recipes.contexts.PurifyingContext;
-import net.reikeb.maxilib.inventory.SingletonInventory;
-
-import javax.annotation.Nullable;
-import java.util.Optional;
 
 public class PurificatorRecipe implements Recipe<Container> {
 
@@ -41,14 +34,6 @@ public class PurificatorRecipe implements Recipe<Container> {
         this.randomOutput = randomOutput;
         this.purifyingTime = purifyingTime;
         this.waterRequired = waterRequired;
-    }
-
-    public static Optional<PurificatorRecipe> getRecipe(Level level, @Nullable BlockPos pos, ItemStack stack) {
-        return getRecipe(level, new PurifyingContext(new SingletonInventory(stack), null, pos != null ? () -> Vec3.atCenterOf(pos) : null, null));
-    }
-
-    public static Optional<PurificatorRecipe> getRecipe(Level level, PurifyingContext ctx) {
-        return level.getRecipeManager().getRecipeFor(Electrona.PURIFYING, ctx, level);
     }
 
     @Override
@@ -80,16 +65,12 @@ public class PurificatorRecipe implements Recipe<Container> {
 
     @Override
     public ItemStack assemble(Container inv) {
-
-        // This method is ignored by our custom recipe system. getRecipeOutput().copy() is used instead.
-        return this.output.copy();
+        return this.output.copy(); // This method is ignored by the system. getRecipeOutput().copy() is used instead.
     }
 
     @Override
     public boolean canCraftInDimensions(int p_194133_1_, int p_194133_2_) {
-
-        // Unnecessary method, just need to override it to true.
-        return true;
+        return true; // Unnecessary, just needs to be overriden to true.
     }
 
     @Override
@@ -119,8 +100,6 @@ public class PurificatorRecipe implements Recipe<Container> {
 
     private static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<PurificatorRecipe> {
         Serializer() {
-
-            // This registry name is what people will specify in their json files.
             this.setRegistryName(Keys.PURIFYING);
         }
 
@@ -169,6 +148,13 @@ public class PurificatorRecipe implements Recipe<Container> {
             buffer.writeBoolean(recipe.randomOutput);
             buffer.writeInt(recipe.purifyingTime);
             buffer.writeInt(recipe.waterRequired);
+        }
+    }
+
+    public static class PurificatorRecipeType implements RecipeType<PurificatorRecipe> {
+        @Override
+        public String toString() {
+            return Keys.PURIFYING.toString();
         }
     }
 }

@@ -33,8 +33,6 @@ import net.reikeb.electrona.recipes.CompressorRecipe;
 import net.reikeb.electrona.recipes.PurificatorRecipe;
 import net.reikeb.electrona.recipes.ShapedHammerRecipe;
 import net.reikeb.electrona.recipes.ShapelessHammerRecipe;
-import net.reikeb.electrona.recipes.types.RecipeTypeCompressor;
-import net.reikeb.electrona.recipes.types.RecipeTypePurificator;
 import net.reikeb.electrona.setup.RegistryHandler;
 import net.reikeb.electrona.villages.POIFixup;
 import net.reikeb.electrona.villages.StructureGen;
@@ -59,8 +57,8 @@ public class Electrona {
     public static final String MODID = "electrona";
 
     // Creates a new recipe type. This is used for storing recipes in the map, and looking them up.
-    public static final RecipeType<CompressorRecipe> COMPRESSING = new RecipeTypeCompressor();
-    public static final RecipeType<PurificatorRecipe> PURIFYING = new RecipeTypePurificator();
+    public static final RecipeType<CompressorRecipe> COMPRESSING = new CompressorRecipe.CompressorRecipeType();
+    public static final RecipeType<PurificatorRecipe> PURIFYING = new PurificatorRecipe.PurificatorRecipeType();
 
     public Electrona() {
 
