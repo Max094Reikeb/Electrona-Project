@@ -5,11 +5,15 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -17,6 +21,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -70,27 +75,20 @@ public class EmptyCell extends Item {
         BlockPos blockpos1 = blockpos.relative(direction);
         if (level.mayInteract(player, blockpos) && player.mayUseItemAt(blockpos1, direction, itemstack)) {
             BlockState blockstate1 = level.getBlockState(blockpos);
-            if (blockstate1.getBlock() instanceof BucketPickup) {
-                BucketPickup bucketPickup = (BucketPickup) blockstate1.getBlock();
-                ItemStack itemStack1 = bucketPickup.pickupBlock(level, blockpos, blockstate1);
-                if (!itemStack1.isEmpty()) {
-                    ItemStack itemStack2 = ItemUtils.createFilledResult(itemstack, player, itemStack1);
-                /*
-                Fluid fluid = ((BucketPickup) blockstate1.getBlock()).takeLiquid(worldIn, blockpos, blockstate1);
-                if ((fluid != Fluids.WATER) && (fluid != Fluids.LAVA)) return InteractionResultHolder.fail(itemstack);
-                worldIn.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 3);
-                if (playerIn.isCreative()) {
-                    if (!((fluid == Fluids.WATER && playerIn.inventory.contains(new ItemStack(ItemInit.WATER_CELL.get(), 1)))
-                            || (fluid == Fluids.LAVA && playerIn.inventory.contains(new ItemStack(ItemInit.LAVA_CELL.get(), 1))))) {
-                        playerIn.inventory.add(new ItemStack((fluid == Fluids.WATER ? ItemInit.WATER_CELL.get() : ItemInit.LAVA_CELL.get()), 1));
+            FluidState fluidState = level.getFluidState(blockpos);
+            if (!fluidState.is(FluidTags.WATER) && !fluidState.is(FluidTags.LAVA))
+                return InteractionResultHolder.fail(itemstack);
+            if (blockstate1.getBlock() instanceof BucketPickup && !((BucketPickup) blockstate1.getBlock()).pickupBlock(level, blockpos, blockstate1).isEmpty()) {
+                level.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 3);
+                if (player.isCreative()) {
+                    if (!((fluidState.is(FluidTags.WATER) && player.inventory.contains(new ItemStack(ItemInit.WATER_CELL.get(), 1)))
+                            || (fluidState.is(FluidTags.LAVA) && player.inventory.contains(new ItemStack(ItemInit.LAVA_CELL.get(), 1))))) {
+                        player.inventory.add(new ItemStack((fluidState.is(FluidTags.WATER) ? ItemInit.WATER_CELL.get() : ItemInit.LAVA_CELL.get()), 1));
                     }
                 } else {
-                    playerIn.setItemInHand(hand, new ItemStack((fluid == Fluids.WATER ? ItemInit.WATER_CELL.get() : ItemInit.LAVA_CELL.get()), 1));
+                    player.setItemInHand(hand, new ItemStack((fluidState.is(FluidTags.WATER) ? ItemInit.WATER_CELL.get() : ItemInit.LAVA_CELL.get())));
                 }
-                return InteractionResultHolder.success(itemstack);
-                */
-                    return InteractionResultHolder.sidedSuccess(itemStack2, level.isClientSide);
-                }
+                return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide);
             }
         }
         return InteractionResultHolder.fail(itemstack);
