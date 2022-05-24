@@ -228,8 +228,6 @@
   "itemGroup.electrona_items": "Objets d'Electrona",
   "itemGroup.electrona_machines": "Machines d'Electrona",
   "itemGroup.electrona_tools": "Outils d'Electrona",
-  "jei.title.compressing": "Compression",
-  "jei.title.purifying": "Purification",
   "message.electrona.coordinates_transfered_info": "Les coordonnées ont été transférées !",
   "message.electrona.dimension_travel_not_setup": "Il n'y a pas de dimension configurée !",
   "message.electrona.dimension_travel_saved_end": "Votre gemme est maintenant liée à l'End !",
