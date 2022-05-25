@@ -101,4 +101,7 @@ public class BlockEntityInit {
 
     public static final RegistryObject<BlockEntityType<GravitorBlockEntity>> GRAVITOR_BLOCK_ENTITY = BLOCK_ENTITIES.register("gravitor", () ->
             BlockEntityType.Builder.of(GravitorBlockEntity::new, BlockInit.GRAVITOR.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<CustomSkullBlockEntity>> CUSTOM_SKULL = BLOCK_ENTITIES.register("custom_skull", () ->
+            BlockEntityType.Builder.of(CustomSkullBlockEntity::new, BlockInit.RADIOACTIVE_ZOMBIE_HEAD.get(), BlockInit.RADIOACTIVE_ZOMBIE_HEAD_WALL.get()).build(null));
 }

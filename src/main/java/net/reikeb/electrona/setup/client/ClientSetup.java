@@ -2,9 +2,12 @@ package net.reikeb.electrona.setup.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.model.SkullModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -73,6 +76,8 @@ public class ClientSetup {
 
             // Translucent
             ItemBlockRenderTypes.setRenderLayer(BlockInit.HOLE.get(), RenderType.translucent());
+
+            SkullBlockRenderer.SKIN_BY_TYPE.put(BlockInit.SkullType.RADIOACTIVE_ZOMBIE, Keys.RADIOACTIVE_ZOMBIE);
 
             // Item Properties
             ItemProperties.register(ItemInit.GEIGER_POINTER.get(), Keys.ANGLE_PROPERTY, new ClampedItemPropertyFunction() {
@@ -149,6 +154,8 @@ public class ClientSetup {
         Minecraft.getInstance().particleEngine.register(ParticleInit.RADIOACTIVE_FALLOUT.get(), RadioactiveFallout.RadioactiveFalloutFactory::new);
     }
 
+    static final ModelLayerLocation RADIOACTIVE_ZOMBIE_HEAD_LAYER = new ModelLayerLocation(BlockInit.RADIOACTIVE_ZOMBIE_HEAD.getId(), "main");
+
     @SubscribeEvent
     public static void registerModels(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EntityInit.RADIOACTIVE_ZOMBIE.get(), RadioactiveZombieRenderer::new);
@@ -156,6 +163,7 @@ public class ClientSetup {
 
         event.registerBlockEntityRenderer(BlockEntityInit.SINGULARITY_BLOCK_ENTITY.get(), SingularityBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntityInit.GRAVITOR_BLOCK_ENTITY.get(), GravitorBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntityInit.CUSTOM_SKULL.get(), SkullBlockRenderer::new);
     }
 
     @SubscribeEvent
@@ -173,6 +181,7 @@ public class ClientSetup {
     @SubscribeEvent
     public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(MechanicWingsLayer.MECHANIC_WINGS_LAYER, MechanicWingsModel::createLayer);
+        event.registerLayerDefinition(RADIOACTIVE_ZOMBIE_HEAD_LAYER, SkullModel::createMobHeadLayer);
     }
 
     @SubscribeEvent
@@ -182,5 +191,10 @@ public class ClientSetup {
                 renderer.addLayer(new MechanicWingsLayer<>(renderer, event.getEntityModels()));
             }
         });
+    }
+
+    @SubscribeEvent
+    static void registerSkullModel(EntityRenderersEvent.CreateSkullModels event) {
+        event.registerSkullModel(BlockInit.SkullType.RADIOACTIVE_ZOMBIE, new SkullModel(event.getEntityModelSet().bakeLayer(RADIOACTIVE_ZOMBIE_HEAD_LAYER)));
     }
 }

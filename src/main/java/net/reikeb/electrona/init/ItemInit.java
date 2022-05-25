@@ -205,4 +205,7 @@ public class ItemInit {
             new BlockItem(BlockInit.RADIOACTIVE_TALL_GRASS.get(), new Item.Properties().tab(ItemGroups.ELECTRONA_BLOCKS)));
 
     public static final RegistryObject<Item> GRAVITOR_ITEM = ITEMS.register("gravitor", GravitorItem::new);
+
+    public static final RegistryObject<Item> RADIOACTIVE_ZOMBIE_HEAD_ITEM = ITEMS.register("radioactive_zombie_head", () ->
+            new StandingAndWallBlockItem(BlockInit.RADIOACTIVE_ZOMBIE_HEAD.get(), BlockInit.RADIOACTIVE_ZOMBIE_HEAD_WALL.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS).rarity(Rarity.UNCOMMON)));
 }

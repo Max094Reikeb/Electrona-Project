@@ -1,6 +1,9 @@
 package net.reikeb.electrona.init;
 
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SkullBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -65,4 +68,10 @@ public class BlockInit {
     public static final RegistryObject<RadioactiveGrass> RADIOACTIVE_GRASS = BLOCKS.register("radioactive_grass", RadioactiveGrass::new);
     public static final RegistryObject<RadioactiveTallGrass> RADIOACTIVE_TALL_GRASS = BLOCKS.register("radioactive_tall_grass", RadioactiveTallGrass::new);
     public static final RegistryObject<Gravitor> GRAVITOR = BLOCKS.register("gravitor", Gravitor::new);
+    public static final RegistryObject<Block> RADIOACTIVE_ZOMBIE_HEAD = BLOCKS.register("radioactive_zombie_head", () -> new CustomSkullBlock(SkullType.RADIOACTIVE_ZOMBIE, BlockBehaviour.Properties.of(Material.DECORATION).strength(1.0F)));
+    public static final RegistryObject<Block> RADIOACTIVE_ZOMBIE_HEAD_WALL = BLOCKS.register("radioactive_zombie_wall_head", () -> new CustomWallSkullBlock(SkullType.RADIOACTIVE_ZOMBIE, BlockBehaviour.Properties.of(Material.DECORATION).strength(1.0F).lootFrom(RADIOACTIVE_ZOMBIE_HEAD)));
+
+    public enum SkullType implements SkullBlock.Type {
+        RADIOACTIVE_ZOMBIE
+    }
 }
