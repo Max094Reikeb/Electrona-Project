@@ -109,7 +109,6 @@
   "command.electrona.nuclear_explosion_success": "成功引发核爆炸。",
   "command.electrona.not_holding_items": "%s 没有手持任何物品。",
   "death.attack.electric_shock": "%1$s 触电身亡",
-  "death.attack.energetic_lightning_bolt": "%1$s 被高能闪电劈中了",
   "death.attack.nuclear_blast": "%1$s 被核爆化为了粉尘",
   "death.attack.radioactivity": "%1$s 被大量辐射破坏了 DNA 结构",
   "effect.radioactivity": "辐射",
