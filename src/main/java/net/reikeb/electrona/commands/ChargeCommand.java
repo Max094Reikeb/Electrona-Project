@@ -9,7 +9,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import net.reikeb.electrona.init.ItemInit;
+import net.reikeb.electrona.misc.Tags;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -46,9 +46,7 @@ public class ChargeCommand {
             for (ServerPlayer serverPlayerEntity : user) {
                 ItemStack itemStack = serverPlayerEntity.getMainHandItem();
                 if (!itemStack.isEmpty()) {
-                    if ((itemStack.getItem() == ItemInit.BATTERY_ITEM.get())
-                            || (itemStack.getItem() == ItemInit.MECHANIC_WINGS.get())
-                            || (itemStack.getItem() == ItemInit.PORTABLE_TELEPORTER.get())) {
+                    if (itemStack.is(Tags.POWERED_ITEMS)) {
                         itemStack.getOrCreateTag().putDouble("ElectronicPower", charge);
                         source.sendSuccess(new TranslatableComponent("command.electrona.item_charged",
                                 itemStack.getItem().getName(itemStack).getString()), true);
@@ -68,9 +66,7 @@ public class ChargeCommand {
         for (ServerPlayer serverPlayerEntity : user) {
             ItemStack itemStack = serverPlayerEntity.getMainHandItem();
             if (!itemStack.isEmpty()) {
-                if ((itemStack.getItem() == ItemInit.BATTERY_ITEM.get())
-                        || (itemStack.getItem() == ItemInit.MECHANIC_WINGS.get())
-                        || (itemStack.getItem() == ItemInit.PORTABLE_TELEPORTER.get())) {
+                if (itemStack.is(Tags.POWERED_ITEMS)) {
                     double electronicPower = itemStack.getOrCreateTag().getDouble("ElectronicPower");
                     if (electronicPower + charge < 0) {
                         throw ERROR_NEGATIVE_RESULT.create(charge);
