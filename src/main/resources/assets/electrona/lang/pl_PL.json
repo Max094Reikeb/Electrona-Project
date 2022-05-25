@@ -100,7 +100,6 @@
   "block.electrona.xp_generator.desc2": "§dZużywa §c16EL §dna sekundę",
   "block.electrona.xp_generator.desc3": "§dMoże przechować : §c10 000EL",
   "death.attack.electric_shock": "%1$s został porażony prądem na śmierć",
-  "death.attack.energetic_lightning_bolt": "%1$s został uderzony przez energetyczny piorun",
   "death.attack.nuclear_blast": "%1$s został rozsadzony przez eksplozję nuklearną",
   "death.attack.radioactivity": "%1$s był zbyt radioaktywny, by żyć",
   "effect.radioactivity": "Radioaktywność",
