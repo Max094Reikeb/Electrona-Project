@@ -57,7 +57,6 @@
   "block.electrona.xp_generator.desc2": "§dUsa §c16ELs §dal secondo",
   "block.electrona.xp_generator.desc3": "§dPuò immagazzinare : §c10 000ELs",
   "death.attack.electric_shock": "%1$s è stato folgorato a morte",
-  "death.attack.energetic_lightning_bolt": "%1$s è stato colpito da fulmini energetici",
   "death.attack.nuclear_blast": "%1$s è stato devastato da un'esplosione nucleare",
   "death.attack.radioactivity": "%1$s era troppo radioattivo per essere vivo",
   "effect.radioactivity": "Radioattività",
