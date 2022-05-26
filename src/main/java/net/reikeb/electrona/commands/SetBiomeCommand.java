@@ -38,7 +38,7 @@ public class SetBiomeCommand {
     private static int setBiomeAtPos(CommandSourceStack source, Vec3 coordinates, ResourceLocation biomeLocation) {
         BlockPos pos = new BlockPos((int) coordinates.x, (int) coordinates.y, (int) coordinates.z);
         BlockPos.betweenClosed(pos.getX() - 10, pos.getY() - 10, pos.getZ() - 10, pos.getX() + 10, pos.getY() + 10, pos.getZ() + 10).forEach(blockPos -> {
-            BiomeUtil.setBiomeAtPos(source.getLevel(), blockPos, biomeLocation);
+            BiomeUtil.setBiomeAtPos(source.getLevel(), blockPos, biomeLocation, Registry::get);
         });
         source.sendSuccess(new TranslatableComponent("command.electrona.biome_set", biomeLocation), true);
         return source.hashCode();

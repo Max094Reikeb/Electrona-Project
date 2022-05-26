@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -167,7 +168,7 @@ public class NuclearExplosion extends Explosion {
 
                             if (f > 0.0F && (this.source == null || this.source.shouldBlockExplode(this, this.level, blockpos, blockstate, f))) {
                                 set.add(blockpos);
-                                BiomeUtil.setBiomeKeyAtPos(this.level, blockpos, BiomeInit.NUCLEAR);
+                                BiomeUtil.setBiomeAtPos(this.level, blockpos, BiomeInit.NUCLEAR, Registry::get);
                             }
                             d4 += d0 * (double) 0.3F;
                             d6 += d1 * (double) 0.3F;
