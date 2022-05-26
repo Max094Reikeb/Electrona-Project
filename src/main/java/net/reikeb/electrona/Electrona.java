@@ -31,8 +31,6 @@ import net.reikeb.electrona.misc.GameEvents;
 import net.reikeb.electrona.misc.Keys;
 import net.reikeb.electrona.recipes.CompressorRecipe;
 import net.reikeb.electrona.recipes.PurificatorRecipe;
-import net.reikeb.electrona.recipes.ShapedHammerRecipe;
-import net.reikeb.electrona.recipes.ShapelessHammerRecipe;
 import net.reikeb.electrona.setup.RegistryHandler;
 import net.reikeb.electrona.villages.POIFixup;
 import net.reikeb.electrona.villages.StructureGen;
@@ -133,8 +131,6 @@ public class Electrona {
         // Register the recipe serializer. This handles from json, from packet, and to packet.
         event.getRegistry().register(CompressorRecipe.SERIALIZER);
         event.getRegistry().register(PurificatorRecipe.SERIALIZER);
-        event.getRegistry().register(ShapedHammerRecipe.SERIALIZER);
-        event.getRegistry().register(ShapelessHammerRecipe.SERIALIZER);
     }
 
     public static class ElectronaRegions extends Region {

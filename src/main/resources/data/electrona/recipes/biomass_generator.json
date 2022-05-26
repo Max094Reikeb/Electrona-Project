@@ -1,6 +1,6 @@
 {
   "group": "electrona",
-  "type": "electrona:hammer_shaped",
+  "type": "maxilib:tool_shaped",
   "pattern": [
     "012",
     "345",
@@ -38,5 +38,10 @@
   "result": {
     "item": "electrona:biomass_generator",
     "count": 1
-  }
+  },
+  "unconsumed": [
+    {
+      "item": "electrona:hammer"
+    }
+  ]
 }

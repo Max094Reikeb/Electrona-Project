@@ -1,6 +1,6 @@
 {
   "group": "electrona",
-  "type": "electrona:hammer_shapeless",
+  "type": "maxilib:tool_shapeless",
   "ingredients": [
     {
       "item": "electrona:hammer"
@@ -12,5 +12,10 @@
   "result": {
     "item": "electrona:tin_plate",
     "count": 1
-  }
+  },
+  "unconsumed": [
+    {
+      "item": "electrona:hammer"
+    }
+  ]
 }
