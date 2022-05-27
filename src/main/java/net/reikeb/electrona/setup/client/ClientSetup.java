@@ -181,7 +181,7 @@ public class ClientSetup {
     @SubscribeEvent
     public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(MechanicWingsLayer.MECHANIC_WINGS_LAYER, MechanicWingsModel::createLayer);
-        event.registerLayerDefinition(RADIOACTIVE_ZOMBIE_HEAD_LAYER, SkullModel::createMobHeadLayer);
+        event.registerLayerDefinition(RADIOACTIVE_ZOMBIE_HEAD_LAYER, SkullModel::createHumanoidHeadLayer);
     }
 
     @SubscribeEvent

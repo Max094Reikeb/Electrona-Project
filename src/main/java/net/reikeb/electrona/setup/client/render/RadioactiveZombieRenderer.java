@@ -8,8 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.reikeb.electrona.entity.RadioactiveZombie;
 import net.reikeb.electrona.misc.Keys;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 public class RadioactiveZombieRenderer extends AbstractZombieRenderer<RadioactiveZombie, ZombieModel<RadioactiveZombie>> {
 
@@ -21,7 +20,7 @@ public class RadioactiveZombieRenderer extends AbstractZombieRenderer<Radioactiv
         super(context, new ZombieModel<>(context.bakeLayer(layerLocation1)), new ZombieModel<>(context.bakeLayer(layerLocation2)), new ZombieModel<>(context.bakeLayer(layerLocation3)));
     }
 
-    @Nullable
+    @NotNull
     @Override
     public ResourceLocation getTextureLocation(RadioactiveZombie entity) {
         return Keys.RADIOACTIVE_ZOMBIE;
