@@ -112,7 +112,6 @@
   "block.electrona.xp_generator.desc1": "§dGenerates 1 XP level in 2 minutes",
   "block.electrona.xp_generator.desc2": "§dUses §c16ELs §dper second",
   "block.electrona.xp_generator.desc3": "§dCan store : §c10 000ELs",
-  "command.electrona.biome_set": "%s biome successfully placed",
   "command.electrona.cannot_be_charged": "%s cannot be charged",
   "command.electrona.explosion_success": "Explosion successfully created",
   "command.electrona.item_charged": "%s has successfully been charged",

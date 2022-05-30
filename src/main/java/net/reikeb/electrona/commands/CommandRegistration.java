@@ -15,6 +15,5 @@ public class CommandRegistration {
         CommandDispatcher<CommandSourceStack> commandDispatcher = event.getDispatcher();
         ChargeCommand.register(commandDispatcher);
         ExplodeCommand.register(commandDispatcher);
-        SetBiomeCommand.register(commandDispatcher);
     }
 }
