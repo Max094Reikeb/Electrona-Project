@@ -4,10 +4,10 @@ license="All rights reserved"
 
 [[mods]]
 modId="electrona"
-version="1.18.2-r3.0"
+version = "${file.jarVersion}"
 displayName="Electrona"
 credits="Credits are on mod's page."
-displayURL="http://max-electrona.000webhostapp.com/"
+displayURL="https://max094reikeb.github.io/Electrona-Project/"
 authors="Max094_Reikeb"
 description='''
 Electrona is a tech mod made by Max094_Reikeb.
