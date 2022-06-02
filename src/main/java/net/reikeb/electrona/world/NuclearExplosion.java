@@ -36,6 +36,7 @@ import net.reikeb.electrona.events.local.NuclearExplosionEvent;
 import net.reikeb.electrona.init.BiomeInit;
 import net.reikeb.electrona.init.BlockInit;
 import net.reikeb.electrona.init.SoundsInit;
+import net.reikeb.electrona.misc.DamageSources;
 import net.reikeb.electrona.misc.GameEvents;
 import net.reikeb.electrona.misc.Tags;
 import net.reikeb.maxilib.utils.BiomeUtil;
@@ -64,7 +65,6 @@ public class NuclearExplosion extends Explosion {
     private final float size;
     private final Map<Player, Vec3> playerKnockbackMap = Maps.newHashMap();
     private final Vec3 position;
-    private DamageSource damageSource;
 
     @OnlyIn(Dist.CLIENT)
     public NuclearExplosion(Level level, @Nullable Entity entity, BlockPos pos, float size) {
@@ -92,7 +92,6 @@ public class NuclearExplosion extends Explosion {
         this.y = y;
         this.z = z;
         this.mode = mode;
-        this.damageSource = DamageSource.explosion(this);
         this.position = new Vec3(this.x, this.y, this.z);
 
         if (MinecraftForge.EVENT_BUS.post(new NuclearExplosionEvent.Start(level, this))) return;
@@ -335,11 +334,7 @@ public class NuclearExplosion extends Explosion {
     }
 
     public DamageSource getDamageSource() {
-        return this.damageSource;
-    }
-
-    public void setDamageSource(DamageSource damageSourceIn) {
-        this.damageSource = damageSourceIn;
+        return DamageSources.NUCLEAR_BLAST;
     }
 
     public Map<Player, Vec3> getPlayerKnockbackMap() {
