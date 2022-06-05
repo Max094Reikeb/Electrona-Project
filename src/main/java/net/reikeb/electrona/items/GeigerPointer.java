@@ -15,10 +15,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.reikeb.biome_tools.BiomeUtil;
 import net.reikeb.electrona.Electrona;
 import net.reikeb.electrona.init.BiomeInit;
 import net.reikeb.electrona.setup.ItemGroups;
-import net.reikeb.maxilib.utils.BiomeUtil;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;

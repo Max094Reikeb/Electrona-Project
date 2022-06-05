@@ -32,6 +32,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.reikeb.biome_tools.BiomeUtil;
 import net.reikeb.electrona.events.local.NuclearExplosionEvent;
 import net.reikeb.electrona.init.BiomeInit;
 import net.reikeb.electrona.init.BlockInit;
@@ -39,7 +40,6 @@ import net.reikeb.electrona.init.SoundsInit;
 import net.reikeb.electrona.misc.DamageSources;
 import net.reikeb.electrona.misc.GameEvents;
 import net.reikeb.electrona.misc.Tags;
-import net.reikeb.maxilib.utils.BiomeUtil;
 import net.reikeb.maxilib.utils.Gravity;
 
 import javax.annotation.Nullable;

@@ -42,3 +42,10 @@ It was originally made on MCreator, but then, the r2.0 version ported it off.
     versionRange="[1.18.2-r1.1.1,1.18.2-r1.2]"
     ordering="AFTER"
     side="BOTH"
+
+[[dependencies.electrona]]
+    modId="biome_tools"
+    mandatory=true
+    versionRange="[1.18.2-r1.0,1.18.2-r1.0.1]"
+    ordering="AFTER"
+    side="BOTH"

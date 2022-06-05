@@ -98,6 +98,9 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
+    // BiomeTools
+    implementation fg.deobf("com.github.Max094Reikeb:BiomeTools:${biometools_version}")
+
     // MaxiLib
     implementation fg.deobf("com.github.Max094Reikeb:MaxiLib:${maxilib_version}")
 
