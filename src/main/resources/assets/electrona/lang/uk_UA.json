@@ -1,1 +1,22 @@
-{}
+{
+  "advancements.a_whole_new_world.title": "Цілий Новий Світ!",
+  "advancements.generator.title": "Генератор!",
+  "advancements.machinator.descr": "Створи свою першу Машину.",
+  "advancements.machinator.title": "Махінатор!",
+  "advancements.master_engineer.title": "Майстер інженер!",
+  "block.electrona.battery": "Батарея",
+  "block.electrona.compressor": "Компресор",
+  "block.electrona.conveyor": "Конвеєр",
+  "block.electrona.cooler": "Охолоджувач",
+  "block.electrona.deepslate_lead_ore": "Глибокосланцева свинцева руда",
+  "block.electrona.lead_block": "Свинцевий блок",
+  "block.electrona.lead_crate": "Свинцевий ящик",
+  "block.electrona.lead_door": "Свинцеві двері",
+  "block.electrona.lead_ore": "Свинцева руда",
+  "block.electrona.steel_crate": "Сталевий Ящик",
+  "block.electrona.teleporter": "Телепортатор",
+  "block.electrona.tin_block": "Олов'яний блок",
+  "block.electrona.tin_ore": "Олов'яна руда",
+  "block.electrona.uranium_ore": "Уранова руда",
+  "block.electrona.water_cable": "Водяний кабель"
+}
